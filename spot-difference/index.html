@@ -681,8 +681,8 @@
       '<g>' +
         '<line x1="256" y1="64" x2="256" y2="72" stroke="#8A5E3B" stroke-width="2"/>' +
         '<line x1="316" y1="64" x2="316" y2="72" stroke="#8A5E3B" stroke-width="2"/>' +
-        '<rect x="242" y="70" width="88" height="27" rx="4" fill="#FBF1DE" stroke="#A9713F" stroke-width="2.4"/>' +
-        '<text x="286" y="90" text-anchor="middle" font-size="15" font-weight="800" fill="#152A4A" style="font-family:inherit">떡집</text>' +
+        '<rect x="242" y="70" width="76" height="27" rx="4" fill="#FBF1DE" stroke="#A9713F" stroke-width="2.4"/>' +
+        '<text x="280" y="90" text-anchor="middle" font-size="15" font-weight="800" fill="#152A4A" style="font-family:inherit">떡집</text>' +
       '</g>' +
 
       /* 천막 */
@@ -692,15 +692,14 @@
 
       /* 매달린 등 */
       '<g>' +
-        (alt ? '' : '<circle cx="332" cy="122" r="27" fill="url(#'+u+'lamp)"/>') +
-        '<line x1="350" y1="104" x2="333" y2="104" stroke="#8A5E3B" stroke-width="2.4"/>' +
-        '<line x1="332" y1="104" x2="332" y2="108" stroke="#8A5E3B" stroke-width="1.8"/>' +
-        '<rect x="325" y="106" width="14" height="5" rx="2" fill="'+lantLid+'"/>' +
-        '<ellipse cx="332" cy="122" rx="10" ry="13" fill="'+lantCol+'"/>' +
-        '<g stroke="#FFFFFF" stroke-opacity=".35" stroke-width="1.2"><line x1="323" y1="118" x2="341" y2="118"/><line x1="322" y1="126" x2="342" y2="126"/></g>' +
-        '<rect x="325" y="133" width="14" height="5" rx="2" fill="'+lantLid+'"/>' +
-        '<line x1="332" y1="138" x2="332" y2="145" stroke="#C99A55" stroke-width="1.6"/>' +
-        '<path d="M329 145 h6 l-3 7 z" fill="#C99A55"/>' +
+        (alt ? '' : '<circle cx="334" cy="88" r="27" fill="url(#'+u+'lamp)"/>') +
+        '<line x1="334" y1="64" x2="334" y2="73" stroke="#8A5E3B" stroke-width="2.2"/>' +
+        '<rect x="327" y="72" width="14" height="5" rx="2" fill="'+lantLid+'"/>' +
+        '<ellipse cx="334" cy="86" rx="10" ry="12.5" fill="'+lantCol+'"/>' +
+        '<g stroke="#FFFFFF" stroke-opacity=".35" stroke-width="1.1"><line x1="325" y1="82" x2="343" y2="82"/><line x1="324" y1="89" x2="344" y2="89"/></g>' +
+        '<rect x="327" y="97" width="14" height="5" rx="2" fill="'+lantLid+'"/>' +
+        '<line x1="334" y1="102" x2="334" y2="108" stroke="#C99A55" stroke-width="1.6"/>' +
+        '<path d="M331 108 h6 l-3 7 z" fill="#C99A55"/>' +
       '</g>' +
 
       /* 왼쪽 과일 좌판 */
@@ -792,7 +791,7 @@
       '<circle cx="312" cy="34" r="15" fill="none" stroke="#F3C05E" stroke-width="2"/>' +
 
       /* 등대 불빛 줄기 */
-      (alt ? '' : '<g opacity=".55"><path d="M271 80 L196 58 L196 104 Z" fill="#FFF0BC"/><path d="M289 80 L360 58 L360 104 Z" fill="#FFF0BC"/></g>') +
+      (alt ? '' : '<g opacity=".6"><path d="M271 80 L196 58 L196 104 Z" fill="#FFE39C"/><path d="M289 80 L360 58 L360 104 Z" fill="#FFE39C"/></g>') +
 
       cloud(58, 38, 1.05, .95) +
       cloud(196, 30, .95, .95) +
@@ -913,7 +912,7 @@
       diffs: [
         { id:'awning',  x:108, y:38,  r:30, name:'천막 색깔' },
         { id:'apples',  x:94,  y:106, r:28, name:'과일 바구니' },
-        { id:'lantern', x:332, y:120, r:28, name:'가게 등' },
+        { id:'lantern', x:334, y:88,  r:28, name:'가게 등' },
         { id:'bag',     x:206, y:222, r:28, name:'손님 장바구니' }
       ]
     },
