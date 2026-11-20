@@ -3,7 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="#FAF6EE">
+<meta name="color-scheme" content="light">
+<meta name="theme-color" content="#F8FAFC">
 <title>품스 생활 도구 | 연말정산 테스트 · 두뇌 건강 게임 3종</title>
 <meta name="description" content="1분이면 끝나는 생활 도구 모음. 13월의 월급 연말정산 테스트, 두뇌 건강 게임 '오늘의 큰 수 찾기', '오늘의 같은 그림 찾기', '오늘의 틀린 그림 찾기'를 무료로 이용해 보세요.">
 <meta property="og:type" content="website">
@@ -12,27 +13,29 @@
 <meta name="twitter:card" content="summary_large_image">
 <style>
   :root{
-    --cream:#FAF6EE;
+    color-scheme:light;
+    --bg-base:#F8FAFC;
     --card:#FFFFFF;
-    --navy:#152A4A;
-    --gold:#C99A55;
-    --gold-soft:#F0DFC2;
-    --teal:#0E7A78;
-    --teal-soft:#E2F1EF;
-    --text:#17233B;
-    --muted:#5B6A80;
-    --line:#E9E0D1;
+    --ink:#1E293B;
+    --body:#475569;
+    --line:#E2E8F0;
+    --blue:#2563EB;
+    --blue-deep:#1D4ED8;
     --radius:20px;
   }
   *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
   html,body{margin:0;padding:0}
+  html{background:#F8FAFC}
   body{
     background:
-      radial-gradient(circle at 8% -6%, #FDF2E0 0%, rgba(253,242,224,0) 54%),
-      radial-gradient(circle at 96% 6%, #E6F2EF 0%, rgba(230,242,239,0) 48%),
-      var(--cream);
+      radial-gradient(110% 55% at 50% -12%, #E6F1FE 0%, rgba(230,241,254,0) 62%),
+      radial-gradient(80% 45% at 102% 2%, #FFF4E0 0%, rgba(255,244,224,0) 58%),
+      radial-gradient(70% 40% at -6% 30%, #E9FBF4 0%, rgba(233,251,244,0) 60%),
+      linear-gradient(180deg, #FBFAF6 0%, #F8FAFC 46%, #F3F8FC 100%);
+    background-color:var(--bg-base);
+    background-attachment:fixed;
     min-height:100vh;
-    color:var(--text);
+    color:var(--body);
     font-family:-apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Malgun Gothic", "Noto Sans KR", "Noto Sans CJK KR", "NanumGothic", "Segoe UI", sans-serif;
     -webkit-text-size-adjust:100%;
     word-break:keep-all;
@@ -46,16 +49,16 @@
   .brand{
     display:flex;align-items:center;gap:8px;
     font-size:14px;font-weight:800;letter-spacing:.16em;
-    color:var(--gold);text-transform:uppercase;margin-bottom:18px;
+    color:var(--blue);text-transform:uppercase;margin-bottom:18px;
   }
-  .brand .dot{width:6px;height:6px;border-radius:50%;background:var(--gold);display:inline-block}
+  .brand .dot{width:6px;height:6px;border-radius:50%;background:var(--blue);display:inline-block}
   h1{
     font-size:30px;line-height:1.36;letter-spacing:-.02em;
-    margin:0 0 10px;font-weight:800;color:var(--navy);
+    margin:0 0 10px;font-weight:800;color:var(--ink);
   }
-  h1 em{font-style:normal;color:var(--teal)}
+  h1 em{font-style:normal;color:var(--blue)}
   .intro{
-    margin:0 0 26px;font-size:16.5px;color:var(--muted);line-height:1.62;
+    margin:0 0 26px;font-size:16.5px;color:var(--body);line-height:1.62;
   }
   .cards{display:flex;flex-direction:column;gap:14px}
   .card{
@@ -64,30 +67,30 @@
     border:1px solid var(--line);
     border-radius:var(--radius);
     padding:20px 20px 18px;
-    box-shadow:0 6px 18px rgba(21,42,74,.06);
+    box-shadow:0 6px 18px rgba(30,41,59,.06);
     transition:transform .12s ease, box-shadow .12s ease;
   }
-  .card:active{transform:scale(.985);box-shadow:0 3px 10px rgba(21,42,74,.08)}
+  .card:active{transform:scale(.985);box-shadow:0 3px 10px rgba(30,41,59,.08)}
   .tag{
     display:inline-block;font-size:14px;font-weight:800;letter-spacing:.04em;
     padding:5px 11px;border-radius:999px;margin-bottom:12px;
   }
-  .tag.tax{background:#F6EAD6;color:#8A611F}
-  .tag.brain{background:var(--teal-soft);color:var(--teal)}
-  .tag.memory{background:#F6EAD6;color:#8A611F}
-  .tag.spot{background:#F7E2DA;color:#A4523C}
+  .tag.tax{background:#FEF3C7;color:#92400E}
+  .tag.brain{background:#D1FAE5;color:#047857}
+  .tag.memory{background:#E0F2FE;color:#0369A1}
+  .tag.spot{background:#FFE9E3;color:#C2410C}
   .card h2{
-    font-size:21px;line-height:1.42;margin:0 0 8px;font-weight:800;letter-spacing:-.01em;color:var(--navy);
+    font-size:21px;line-height:1.42;margin:0 0 8px;font-weight:800;letter-spacing:-.01em;color:var(--ink);
   }
-  .card p{margin:0 0 15px;font-size:16px;color:var(--muted);line-height:1.62}
+  .card p{margin:0 0 15px;font-size:16px;color:var(--body);line-height:1.62}
   .go{
     display:inline-flex;align-items:center;gap:7px;
     font-size:17px;font-weight:800;
   }
-  .card.tax-card .go{color:#A97A2C}
-  .card.brain-card .go{color:var(--teal)}
-  .card.memory-card .go{color:var(--gold)}
-  .card.spot-card .go{color:#A4523C}
+  .card.tax-card .go{color:#B45309}
+  .card.brain-card .go{color:#047857}
+  .card.memory-card .go{color:#0369A1}
+  .card.spot-card .go{color:#C2410C}
   .go .arrow{
     display:inline-block;transition:transform .14s ease;
   }
@@ -96,42 +99,16 @@
     margin-top:26px;padding-top:20px;border-top:1px solid var(--line);
     text-align:center;
   }
-  .foot .label{font-size:14.5px;color:var(--muted);margin:0 0 10px}
+  .foot .label{font-size:14.5px;color:#64748B;margin:0 0 10px}
   .foot a{
     display:inline-flex;align-items:center;justify-content:center;gap:6px;
     padding:14px 20px;border-radius:14px;text-decoration:none;
-    background:var(--navy);color:#fff;font-size:17px;font-weight:800;
-    box-shadow:0 8px 20px rgba(21,42,74,.16);
+    background:linear-gradient(135deg, var(--blue) 0%, var(--blue-deep) 100%);
+    color:#fff;font-size:17px;font-weight:800;
+    box-shadow:0 8px 20px rgba(37,99,235,.24);
   }
   .copy{
-    margin:22px 0 0;text-align:center;font-size:13.5px;color:#9AA6B6;letter-spacing:.02em;
-  }
-  @media (prefers-color-scheme: dark){
-    body{
-      background:
-        radial-gradient(circle at 8% -6%, #22303f 0%, rgba(34,48,63,0) 54%),
-        radial-gradient(circle at 96% 6%, #16302f 0%, rgba(22,48,47,0) 48%),
-        #101821;
-      color:#E8EEF6;
-    }
-    h1{color:#F3F7FB}
-    h1 em{color:#5FD0C9}
-    .intro{color:#9FB0C4}
-    .card{background:#17222E;border-color:#26333F;box-shadow:0 6px 18px rgba(0,0,0,.35)}
-    .card h2{color:#F3F7FB}
-    .card p{color:#9FB0C4}
-    .tag.tax{background:#3A2C15;color:#F0CF99}
-    .tag.brain{background:#12312F;color:#6FD9D1}
-    .tag.memory{background:#3A2C15;color:#F0CF99}
-    .tag.spot{background:#3A241C;color:#F0B9A5}
-    .card.tax-card .go{color:#E8B96C}
-    .card.brain-card .go{color:#6FD9D1}
-    .card.memory-card .go{color:#E8B96C}
-    .card.spot-card .go{color:#F0B9A5}
-    .foot{border-top-color:#26333F}
-    .foot .label{color:#9FB0C4}
-    .foot a{background:#F0DFC2;color:#152A4A}
-    .copy{color:#6D7C8D}
+    margin:22px 0 0;text-align:center;font-size:13.5px;color:#94A3B8;letter-spacing:.02em;
   }
 </style>
 </head>
