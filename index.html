@@ -3,33 +3,159 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="#0a1320">
-<meta name="robots" content="noindex">
-<title>연말정산 1분 테스트</title>
-<meta http-equiv="refresh" content="0; url=./year-end-tax/">
+<meta name="theme-color" content="#FAF6EE">
+<title>품스 생활 도구 | 1분 연말정산 테스트 · 오늘의 큰 수 찾기</title>
+<meta name="description" content="1분이면 끝나는 생활 도구 모음. 13월의 월급 연말정산 테스트와 두뇌 건강 게임 '오늘의 큰 수 찾기'를 무료로 이용해 보세요.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="품스 생활 도구 모음">
+<meta property="og:description" content="1분 연말정산 테스트와 두뇌 건강 게임. 설치 없이 바로 시작하세요.">
+<meta name="twitter:card" content="summary_large_image">
 <style>
-  html,body{margin:0;height:100%}
-  body{
-    background:radial-gradient(900px 460px at 50% -10%, rgba(224,180,115,.18), transparent 62%),#0a1320;
-    color:#f5f8fc;font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Malgun Gothic",system-ui,sans-serif;
-    display:flex;align-items:center;justify-content:center;text-align:center;padding:24px;
+  :root{
+    --cream:#FAF6EE;
+    --card:#FFFFFF;
+    --navy:#152A4A;
+    --gold:#C99A55;
+    --gold-soft:#F0DFC2;
+    --teal:#0E7A78;
+    --teal-soft:#E2F1EF;
+    --text:#17233B;
+    --muted:#5B6A80;
+    --line:#E9E0D1;
+    --radius:20px;
   }
-  .box{max-width:420px}
-  .kicker{font-size:11.5px;font-weight:800;letter-spacing:.14em;color:#f3d9ae;text-transform:uppercase;margin-bottom:14px}
-  h1{font-size:21px;line-height:1.4;margin:0 0 10px;letter-spacing:-.02em}
-  p{color:#a7b6c9;font-size:14.5px;margin:0 0 22px;line-height:1.6}
-  a{
-    display:inline-block;padding:14px 22px;border-radius:14px;text-decoration:none;
-    background:linear-gradient(135deg,#f3d9ae,#c99a55);color:#241a0c;font-weight:800;font-size:15px;
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  html,body{margin:0;padding:0}
+  body{
+    background:
+      radial-gradient(circle at 8% -6%, #FDF2E0 0%, rgba(253,242,224,0) 54%),
+      radial-gradient(circle at 96% 6%, #E6F2EF 0%, rgba(230,242,239,0) 48%),
+      var(--cream);
+    min-height:100vh;
+    color:var(--text);
+    font-family:-apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Malgun Gothic", "Noto Sans KR", "Noto Sans CJK KR", "NanumGothic", "Segoe UI", sans-serif;
+    -webkit-text-size-adjust:100%;
+    word-break:keep-all;
+    line-height:1.55;
+  }
+  .wrap{
+    max-width:460px;
+    margin:0 auto;
+    padding:38px 20px calc(30px + env(safe-area-inset-bottom));
+  }
+  .brand{
+    display:flex;align-items:center;gap:8px;
+    font-size:11.5px;font-weight:800;letter-spacing:.16em;
+    color:var(--gold);text-transform:uppercase;margin-bottom:18px;
+  }
+  .brand .dot{width:6px;height:6px;border-radius:50%;background:var(--gold);display:inline-block}
+  h1{
+    font-size:26px;line-height:1.36;letter-spacing:-.02em;
+    margin:0 0 10px;font-weight:800;color:var(--navy);
+  }
+  h1 em{font-style:normal;color:var(--teal)}
+  .intro{
+    margin:0 0 26px;font-size:14.5px;color:var(--muted);line-height:1.62;
+  }
+  .cards{display:flex;flex-direction:column;gap:14px}
+  .card{
+    display:block;text-decoration:none;color:inherit;
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    padding:20px 20px 18px;
+    box-shadow:0 6px 18px rgba(21,42,74,.06);
+    transition:transform .12s ease, box-shadow .12s ease;
+  }
+  .card:active{transform:scale(.985);box-shadow:0 3px 10px rgba(21,42,74,.08)}
+  .tag{
+    display:inline-block;font-size:11px;font-weight:800;letter-spacing:.04em;
+    padding:4px 9px;border-radius:999px;margin-bottom:12px;
+  }
+  .tag.tax{background:#F6EAD6;color:#8A611F}
+  .tag.brain{background:var(--teal-soft);color:var(--teal)}
+  .card h2{
+    font-size:17.5px;line-height:1.42;margin:0 0 7px;font-weight:800;letter-spacing:-.01em;color:var(--navy);
+  }
+  .card p{margin:0 0 14px;font-size:13.5px;color:var(--muted);line-height:1.6}
+  .go{
+    display:inline-flex;align-items:center;gap:6px;
+    font-size:14px;font-weight:800;
+  }
+  .card.tax-card .go{color:#A97A2C}
+  .card.brain-card .go{color:var(--teal)}
+  .go .arrow{
+    display:inline-block;transition:transform .14s ease;
+  }
+  .card:hover .go .arrow{transform:translateX(3px)}
+  .foot{
+    margin-top:26px;padding-top:20px;border-top:1px solid var(--line);
+    text-align:center;
+  }
+  .foot .label{font-size:12.5px;color:var(--muted);margin:0 0 8px}
+  .foot a{
+    display:inline-flex;align-items:center;justify-content:center;gap:6px;
+    padding:13px 20px;border-radius:14px;text-decoration:none;
+    background:var(--navy);color:#fff;font-size:14px;font-weight:800;
+    box-shadow:0 8px 20px rgba(21,42,74,.16);
+  }
+  .copy{
+    margin:22px 0 0;text-align:center;font-size:11.5px;color:#9AA6B6;letter-spacing:.02em;
+  }
+  @media (prefers-color-scheme: dark){
+    body{
+      background:
+        radial-gradient(circle at 8% -6%, #22303f 0%, rgba(34,48,63,0) 54%),
+        radial-gradient(circle at 96% 6%, #16302f 0%, rgba(22,48,47,0) 48%),
+        #101821;
+      color:#E8EEF6;
+    }
+    h1{color:#F3F7FB}
+    h1 em{color:#5FD0C9}
+    .intro{color:#9FB0C4}
+    .card{background:#17222E;border-color:#26333F;box-shadow:0 6px 18px rgba(0,0,0,.35)}
+    .card h2{color:#F3F7FB}
+    .card p{color:#9FB0C4}
+    .tag.tax{background:#3A2C15;color:#F0CF99}
+    .tag.brain{background:#12312F;color:#6FD9D1}
+    .card.tax-card .go{color:#E8B96C}
+    .card.brain-card .go{color:#6FD9D1}
+    .foot{border-top-color:#26333F}
+    .foot .label{color:#9FB0C4}
+    .foot a{background:#F0DFC2;color:#152A4A}
+    .copy{color:#6D7C8D}
   }
 </style>
 </head>
 <body>
-  <div class="box">
-    <div class="kicker">PUMSS</div>
-    <h1>13월의 월급, 나는 받을까 토할까?</h1>
-    <p>잠시 후 1분 연말정산 감각 테스트로 이동합니다.</p>
-    <a href="./year-end-tax/">테스트 시작하기 →</a>
-  </div>
+  <main class="wrap">
+    <div class="brand"><span class="dot"></span>PUMSS</div>
+
+    <h1>1분이면 끝나는<br><em>생활 도구</em> 두 가지</h1>
+    <p class="intro">설치도, 회원가입도 필요 없어요.<br>궁금한 것부터 골라 바로 시작해 보세요.</p>
+
+    <div class="cards">
+      <a class="card tax-card" href="./year-end-tax/">
+        <span class="tag tax">경제 · 세금</span>
+        <h2>13월의 월급,<br>1분 연말정산 테스트</h2>
+        <p>7문항 선택만 하면 끝. 올해 내가 놓치고 있는 환급금과 지금 더 챙길 수 있는 절세 포인트를 확인해 보세요.</p>
+        <span class="go">1분 테스트 시작하기 <span class="arrow">→</span></span>
+      </a>
+
+      <a class="card brain-card" href="./big-number/">
+        <span class="tag brain">두뇌 건강</span>
+        <h2>오늘의 큰 수 찾기</h2>
+        <p>화면에 흩어진 숫자 중 가장 큰 수를 찾는 10문제. 하루 1분, 가볍게 머리를 깨우는 두뇌 게임이에요.</p>
+        <span class="go">게임 시작하기 <span class="arrow">→</span></span>
+      </a>
+    </div>
+
+    <div class="foot">
+      <p class="label">더 많은 생활·경제 정보와 상담이 필요하신가요?</p>
+      <a href="https://www.pumss.co.kr/SP/10.do">더 많은 생활·경제 정보 &amp; 상담 →</a>
+    </div>
+
+    <p class="copy">© PUMSS</p>
+  </main>
 </body>
 </html>
