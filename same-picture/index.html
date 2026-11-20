@@ -4,11 +4,11 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="theme-color" content="#FAF6EE">
-<meta name="description" content="같은 그림 두 장을 찾는 품스 두뇌 건강 게임. 3단계, 1분이면 끝나요. 계산 없이 누구나 즐길 수 있어요.">
+<meta name="description" content="같은 그림 두 장을 찾는 품스 두뇌 건강 게임. 5단계, 2~3분이면 끝나요. 계산 없이 누구나 즐길 수 있어요.">
 <title>오늘의 같은 그림 찾기 | 품스</title>
 <meta property="og:type" content="website">
 <meta property="og:title" content="오늘의 같은 그림 찾기 | 품스">
-<meta property="og:description" content="같은 그림 두 장을 차례로 눌러 짝을 맞혀 보세요. 3단계, 1분이면 끝나요.">
+<meta property="og:description" content="같은 그림 두 장을 차례로 눌러 짝을 맞혀 보세요. 5단계, 2~3분이면 끝나요.">
 <meta property="og:url" content="https://lookbw2010.github.io/same-picture/">
 <meta name="twitter:card" content="summary">
 <style>
@@ -75,6 +75,8 @@
   /* ── 화면 ── */
   .sp-screen{display:flex;flex-direction:column;flex:1;min-height:0}
   .sp-screen[hidden]{display:none !important}
+  #spPlay{overflow:hidden}
+  .sp-status,.sp-pips,.sp-praise,.sp-playfoot{flex:none}
 
   /* ── 시작 화면 ── */
   .sp-hero{display:flex;flex-direction:column;flex:1;justify-content:center;padding:6px 0 4px}
@@ -151,10 +153,17 @@
   .sp-praise.calm{color:var(--muted);font-weight:700}
   .sp-praise.count{color:var(--gold);font-size:19px;letter-spacing:-.01em}
   .sp-gridwrap{position:relative;flex:1;display:flex;flex-direction:column;justify-content:center;min-height:0}
-  .sp-grid{display:grid;grid-template-columns:repeat(var(--cols,2),1fr);gap:10px;width:100%}
+  .sp-grid{
+    display:grid;
+    grid-template-columns:repeat(var(--cols,2), var(--cw,80px));
+    grid-auto-rows:var(--ch,84px);
+    gap:var(--gap,10px);
+    justify-content:center;align-content:center;
+    width:100%;
+  }
   .sp-card{
-    position:relative;display:block;width:100%;margin:0;padding:0;
-    aspect-ratio:1 / 1.06;border:0;background:transparent;cursor:pointer;
+    position:relative;display:block;width:var(--cw,80px);height:var(--ch,84px);margin:0;padding:0;
+    border:0;background:transparent;cursor:pointer;
     font-family:inherit;border-radius:16px;
     transition:transform .12s ease;
   }
@@ -189,16 +198,11 @@
     background:#FFFDF8;border:2px solid var(--gold-soft);
     box-shadow:0 4px 12px rgba(21,42,74,.08);
     opacity:0;transform:scale(.94);
-    padding:6% 4%;
+    padding:5% 3%;
     gap:2%;
   }
-  .sp-face svg{width:60%;height:auto;max-width:86px;max-height:62%;display:block}
-  .sp-label{font-size:clamp(11px,3.3vw,16px);font-weight:800;color:var(--navy);line-height:1.15;letter-spacing:-.02em}
-  .sp-grid.cols2 .sp-card{aspect-ratio:1 / 1.2}
-  .sp-grid.cols3 .sp-card{aspect-ratio:1 / 1.16}
-  .sp-grid.cols4 .sp-card{aspect-ratio:1 / 1.32}
-  .sp-grid.cols4 .sp-face svg{width:64%;max-width:72px;max-height:52%}
-  .sp-grid.cols4 .sp-label{font-size:clamp(11px,3.5vw,15px)}
+  .sp-face svg{width:var(--sv,46px);height:var(--sv,46px);display:block;flex:0 0 auto}
+  .sp-label{font-size:var(--lf,14px);font-weight:800;color:var(--navy);line-height:1.12;letter-spacing:-.02em;white-space:nowrap}
   .sp-card.is-up .sp-back{opacity:0;transform:scale(.94)}
   .sp-card.is-up .sp-face{opacity:1;transform:scale(1)}
   .sp-card.is-matched .sp-face{
@@ -207,8 +211,8 @@
   }
   .sp-card.is-matched .sp-label{color:var(--green)}
   .sp-card.is-matched::after{
-    content:"✓";position:absolute;top:-7px;right:-6px;
-    width:26px;height:26px;border-radius:50%;
+    content:"✓";position:absolute;top:-6px;right:-5px;
+    width:22px;height:22px;border-radius:50%;
     background:var(--green);color:#fff;font-size:15px;font-weight:800;
     display:flex;align-items:center;justify-content:center;
     box-shadow:0 3px 8px rgba(31,122,77,.35);
@@ -278,7 +282,35 @@
     .sp-chips{margin-bottom:14px}
     .sp-sample{padding:10px 12px;margin-bottom:14px}
     .sp-best{padding:11px 14px;margin-bottom:14px}
-    .sp-face svg{max-height:56%}
+  }
+  /* 5단계(12·16장)까지 스크롤 없이 한 화면에 담기 위한 세로 압축 */
+  @media (max-height:700px){
+    #sp{padding-top:10px;padding-bottom:calc(12px + env(safe-area-inset-bottom))}
+    .sp-topbar{margin-bottom:8px}
+    .sp-tool{padding:7px 10px;font-size:12px}
+    .sp-status{margin-bottom:5px}
+    .sp-pips{margin-bottom:7px;gap:4px}
+    .sp-praise{min-height:21px;margin-bottom:5px;font-size:14px;line-height:1.35}
+    .sp-praise.count{font-size:17px}
+    .sp-playfoot{margin-top:8px;font-size:12px}
+    .sp-result h2{font-size:22px;margin-bottom:4px}
+    .sp-result .lead{margin-bottom:12px;font-size:13.5px}
+    .sp-time{padding:12px 12px;margin-bottom:10px}
+    .sp-time .big{font-size:38px}
+    .sp-stats{gap:7px;margin-bottom:10px}
+    .sp-cond{padding:11px 12px;margin-bottom:12px;font-size:13px}
+    .sp-btn{padding:15px 14px;border-radius:14px}
+    .sp-pill{margin-bottom:10px;padding:5px 11px;font-size:11.5px}
+    h1.sp-title{font-size:23px;margin-bottom:9px}
+    .sp-sub{font-size:14.5px;margin-bottom:12px}
+    .sp-chips{margin-bottom:12px}
+    .sp-sample{padding:9px 11px;margin-bottom:12px}
+    .sp-sample .mini{width:38px;height:38px}
+    .sp-sample .mini svg{width:26px;height:26px}
+    .sp-best{padding:10px 13px;margin-bottom:14px}
+    .sp-btn-xl{font-size:19px;padding:17px 14px}
+    .sp-note{font-size:12.5px;margin-top:10px}
+    .sp-footer-link{margin-top:8px;font-size:12.5px}
   }
   @media (prefers-reduced-motion: reduce){
     *{animation:none !important;transition:none !important}
@@ -338,8 +370,8 @@
       <h1 class="sp-title">오늘의<br><em>같은 그림</em> 찾기</h1>
       <p class="sp-sub">같은 그림 두 장을 차례로 눌러<br>짝을 맞혀 보세요.</p>
       <div class="sp-chips">
-        <span class="sp-chip">3단계</span>
-        <span class="sp-chip">1분이면 끝</span>
+        <span class="sp-chip">5단계</span>
+        <span class="sp-chip">2~3분이면 끝</span>
         <span class="sp-chip">계산 없이</span>
       </div>
 
@@ -373,11 +405,11 @@
       <div class="sp-timer" id="spTimer">0:00</div>
     </div>
     <div class="sp-pips" id="spPips" aria-hidden="true">
-      <span class="sp-pip on"></span><span class="sp-pip"></span><span class="sp-pip"></span>
+      <span class="sp-pip on"></span><span class="sp-pip"></span><span class="sp-pip"></span><span class="sp-pip"></span><span class="sp-pip"></span>
     </div>
     <p class="sp-praise calm" id="spPraise" role="status" aria-live="polite">같은 그림 두 장을 차례로 눌러 주세요</p>
 
-    <div class="sp-gridwrap">
+    <div class="sp-gridwrap" id="spGridwrap">
       <div class="sp-grid" id="spGrid"></div>
       <div class="sp-banner" id="spBanner" hidden>
         <div class="big" id="spBannerBig">2</div>
@@ -392,7 +424,7 @@
   <section class="sp-screen" id="spResult" hidden aria-label="결과 화면">
     <div class="sp-result">
       <h2 id="spResTitle">수고하셨어요! 👏</h2>
-      <p class="lead" id="spResLead">세 단계를 모두 끝냈어요</p>
+      <p class="lead" id="spResLead">다섯 단계를 모두 끝냈어요</p>
 
       <div class="sp-time">
         <div class="lbl">걸린 시간</div>
@@ -483,9 +515,10 @@
       '<path d="M20 54h11M20 63h11M80 54H69M80 63H69" stroke="#2B2B2B" stroke-width="2.6" stroke-linecap="round"/>'
     )},
     { id:'moon', label:'달', svg: svg(
-      '<path d="M66 10A40 40 0 1 0 66 90 32 32 0 1 1 66 10Z" fill="#F2C14E"/>' +
-      '<path d="M20 24l2.4 6 6 2.4-6 2.4L20 41l-2.4-6.2-6-2.4 6-2.4Z" fill="#E8A9B8"/>' +
-      '<circle cx="30" cy="66" r="3.4" fill="#E8A9B8"/><circle cx="14" cy="52" r="2.4" fill="#D9C1A5"/>'
+      '<path d="M52 8C19 24 19 76 52 92 40 75 40 25 52 8Z" fill="#F2C14E"/>' +
+      '<path d="M52 8C19 24 19 76 52 92" fill="none" stroke="#E0A72E" stroke-width="2.5" stroke-linecap="round"/>' +
+      '<path d="M76 20l2.6 6.4 6.4 2.6-6.4 2.6L76 38l-2.6-6.4L67 29l6.4-2.6Z" fill="#E8A9B8"/>' +
+      '<circle cx="68" cy="58" r="3.6" fill="#E8A9B8"/><circle cx="83" cy="70" r="2.6" fill="#D9C1A5"/>'
     )},
     { id:'flower', label:'꽃', svg: svg(
       '<g fill="#E879A6">' +
@@ -527,13 +560,41 @@
       '<circle cx="32" cy="68" r="10.5" fill="#2B2B2B"/><circle cx="32" cy="68" r="4.2" fill="#B9B9B9"/>' +
       '<circle cx="70" cy="68" r="10.5" fill="#2B2B2B"/><circle cx="70" cy="68" r="4.2" fill="#B9B9B9"/>' +
       '<rect x="12" y="56" width="7" height="5" rx="2" fill="#F5D98B"/>'
+    )},
+    { id:'mailbox', label:'우체통', svg: svg(
+      '<rect x="22" y="22" width="56" height="44" rx="11" fill="#C9402F"/>' +
+      '<path d="M22 39h56" stroke="#A8331F" stroke-width="4"/>' +
+      '<rect x="33" y="27" width="24" height="8" rx="4" fill="#FBEBD0"/>' +
+      '<rect x="45" y="66" width="10" height="22" rx="3" fill="#8A6239"/>' +
+      '<path d="M16 90h68" stroke="#8A6239" stroke-width="6" stroke-linecap="round"/>'
+    )},
+    { id:'hat', label:'모자', svg: svg(
+      '<ellipse cx="50" cy="64" rx="39" ry="10" fill="#3F5170"/>' +
+      '<path d="M27 64c0-19 10-31 23-31s23 12 23 31Z" fill="#4A5C7A"/>' +
+      '<path d="M28 59c14 4 30 4 44 0" stroke="#B9603F" stroke-width="7" fill="none" stroke-linecap="round"/>'
+    )},
+    { id:'glasses', label:'안경', svg: svg(
+      '<circle cx="30" cy="56" r="17" fill="#CFE6F2" opacity=".5"/>' +
+      '<circle cx="70" cy="56" r="17" fill="#CFE6F2" opacity=".5"/>' +
+      '<circle cx="30" cy="56" r="17" fill="none" stroke="#2B3A52" stroke-width="6"/>' +
+      '<circle cx="70" cy="56" r="17" fill="none" stroke="#2B3A52" stroke-width="6"/>' +
+      '<path d="M47 54h6" stroke="#2B3A52" stroke-width="6" stroke-linecap="round"/>' +
+      '<path d="M14 47 5 39M86 47l9-8" stroke="#2B3A52" stroke-width="6" stroke-linecap="round"/>'
+    )},
+    { id:'clock', label:'시계', svg: svg(
+      '<circle cx="50" cy="52" r="37" fill="#FFFDF8" stroke="#C99A55" stroke-width="6"/>' +
+      '<path d="M50 28v24l15 10" stroke="#152A4A" stroke-width="6" fill="none" stroke-linecap="round"/>' +
+      '<circle cx="50" cy="52" r="4.5" fill="#152A4A"/>' +
+      '<path d="M50 21v6M81 52h-6M50 83v-6M19 52h6" stroke="#C99A55" stroke-width="4" stroke-linecap="round"/>'
     )}
   ];
 
   var ROUNDS = [
-    { pairs:2, cols:2, preview:2, label:'1단계 · 워밍업', hint:'4장 중 2쌍' },
-    { pairs:3, cols:3, preview:2, label:'2단계 · 집중',   hint:'6장 중 3쌍' },
-    { pairs:4, cols:4, preview:3, label:'3단계 · 도전',   hint:'8장 중 4쌍' }
+    { pairs:2, cols:2, rows:2, preview:2, label:'1단계 · 워밍업', hint:'4장 중 2쌍' },
+    { pairs:3, cols:3, rows:2, preview:2, label:'2단계 · 집중',   hint:'6장 중 3쌍' },
+    { pairs:4, cols:4, rows:2, preview:3, label:'3단계 · 도전',   hint:'8장 중 4쌍' },
+    { pairs:6, cols:3, rows:4, preview:4, label:'4단계 · 실력',   hint:'12장 중 6쌍' },
+    { pairs:8, cols:4, rows:4, preview:5, label:'5단계 · 달인',   hint:'16장 중 8쌍' }
   ];
 
   var PRAISE = ['짝을 찾았어요! 👍','딱 맞았어요! 👏','기억력이 좋으세요!','잘하셨어요! ✨','정확해요! 👏','좋아요, 짝이에요!'];
@@ -552,6 +613,7 @@
     praise: el('spPraise'), grid: el('spGrid'),
     banner: el('spBanner'), bannerBig: el('spBannerBig'), bannerSmall: el('spBannerSmall'),
     playFoot: el('spPlayFoot'),
+    gridwrap: el('spGridwrap'),
     resTitle: el('spResTitle'), resLead: el('spResLead'), resTime: el('spResTime'),
     resTries: el('spResTries'), resPairs: el('spResPairs'), resAcc: el('spResAcc'),
     resCondMsg: el('spResCondMsg'),
@@ -667,6 +729,8 @@
     ui.play.hidden = which !== 'play';
     ui.result.hidden = which !== 'result';
     ui.restartBtn.hidden = which !== 'play';
+    document.body.classList.toggle('sp-playing', which === 'play');
+    document.body.style.overflow = (which === 'play') ? 'hidden' : '';
     window.scrollTo(0, 0);
   }
 
@@ -693,6 +757,37 @@
   function clearTimers(){
     st.previewTimers.forEach(clearTimeout); st.previewTimers = [];
     st.roundTimers.forEach(clearTimeout); st.roundTimers = [];
+  }
+
+  /* 화면에 실제로 남은 높이에 맞춰 카드 크기를 계산한다.
+     5단계(16장)까지 390×844·360×640에서 스크롤 없이 한 화면에 들어가고,
+     그림·라벨은 가능한 크게 유지한다. */
+  function layoutGrid(){
+    var r = ROUNDS[st.round];
+    if (!r || !ui.gridwrap) return;
+    var availW = ui.gridwrap.clientWidth;
+    var availH = ui.gridwrap.clientHeight;
+    if (availW < 60 || availH < 60) return;
+
+    var gap = availW < 360 ? 6 : (availW < 400 ? 8 : 10);
+    var cellW = (availW - gap * (r.cols - 1)) / r.cols;
+    var cellH = (availH - gap * (r.rows - 1)) / r.rows;
+    var ratio = r.pairs >= 6 ? 1.55 : 1.28;      /* 세로로 약간 긴 카드 */
+
+    var h = Math.min(cellH, cellW * ratio);
+    var w = Math.min(cellW, h / ratio);
+    if (w > cellW){ w = cellW; }
+    if (h > cellH){ h = cellH; }
+
+    var sv = Math.max(22, Math.min(w * 0.66, h * 0.52));
+    var lf = Math.max(9.5, Math.min(h * 0.155, w / 4.7, 18));
+
+    ui.grid.style.setProperty('--cols', String(r.cols));
+    ui.grid.style.setProperty('--cw', w.toFixed(1) + 'px');
+    ui.grid.style.setProperty('--ch', h.toFixed(1) + 'px');
+    ui.grid.style.setProperty('--gap', gap + 'px');
+    ui.grid.style.setProperty('--sv', sv.toFixed(1) + 'px');
+    ui.grid.style.setProperty('--lf', lf.toFixed(2) + 'px');
   }
 
   function startGame(){
@@ -730,6 +825,8 @@
     ui.playFoot.innerHTML = '맞춘 짝 <b>0</b> / ' + r.pairs;
 
     /* 그리드 그리기 */
+    ui.grid.style.width = '';
+    ui.grid.style.height = '';
     ui.grid.className = 'sp-grid cols' + r.cols;
     ui.grid.style.setProperty('--cols', String(r.cols));
     var html = '';
@@ -743,6 +840,7 @@
               '</button>';
     }
     ui.grid.innerHTML = html;
+    layoutGrid();
 
     /* 미리보기 카운트다운 (카드를 가리지 않도록 안내문 자리에서 센다) */
     ui.banner.hidden = true;
@@ -876,17 +974,17 @@
     ui.resAcc.textContent = acc + '%';
 
     var title, lead, cond;
-    if (st.tries <= totalPairs + 3){
+    if (st.tries <= totalPairs + 4){
       title = '기억력이 정말 좋으세요! 🌟';
       lead = '거의 한 번에 다 맞히셨어요';
       cond = '오늘 두뇌 컨디션 최고예요. 가족에게도 자랑해 보세요.';
-    } else if (st.tries <= totalPairs + 8){
+    } else if (st.tries <= totalPairs + 10){
       title = '수고하셨어요! 👏';
-      lead = '세 단계를 모두 끝냈어요';
+      lead = '다섯 단계를 모두 끝냈어요';
       cond = '차분하게 잘 찾으셨어요. 내일 한 번 더 하면 더 빨라져요.';
     } else {
       title = '끝까지 해내셨어요! 💪';
-      lead = '세 단계를 모두 끝냈어요';
+      lead = '다섯 단계를 모두 끝냈어요';
       cond = '조금 헷갈려도 괜찮아요. 매일 한 번이면 기억력에 좋아요.';
     }
     ui.resTitle.textContent = title;
@@ -902,7 +1000,7 @@
 
     var lines = [
       '[품스] 오늘의 같은 그림 찾기',
-      '3단계 모두 성공! ' + fmtLong(ms) + ' 걸렸어요. (시도 ' + st.tries + '번)',
+      '5단계 모두 성공! ' + fmtLong(ms) + ' 걸렸어요. (시도 ' + st.tries + '번)',
       '같이 해보실래요? ' + LIVE_URL
     ];
     ui.shareText.value = lines.join('\n');
@@ -969,6 +1067,17 @@
     if (!btn) return;
     onCard({ currentTarget: btn });
   });
+
+  /* 화면 크기가 바뀌면(회전·주소창 변화) 카드 크기를 다시 맞춘다 */
+  var resizeId = null;
+  function refit(){
+    if (ui.play.hidden || !st.running) return;
+    clearTimeout(resizeId);
+    resizeId = setTimeout(layoutGrid, 90);
+  }
+  window.addEventListener('resize', refit);
+  window.addEventListener('orientationchange', refit);
+  if (window.visualViewport) window.visualViewport.addEventListener('resize', refit);
 
   /* 시작 화면 예시 그림 */
   (function initSample(){
