@@ -362,7 +362,7 @@
     </div>
 
     <button type="button" id="spStartBtn" class="sp-btn sp-btn-primary sp-btn-xl">게임 시작하기</button>
-    <p class="sp-note">시작하면 2초 동안 그림이 살짝 보여요.<br>그때 잘 기억해 두세요.</p>
+    <p class="sp-note">단계마다 그림이 잠깐 보여요.<br>그때 잘 기억해 두세요.</p>
     <a class="sp-footer-link" href="https://www.pumss.co.kr/SP/10.do" target="_blank" rel="noopener noreferrer">품스 개인품 둘러보기 &rarr;</a>
   </section>
 
@@ -759,7 +759,12 @@
       var cards = ui.grid.querySelectorAll('.sp-card');
       for (var i2 = 0; i2 < cards.length; i2++){
         (function(btn, idx){
-          setTimeout(function(){ btn.classList.remove('is-up'); btn.setAttribute('aria-label', '카드 ' + (idx + 1) + ', 뒤집힘'); }, idx * 28);
+          setTimeout(function(){
+            btn.classList.remove('is-up');
+            btn.setAttribute('aria-label', '카드 ' + (idx + 1) + ', 뒤집힘');
+            var fc = btn.querySelector('.sp-face');
+            if (fc) fc.setAttribute('aria-hidden', 'true');
+          }, idx * 28);
         })(cards[i2], i2);
       }
       setPraise('같은 그림 두 장을 차례로 눌러 주세요', 'calm');
@@ -777,6 +782,8 @@
 
     btn.classList.add('is-up');
     btn.classList.remove('is-wrong');
+    var face = btn.querySelector('.sp-face');
+    if (face) face.removeAttribute('aria-hidden');
     btn.setAttribute('aria-label', '카드 ' + (i + 1) + ', ' + card.sym.label);
     st.flipped.push(i);
     sfx('tap');
@@ -824,6 +831,9 @@
       st.roundTimers.push(setTimeout(function(){
         btnA.classList.remove('is-up', 'is-wrong');
         btnB.classList.remove('is-up', 'is-wrong');
+        var fa = btnA.querySelector('.sp-face'), fb = btnB.querySelector('.sp-face');
+        if (fa) fa.setAttribute('aria-hidden', 'true');
+        if (fb) fb.setAttribute('aria-hidden', 'true');
         btnA.setAttribute('aria-label', '카드 ' + (a + 1) + ', 뒤집힘');
         btnB.setAttribute('aria-label', '카드 ' + (b + 1) + ', 뒤집힘');
         st.flipped = [];
