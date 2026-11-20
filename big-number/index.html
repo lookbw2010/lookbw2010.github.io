@@ -1,0 +1,803 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#FAF6EE">
+<meta name="description" content="화면에 나오는 숫자 중 가장 큰 수를 찾는 품스 두뇌 건강 게임. 10문제, 1분이면 끝나요.">
+<title>오늘의 큰 수 찾기 | 품스</title>
+<style>
+  :root{
+    --cream:#FAF6EE;
+    --card:#FFFFFF;
+    --navy:#152A4A;
+    --navy-soft:#2B3F60;
+    --teal:#0E7A78;
+    --teal-soft:#E2F1EF;
+    --orange:#DE7A33;
+    --orange-soft:#FBEBDA;
+    --green:#1F7A4D;
+    --green-soft:#E5F4EB;
+    --red:#A6382A;
+    --red-soft:#FBE8E4;
+    --line:#E9E0D1;
+    --text:#17233B;
+    --muted:#5B6A80;
+  }
+  html,body{margin:0;padding:0;}
+  body{
+    background:
+      radial-gradient(circle at 10% -4%, #FDF2E0 0%, rgba(253,242,224,0) 52%),
+      radial-gradient(circle at 94% 4%, #E6F2EF 0%, rgba(230,242,239,0) 46%),
+      var(--cream);
+    min-height:100vh;
+    color:var(--text);
+    font-family:-apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Malgun Gothic", "Noto Sans KR", "Noto Sans CJK KR", "NanumGothic", "Segoe UI", sans-serif;
+    -webkit-text-size-adjust:100%;
+    -webkit-tap-highlight-color:transparent;
+    touch-action:manipulation;
+    overscroll-behavior-y:contain;
+    word-break:keep-all;
+  }
+  #bng{
+    max-width:440px;
+    margin:0 auto;
+    min-height:100vh;
+    min-height:100dvh;
+    padding:14px 18px calc(22px + env(safe-area-inset-bottom));
+    display:flex;
+    flex-direction:column;
+    box-sizing:border-box;
+  }
+  #bng *,#bng *::before,#bng *::after{box-sizing:border-box;}
+  #bng button{font-family:inherit;border:0;background:none;cursor:pointer;color:inherit;-webkit-tap-highlight-color:transparent;}
+  #bng [hidden]{display:none !important;}
+  #bng button:focus-visible,#bng textarea:focus-visible,#bng a:focus-visible{
+    outline:3px solid #DE7A33;outline-offset:3px;
+  }
+
+  /* ── top bar ── */
+  .bng-topbar{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:2px 2px 12px;}
+  .bng-brand{display:flex;align-items:baseline;gap:7px;line-height:1;}
+  .bng-brand b{font-size:18px;font-weight:900;letter-spacing:-.4px;color:var(--navy);}
+  .bng-brand span{font-size:11px;font-weight:800;letter-spacing:1.4px;color:#9FABBC;}
+  #bng .bng-sound{
+    display:flex;align-items:center;gap:7px;min-height:46px;padding:0 16px;
+    border-radius:999px;background:#fff;border:1.5px solid var(--line);
+    font-size:14px;font-weight:800;color:var(--navy-soft);
+  }
+  #bng .bng-sound:active{background:#F5EEE3;}
+  .bng-sound .ico{font-size:17px;line-height:1;}
+
+  /* ── screens ── */
+  #bng .bng-screen{display:flex;flex-direction:column;gap:14px;flex:1 1 auto;min-height:0;}
+  #bng .bng-screen.center{justify-content:center;}
+  #bng #bngPlay{justify-content:center;}
+
+  /* ── start ── */
+  .bng-hero{
+    background:var(--card);border-radius:28px;padding:26px 20px 24px;text-align:center;
+    border:1.5px solid #F0E7D8;box-shadow:0 12px 34px rgba(21,42,74,.07);
+  }
+  .bng-pill{
+    display:inline-block;font-size:13px;font-weight:900;letter-spacing:.2px;color:#0B6664;
+    background:var(--teal-soft);padding:8px 15px;border-radius:999px;
+  }
+  .bng-title{margin:14px 0 0;font-size:33px;font-weight:900;letter-spacing:-1.2px;color:var(--navy);line-height:1.24;}
+  .bng-title em{font-style:normal;color:var(--orange);}
+  .bng-sub{margin:12px auto 0;max-width:300px;font-size:17px;line-height:1.55;color:var(--muted);font-weight:600;}
+  .bng-chips{display:flex;justify-content:center;gap:8px;margin-top:18px;flex-wrap:wrap;}
+  .bng-chip{
+    font-size:14px;font-weight:800;color:var(--navy-soft);background:#F7F1E6;
+    border-radius:999px;padding:8px 14px;
+  }
+  .bng-best{
+    margin-top:20px;background:linear-gradient(180deg,#FFF9EF,#FDF3E3);
+    border:1.5px solid #F3E3C9;border-radius:20px;padding:16px 18px;
+    display:flex;align-items:center;justify-content:space-between;gap:12px;text-align:left;
+  }
+  .bng-best .lbl{font-size:14px;font-weight:800;color:#8A6A3C;letter-spacing:.2px;}
+  .bng-best .val{font-size:30px;font-weight:900;color:var(--navy);letter-spacing:-1px;line-height:1.1;}
+  .bng-best .val small{font-size:16px;font-weight:800;margin-left:2px;color:var(--navy-soft);}
+  .bng-best .val.none{font-size:22px;color:#9C8560;letter-spacing:0;}
+  .bng-best .sub{font-size:13px;font-weight:700;color:#9C8560;margin-top:3px;}
+
+  /* ── buttons ── */
+  #bng .bng-btn{
+    width:100%;min-height:64px;border-radius:20px;font-size:21px;font-weight:900;letter-spacing:-.4px;
+    display:flex;align-items:center;justify-content:center;gap:9px;line-height:1.2;
+    background:none;color:var(--navy);
+    transition:transform .08s ease, box-shadow .08s ease, background .15s ease;
+  }
+  #bng .bng-btn-xl{min-height:86px;font-size:24px;}
+  #bng .bng-btn-primary{background:var(--navy);color:#fff;box-shadow:0 5px 0 #0B1B31;}
+  #bng .bng-btn-primary:active{transform:translateY(4px);box-shadow:0 2px 0 #0B1B31;}
+  #bng .bng-btn-secondary{background:#fff;color:var(--navy);border:2.5px solid var(--navy);box-shadow:0 4px 0 rgba(21,42,74,.12);}
+  #bng .bng-btn-secondary:active{transform:translateY(3px);box-shadow:0 1px 0 rgba(21,42,74,.12);}
+  #bng .bng-btn-ghost{min-height:48px;font-size:16px;font-weight:800;color:var(--muted);text-decoration:underline;text-underline-offset:4px;background:none;}
+  .bng-note{font-size:14px;line-height:1.5;color:var(--muted);text-align:center;font-weight:600;}
+  .bng-footer-link{display:block;text-align:center;font-size:14px;font-weight:800;color:var(--teal);text-decoration:none;padding:6px 0;}
+  .bng-footer-link:active{opacity:.7;}
+
+  /* ── play ── */
+  .bng-status{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:0 2px;}
+  .bng-progress-text{font-size:16px;font-weight:900;color:var(--navy-soft);letter-spacing:-.2px;}
+  .bng-score-text{
+    font-size:16px;font-weight:900;color:var(--teal);background:var(--teal-soft);
+    padding:7px 14px;border-radius:999px;
+  }
+  .bng-progress{height:12px;border-radius:999px;background:#EDE4D5;overflow:hidden;}
+  .bng-progress-fill{height:100%;width:0;border-radius:999px;background:linear-gradient(90deg,#0E7A78,#DE7A33);transition:width .35s ease;}
+  .bng-question{
+    margin:6px 0 0;font-size:23px;font-weight:900;text-align:center;line-height:1.35;
+    color:var(--navy);letter-spacing:-.5px;
+  }
+  #bng .bng-feedback{
+    min-height:62px;display:flex;align-items:center;justify-content:center;text-align:center;
+    padding:10px 14px;border-radius:16px;background:#F4EEE1;
+    font-size:17px;font-weight:800;line-height:1.4;color:#7C8798;
+    transition:background .15s ease,color .15s ease;
+  }
+  #bng .bng-feedback.ok{background:#CFECD9;color:#0F4A2B;}
+  #bng .bng-feedback.no{background:#F9DCD4;color:#7E2416;}
+  .bng-grid{display:grid;gap:14px;margin-top:6px;}
+  #bngPlay .bng-grid{flex:0 0 auto;}
+  .bng-grid.cols1{grid-template-columns:1fr;}
+  .bng-grid.cols2{grid-template-columns:1fr 1fr;}
+  #bng .bng-card{
+    min-height:118px;border-radius:20px;background:#fff;border:2.5px solid #E8DFCE;
+    box-shadow:0 4px 0 #E8DFCE;color:var(--navy);position:relative;
+    font-size:36px;font-weight:900;letter-spacing:-1px;
+    display:flex;align-items:center;justify-content:center;gap:7px;
+    font-variant-numeric:tabular-nums;
+    transition:transform .08s ease,box-shadow .08s ease,background .15s ease,border-color .15s ease,color .15s ease;
+  }
+  #bng .bng-grid.cols1 .bng-card{min-height:104px;font-size:42px;}
+  #bng .bng-card:active{transform:translateY(3px);box-shadow:0 1px 0 #E8DFCE;}
+  #bng .bng-card .op{color:var(--orange);font-weight:900;margin:0 1px;}
+  #bng .bng-card.is-expr{font-size:28px;letter-spacing:-.8px;}
+  #bng .bng-grid.cols1 .bng-card.is-expr{font-size:30px;}
+  #bng .bng-card.is-correct{border-color:#177A47;background:#BFE5CD;box-shadow:0 4px 0 #93C9A6;color:#0C4326;}
+  #bng .bng-card.is-wrong{border-color:#A6382A;background:#F7CFC5;box-shadow:0 4px 0 #E3B0A5;color:#78200F;}
+  #bng .bng-card.is-answer{border-color:#177A47;background:#BFE5CD;box-shadow:0 0 0 4px rgba(31,122,77,.22);color:#0C4326;}
+  #bng .bng-card.is-answer::after{
+    content:'정답';position:absolute;top:10px;right:11px;background:#1F7A4D;color:#fff;
+    font-size:13px;font-weight:900;letter-spacing:0;padding:4px 11px;border-radius:999px;line-height:1.35;
+  }
+  #bng .bng-card.is-dim{opacity:.45;}
+  .bng-playfoot{text-align:center;font-size:14px;font-weight:700;color:#808C9E;padding:10px 0 2px;}
+
+  /* ── result ── */
+  .bng-result{
+    background:var(--card);border-radius:28px;padding:24px 20px 22px;text-align:center;
+    border:1.5px solid #F0E7D8;box-shadow:0 12px 34px rgba(21,42,74,.07);
+  }
+  .bng-result h2{margin:0;font-size:26px;font-weight:900;letter-spacing:-.8px;color:var(--navy);}
+  .bng-ring{
+    width:158px;height:158px;margin:18px auto 6px;border-radius:50%;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;
+    background:linear-gradient(180deg,#FFFFFF,#F3FBF9);
+    border:9px solid var(--teal);
+    box-shadow:0 10px 24px rgba(14,122,120,.16);
+  }
+  .bng-ring .score{font-size:52px;font-weight:900;line-height:1;letter-spacing:-2px;color:var(--navy);}
+  .bng-ring .unit{font-size:16px;font-weight:800;color:var(--muted);margin-top:4px;}
+  .bng-stats{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:16px;}
+  .bng-stat{background:#F8F3E9;border-radius:16px;padding:12px 8px;}
+  .bng-stat b{display:block;font-size:24px;font-weight:900;color:var(--navy);letter-spacing:-.8px;line-height:1.2;}
+  .bng-stat span{display:block;font-size:13px;font-weight:800;color:#8B7A5C;margin-top:3px;}
+  .bng-condition{
+    margin-top:16px;background:linear-gradient(180deg,#FFF7EC,#FDF1DF);
+    border:1.5px solid #F4E3C6;border-radius:20px;padding:16px 16px 17px;text-align:left;
+  }
+  .bng-condition .head{display:flex;align-items:center;gap:9px;}
+  .bng-condition .emo{font-size:26px;line-height:1;}
+  .bng-condition .ttl{font-size:17px;font-weight:900;color:#7E5A28;letter-spacing:-.3px;}
+  .bng-condition .msg{margin:8px 0 0;font-size:16px;line-height:1.55;font-weight:700;color:#5F4A2C;}
+  .bng-record{margin-top:14px;font-size:15px;font-weight:800;color:var(--teal);}
+  .bng-record.fresh{color:var(--orange);}
+  .bng-share{
+    margin-top:6px;background:#F8F3E9;border:1.5px solid #EBE1CF;border-radius:18px;
+    padding:14px;text-align:left;
+  }
+  .bng-share p{margin:0 0 9px;font-size:14px;font-weight:800;color:#8B7A5C;}
+  .bng-share textarea{
+    width:100%;border:1.5px solid #E2D6C0;border-radius:12px;padding:11px 12px;resize:none;
+    font-family:inherit;font-size:15px;line-height:1.6;color:var(--text);background:#fff;
+    box-sizing:border-box;
+  }
+
+  /* ── toast ── */
+  .bng-toast{
+    position:fixed;left:50%;bottom:calc(30px + env(safe-area-inset-bottom));z-index:60;
+    transform:translate(-50%,18px);opacity:0;pointer-events:none;
+    max-width:min(92vw,400px);text-align:center;
+    background:#152A4A;color:#fff;font-size:16px;font-weight:800;line-height:1.45;
+    padding:15px 22px;border-radius:16px;box-shadow:0 10px 26px rgba(21,42,74,.28);
+    transition:opacity .22s ease,transform .22s ease;
+  }
+  .bng-toast.show{opacity:1;transform:translate(-50%,0);}
+
+  @keyframes bngShake{
+    0%,100%{transform:translateX(0);}
+    25%{transform:translateX(-5px);}
+    75%{transform:translateX(5px);}
+  }
+  .bng-card.is-wrong{animation:bngShake .28s ease;}
+  @keyframes bngPop{
+    0%{transform:scale(.94);}
+    60%{transform:scale(1.03);}
+    100%{transform:scale(1);}
+  }
+  #bng .bng-card.is-correct,#bng .bng-card.is-answer{animation:bngPop .3s ease;}
+  @media (prefers-reduced-motion:reduce){
+    #bng *{animation:none !important;transition:none !important;}
+  }
+  @media (max-height:700px){
+    .bng-hero{padding:18px 18px 16px;}
+    .bng-title{font-size:29px;margin-top:10px;}
+    .bng-sub{font-size:16px;margin-top:9px;}
+    .bng-best{margin-top:14px;padding:12px 16px;}
+    .bng-btn-xl{min-height:76px;font-size:22px;}
+    #bng .bng-card{min-height:92px;}
+    #bng .bng-grid.cols1 .bng-card{min-height:80px;}
+  }
+</style>
+</head>
+<body>
+<div id="bng">
+
+  <div class="bng-topbar">
+    <div class="bng-brand"><b>품스</b><span>PUMSS</span></div>
+    <button type="button" id="bngSoundBtn" class="bng-sound" aria-pressed="true" aria-label="소리 켜짐. 누르면 소리를 끕니다.">
+      <span class="ico" id="bngSoundIco" aria-hidden="true">🔔</span><span id="bngSoundLbl">소리 켜짐</span>
+    </button>
+  </div>
+
+  <!-- ══════ 시작 화면 ══════ -->
+  <section class="bng-screen center" id="bngStart" aria-label="시작 화면">
+    <div class="bng-hero">
+      <span class="bng-pill">품스 두뇌 건강 게임</span>
+      <h1 class="bng-title">오늘의 <em>큰 수</em> 찾기</h1>
+      <p class="bng-sub">화면에 나오는 숫자 중 가장 큰 수를 눌러보세요!</p>
+      <div class="bng-chips">
+        <span class="bng-chip">10문제</span>
+        <span class="bng-chip">1분이면 끝</span>
+        <span class="bng-chip">매일 한 번</span>
+      </div>
+
+      <div class="bng-best">
+        <div>
+          <div class="lbl">최고 기록</div>
+          <div class="val" id="bngBestVal">아직 없음</div>
+          <div class="sub" id="bngBestSub">첫 도전이에요. 가볍게 시작해 보세요!</div>
+        </div>
+        <div style="font-size:38px;line-height:1;" aria-hidden="true">🏅</div>
+      </div>
+    </div>
+
+    <button type="button" id="bngStartBtn" class="bng-btn bng-btn-xl bng-btn-primary">게임 시작하기</button>
+    <p class="bng-note">정답을 누르면 점수가 쌓여요.<br>천천히 하셔도 괜찮아요.</p>
+    <a class="bng-footer-link" href="https://www.pumss.co.kr/SP/10.do" target="_blank" rel="noopener noreferrer">품스 개인품 둘러보기 &rarr;</a>
+  </section>
+
+  <!-- ══════ 게임 화면 ══════ -->
+  <section class="bng-screen" id="bngPlay" hidden aria-label="게임 화면">
+    <div class="bng-status">
+      <span class="bng-progress-text" id="bngProgressText" aria-live="polite">1 / 10 문제</span>
+      <span class="bng-score-text" id="bngScoreText">점수 0점</span>
+    </div>
+    <div class="bng-progress" role="progressbar" aria-valuemin="0" aria-valuemax="10" aria-valuenow="0" id="bngProgressBar">
+      <div class="bng-progress-fill" id="bngProgressFill"></div>
+    </div>
+
+    <h2 class="bng-question" id="bngQuestion">가장 큰 수를 눌러 주세요</h2>
+    <div class="bng-feedback" id="bngFeedback" role="status" aria-live="polite">정답이라고 생각하는 카드를 눌러 주세요</div>
+    <div class="bng-grid cols1" id="bngGrid"></div>
+    <div class="bng-playfoot">천천히 보셔도 괜찮아요</div>
+  </section>
+
+  <!-- ══════ 결과 화면 ══════ -->
+  <section class="bng-screen" id="bngResult" hidden aria-label="결과 화면">
+    <div class="bng-result">
+      <h2>수고하셨어요! 👏</h2>
+      <div class="bng-ring">
+        <div class="score" id="bngFinalScore">0</div>
+        <div class="unit">100점 만점</div>
+      </div>
+      <div class="bng-stats">
+        <div class="bng-stat"><b id="bngCorrect">0 / 10</b><span>정답 개수</span></div>
+        <div class="bng-stat"><b id="bngAvg">0.0초</b><span>평균 반응 시간</span></div>
+      </div>
+
+      <div class="bng-condition">
+        <div class="head">
+          <span class="emo" id="bngCondEmo" aria-hidden="true">🙂</span>
+          <span class="ttl" id="bngCondTitle">오늘의 두뇌 컨디션</span>
+        </div>
+        <p class="msg" id="bngCondMsg"></p>
+      </div>
+
+      <div class="bng-record" id="bngRecord"></div>
+    </div>
+
+    <button type="button" id="bngAgainBtn" class="bng-btn bng-btn-primary">한 번 더 도전하기</button>
+    <button type="button" id="bngShareBtn" class="bng-btn bng-btn-secondary">📋 결과 복사해서 공유하기</button>
+
+    <div class="bng-share" id="bngShareBox" hidden>
+      <p>아래 글을 복사해서 카카오톡이나 문자로 보내 보세요</p>
+      <textarea id="bngShareText" rows="6" readonly aria-label="공유할 결과 글"></textarea>
+    </div>
+
+    <button type="button" id="bngHomeBtn" class="bng-btn bng-btn-ghost">처음 화면으로</button>
+    <a class="bng-footer-link" href="https://www.pumss.co.kr/SP/10.do" target="_blank" rel="noopener noreferrer">품스 개인품 둘러보기 &rarr;</a>
+  </section>
+
+</div>
+<div class="bng-toast" id="bngToast" role="status" aria-live="polite"></div>
+
+<script>
+(function(){
+  'use strict';
+
+  var TOTAL = 10;
+  var POINT_PER_ROUND = 10;
+  var STORE_KEY = 'pumss.bigNumber.v1';
+  var SOUND_KEY = 'pumss.bigNumber.sound';
+  /* 공유용 주소: 지금 열려 있는 이 게임 페이지 주소를 쓴다. (로컬 파일로 열었을 때만 품스 개인품으로 대체) */
+  var SITE_URL = (/^https?:$/.test(window.location.protocol))
+    ? window.location.origin + window.location.pathname
+    : 'https://www.pumss.co.kr/SP/10.do';
+
+  var CORRECT_MSG = [
+    '정답이에요! 참 잘하셨어요 👍',
+    '딱 맞혔어요! 👍',
+    '좋아요, 정답이에요!',
+    '맞았어요. 눈썰미가 좋으세요! 👏',
+    '정확해요! 👏'
+  ];
+
+  var el = function(id){ return document.getElementById(id); };
+  var ui = {
+    start: el('bngStart'), play: el('bngPlay'), result: el('bngResult'),
+    startBtn: el('bngStartBtn'), againBtn: el('bngAgainBtn'), shareBtn: el('bngShareBtn'), homeBtn: el('bngHomeBtn'),
+    soundBtn: el('bngSoundBtn'), soundIco: el('bngSoundIco'), soundLbl: el('bngSoundLbl'),
+    bestVal: el('bngBestVal'), bestSub: el('bngBestSub'),
+    progressText: el('bngProgressText'), progressFill: el('bngProgressFill'), progressBar: el('bngProgressBar'),
+    scoreText: el('bngScoreText'), question: el('bngQuestion'), feedback: el('bngFeedback'),
+    grid: el('bngGrid'),
+    finalScore: el('bngFinalScore'), correct: el('bngCorrect'), avg: el('bngAvg'),
+    condEmo: el('bngCondEmo'), condTitle: el('bngCondTitle'), condMsg: el('bngCondMsg'),
+    record: el('bngRecord'),
+    shareBox: el('bngShareBox'), shareText: el('bngShareText'),
+    toast: el('bngToast')
+  };
+
+  /* ─────────── 기본 도우미 ─────────── */
+  function randInt(min, max){ return Math.floor(Math.random() * (max - min + 1)) + min; }
+  function pick(arr){ return arr[Math.floor(Math.random() * arr.length)]; }
+  function shuffle(arr){
+    for (var i = arr.length - 1; i > 0; i--){
+      var j = Math.floor(Math.random() * (i + 1));
+      var t = arr[i]; arr[i] = arr[j]; arr[j] = t;
+    }
+    return arr;
+  }
+  function now(){
+    if (window.performance && typeof window.performance.now === 'function') return window.performance.now();
+    return Date.now();
+  }
+
+  /* ─────────── 저장 ─────────── */
+  function readStore(){
+    try{
+      var raw = window.localStorage.getItem(STORE_KEY);
+      if (!raw) return { best: 0, plays: 0 };
+      var o = JSON.parse(raw);
+      return { best: (o && typeof o.best === 'number') ? o.best : 0,
+               plays: (o && typeof o.plays === 'number') ? o.plays : 0 };
+    }catch(e){ return { best: 0, plays: 0 }; }
+  }
+  function writeStore(best, plays){
+    try{
+      window.localStorage.setItem(STORE_KEY, JSON.stringify({ best: best, plays: plays, at: new Date().toISOString() }));
+    }catch(e){ /* 시크릿 모드·iframe 등 저장이 막힌 환경 */ }
+  }
+
+  /* ─────────── 소리 (Web Audio, 외부 파일 없음) ─────────── */
+  var audioCtx = null;
+  function ensureAudio(){
+    if (!audioCtx){
+      var AC = window.AudioContext || window.webkitAudioContext;
+      if (!AC) return;
+      try{ audioCtx = new AC(); }catch(e){ audioCtx = null; }
+    }
+    if (audioCtx && audioCtx.state === 'suspended'){ try{ audioCtx.resume(); }catch(e){} }
+  }
+  function beep(freq, delay, dur, vol, type){
+    if (!audioCtx) return;
+    var t0 = audioCtx.currentTime + delay;
+    var osc = audioCtx.createOscillator();
+    var gain = audioCtx.createGain();
+    osc.type = type || 'sine';
+    osc.frequency.setValueAtTime(freq, t0);
+    gain.gain.setValueAtTime(0.0001, t0);
+    gain.gain.exponentialRampToValueAtTime(vol, t0 + 0.02);
+    gain.gain.exponentialRampToValueAtTime(0.0001, t0 + dur);
+    osc.connect(gain);
+    gain.connect(audioCtx.destination);
+    osc.start(t0);
+    osc.stop(t0 + dur + 0.04);
+  }
+  function playCorrectSound(){
+    ensureAudio(); if (!audioCtx) return;
+    beep(783.99, 0.00, 0.20, 0.15, 'sine');   /* G5 */
+    beep(1046.50, 0.10, 0.26, 0.13, 'sine');  /* C6 */
+  }
+  function playWrongSound(){
+    ensureAudio(); if (!audioCtx) return;
+    beep(261.63, 0.00, 0.22, 0.10, 'triangle'); /* C4 */
+    beep(196.00, 0.12, 0.30, 0.09, 'triangle'); /* G3 */
+  }
+
+  var soundOn = true;
+  try{ soundOn = window.localStorage.getItem(SOUND_KEY) !== '0'; }catch(e){}
+  function updateSoundUI(){
+    ui.soundIco.textContent = soundOn ? '🔔' : '🔕';
+    ui.soundLbl.textContent = soundOn ? '소리 켜짐' : '소리 꺼짐';
+    ui.soundBtn.setAttribute('aria-pressed', soundOn ? 'true' : 'false');
+    ui.soundBtn.setAttribute('aria-label', soundOn ? '소리 켜짐. 누르면 소리를 끕니다.' : '소리 꺼짐. 누르면 소리를 켭니다.');
+  }
+  ui.soundBtn.addEventListener('click', function(){
+    soundOn = !soundOn;
+    try{ window.localStorage.setItem(SOUND_KEY, soundOn ? '1' : '0'); }catch(e){}
+    updateSoundUI();
+    if (soundOn){ ensureAudio(); playCorrectSound(); }
+  });
+
+  /* ─────────── 문제 만들기 ─────────── */
+  function distinctValues(count, min, max, gap){
+    var vals = [], guard = 0, ok, i;
+    while (vals.length < count && guard++ < 900){
+      var v = randInt(min, max);
+      ok = true;
+      for (i = 0; i < vals.length; i++){
+        if (Math.abs(vals[i] - v) < gap){ ok = false; break; }
+      }
+      if (ok) vals.push(v);
+    }
+    /* 안전장치: 중복 없이 다 못 만들면 범위를 넓혀 재시도 */
+    if (vals.length < count) return distinctValues(count, min - 30, max + 30, gap);
+    return vals;
+  }
+
+  /* 값 하나를 '두 자리 수 + 두 자리 수' 덧셈 또는 뺄셈으로 표현 */
+  function expressionFor(value){
+    var i, a, b;
+    var lo = Math.max(10, value - 49);
+    var hi = Math.min(60, value - 5);
+    if (lo <= hi){
+      for (i = 0; i < 12; i++){
+        a = randInt(lo, hi);
+        b = value - a;
+        if (b >= 5 && b <= 49) return { left: a, op: '+', right: b, text: a + ' + ' + b };
+      }
+    }
+    var maxB = Math.min(45, 99 - value);
+    if (maxB >= 5){
+      for (i = 0; i < 12; i++){
+        b = randInt(5, maxB);
+        a = value + b;
+        if (a >= 10 && a <= 99) return { left: a, op: '-', right: b, text: a + ' - ' + b };
+      }
+    }
+    return null;
+  }
+
+  function roundConfig(index){
+    if (index < 3) return { count: 2, min: 14, max: 98, gap: 5, expr: false };      /* 1~3: 두 자리 수 2개 */
+    if (index === 3) return { count: 3, min: 16, max: 98, gap: 5, expr: false };     /* 4: 두 자리 수 3개 */
+    if (index === 4) return { count: 3, min: 128, max: 984, gap: 9, expr: false };   /* 5: 세 자리 수 3개 */
+    if (index === 5) return { count: 4, min: 128, max: 984, gap: 9, expr: false };   /* 6: 세 자리 수 4개 */
+    return { count: 4, min: 26, max: 96, gap: 5, expr: true };                       /* 7~10: 계산식 섞인 4개 */
+  }
+
+  function buildRound(index){
+    var cfg = roundConfig(index);
+    var values = distinctValues(cfg.count, cfg.min, cfg.max, cfg.gap);
+    var items = [], i;
+
+    for (i = 0; i < values.length; i++){
+      items.push({ value: values[i], text: String(values[i]), isExpr: false, parts: null });
+    }
+
+    if (cfg.expr){
+      var idxs = [], k;
+      for (i = 0; i < items.length; i++) idxs.push(i);
+      shuffle(idxs);
+      var target = (Math.random() < 0.6) ? 2 : 3;   /* 계산식 2~3개, 숫자 카드 최소 1개 */
+      var made = 0;
+      for (k = 0; k < idxs.length && made < target; k++){
+        var it = items[idxs[k]];
+        var ex = expressionFor(it.value);
+        if (ex){
+          it.isExpr = true;
+          it.text = ex.text;
+          it.parts = [ex.left, ex.op, ex.right];
+          made++;
+        }
+      }
+    }
+
+    var maxItem = items[0];
+    for (i = 1; i < items.length; i++){ if (items[i].value > maxItem.value) maxItem = items[i]; }
+
+    shuffle(items);
+
+    return {
+      items: items,
+      maxValue: maxItem.value,
+      maxItem: maxItem,
+      maxValueText: maxItem.isExpr ? (maxItem.value + ' (' + maxItem.text + ')') : maxItem.text,
+      hasExpr: cfg.expr
+    };
+  }
+
+  /* ─────────── 게임 상태 ─────────── */
+  var state = null;
+
+  function newGame(){
+    var rounds = [], i;
+    for (i = 0; i < TOTAL; i++) rounds.push(buildRound(i));
+    state = { round: 0, score: 0, correct: 0, times: [], locked: false, rounds: rounds, roundStart: 0, timer: null };
+  }
+
+  function showScreen(name){
+    ui.start.hidden = (name !== 'start');
+    ui.play.hidden = (name !== 'play');
+    ui.result.hidden = (name !== 'result');
+    try{ window.scrollTo(0, 0); }catch(e){}
+  }
+
+  function updateStatus(){
+    var q = Math.min(state.round + 1, TOTAL);
+    ui.progressText.textContent = q + ' / ' + TOTAL + ' 문제';
+    ui.scoreText.textContent = '점수 ' + state.score + '점';
+    ui.progressFill.style.width = ((state.round / TOTAL) * 100) + '%';
+    ui.progressBar.setAttribute('aria-valuenow', String(state.round));
+  }
+
+  function setFeedback(kind, msg){
+    ui.feedback.className = 'bng-feedback' + (kind ? ' ' + kind : '');
+    ui.feedback.textContent = msg;
+  }
+
+  function renderRound(){
+    var r = state.rounds[state.round];
+    state.locked = false;
+    state.roundStart = now();
+
+    updateStatus();
+    ui.question.textContent = r.hasExpr ? '계산해서 가장 큰 수를 눌러 주세요' : '가장 큰 수를 눌러 주세요';
+    setFeedback('', '정답이라고 생각하는 카드를 눌러 주세요');
+
+    ui.grid.className = 'bng-grid ' + (r.items.length >= 4 ? 'cols2' : 'cols1');
+    ui.grid.innerHTML = '';
+
+    for (var i = 0; i < r.items.length; i++){
+      (function(i){
+        var it = r.items[i];
+        var btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'bng-card' + (it.isExpr ? ' is-expr' : '');
+        btn.setAttribute('data-value', String(it.value));
+        btn.setAttribute('data-index', String(i));
+        if (it.isExpr){
+          btn.setAttribute('aria-label', '계산식 ' + it.parts[0] + (it.parts[1] === '+' ? ' 더하기 ' : ' 빼기 ') + it.parts[2]);
+          btn.innerHTML = '<span class="n">' + it.parts[0] + '</span><span class="op">' + it.parts[1] + '</span><span class="n">' + it.parts[2] + '</span>';
+        } else {
+          btn.setAttribute('aria-label', '숫자 ' + it.text);
+          btn.innerHTML = '<span class="n">' + it.text + '</span>';
+        }
+        btn.addEventListener('click', function(){ onTap(i, btn); }, false);
+        ui.grid.appendChild(btn);
+      })(i);
+    }
+  }
+
+  function onTap(index, btn){
+    if (!state || state.locked) return;
+    state.locked = true;
+
+    var r = state.rounds[state.round];
+    var it = r.items[index];
+    var seconds = Math.max(0.1, (now() - state.roundStart) / 1000);
+    state.times.push(seconds);
+
+    var cards = ui.grid.querySelectorAll('.bng-card');
+    var i;
+
+    if (it.value === r.maxValue){
+      state.correct++;
+      state.score += POINT_PER_ROUND;
+      btn.classList.add('is-correct');
+      setFeedback('ok', pick(CORRECT_MSG));
+      playCorrectSound();
+      updateStatus();
+      state.timer = window.setTimeout(nextRound, 760);
+    } else {
+      btn.classList.add('is-wrong');
+      for (i = 0; i < cards.length; i++){
+        var v = parseInt(cards[i].getAttribute('data-value'), 10);
+        if (v === r.maxValue) cards[i].classList.add('is-answer');
+        else if (cards[i] !== btn) cards[i].classList.add('is-dim');
+      }
+      setFeedback('no', '아쉬워요. 초록색 카드가 정답이었어요 · ' + r.maxValueText);
+      playWrongSound();
+      updateStatus();
+      state.timer = window.setTimeout(nextRound, 1750);
+    }
+  }
+
+  function nextRound(){
+    state.timer = null;
+    state.round++;
+    if (state.round >= TOTAL){ showResult(); return; }
+    renderRound();
+  }
+
+  /* ─────────── 결과 ─────────── */
+  function conditionFor(score, avg){
+    var speed;
+    if (avg <= 2.2) speed = '빠르고 정확하게 판단하셨어요.';
+    else if (avg <= 4.5) speed = '차분하게 잘 찾으셨어요.';
+    else speed = '꼼꼼하게 하나씩 확인하셨어요.';
+
+    if (score === 100) return { emo: '🏆', level: '최상', title: '오늘의 두뇌 컨디션 · 최상', msg: '완벽해요! 숫자를 읽는 눈과 판단이 아주 정확해요. ' + speed };
+    if (score >= 80) return { emo: '😄', level: '아주 좋아요', title: '오늘의 두뇌 컨디션 · 아주 좋아요', msg: '집중력이 좋은 날이에요. 머리가 맑게 돌아갑니다. ' + speed };
+    if (score >= 60) return { emo: '🙂', level: '좋아요', title: '오늘의 두뇌 컨디션 · 좋아요', msg: '안정적이에요. 한 번 더 하면 감각이 더 살아나요. ' + speed };
+    if (score >= 40) return { emo: '💪', level: '괜찮아요', title: '오늘의 두뇌 컨디션 · 괜찮아요', msg: '조금만 더 하면 금방 감이 와요. 천천히 다시 해 보세요. ' + speed };
+    return { emo: '🌱', level: '몸 풀기', title: '오늘의 두뇌 컨디션 · 몸 풀기', msg: '오늘은 준비 운동이었어요. 내일 다시 하면 훨씬 잘 돼요. ' + speed };
+  }
+
+  function showResult(){
+    var avg = 0, i, sum = 0;
+    for (i = 0; i < state.times.length; i++) sum += state.times[i];
+    avg = state.times.length ? sum / state.times.length : 0;
+    avg = Math.round(avg * 10) / 10;
+
+    var cond = conditionFor(state.score, avg);
+    var store = readStore();
+    var isNewRecord = state.score > store.best;
+    var best = isNewRecord ? state.score : store.best;
+    var plays = store.plays + 1;
+    writeStore(best, plays);
+
+    ui.finalScore.textContent = String(state.score);
+    ui.correct.textContent = state.correct + ' / ' + TOTAL;
+    ui.avg.textContent = avg.toFixed(1) + '초';
+    ui.condEmo.textContent = cond.emo;
+    ui.condTitle.textContent = cond.title;
+    ui.condMsg.textContent = cond.msg;
+
+    if (isNewRecord && state.score > 0){
+      ui.record.className = 'bng-record fresh';
+      ui.record.textContent = '🎉 새 최고 기록이에요! ' + best + '점';
+    } else if (best > 0){
+      ui.record.className = 'bng-record';
+      ui.record.textContent = '최고 기록 ' + best + '점 · ' + plays + '번째 도전';
+    } else {
+      ui.record.className = 'bng-record';
+      ui.record.textContent = '';
+    }
+
+    state.shareText = buildShareText(state.score, state.correct, avg, cond);
+    ui.shareBox.hidden = true;
+
+    showScreen('result');
+  }
+
+  function buildShareText(score, correct, avg, cond){
+    return '오늘의 큰 수 찾기 🧠\n'
+      + '점수 ' + score + '점 · ' + TOTAL + '문제 중 ' + correct + '개 정답\n'
+      + '평균 ' + avg.toFixed(1) + '초 · 두뇌 컨디션 ' + cond.level
+      + '\n\n나도 해보기 👉 ' + SITE_URL;
+  }
+
+  /* ─────────── 복사 & 토스트 ─────────── */
+  var toastTimer = null;
+  function toast(msg){
+    ui.toast.textContent = msg;
+    ui.toast.classList.add('show');
+    if (toastTimer) window.clearTimeout(toastTimer);
+    toastTimer = window.setTimeout(function(){ ui.toast.classList.remove('show'); }, 2600);
+  }
+
+  function legacyCopy(text){
+    var ta = document.createElement('textarea');
+    ta.value = text;
+    ta.setAttribute('readonly', '');
+    ta.style.position = 'fixed';
+    ta.style.top = '-1000px';
+    ta.style.left = '0';
+    ta.style.fontSize = '16px';
+    document.body.appendChild(ta);
+    var ok = false;
+    try{
+      ta.select();
+      ta.setSelectionRange(0, text.length);
+      ok = document.execCommand('copy');
+    }catch(e){ ok = false; }
+    document.body.removeChild(ta);
+    return ok;
+  }
+
+  function copyResult(){
+    var text = state && state.shareText ? state.shareText : '';
+    if (!text) return;
+
+    ui.shareBox.hidden = false;
+    ui.shareText.value = text;
+
+    var done = function(ok){
+      if (ok) toast('복사했어요! 카카오톡에 붙여넣어 보세요 📋');
+      else toast('아래 글을 길게 눌러 복사해 주세요');
+    };
+
+    if (navigator.clipboard && navigator.clipboard.writeText){
+      try{
+        navigator.clipboard.writeText(text).then(function(){ done(true); }, function(){ done(legacyCopy(text)); });
+        return;
+      }catch(e){ /* 아래 fallback */ }
+    }
+    done(legacyCopy(text));
+  }
+
+  ui.shareText.addEventListener('focus', function(){ try{ ui.shareText.select(); }catch(e){} });
+
+  /* ─────────── 화면 전환 ─────────── */
+  function updateBestOnStart(){
+    var store = readStore();
+    if (store.best > 0){
+      ui.bestVal.className = 'val';
+      ui.bestVal.innerHTML = String(store.best) + '<small>점</small>';
+      ui.bestSub.textContent = store.plays > 0 ? ('지금까지 ' + store.plays + '번 도전하셨어요') : '다시 도전해 보세요!';
+    } else {
+      ui.bestVal.className = 'val none';
+      ui.bestVal.textContent = '아직 없음';
+      ui.bestSub.textContent = '첫 도전이에요. 가볍게 시작해 보세요!';
+    }
+  }
+
+  function startGame(){
+    ensureAudio();
+    newGame();
+    updateBestOnStart();
+    showScreen('play');
+    renderRound();
+  }
+
+  ui.startBtn.addEventListener('click', startGame);
+  ui.againBtn.addEventListener('click', startGame);
+  ui.homeBtn.addEventListener('click', function(){
+    updateBestOnStart();
+    showScreen('start');
+  });
+  ui.shareBtn.addEventListener('click', copyResult);
+
+  /* ─────────── 초기화 ─────────── */
+  updateSoundUI();
+  updateBestOnStart();
+
+  /* 테스트/검증용 최소 인터페이스 (게임 동작에는 영향 없음) */
+  window.PumssBigNumber = {
+    buildRound: buildRound,
+    buildAll: function(){ var out = [], i; for (i = 0; i < TOTAL; i++) out.push(buildRound(i)); return out; },
+    configFor: roundConfig,
+    getState: function(){ return state; },
+    version: '1.0.0'
+  };
+})();
+</script>
+</body>
+</html>
