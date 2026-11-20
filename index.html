@@ -62,15 +62,24 @@
   }
   .cards{display:flex;flex-direction:column;gap:14px}
   .card{
+    position:relative;overflow:hidden;
     display:block;text-decoration:none;color:inherit;
-    background:var(--card);
-    border:1px solid var(--line);
+    background:var(--tint,#fff);
+    border:1.5px solid var(--edge,var(--line));
     border-radius:var(--radius);
-    padding:20px 20px 18px;
-    box-shadow:0 6px 18px rgba(30,41,59,.06);
+    padding:23px 20px 18px;
+    box-shadow:0 8px 20px var(--glow,rgba(30,41,59,.06));
     transition:transform .12s ease, box-shadow .12s ease;
   }
-  .card:active{transform:scale(.985);box-shadow:0 3px 10px rgba(30,41,59,.08)}
+  .card::before{
+    content:"";position:absolute;left:0;right:0;top:0;height:5px;
+    background:var(--bar,transparent);
+  }
+  .card:active{transform:scale(.985);box-shadow:0 3px 10px var(--glow,rgba(30,41,59,.08))}
+  .card.tax-card{--tint:#FFFDF7;--edge:#FDE68A;--bar:linear-gradient(90deg,#FCD34D,#FDE68A);--glow:rgba(180,120,20,.10)}
+  .card.brain-card{--tint:#F7FEFA;--edge:#A7F3D0;--bar:linear-gradient(90deg,#6EE7B7,#A7F3D0);--glow:rgba(5,120,90,.10)}
+  .card.memory-card{--tint:#F7FBFF;--edge:#BAE6FD;--bar:linear-gradient(90deg,#7DD3FC,#BAE6FD);--glow:rgba(2,110,160,.10)}
+  .card.spot-card{--tint:#FFF9F6;--edge:#FED7AA;--bar:linear-gradient(90deg,#FDBA74,#FED7AA);--glow:rgba(200,90,30,.10)}
   .tag{
     display:inline-block;font-size:14px;font-weight:800;letter-spacing:.04em;
     padding:5px 11px;border-radius:999px;margin-bottom:12px;
@@ -96,16 +105,20 @@
   }
   .card:hover .go .arrow{transform:translateX(3px)}
   .foot{
-    margin-top:26px;padding-top:20px;border-top:1px solid var(--line);
+    margin-top:26px;padding:20px 18px;
+    border-radius:20px;
+    background:#EFF6FF;
+    border:1.5px solid #BFDBFE;
+    box-shadow:0 8px 20px rgba(37,99,235,.08);
     text-align:center;
   }
-  .foot .label{font-size:14.5px;color:#64748B;margin:0 0 10px}
+  .foot .label{font-size:14.5px;color:#3B5B84;margin:0 0 12px;font-weight:600}
   .foot a{
     display:inline-flex;align-items:center;justify-content:center;gap:6px;
     padding:14px 20px;border-radius:14px;text-decoration:none;
     background:linear-gradient(135deg, var(--blue) 0%, var(--blue-deep) 100%);
     color:#fff;font-size:17px;font-weight:800;
-    box-shadow:0 8px 20px rgba(37,99,235,.24);
+    box-shadow:0 8px 18px rgba(37,99,235,.22);
   }
   .copy{
     margin:22px 0 0;text-align:center;font-size:13.5px;color:#94A3B8;letter-spacing:.02em;

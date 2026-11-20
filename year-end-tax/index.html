@@ -3,7 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="#0a1320">
+<meta name="color-scheme" content="light">
+<meta name="theme-color" content="#FFFDF7">
 <link rel="icon" href="data:,">
 <title>13월의 월급, 나는 받을까 토할까? | 1분 연말정산 감각 테스트</title>
 <meta name="description" content="7문항, 숫자 입력 없이 1분. 올해 연말정산에서 내가 놓치고 있는 환급금을 확인하고, 지금 당장 더 챙길 수 있는 절세 포인트를 받아보세요.">
@@ -13,32 +14,38 @@
 <meta name="twitter:card" content="summary_large_image">
 <style>
   :root{
-    --navy-900:#0a1320;
-    --navy-800:#101f33;
-    --navy-700:#16283f;
-    --line:rgba(255,255,255,.09);
-    --line-gold:rgba(224,180,115,.42);
-    --gold:#e0b473;
-    --gold-soft:#f3d9ae;
-    --gold-deep:#c99a55;
-    --emerald:#37c39a;
-    --ink:#f5f8fc;
-    --muted:#a7b6c9;
-    --muted-2:#8296ad;
-    --danger:#ff8f7a;
-    --amber:#ffc861;
+    color-scheme:light;
+    --cream-50:#FFFDF7;
+    --cream-100:#FEF9EC;
+    --card:#FFFFFF;
+    --line:#F0E2C6;
+    --line-soft:#F6EBD7;
+    --gold:#D97706;
+    --gold-deep:#B45309;
+    --gold-soft:#FDE68A;
+    --gold-tint:#FFF7E6;
+    --emerald:#047857;
+    --emerald-soft:#D1FAE5;
+    --danger:#B91C1C;
+    --amber:#B45309;
+    --ink:#241C11;
+    --body-ink:#4A3F2F;
+    --muted:#6F6047;
+    --muted-2:#857458;
     --radius:22px;
-    --shadow:0 24px 60px rgba(0,0,0,.45), 0 2px 0 rgba(255,255,255,.05) inset;
+    --shadow:0 16px 40px rgba(180,120,30,.10), 0 1px 0 rgba(255,255,255,.9) inset;
   }
   *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
   html,body{padding:0;margin:0}
+  html{background:#FEF9EC}
   body{
     min-height:100%;
     background:
-      radial-gradient(1100px 560px at 50% -12%, rgba(224,180,115,.20), transparent 62%),
-      radial-gradient(900px 520px at 104% 108%, rgba(55,195,154,.13), transparent 62%),
-      var(--navy-900);
-    color:var(--ink);
+      radial-gradient(1100px 560px at 50% -12%, #FFF1CE 0%, rgba(255,241,206,0) 62%),
+      radial-gradient(900px 520px at 104% 108%, #FDF0DB 0%, rgba(253,240,219,0) 62%),
+      linear-gradient(180deg, #FFFDF7 0%, #FEF9EC 100%);
+    background-color:var(--cream-50);
+    color:var(--body-ink);
     font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Malgun Gothic","맑은 고딕",system-ui,"Segoe UI",Roboto,sans-serif;
     font-size:17px;
     line-height:1.55;
@@ -63,12 +70,12 @@
     display:flex;align-items:center;gap:8px;
     padding:0 4px 16px;
     font-size:14px;font-weight:800;letter-spacing:.14em;
-    color:var(--gold-soft);text-transform:uppercase;
+    color:var(--gold-deep);text-transform:uppercase;
   }
   .brand .dot{
     width:8px;height:8px;border-radius:50%;
-    background:linear-gradient(135deg,var(--gold-soft),var(--gold-deep));
-    box-shadow:0 0 0 4px rgba(224,180,115,.14);
+    background:linear-gradient(135deg,#FBBF24,var(--gold-deep));
+    box-shadow:0 0 0 4px rgba(217,119,6,.12);
   }
   .brand .brand-sub{
     margin-left:auto;font-size:13px;font-weight:600;letter-spacing:.02em;
@@ -81,7 +88,7 @@
   @keyframes screenIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
 
   .card{
-    background:linear-gradient(168deg, rgba(28,48,72,.92), rgba(15,28,45,.96));
+    background:var(--card);
     border:1px solid var(--line);
     border-radius:var(--radius);
     box-shadow:var(--shadow);
@@ -89,18 +96,27 @@
   }
 
   /* ── 시작 화면 ── */
-  .start-card{text-align:center;padding:34px 24px 28px}
+  .start-card{
+    text-align:center;padding:34px 24px 28px;
+    background:
+      radial-gradient(120% 90% at 50% -10%, #FFF8E6 0%, rgba(255,248,230,0) 62%),
+      var(--card);
+  }
   .start-emoji{
     font-size:40px;line-height:1;
-    filter:drop-shadow(0 6px 16px rgba(224,180,115,.35));
+    filter:drop-shadow(0 6px 14px rgba(217,119,6,.22));
   }
   .start-card h1{
     margin:16px 0 0;
     font-size:31px;line-height:1.32;font-weight:900;letter-spacing:-.03em;
-    background:linear-gradient(180deg,#fff 30%,var(--gold-soft));
-    -webkit-background-clip:text;background-clip:text;color:transparent;
+    color:var(--ink);
   }
-  .start-card h1 .accent{display:block;color:var(--gold);-webkit-text-fill-color:var(--gold)}
+  .start-card h1 .accent{
+    display:block;
+    background:linear-gradient(180deg,#D97706,#B45309);
+    -webkit-background-clip:text;background-clip:text;
+    color:transparent;-webkit-text-fill-color:transparent;
+  }
   .start-sub{
     margin:14px auto 0;max-width:315px;
     font-size:17px;line-height:1.62;color:var(--muted);font-weight:500;
@@ -108,9 +124,9 @@
   .chips{display:flex;justify-content:center;gap:8px;margin:22px 0 0;flex-wrap:wrap}
   .chip{
     padding:7px 13px;border-radius:99px;
-    border:1px solid rgba(224,180,115,.28);
-    background:rgba(224,180,115,.08);
-    font-size:14px;font-weight:700;color:var(--gold-soft);letter-spacing:.01em;
+    border:1px solid #F3DCAE;
+    background:#FFF6E0;
+    font-size:14px;font-weight:700;color:#92600F;letter-spacing:.01em;
   }
   .start-note{
     margin:14px 0 0;font-size:14px;color:var(--muted-2);line-height:1.55;
@@ -127,21 +143,21 @@
   }
   .btn:active{transform:scale(.985)}
   .btn-primary{
-    background:linear-gradient(135deg,#f6dcaa,var(--gold) 45%,var(--gold-deep));
-    color:#132033;
-    box-shadow:0 14px 30px rgba(224,180,115,.26);
+    background:linear-gradient(135deg,#DE8A11,var(--gold) 45%,var(--gold-deep));
+    color:#fff;
+    box-shadow:0 12px 26px rgba(180,83,9,.22);
   }
-  .btn-primary:hover{box-shadow:0 16px 34px rgba(224,180,115,.36)}
+  .btn-primary:hover{box-shadow:0 14px 30px rgba(180,83,9,.30)}
   .btn-outline{
-    background:rgba(55,195,154,.07);
-    border:1px solid rgba(55,195,154,.5);
-    color:#8ce6c6;
+    background:#FFF9EC;
+    border:1.5px solid #EBC98B;
+    color:#9A5B0A;
   }
-  .btn-outline:hover{background:rgba(55,195,154,.13)}
+  .btn-outline:hover{background:#FFF4DC}
   .btn-ghost{
     background:transparent;color:var(--muted);min-height:46px;font-size:16.5px;font-weight:700;
   }
-  .btn-ghost:hover{color:var(--gold-soft)}
+  .btn-ghost:hover{color:var(--gold-deep)}
   .btn-lg{margin-top:24px}
 
   /* ── 퀴즈 ── */
@@ -153,20 +169,20 @@
     font-family:inherit;font-size:15px;font-weight:700;color:var(--muted-2);
     cursor:pointer;border-radius:8px;
   }
-  .back-btn:hover{color:var(--gold-soft)}
+  .back-btn:hover{color:var(--gold-deep)}
   .step{
     margin-left:auto;font-size:14.5px;font-weight:800;letter-spacing:.06em;
-    color:var(--gold-soft);
+    color:var(--gold-deep);
   }
   .step .total{color:var(--muted-2);font-weight:700}
   .progress{
     height:7px;border-radius:99px;
-    background:rgba(255,255,255,.08);
+    background:#F4E8D2;
     overflow:hidden;margin-bottom:22px;
   }
   .progress > i{
     display:block;height:100%;width:14.28%;border-radius:99px;
-    background:linear-gradient(90deg,var(--gold),var(--emerald));
+    background:linear-gradient(90deg,#F59E0B,var(--gold-deep));
     transition:width .38s cubic-bezier(.22,.61,.36,1);
   }
   .quiz-inner.anim-right{animation:qRight .36s cubic-bezier(.22,.61,.36,1) both}
@@ -176,20 +192,20 @@
 
   .q-tag{
     display:inline-block;margin-bottom:10px;padding:5px 11px;border-radius:99px;
-    background:rgba(55,195,154,.1);border:1px solid rgba(55,195,154,.32);
-    font-size:13.5px;font-weight:800;color:#8ce6c6;letter-spacing:.02em;
+    background:#FFF4DE;border:1px solid #F3D9A6;
+    font-size:13.5px;font-weight:800;color:#92600F;letter-spacing:.02em;
   }
   .q-title{
     margin:0;font-size:25px;line-height:1.42;font-weight:800;letter-spacing:-.025em;
-    color:#fff;
+    color:var(--ink);
   }
-  .q-sub{margin:9px 0 0;font-size:16px;line-height:1.55;color:var(--muted-2);font-weight:500}
+  .q-sub{margin:9px 0 0;font-size:16px;line-height:1.55;color:var(--muted);font-weight:500}
   .options{display:flex;flex-direction:column;gap:10px;margin-top:22px}
   .option{
     display:flex;align-items:center;gap:13px;
     width:100%;min-height:62px;padding:15px 16px;
-    border-radius:15px;border:1px solid rgba(255,255,255,.1);
-    background:rgba(255,255,255,.045);
+    border-radius:15px;border:1.5px solid #EFE3CB;
+    background:#FFFDF8;
     color:var(--ink);font-family:inherit;font-size:17.5px;font-weight:700;
     line-height:1.42;letter-spacing:-.015em;text-align:left;
     cursor:pointer;
@@ -197,21 +213,21 @@
     animation:optIn .34s cubic-bezier(.22,.61,.36,1) both;
   }
   @keyframes optIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
-  .option:hover{background:rgba(224,180,115,.1);border-color:rgba(224,180,115,.45)}
+  .option:hover{background:#FFF7E6;border-color:#E7C88F}
   .option:active{transform:scale(.988)}
   .option .opt-mark{
     flex:0 0 27px;width:27px;height:27px;border-radius:50%;
     display:flex;align-items:center;justify-content:center;
-    border:1.5px solid rgba(224,180,115,.55);
-    font-size:13px;font-weight:800;color:var(--gold);
+    border:1.5px solid #D9AE62;
+    font-size:13px;font-weight:800;color:#A9660A;
     transition:all .18s ease;
   }
   .option.picked{
-    background:linear-gradient(135deg,#f6dcaa,var(--gold));
-    border-color:transparent;color:#142233;
-    box-shadow:0 10px 26px rgba(224,180,115,.27);
+    background:linear-gradient(135deg,#FDE68A,#F5C24B);
+    border-color:transparent;color:#3A2A08;
+    box-shadow:0 10px 22px rgba(217,119,6,.22);
   }
-  .option.picked .opt-mark{border-color:#142233;color:#142233}
+  .option.picked .opt-mark{border-color:#3A2A08;color:#3A2A08}
   .option.dim{opacity:.34;transform:none}
   .quiz-hint{
     margin:16px 2px 0;text-align:center;font-size:14px;color:var(--muted-2);
@@ -222,50 +238,51 @@
     --accent:var(--gold);
     position:relative;overflow:hidden;
     padding:26px 22px 24px;border-radius:var(--radius);
-    border:1px solid rgba(255,255,255,.12);
+    border:1px solid color-mix(in srgb, var(--accent) 26%, #ffffff);
     background:
-      radial-gradient(120% 100% at 12% 0%, color-mix(in srgb, var(--accent) 26%, transparent), transparent 62%),
-      linear-gradient(168deg, rgba(30,52,78,.96), rgba(14,26,42,.98));
+      radial-gradient(120% 100% at 12% 0%, color-mix(in srgb, var(--accent) 13%, transparent), transparent 62%),
+      linear-gradient(168deg,#FFFFFF,#FFFCF4);
     box-shadow:var(--shadow);
     text-align:center;
   }
   .result-type::after{
     content:"";position:absolute;inset:0;pointer-events:none;
     border-radius:var(--radius);
-    box-shadow:inset 0 0 0 1px color-mix(in srgb, var(--accent) 26%, transparent);
+    box-shadow:inset 0 0 0 1px color-mix(in srgb, var(--accent) 20%, transparent);
   }
-  .type-emoji{font-size:44px;line-height:1;filter:drop-shadow(0 8px 18px rgba(0,0,0,.4))}
+  .type-emoji{font-size:44px;line-height:1;filter:drop-shadow(0 8px 16px rgba(180,120,30,.18))}
   .type-kicker{
     margin-top:12px;font-size:13.5px;font-weight:800;letter-spacing:.18em;
     color:var(--accent);text-transform:uppercase;opacity:.95;
   }
   .type-name{
     margin:8px 0 0;font-size:29px;line-height:1.34;font-weight:900;letter-spacing:-.03em;
-    color:#fff;
+    color:var(--ink);
   }
   .type-quote{
-    margin:12px 0 0;font-size:16.5px;line-height:1.6;font-weight:700;color:var(--gold-soft);
+    margin:12px 0 0;font-size:16.5px;line-height:1.6;font-weight:700;
+    color:color-mix(in srgb, var(--accent) 82%, #2A2113);
   }
   .score-row{
     display:flex;align-items:baseline;justify-content:center;gap:6px;
     margin-top:20px;
   }
-  .score-row .num{font-size:42px;font-weight:900;letter-spacing:-.04em;color:#fff;line-height:1}
+  .score-row .num{font-size:42px;font-weight:900;letter-spacing:-.04em;color:var(--ink);line-height:1}
   .score-row .of{font-size:17px;font-weight:800;color:var(--muted-2)}
   .score-row .label{
     margin-left:10px;font-size:14px;font-weight:700;color:var(--muted-2);letter-spacing:.02em;
   }
   .gauge{
-    position:relative;height:9px;border-radius:99px;background:rgba(255,255,255,.09);
+    position:relative;height:9px;border-radius:99px;background:#F3E7D3;
     overflow:hidden;margin:12px 0 0;
   }
   .gauge > i{
     display:block;height:100%;width:0%;border-radius:99px;
-    background:linear-gradient(90deg, color-mix(in srgb, var(--accent) 55%, #ffffff), var(--accent));
+    background:linear-gradient(90deg, color-mix(in srgb, var(--accent) 45%, #ffffff), var(--accent));
     transition:width .9s cubic-bezier(.22,.61,.36,1);
   }
   .type-desc{
-    margin:18px 0 0;font-size:16.5px;line-height:1.66;color:#cdd9e8;font-weight:500;
+    margin:18px 0 0;font-size:16.5px;line-height:1.66;color:var(--body-ink);font-weight:500;
     text-align:left;
   }
 
@@ -274,35 +291,36 @@
     margin:30px 2px 13px;
   }
   .section-head h2{
-    margin:0;font-size:19.5px;font-weight:900;letter-spacing:-.02em;color:#fff;
+    margin:0;font-size:19.5px;font-weight:900;letter-spacing:-.02em;color:var(--ink);
   }
   .section-head .badge{
-    margin-left:auto;padding:4px 9px;border-radius:8px;
-    background:rgba(224,180,115,.13);border:1px solid rgba(224,180,115,.3);
-    font-size:13px;font-weight:800;color:var(--gold-soft);letter-spacing:.04em;
+    margin-left:auto;flex:0 0 auto;white-space:nowrap;padding:4px 9px;border-radius:8px;
+    background:#FFF4DE;border:1px solid #F0D8A6;
+    font-size:13px;font-weight:800;color:#92600F;letter-spacing:.04em;
   }
   .tips{display:flex;flex-direction:column;gap:12px}
   .tip{
     position:relative;
     padding:18px 17px 17px;border-radius:17px;
-    background:linear-gradient(158deg, rgba(37,60,88,.85), rgba(18,32,50,.9));
-    border:1px solid rgba(255,255,255,.1);
+    background:linear-gradient(158deg,#FFFFFF,#FFFCF4);
+    border:1px solid var(--line);
+    box-shadow:0 6px 18px rgba(180,120,30,.06);
     animation:optIn .4s cubic-bezier(.22,.61,.36,1) both;
   }
   .tip-top{display:flex;align-items:center;gap:9px;margin-bottom:9px}
   .tip-no{
     flex:0 0 auto;padding:3px 8px;border-radius:7px;
-    background:linear-gradient(135deg,var(--gold-soft),var(--gold-deep));
-    color:#132033;font-size:12.5px;font-weight:900;letter-spacing:.02em;
+    background:linear-gradient(135deg,#FDE68A,#F7C75C);
+    color:#4A3208;font-size:12.5px;font-weight:900;letter-spacing:.02em;
   }
   .tip-benefit{
-    margin-left:auto;font-size:13.5px;font-weight:800;color:#8ce6c6;letter-spacing:.01em;
+    margin-left:auto;font-size:13.5px;font-weight:800;color:var(--emerald);letter-spacing:.01em;
     text-align:right;
   }
   .tip-title{
-    margin:0 0 7px;font-size:18px;line-height:1.42;font-weight:800;letter-spacing:-.02em;color:#fff;
+    margin:0 0 7px;font-size:18px;line-height:1.42;font-weight:800;letter-spacing:-.02em;color:var(--ink);
   }
-  .tip-body{margin:0;font-size:16px;line-height:1.68;color:#c3d1e2;font-weight:500}
+  .tip-body{margin:0;font-size:16px;line-height:1.68;color:var(--body-ink);font-weight:500}
   .tip-kind{
     display:inline-block;margin-left:6px;font-size:12.5px;font-weight:800;letter-spacing:.02em;
     color:var(--danger);vertical-align:2px;
@@ -311,12 +329,12 @@
 
   .checklist{
     border:1px solid var(--line);border-radius:17px;overflow:hidden;
-    background:rgba(255,255,255,.028);
+    background:#FFFCF5;
   }
   .check-row{
     display:flex;align-items:center;gap:10px;
-    padding:13px 15px;font-size:16px;font-weight:600;color:#cdd9e8;
-    border-bottom:1px solid rgba(255,255,255,.06);
+    padding:13px 15px;font-size:16px;font-weight:600;color:var(--body-ink);
+    border-bottom:1px solid var(--line-soft);
   }
   .check-row:last-child{border-bottom:none}
   .check-row .mark{
@@ -324,9 +342,9 @@
     display:flex;align-items:center;justify-content:center;
     font-size:12px;font-weight:900;
   }
-  .check-row .mark.ok{background:rgba(55,195,154,.16);color:var(--emerald);border:1px solid rgba(55,195,154,.45)}
-  .check-row .mark.partial{background:rgba(255,200,97,.14);color:var(--amber);border:1px solid rgba(255,200,97,.4)}
-  .check-row .mark.miss{background:rgba(255,143,122,.13);color:var(--danger);border:1px solid rgba(255,143,122,.4)}
+  .check-row .mark.ok{background:#DCFCE7;color:#047857;border:1px solid #86EFAC}
+  .check-row .mark.partial{background:#FEF3C7;color:#B45309;border:1px solid #FCD34D}
+  .check-row .mark.miss{background:#FEE2E2;color:#B91C1C;border:1px solid #FCA5A5}
   .check-row .status{margin-left:auto;font-size:13.5px;font-weight:800;color:var(--muted-2)}
   .check-row .status.ok{color:var(--emerald)}
   .check-row .status.partial{color:var(--amber)}
@@ -334,10 +352,10 @@
 
   .actions{display:flex;flex-direction:column;gap:10px;margin-top:26px}
   .disclaimer{
-    margin:18px 4px 0;font-size:14px;line-height:1.65;color:#7e91a8;text-align:center;
+    margin:18px 4px 0;font-size:14px;line-height:1.65;color:#8C7B62;text-align:center;
   }
   .foot-note{
-    margin:10px 4px 0;font-size:13.5px;color:#6d8099;text-align:center;
+    margin:10px 4px 0;font-size:13.5px;color:#9C8C74;text-align:center;
   }
 
   /* ── 토스트 ── */
@@ -345,10 +363,10 @@
     position:fixed;left:50%;bottom:26px;z-index:60;
     max-width:calc(100% - 36px);
     padding:13px 19px;border-radius:14px;
-    background:linear-gradient(135deg,#f9e4bd,#e2b980);
-    color:#152235;font-size:16px;font-weight:800;line-height:1.45;
+    background:linear-gradient(135deg,#FDE68A,#F5C24B);
+    color:#3A2A08;font-size:16px;font-weight:800;line-height:1.45;
     text-align:center;
-    box-shadow:0 16px 40px rgba(0,0,0,.45);
+    box-shadow:0 16px 36px rgba(180,83,9,.28);
     opacity:0;transform:translate(-50%,150%);
     transition:transform .36s cubic-bezier(.22,.61,.36,1),opacity .3s ease;
     pointer-events:none;
@@ -591,22 +609,22 @@
 
   var TYPES = [
     {
-      min: 12, emoji: "🏆", name: "13월의 월급 수확왕", accent: "#f0c88a",
+      min: 12, emoji: "🏆", name: "13월의 월급 수확왕", accent: "#B45309",
       quote: "이 정도면 연말정산이 아니라 '수확'입니다.",
       desc: "챙길 건 거의 다 챙겼습니다. 남은 두 달은 이미 넣은 항목의 서류만 확인하면 충분합니다. 주변에도 이 테스트 한 번 돌려보라고 해 주세요."
     },
     {
-      min: 8, emoji: "💡", name: "절반만 챙긴 실속파", accent: "#6fd8b4",
+      min: 8, emoji: "💡", name: "절반만 챙긴 실속파", accent: "#047857",
       quote: "챙긴 것도 있지만, 반은 그냥 흘려보내고 있습니다.",
       desc: "지금 잡으면 환급액이 한 단계 올라갑니다. 아래 포인트 중 하나만 처리해도 내년 2월 통장이 달라집니다."
     },
     {
-      min: 4, emoji: "💸", name: "숨은 환급금 흘리는 중", accent: "#ffc861",
+      min: 4, emoji: "💸", name: "숨은 환급금 흘리는 중", accent: "#C2410C",
       quote: "세금은 내면서 받을 돈은 놓치고 있습니다.",
       desc: "아직 12월 31일 전입니다. 아래 2~3개만 메우면 지금보다 꽤 많은 금액을 돌려받을 수 있습니다."
     },
     {
-      min: 0, emoji: "🚨", name: "세금 토할 위기 경보", accent: "#ff8f7a",
+      min: 0, emoji: "🚨", name: "세금 토할 위기 경보", accent: "#B91C1C",
       quote: "냈는데도 못 받고, 낼 것도 더 내는 중입니다.",
       desc: "놓친 게 많지만 순서대로만 하면 됩니다. 아래 포인트부터 하나씩, 12월 안에 처리하세요."
     }

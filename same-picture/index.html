@@ -3,7 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<meta name="theme-color" content="#FAF6EE">
+<meta name="color-scheme" content="light">
+<meta name="theme-color" content="#F4FAFF">
 <meta name="description" content="같은 그림 두 장을 찾는 품스 두뇌 건강 게임. 5단계, 2~3분이면 끝나요. 계산 없이 누구나 즐길 수 있어요.">
 <title>오늘의 같은 그림 찾기 | 품스</title>
 <meta property="og:type" content="website">
@@ -13,30 +14,32 @@
 <meta name="twitter:card" content="summary">
 <style>
   :root{
-    --cream:#FAF6EE;
+    --cream:#F4FAFF;
     --card:#FFFFFF;
     --navy:#152A4A;
     --navy-soft:#2B3F60;
-    --gold:#C99A55;
-    --gold-soft:#F0DFC2;
-    --teal:#0E7A78;
-    --teal-soft:#E2F1EF;
+    --gold:#0284C7;
+    --gold-soft:#BAE6FD;
+    --teal:#0369A1;
+    --teal-soft:#DCEFFE;
     --green:#1F7A4D;
     --green-soft:#E5F4EB;
     --red:#A6382A;
     --red-soft:#FBE8E4;
-    --line:#E9E0D1;
+    --line:#D8EBF8;
     --text:#17233B;
     --muted:#5B6A80;
     --radius:20px;
+    color-scheme:light;
   }
   *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
   [hidden]{display:none !important}
   html,body{margin:0;padding:0}
+  html{background:#F4FAFF}
   body{
     background:
-      radial-gradient(circle at 8% -6%, #FDF2E0 0%, rgba(253,242,224,0) 54%),
-      radial-gradient(circle at 96% 6%, #E6F2EF 0%, rgba(230,242,239,0) 48%),
+      radial-gradient(circle at 8% -6%, #E1F2FF 0%, rgba(225,242,255,0) 54%),
+      radial-gradient(circle at 96% 6%, #F0F9FF 0%, rgba(240,249,255,0) 48%),
       var(--cream);
     min-height:100vh;
     min-height:100dvh;
@@ -124,7 +127,7 @@
     transition:transform .1s ease, box-shadow .1s ease;
   }
   .sp-btn:active{transform:scale(.985)}
-  .sp-btn-primary{background:var(--navy);color:#fff;box-shadow:0 10px 22px rgba(21,42,74,.22)}
+  .sp-btn-primary{background:linear-gradient(135deg,#0284C7,#0369A1);color:#fff;box-shadow:0 10px 22px rgba(2,132,199,.24)}
   .sp-btn-xl{font-size:21px;padding:20px 16px;border-radius:18px}
   .sp-btn-secondary{background:#fff;color:var(--navy);border:2px solid var(--gold-soft);box-shadow:0 4px 12px rgba(21,42,74,.06)}
   .sp-btn-ghost{background:transparent;color:var(--muted);font-size:16.5px;font-weight:700;padding:13px 16px}
@@ -141,8 +144,8 @@
   .sp-round span{color:var(--gold)}
   .sp-timer{font-size:17px;font-weight:800;color:var(--navy-soft);font-variant-numeric:tabular-nums}
   .sp-pips{display:flex;gap:5px;margin-bottom:10px}
-  .sp-pip{height:6px;flex:1;border-radius:99px;background:#EDE4D6}
-  .sp-pip.on{background:var(--gold)}
+  .sp-pip{height:6px;flex:1;border-radius:99px;background:#DBEAF6}
+  .sp-pip.on{background:#38BDF8}
   .sp-pip.done{background:var(--green)}
   .sp-praise{
     min-height:28px;text-align:center;
@@ -181,22 +184,22 @@
   }
   .sp-back{
     background:
-      repeating-linear-gradient(45deg, rgba(201,154,85,.09) 0 7px, rgba(201,154,85,0) 7px 14px),
-      linear-gradient(160deg, #1B3358 0%, #152A4A 100%);
-    border:2px solid #2E4870;
-    box-shadow:0 5px 14px rgba(21,42,74,.22);
+      repeating-linear-gradient(45deg, rgba(255,255,255,.14) 0 7px, rgba(255,255,255,0) 7px 14px),
+      linear-gradient(160deg, #38BDF8 0%, #0284C7 100%);
+    border:2px solid #7DD3FC;
+    box-shadow:0 5px 14px rgba(2,132,199,.22);
     opacity:1;
   }
   .sp-back .q{
     width:44%;max-width:52px;aspect-ratio:1;border-radius:50%;
-    border:2.5px solid rgba(201,154,85,.85);
+    border:2.5px solid rgba(255,255,255,.9);
     display:flex;align-items:center;justify-content:center;
-    color:#E9C88F;font-size:clamp(16px,5.2vw,26px);font-weight:800;
+    color:#FFFFFF;font-size:clamp(16px,5.2vw,26px);font-weight:800;
     letter-spacing:0;
   }
   .sp-face{
-    background:#FFFDF8;border:2px solid var(--gold-soft);
-    box-shadow:0 4px 12px rgba(21,42,74,.08);
+    background:#FFFFFF;border:2px solid var(--gold-soft);
+    box-shadow:0 4px 12px rgba(2,132,199,.08);
     opacity:0;transform:scale(.94);
     padding:5% 3%;
     gap:2%;
@@ -224,14 +227,14 @@
   /* 미리보기·라운드 배너 */
   .sp-banner{
     position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
-    background:rgba(21,42,74,.94);color:#fff;
+    background:rgba(3,105,161,.94);color:#fff;
     border-radius:16px;padding:16px 22px;text-align:center;
-    box-shadow:0 12px 30px rgba(21,42,74,.3);
+    box-shadow:0 12px 30px rgba(3,105,161,.3);
     min-width:66%;
     pointer-events:none;
   }
   .sp-banner[hidden]{display:none !important}
-  .sp-banner .big{font-size:34px;font-weight:800;line-height:1.1;color:#F3DCB4;font-variant-numeric:tabular-nums}
+  .sp-banner .big{font-size:34px;font-weight:800;line-height:1.1;color:#E0F2FE;font-variant-numeric:tabular-nums}
   .sp-banner .small{font-size:15px;font-weight:700;margin-top:4px;color:#E7EEF8;line-height:1.45}
 
   .sp-playfoot{margin-top:12px;text-align:center;font-size:14.5px;color:var(--muted);font-weight:600}
@@ -254,7 +257,7 @@
   .sp-stat span{display:block;font-size:13.5px;color:var(--muted);font-weight:700}
   .sp-cond{
     background:var(--teal-soft);border-radius:16px;padding:13px 15px;margin-bottom:16px;
-    font-size:15.5px;line-height:1.6;color:#0B5F5D;font-weight:700;text-align:center;
+    font-size:15.5px;line-height:1.6;color:#075985;font-weight:700;text-align:center;
   }
   .sp-cond .emo{font-size:17px;margin-right:4px}
   .sp-share{margin-top:12px}
@@ -268,9 +271,9 @@
   .sp-toast{
     position:fixed;left:50%;bottom:calc(26px + env(safe-area-inset-bottom));
     transform:translate(-50%,14px);
-    background:rgba(21,42,74,.95);color:#fff;
+    background:rgba(3,105,161,.95);color:#fff;
     font-size:15px;font-weight:800;padding:12px 18px;border-radius:999px;
-    box-shadow:0 10px 24px rgba(21,42,74,.28);
+    box-shadow:0 10px 24px rgba(3,105,161,.28);
     opacity:0;pointer-events:none;transition:opacity .2s ease, transform .2s ease;
     z-index:50;max-width:88vw;text-align:center;
   }
@@ -315,39 +318,6 @@
   }
   @media (prefers-reduced-motion: reduce){
     *{animation:none !important;transition:none !important}
-  }
-  @media (prefers-color-scheme: dark){
-    body{
-      background:
-        radial-gradient(circle at 8% -6%, #22303f 0%, rgba(34,48,63,0) 54%),
-        radial-gradient(circle at 96% 6%, #16302f 0%, rgba(22,48,47,0) 48%),
-        #101821;
-      color:#E8EEF6;
-    }
-    .sp-brand b{color:#F3F7FB}
-    h1.sp-title{color:#F3F7FB}
-    h1.sp-title em{color:#6FD9D1}
-    .sp-sub{color:#9FB0C4}
-    .sp-pill{background:#12312F;color:#6FD9D1}
-    .sp-chip{background:#17222E;border-color:#26333F;color:#C7D4E2}
-    .sp-best,.sp-sample,.sp-time,.sp-stat{background:#17222E;border-color:#26333F}
-    .sp-best .val,.sp-time .big,.sp-stat b{color:#F3F7FB}
-    .sp-sample .mini{background:#101821;border-color:#3A4A5C}
-    .sp-sample .txt{color:#9FB0C4}
-    .sp-sample .txt b{color:#F3F7FB}
-    .sp-btn-primary{background:#F0DFC2;color:#152A4A}
-    .sp-btn-secondary{background:#17222E;border-color:#3A4A5C;color:#E8EEF6}
-    .sp-tool{background:#17222E;border-color:#26333F;color:#C7D4E2}
-    .sp-round{color:#F3F7FB}
-    .sp-timer{color:#C7D4E2}
-    .sp-pip{background:#2A3644}
-    .sp-face{background:#FBF7EF;border-color:#C9A98A}
-    .sp-label{color:#152A4A}
-    .sp-playfoot{color:#9FB0C4}
-    .sp-playfoot b{color:#F3F7FB}
-    .sp-result h2{color:#F3F7FB}
-    .sp-cond{background:#12312F;color:#8FE3DC}
-    .sp-share textarea{background:#17222E;border-color:#26333F;color:#E8EEF6}
   }
 </style>
 </head>
