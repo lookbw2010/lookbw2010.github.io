@@ -644,20 +644,30 @@
   }
 
   /* ─────────── 저장 ─────────── */
+  function totalPairs(){
+    return ROUNDS.reduce(function(s, r){ return s + r.pairs; }, 0);
+  }
   function readStore(){
     try{ return JSON.parse(window.localStorage.getItem(STORE_KEY) || 'null'); }catch(e){ return null; }
   }
   function writeStore(v){
     try{ window.localStorage.setItem(STORE_KEY, JSON.stringify(v)); }catch(e){}
   }
-  function renderBest(){
+  /* 기록은 같은 단계 수(짐 수)의 판하고만 비교한다. 3단계 시절 기록은 5단계와 비교하지 않는다. */
+  function comparableRecord(){
     var b = readStore();
-    if (b && typeof b.ms === 'number' && b.ms > 0){
+    if (!b || typeof b.ms !== 'number' || b.ms <= 0) return null;
+    if (b.pairs !== totalPairs()) return null;
+    return b;
+  }
+  function renderBest(){
+    var b = comparableRecord();
+    if (b){
       ui.bestVal.textContent = fmtLong(b.ms);
       ui.bestSub.textContent = '시도 ' + b.tries + '번 · 가장 빨랐던 기록이에요';
     } else {
       ui.bestVal.textContent = '아직 없어요';
-      ui.bestSub.textContent = '첫 도전이에요. 천천히 하셔도 괜찮아요.';
+      ui.bestSub.textContent = '5단계 기록은 이번이 처음이에요. 천천히 하셔도 괜찮아요.';
     }
   }
 
@@ -965,20 +975,20 @@
     stopTimer();
     st.running = false;
     var ms = now() - st.startedAt;
-    var totalPairs = ROUNDS.reduce(function(s, r){ return s + r.pairs; }, 0);
-    var acc = Math.min(100, Math.round(totalPairs / Math.max(1, st.tries) * 100));
+    var pairsTotal = totalPairs();
+    var acc = Math.min(100, Math.round(pairsTotal / Math.max(1, st.tries) * 100));
 
     ui.resTime.textContent = fmtLong(ms);
     ui.resTries.textContent = st.tries + '번';
-    ui.resPairs.textContent = totalPairs + '쌍';
+    ui.resPairs.textContent = pairsTotal + '쌍';
     ui.resAcc.textContent = acc + '%';
 
     var title, lead, cond;
-    if (st.tries <= totalPairs + 4){
+    if (st.tries <= pairsTotal + 4){
       title = '기억력이 정말 좋으세요! 🌟';
       lead = '거의 한 번에 다 맞히셨어요';
       cond = '오늘 두뇌 컨디션 최고예요. 가족에게도 자랑해 보세요.';
-    } else if (st.tries <= totalPairs + 10){
+    } else if (st.tries <= pairsTotal + 10){
       title = '수고하셨어요! 👏';
       lead = '다섯 단계를 모두 끝냈어요';
       cond = '차분하게 잘 찾으셨어요. 내일 한 번 더 하면 더 빨라져요.';
@@ -992,8 +1002,9 @@
     ui.resCondMsg.textContent = cond;
 
     var best = readStore();
-    if (!best || ms < best.ms){
-      writeStore({ ms: Math.round(ms), tries: st.tries });
+    var prev = comparableRecord();
+    if (!prev || ms < prev.ms){
+      writeStore({ ms: Math.round(ms), tries: st.tries, pairs: totalPairs() });
       ui.resCondMsg.textContent = cond + ' 오늘 최고 기록이에요! 🏅';
     }
     renderBest();
