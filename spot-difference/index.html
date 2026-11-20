@@ -5,10 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#FAF6EE">
 <title>오늘의 틀린 그림 찾기 | 품스 두뇌 건강 게임</title>
-<meta name="description" content="위아래 두 그림에서 다른 곳 3군데를 찾는 두뇌 건강 게임. 봄날 거실, 한강 공원 소풍, 한옥 찻상까지 3단계. 설치 없이 바로 시작하세요.">
+<meta name="description" content="위아래 두 그림에서 다른 곳을 찾는 두뇌 건강 게임. 봄날 거실, 한강 공원 소풍, 한옥 찻상, 전통시장, 바닷가 등대까지 5단계 18군데. 설치 없이 바로 시작하세요.">
 <meta property="og:type" content="website">
 <meta property="og:title" content="오늘의 틀린 그림 찾기">
-<meta property="og:description" content="3분이면 끝나는 두뇌 건강 게임. 다른 곳 3군데를 찾아보세요.">
+<meta property="og:description" content="5분이면 끝나는 두뇌 건강 게임. 5단계 18군데, 다른 곳을 찾아보세요.">
 <meta property="og:url" content="https://lookbw2010.github.io/spot-difference/">
 <meta name="twitter:card" content="summary_large_image">
 <style>
@@ -111,6 +111,14 @@
   }
   .sheet .ghost.gold{background:var(--gold-soft);border-color:#E4CFA9;color:#8A611F}
   .sheet .tiny{font-size:11.5px;color:#93A0B1;margin:10px 0 0}
+  .recs{margin:0 0 16px;text-align:left;border-top:1px solid var(--line)}
+  .recs .rec{
+    display:flex;align-items:center;justify-content:space-between;gap:8px;
+    padding:6px 1px;border-bottom:1px solid var(--line);
+    font-size:12.5px;color:var(--muted);font-weight:700;line-height:1.3;
+  }
+  .recs .rec b{color:var(--navy);font-weight:800}
+  .recs .rec .rt{font-variant-numeric:tabular-nums;color:#8A7452;font-weight:800;white-space:nowrap}
   @media (prefers-color-scheme: dark){
     body{background:radial-gradient(circle at 6% -8%, #22303f 0%, rgba(34,48,63,0) 52%),radial-gradient(circle at 98% 4%, #16302f 0%, rgba(22,48,47,0) 46%),#101821;color:#E8EEF6}
     h1{color:#F3F7FB}
@@ -123,6 +131,9 @@
     .sheet h2{color:#F3F7FB}
     .sheet .ghost{background:#101821;border-color:#26333F;color:#DBE6F1}
     .sheet .primary{background:#F0DFC2;color:#152A4A}
+    .recs{border-top-color:#26333F}
+    .recs .rec{border-bottom-color:#26333F;color:#9FB0C4}
+    .recs .rec b{color:#F3F7FB}
     .count b{color:#F0705E}
   }
 </style>
@@ -134,7 +145,7 @@
     <h1>오늘의 틀린 그림 찾기</h1>
     <div class="hud">
       <div class="stages" id="stages">
-        <i>1</i><i>2</i><i>3</i><span class="stage-name" id="stageName">따스한 봄날 거실</span>
+        <i>1</i><i>2</i><i>3</i><i>4</i><i>5</i><span class="stage-name" id="stageName">따스한 봄날 거실</span>
       </div>
       <div class="timer" id="timer">0:00</div>
     </div>
@@ -591,6 +602,282 @@
     '</svg>';
   }
 
+  /* ───────────────────────── 장면 4 : 정다운 전통시장 ───────────────────────── */
+  function scene4(u, alt){
+    var awnCol  = alt ? '#3E8494' : '#D9603F';   // 천막 한 줄 색
+    var apple   = alt ? '#8FC05A' : '#D9483C';   // 사과 색
+    var appleD  = alt ? '#7BAA4B' : '#BA392E';
+    var lantCol = alt ? '#A6B0BC' : '#E2603F';   // 매달린 등 색
+    var lantLid = alt ? '#C4CBD4' : '#D9A455';
+    var bagCol  = alt ? '#2F5B7E' : '#E8B44F';   // 손님 장바구니 색
+    var bagLine = alt ? '#254A67' : '#CE9C36';
+
+    var awning = '';
+    for (var i = 0; i < 15; i++){
+      var ax = i * 24;
+      var ac = (i % 2 === 0) ? (i === 4 ? awnCol : '#D9603F') : '#FBF1DE';
+      awning += '<rect x="' + ax + '" y="14" width="24" height="40" fill="' + ac + '"/>' +
+                '<path d="M' + ax + ' 54 a 12 9 0 0 0 24 0 z" fill="' + ac + '"/>';
+    }
+
+    function ap(cx, cy, r){
+      return '<circle cx="'+cx+'" cy="'+cy+'" r="'+r+'" fill="'+appleD+'"/>' +
+             '<circle cx="'+(cx-0.7)+'" cy="'+(cy-0.9)+'" r="'+(r-1.2)+'" fill="'+apple+'"/>' +
+             '<path d="M'+cx+' '+(cy-r+1)+' q 2 -3.4 4.4 -4.2" fill="none" stroke="#6B4A32" stroke-width="1.5" stroke-linecap="round"/>' +
+             '<ellipse cx="'+(cx+4.6)+'" cy="'+(cy-r-1)+'" rx="3.1" ry="1.7" fill="#5E9A63" transform="rotate(-22 '+(cx+4.6)+' '+(cy-r-1)+')"/>';
+    }
+
+    return '' +
+    '<svg viewBox="0 0 360 260" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet" role="img" aria-label="정다운 전통시장 그림">' +
+      '<defs>' +
+        '<linearGradient id="'+u+'wall" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FDF3E0"/><stop offset="1" stop-color="#F1E0C4"/></linearGradient>' +
+        '<linearGradient id="'+u+'wood" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#C0854E"/><stop offset="1" stop-color="#A9713F"/></linearGradient>' +
+        '<linearGradient id="'+u+'dark" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#5B4739"/><stop offset="1" stop-color="#3B2E26"/></linearGradient>' +
+        '<radialGradient id="'+u+'lamp"><stop offset="0" stop-color="#FFE3A0" stop-opacity=".95"/><stop offset="1" stop-color="#FFE3A0" stop-opacity="0"/></radialGradient>' +
+      '</defs>' +
+
+      '<rect width="360" height="260" fill="url(#'+u+'wall)"/>' +
+
+      /* 돌길 */
+      '<rect y="196" width="360" height="64" fill="#DCD3C1"/>' +
+      '<rect y="196" width="360" height="4" fill="#CABFA8"/>' +
+      '<g stroke="#C8BEA8" stroke-width="1.2" opacity=".8">' +
+        '<line x1="0" y1="218" x2="360" y2="218"/><line x1="0" y1="240" x2="360" y2="240"/>' +
+        '<line x1="62" y1="196" x2="62" y2="218"/><line x1="182" y1="196" x2="182" y2="218"/><line x1="302" y1="196" x2="302" y2="218"/>' +
+        '<line x1="122" y1="218" x2="122" y2="240"/><line x1="252" y1="218" x2="252" y2="240"/>' +
+        '<line x1="42" y1="240" x2="42" y2="260"/><line x1="212" y1="240" x2="212" y2="260"/>' +
+      '</g>' +
+
+      /* 오른쪽 떡집 */
+      '<g>' +
+        '<rect x="226" y="64" width="134" height="132" fill="#F0DEC0"/>' +
+        '<rect x="226" y="64" width="10" height="132" fill="#8A5E3B"/>' +
+        '<rect x="350" y="64" width="10" height="132" fill="#8A5E3B"/>' +
+        '<rect x="236" y="96" width="114" height="72" fill="url(#'+u+'dark)"/>' +
+        '<g opacity=".92">' +
+          '<rect x="240" y="112" width="106" height="3.5" fill="#7B6353"/>' +
+          '<rect x="244" y="104" width="13" height="8" rx="2" fill="#C9784C"/>' +
+          '<rect x="262" y="103" width="10" height="9" rx="2" fill="#8FA98A"/>' +
+          '<rect x="278" y="105" width="15" height="7" rx="2" fill="#D9BC92"/>' +
+          '<rect x="300" y="102" width="11" height="10" rx="2" fill="#B4D0C1"/>' +
+          '<rect x="316" y="104" width="14" height="8" rx="2" fill="#E3B478"/>' +
+          '<rect x="240" y="136" width="106" height="3.5" fill="#7B6353"/>' +
+          '<rect x="246" y="127" width="16" height="9" rx="2" fill="#C9A06B"/>' +
+          '<rect x="268" y="126" width="12" height="10" rx="2" fill="#A8BFCE"/>' +
+          '<rect x="286" y="128" width="18" height="8" rx="2" fill="#D9A45B"/>' +
+          '<rect x="310" y="127" width="13" height="9" rx="2" fill="#9BBCAB"/>' +
+        '</g>' +
+        /* 판매대 */
+        '<rect x="232" y="182" width="120" height="14" fill="#8F5C32"/>' +
+        '<rect x="232" y="168" width="120" height="14" fill="#B57F48"/>' +
+        '<rect x="232" y="168" width="120" height="4.5" rx="2" fill="#CB9460"/>' +
+        '<g fill="#FDF7E9" stroke="#E4D6BE" stroke-width="1">' +
+          '<ellipse cx="252" cy="166" rx="9" ry="4.5"/><ellipse cx="274" cy="166" rx="9" ry="4.5"/>' +
+          '<ellipse cx="296" cy="166" rx="9" ry="4.5"/><ellipse cx="318" cy="166" rx="9" ry="4.5"/>' +
+        '</g>' +
+      '</g>' +
+
+      /* 가게 간판 */
+      '<g>' +
+        '<line x1="256" y1="64" x2="256" y2="72" stroke="#8A5E3B" stroke-width="2"/>' +
+        '<line x1="316" y1="64" x2="316" y2="72" stroke="#8A5E3B" stroke-width="2"/>' +
+        '<rect x="242" y="70" width="88" height="27" rx="4" fill="#FBF1DE" stroke="#A9713F" stroke-width="2.4"/>' +
+        '<text x="286" y="90" text-anchor="middle" font-size="15" font-weight="800" fill="#152A4A" style="font-family:inherit">떡집</text>' +
+      '</g>' +
+
+      /* 천막 */
+      awning +
+      '<rect y="62" width="360" height="3" fill="#8A5E3B" opacity=".14"/>' +
+      '<rect y="10" width="360" height="5" fill="#8A5E3B"/>' +
+
+      /* 매달린 등 */
+      '<g>' +
+        (alt ? '' : '<circle cx="332" cy="122" r="27" fill="url(#'+u+'lamp)"/>') +
+        '<line x1="350" y1="104" x2="333" y2="104" stroke="#8A5E3B" stroke-width="2.4"/>' +
+        '<line x1="332" y1="104" x2="332" y2="108" stroke="#8A5E3B" stroke-width="1.8"/>' +
+        '<rect x="325" y="106" width="14" height="5" rx="2" fill="'+lantLid+'"/>' +
+        '<ellipse cx="332" cy="122" rx="10" ry="13" fill="'+lantCol+'"/>' +
+        '<g stroke="#FFFFFF" stroke-opacity=".35" stroke-width="1.2"><line x1="323" y1="118" x2="341" y2="118"/><line x1="322" y1="126" x2="342" y2="126"/></g>' +
+        '<rect x="325" y="133" width="14" height="5" rx="2" fill="'+lantLid+'"/>' +
+        '<line x1="332" y1="138" x2="332" y2="145" stroke="#C99A55" stroke-width="1.6"/>' +
+        '<path d="M329 145 h6 l-3 7 z" fill="#C99A55"/>' +
+      '</g>' +
+
+      /* 왼쪽 과일 좌판 */
+      '<g>' +
+        '<ellipse cx="84" cy="199" rx="78" ry="5" fill="#8A5E3B" opacity=".16"/>' +
+        '<rect x="20" y="152" width="9" height="44" rx="2" fill="#8A5E3B"/>' +
+        '<rect x="140" y="152" width="9" height="44" rx="2" fill="#8A5E3B"/>' +
+        '<rect x="24" y="170" width="120" height="7" rx="2" fill="#B0804B"/>' +
+        '<rect x="32" y="160" width="24" height="10" rx="2" fill="#C9784C"/>' +
+        '<rect x="62" y="161" width="22" height="9" rx="2" fill="#8FA98A"/>' +
+        '<rect x="92" y="160" width="26" height="10" rx="2" fill="#D9BC92"/>' +
+        '<rect x="10" y="140" width="150" height="13" rx="3" fill="url(#'+u+'wood)"/>' +
+        '<rect x="10" y="140" width="150" height="5" rx="2" fill="#CE9560"/>' +
+        '<rect x="12" y="150" width="146" height="3.5" fill="#8E5D30" opacity=".65"/>' +
+        /* 귤 상자 */
+        '<rect x="18" y="124" width="44" height="16" rx="2" fill="#C9A472"/>' +
+        '<rect x="18" y="124" width="44" height="4" rx="1.5" fill="#B08A5C"/>' +
+        '<g fill="#E8933F">' +
+          '<circle cx="26" cy="122" r="5.4"/><circle cx="36" cy="119.5" r="5.6"/><circle cx="47" cy="120.5" r="5.4"/>' +
+          '<circle cx="56" cy="123" r="5"/><circle cx="32" cy="114" r="4.6"/><circle cx="45" cy="113" r="4.4"/>' +
+        '</g>' +
+        '<g fill="#8FA98A" opacity=".85"><ellipse cx="33" cy="113" rx="2.6" ry="1.4"/><ellipse cx="47" cy="112" rx="2.4" ry="1.2"/></g>' +
+        /* 사과 바구니 */
+        '<path d="M70 116 q 24 -32 50 0" fill="none" stroke="#A97640" stroke-width="3.2" stroke-linecap="round"/>' +
+        '<path d="M66 116 h58 l-7 24 h-44 z" fill="#C0894E"/>' +
+        '<path d="M66 116 h58 l-1.6 5 h-54.8 z" fill="#A97640"/>' +
+        '<g stroke="#9A6A38" stroke-width="1.2" opacity=".6"><line x1="69" y1="128" x2="121" y2="128"/><line x1="71" y1="136" x2="117" y2="136"/></g>' +
+        ap(78,111,9) + ap(94,108,9.5) + ap(110,112,8.6) + ap(86,99,8.6) + ap(101,98,8.2) +
+      '</g>' +
+
+      /* 손님 */
+      '<g>' +
+        '<ellipse cx="184" cy="252" rx="28" ry="5" fill="#8A5E3B" opacity=".18"/>' +
+        '<path d="M168 206 h32 l14 44 h-60 z" fill="#3F6F7E"/>' +
+        '<path d="M168 206 h32 l3 7 h-38 z" fill="#4E8797"/>' +
+        '<path d="M168 222 q 18 6 34 0" fill="none" stroke="#2E5A67" stroke-width="1.6" opacity=".5"/>' +
+        '<path d="M168 202 q 16 -8 32 0 l2 8 q -18 7 -36 0 z" fill="#EDB3AE"/>' +
+        '<path d="M170 205 q -9 8 -7 19" fill="none" stroke="#EDB3AE" stroke-width="6.5" stroke-linecap="round"/>' +
+        '<path d="M193 205 q 8 8 7 17" fill="none" stroke="#EDB3AE" stroke-width="6.5" stroke-linecap="round"/>' +
+        '<circle cx="184" cy="190" r="13" fill="#F2CFB2"/>' +
+        '<path d="M170 190 q 1 -16 14 -16 q 13 0 14 16 q -14 -7 -28 0 z" fill="#4A4E5A"/>' +
+        '<path d="M170 189 q 14 7 28 0" fill="none" stroke="#FBF1DE" stroke-width="2.4" opacity=".9"/>' +
+        '<g fill="#3B4A5C"><circle cx="180" cy="192" r="1.6"/><circle cx="188" cy="192" r="1.6"/></g>' +
+        '<path d="M181 197 q 3 2.2 6 0" fill="none" stroke="#C97C6E" stroke-width="1.4" stroke-linecap="round"/>' +
+        '<ellipse cx="176" cy="251" rx="7" ry="3.2" fill="#3B2E26"/>' +
+        '<ellipse cx="192" cy="251" rx="7" ry="3.2" fill="#3B2E26"/>' +
+        /* 장바구니 */
+        '<g>' +
+          '<path d="M198 212 q 7 -9 14 0" fill="none" stroke="'+bagLine+'" stroke-width="2.6"/>' +
+          '<path d="M196 212 h18 l2.5 22 h-23 z" fill="'+bagCol+'"/>' +
+          '<rect x="196" y="212" width="18" height="4.5" fill="'+bagLine+'"/>' +
+          '<path d="M200 223 h10" stroke="'+bagLine+'" stroke-width="1.6" opacity=".7"/>' +
+        '</g>' +
+      '</g>' +
+    '</svg>';
+  }
+
+  /* ───────────────────────── 장면 5 : 맑은 바닷가 등대 ───────────────────────── */
+  function scene5(u, alt){
+    var sail  = alt ? '#D9533F' : '#FFFDF6';   // 돛 색
+    var sailD = alt ? '#BE4331' : '#EFE6D2';
+    var para  = alt ? '#3E8494' : '#D9603F';   // 파라솔 줄무니 색
+    var glass = alt ? '#D7DEE4' : '#FFE9A8';   // 등대 불빛
+
+    var cloud = function(x,y,sc,op){
+      return '<g opacity="'+op+'" transform="translate('+x+' '+y+') scale('+sc+')">' +
+        '<ellipse cx="0" cy="0" rx="17" ry="10" fill="#FFFFFF"/>' +
+        '<ellipse cx="13" cy="3" rx="12" ry="8" fill="#FFFFFF"/>' +
+        '<ellipse cx="-13" cy="4" rx="11" ry="7" fill="#FFFFFF"/>' +
+        '<rect x="-24" y="1" width="48" height="9" rx="4.5" fill="#FFFFFF"/></g>';
+    };
+    var gull = function(x,y,sc){
+      return '<g transform="translate('+x+' '+y+') scale('+(sc || 1)+')" fill="none" stroke="#5B6A80" stroke-width="2.2" stroke-linecap="round">' +
+        '<path d="M-13 2 q 6 -8 13 0"/><path d="M0 2 q 7 -8 13 0"/></g>';
+    };
+
+    return '' +
+    '<svg viewBox="0 0 360 260" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet" role="img" aria-label="맑은 바닷가 등대 그림">' +
+      '<defs>' +
+        '<linearGradient id="'+u+'sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#CFEAF7"/><stop offset="1" stop-color="#F1FAF7"/></linearGradient>' +
+        '<linearGradient id="'+u+'sea" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#A9CFE2"/><stop offset="1" stop-color="#7FB0C8"/></linearGradient>' +
+        '<radialGradient id="'+u+'sun"><stop offset="0" stop-color="#FFF0C4" stop-opacity=".95"/><stop offset="1" stop-color="#FFF0C4" stop-opacity="0"/></radialGradient>' +
+        '<radialGradient id="'+u+'lamp"><stop offset="0" stop-color="#FFE9A8" stop-opacity=".95"/><stop offset="1" stop-color="#FFE9A8" stop-opacity="0"/></radialGradient>' +
+      '</defs>' +
+
+      '<rect width="360" height="150" fill="url(#'+u+'sky)"/>' +
+      '<circle cx="312" cy="34" r="42" fill="url(#'+u+'sun)"/>' +
+      '<circle cx="312" cy="34" r="15" fill="#F9D377"/>' +
+      '<circle cx="312" cy="34" r="15" fill="none" stroke="#F3C05E" stroke-width="2"/>' +
+
+      /* 등대 불빛 줄기 */
+      (alt ? '' : '<g opacity=".55"><path d="M271 80 L196 58 L196 104 Z" fill="#FFF0BC"/><path d="M289 80 L360 58 L360 104 Z" fill="#FFF0BC"/></g>') +
+
+      cloud(58, 38, 1.05, .95) +
+      cloud(196, 30, .95, .95) +
+      cloud(120, 66, .62, .8) +
+      gull(236, 88, 1) +
+      gull(214, 68, .9) +
+
+      /* 바다 */
+      '<rect y="132" width="360" height="58" fill="url(#'+u+'sea)"/>' +
+      '<rect y="130" width="360" height="2.5" fill="#BFDCE8"/>' +
+      '<g stroke="#FFFFFF" stroke-opacity=".5" stroke-width="2" stroke-linecap="round" fill="none">' +
+        '<path d="M20 150 q 10 -4 20 0"/><path d="M78 168 q 12 -4 24 0"/><path d="M170 158 q 11 -4 22 0"/>' +
+        '<path d="M244 172 q 12 -4 24 0"/><path d="M300 148 q 9 -4 18 0"/><path d="M44 178 q 10 -4 20 0"/>' +
+      '</g>' +
+      '<g fill="#FFFFFF" opacity=".5">' +
+        '<circle cx="150" cy="146" r="1.8"/><circle cx="188" cy="164" r="1.6"/><circle cx="228" cy="142" r="1.5"/><circle cx="66" cy="140" r="1.4"/>' +
+      '</g>' +
+
+      /* 돛단배 */
+      '<g>' +
+        '<ellipse cx="122" cy="162" rx="28" ry="4" fill="#6FA3BE" opacity=".85"/>' +
+        '<path d="M96 150 h52 l-8 11 h-36 z" fill="#7A5232"/>' +
+        '<path d="M96 150 h52 l-2 4 h-48 z" fill="#A9713F"/>' +
+        '<line x1="122" y1="150" x2="122" y2="116" stroke="#8A5E3B" stroke-width="2.6"/>' +
+        '<path d="M124 118 q 24 12 22 30 h-22 z" fill="'+sail+'" stroke="'+sailD+'" stroke-width="1.2"/>' +
+        '<path d="M120 120 q -20 12 -18 28 h18 z" fill="'+sailD+'"/>' +
+        '<path d="M122 115 l 11 3 l -11 3 z" fill="#E8B44F"/>' +
+      '</g>' +
+
+      /* 모래사장 */
+      '<path d="M0 190 q 56 -6 118 -1 q 62 5 126 -1 q 58 -5 116 1 L360 260 L0 260 Z" fill="#F2E3C4"/>' +
+      '<path d="M0 190 q 56 -6 118 -1 q 62 5 126 -1 q 58 -5 116 1" fill="none" stroke="#FBF6E8" stroke-width="3"/>' +
+      '<g fill="#E4D2AE" opacity=".85">' +
+        '<circle cx="30" cy="238" r="1.8"/><circle cx="88" cy="232" r="1.5"/><circle cx="128" cy="246" r="1.6"/>' +
+        '<circle cx="176" cy="236" r="1.5"/><circle cx="214" cy="248" r="1.8"/><circle cx="322" cy="240" r="1.6"/>' +
+        '<circle cx="286" cy="252" r="1.4"/><circle cx="52" cy="252" r="1.5"/>' +
+      '</g>' +
+
+      /* 파라솔 */
+      '<g>' +
+        '<ellipse cx="66" cy="250" rx="26" ry="5" fill="#E0CDA6" opacity=".9"/>' +
+        '<line x1="66" y1="200" x2="66" y2="250" stroke="#B9A276" stroke-width="2.6"/>' +
+        '<path d="M66 197 Q 34 210 32 223 Q 66 230 100 223 Q 98 210 66 197 Z" fill="#FBF1DE" stroke="#E4D6BE" stroke-width="1"/>' +
+        '<path d="M66 197 L39 215 Q 45 222 53 223 Z" fill="'+para+'"/>' +
+        '<path d="M66 197 L62 226 Q 68 227 74 226 Z" fill="'+para+'"/>' +
+        '<path d="M66 197 L93 215 Q 87 222 79 223 Z" fill="'+para+'"/>' +
+        '<circle cx="66" cy="196" r="3" fill="#C99A55"/>' +
+      '</g>' +
+
+      /* 모래 위 소품 */
+      '<g>' +
+        '<circle cx="112" cy="238" r="10" fill="#FBF1DE" stroke="#E4D6BE" stroke-width="1"/>' +
+        '<path d="M112 228 a 10 10 0 0 1 0 20 z" fill="#D9603F"/>' +
+        '<path d="M112 228 a 10 10 0 0 0 0 20 z" fill="#4E8797" opacity=".85"/>' +
+      '</g>' +
+      '<g transform="translate(152 246)">' +
+        '<path d="M-11 2 q 2 -12 11 -12 q 9 0 11 12 q -11 4 -22 0 z" fill="#F2D2B4" stroke="#DCB695" stroke-width="1"/>' +
+        '<g stroke="#DCB695" stroke-width="1" opacity=".75" fill="none"><path d="M-6 1 q 0 -8 6 -9"/><path d="M0 2 q 0 -9 2 -10"/><path d="M6 1 q 0 -8 -4 -9"/></g>' +
+      '</g>' +
+
+      /* 바위 */
+      '<path d="M232 216 q 2 -20 24 -26 q 12 -4 24 -2 q 16 2 28 -2 q 16 4 22 16 q 4 8 2 14 q -26 6 -50 5 q -26 -1 -50 -5 z" fill="#8E9AA6"/>' +
+      '<path d="M232 216 q 2 -20 24 -26 q 8 10 6 26 z" fill="#A7B2BC"/>' +
+      '<path d="M300 216 q 14 -1 30 -4 q 2 -6 -2 -12 q -12 12 -28 16 z" fill="#7E8A97"/>' +
+
+      /* 등대 */
+      '<g>' +
+        '<circle cx="280" cy="82" r="27" fill="url(#'+u+'lamp)"/>' +
+        '<path d="M262 186 L270 100 L290 100 L298 186 Z" fill="#FBF7EE"/>' +
+        '<path d="M262 186 L270 100 L275.5 100 L268 186 Z" fill="#EDE3D2" opacity=".75"/>' +
+        '<path d="M263.9 166 L265.2 152 L294.8 152 L296.1 166 Z" fill="#D9603F"/>' +
+        '<path d="M267.6 126 L268.9 112 L291.1 112 L292.4 126 Z" fill="#D9603F"/>' +
+        '<path d="M276.4 150 v -8 a 3.6 3.6 0 0 1 7.2 0 v 8 z" fill="#FFE9A8" stroke="#152A4A" stroke-width="1.1"/>' +
+        '<path d="M276.2 186 v -12 a 3.8 3.8 0 0 1 7.6 0 v 12 z" fill="#3B4A5C"/>' +
+        '<rect x="264" y="92" width="32" height="9" rx="2" fill="#3B4A5C"/>' +
+        '<rect x="271" y="72" width="18" height="20" fill="'+glass+'"/>' +
+        '<rect x="271" y="72" width="18" height="20" fill="none" stroke="#3B4A5C" stroke-width="1.6"/>' +
+        '<line x1="280" y1="72" x2="280" y2="92" stroke="#3B4A5C" stroke-width="1.3"/>' +
+        '<path d="M269 72 q 11 -21 22 0 z" fill="#D9603F" stroke="#BE4331" stroke-width="1"/>' +
+        '<rect x="279" y="44" width="2.2" height="6" fill="#8A5E3B"/>' +
+        '<circle cx="280.1" cy="43" r="2.6" fill="#C99A55"/>' +
+      '</g>' +
+    '</svg>';
+  }
+
   /* ───────────────────────── 게임 데이터 ───────────────────────── */
   var STAGES = [
     {
@@ -618,6 +905,27 @@
         { id:'teacup', x:212, y:175, r:28, name:'찻잔 하나' },
         { id:'sun',    x:276, y:124, r:32, name:'병풍의 해' },
         { id:'jar',    x:46,  y:180, r:40, name:'마당 항아리' }
+      ]
+    },
+    {
+      name: '정다운 전통시장',
+      scene: scene4,
+      diffs: [
+        { id:'awning',  x:108, y:38,  r:30, name:'천막 색깔' },
+        { id:'apples',  x:94,  y:106, r:28, name:'과일 바구니' },
+        { id:'lantern', x:332, y:120, r:28, name:'가게 등' },
+        { id:'bag',     x:206, y:222, r:28, name:'손님 장바구니' }
+      ]
+    },
+    {
+      name: '맑은 바닷가 등대',
+      scene: scene5,
+      diffs: [
+        { id:'cloud',   x:54,  y:40,  r:28, name:'구름 하나' },
+        { id:'gull',    x:214, y:68,  r:28, name:'갈매기 한 마리' },
+        { id:'sail',    x:122, y:138, r:28, name:'돛 색깔' },
+        { id:'light',   x:280, y:80,  r:28, name:'등대 불빛' },
+        { id:'parasol', x:66,  y:212, r:28, name:'파라솔 색' }
       ]
     }
   ];
@@ -843,7 +1151,7 @@
     overlayCard(
       '<div class="emoji">🔍</div>' +
       '<h2>오늘의 틀린 그림 찾기</h2>' +
-      '<p>위아래 두 그림에서<br><b>다른 곳 3군데</b>를 찾아보세요.<br>3단계, 3분이면 충분해요.<br>천천히 하셔도 괜찮아요.</p>' +
+      '<p>위아래 두 그림에서<br><b>다른 곳을 하나씩</b> 찾아보세요.<br>1단계부터 5단계까지 모두 18군데,<br>5분이면 충분해요.<br>천천히 하셔도 괜찮아요.</p>' +
       '<button class="primary" id="startBtn">시작하기</button>' +
       '<p class="tiny">찾은 곳은 빨간 동그라미로 표시돼요</p>'
     );
@@ -872,12 +1180,19 @@
   }
 
   function finalCard(){
-    var total = S.times.reduce(function(a,b){ return a + b; }, 0);
+    var total = 0, spots = 0, rows = '';
+    for (var i=0;i<STAGES.length;i++){
+      var t = S.times[i] || 0;
+      total += t; spots += STAGES[i].diffs.length;
+      rows += '<div class="rec"><span>' + (i + 1) + '단계 <b>' + STAGES[i].name + '</b></span>' +
+              '<span class="rt">' + fmt(t) + '</span></div>';
+    }
     overlayCard(
       '<div class="emoji">🏆</div>' +
       '<h2>모두 찾았어요!</h2>' +
       '<p>총 걸린 시간<span class="big">' + fmtLong(total) + '</span>' +
-      '9군데를 모두 찾으셨어요.<br>오늘 두뇌도 맑게 깨어났습니다.</p>' +
+      spots + '군데를 모두 찾으셨어요.<br>오늘 두뇌도 맑게 깨어났습니다.</p>' +
+      '<div class="recs">' + rows + '</div>' +
       '<button class="primary" id="shareBtn">카톡·친구에게 공유하기</button>' +
       '<a class="ghost" href="' + HUB_URL + '">허브로 돌아가기</a>' +
       '<a class="ghost gold" href="' + PUMSS_URL + '">더 많은 생활·경제 정보 &amp; 상담</a>' +
@@ -889,8 +1204,10 @@
   }
 
   function shareGame(){
-    var text = '오늘의 틀린 그림 찾기 — 3분이면 끝나는 두뇌 건강 게임. 나는 ' +
-      fmtLong(S.times.reduce(function(a,b){ return a + b; }, 0)) + ' 만에 9군데를 다 찾았어요!';
+    var spots = 0, total = 0;
+    for (var i=0;i<STAGES.length;i++){ spots += STAGES[i].diffs.length; total += (S.times[i] || 0); }
+    var text = '오늘의 틀린 그림 찾기 — 5분이면 끝나는 두뇌 건강 게임. 나는 ' +
+      fmtLong(total) + ' 만에 ' + spots + '군데를 다 찾았어요!';
     if (navigator.share){
       navigator.share({ title: '오늘의 틀린 그림 찾기', text: text, url: SHARE_URL })
         .catch(function(){});
