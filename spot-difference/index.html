@@ -45,6 +45,19 @@
     gap:7px;
   }
   header{flex:0 0 auto}
+  .toprow{display:flex;align-items:center;justify-content:space-between;gap:10px}
+  /* ── 도구 모음(허브)으로 돌아가기 ── */
+  .hub-back{
+    display:inline-flex;align-items:center;justify-content:center;flex:0 0 auto;
+    min-height:40px;padding:0 14px;border-radius:999px;
+    background:#FCE9DC;border:1px solid var(--line);color:#A15C36;
+    font-size:14px;font-weight:800;letter-spacing:-.01em;line-height:1;
+    text-decoration:none;white-space:nowrap;
+    box-shadow:0 2px 8px rgba(234,88,12,.10);
+    transition:transform .15s ease,background .15s ease;
+  }
+  .hub-back:active{transform:scale(.97);background:#FBDCC7}
+  .hub-back:focus-visible{outline:3px solid rgba(234,88,12,.45);outline-offset:2px}
   .brand{display:flex;align-items:center;gap:6px;font-size:12.5px;font-weight:800;letter-spacing:.14em;color:var(--gold);text-transform:uppercase}
   .brand .dot{width:6px;height:6px;border-radius:50%;background:var(--gold)}
   h1{font-size:22px;line-height:1.2;margin:3px 0 5px;font-weight:800;letter-spacing:-.02em;color:var(--navy)}
@@ -134,7 +147,10 @@
 <body>
 <div class="app">
   <header>
-    <div class="brand"><span class="dot"></span>PUMSS 두뇌 건강</div>
+    <div class="toprow">
+      <a class="hub-back" href="../">← 도구 모음으로</a>
+      <div class="brand"><span class="dot"></span>PUMSS 두뇌 건강</div>
+    </div>
     <h1>오늘의 틀린 그림 찾기</h1>
     <div class="hud">
       <div class="stages" id="stages">

@@ -69,6 +69,18 @@
   }
 
   /* ── 상단 바 ── */
+  .hub-nav{display:flex;align-items:center;padding:0 0 8px}
+  .hub-back{
+    display:inline-flex;align-items:center;justify-content:center;
+    min-height:42px;padding:0 16px;border-radius:999px;
+    background:var(--teal-soft);border:1px solid var(--line);color:var(--teal);
+    font-size:14.5px;font-weight:800;letter-spacing:-.01em;line-height:1;
+    text-decoration:none;white-space:nowrap;
+    box-shadow:0 2px 10px rgba(2,132,199,.10);
+    transition:transform .15s ease,background .15s ease;
+  }
+  .hub-back:active{transform:scale(.97);background:#CBE9FC}
+  .hub-back:focus-visible{outline:3px solid rgba(2,132,199,.45);outline-offset:2px}
   .sp-topbar{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:14px}
   .sp-brand{display:flex;align-items:baseline;gap:7px;font-size:13.5px;font-weight:800;letter-spacing:.14em;color:var(--gold);text-transform:uppercase}
   .sp-brand b{font-size:15px;letter-spacing:.06em;color:var(--navy)}
@@ -296,6 +308,8 @@
   /* 5단계(12·16장)까지 스크롤 없이 한 화면에 담기 위한 세로 압축 */
   @media (max-height:700px){
     #sp{padding-top:8px;padding-bottom:calc(10px + env(safe-area-inset-bottom))}
+    .hub-nav{padding-bottom:6px}
+    .hub-back{min-height:40px;font-size:14px}
     .sp-topbar{margin-bottom:6px}
     .sp-tool{padding:6px 10px;font-size:14px}
     .sp-status{margin-bottom:5px}
@@ -330,6 +344,8 @@
 </head>
 <body>
 <div id="sp">
+
+  <nav class="hub-nav" aria-label="도구 모음으로 돌아가기"><a class="hub-back" href="../">← 도구 모음으로</a></nav>
 
   <div class="sp-topbar">
     <div class="sp-brand"><b>품스</b><span>PUMSS</span></div>
