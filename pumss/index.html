@@ -104,6 +104,7 @@
     background:linear-gradient(135deg,var(--blue) 0%,var(--blue-deep) 100%);
     color:#fff;box-shadow:0 4px 12px rgba(37,99,235,.24);
   }
+  .btn-open .short{display:none}
 
   /* ── 개인품 화면 ── */
   .stage{
@@ -182,6 +183,11 @@
     @keyframes up{from{transform:translateY(10px);opacity:.55}to{transform:none;opacity:1}}
   }
 
+  @media (max-width:380px){
+    .btn-open .full{display:none}
+    .btn-open .short{display:inline}
+  }
+
   @media (max-width:360px){
     .title{font-size:14.5px}
     .btn{padding:7px 8px;font-size:12px;gap:3px}
@@ -205,8 +211,8 @@
       <span class="ico" aria-hidden="true">📲</span>앱 설치
     </button>
 
-    <a class="btn btn-open" id="openBtn" href="https://www.pumss.co.kr/SP/10.do" target="_blank" rel="noopener">
-      공식 창에서 열기 <span aria-hidden="true">↗</span>
+    <a class="btn btn-open" id="openBtn" href="https://www.pumss.co.kr/SP/10.do" target="_blank" rel="noopener" title="공식 품스 창에서 열기">
+      <span class="full">공식 창에서 열기</span><span class="short">공식 창</span> <span aria-hidden="true">↗</span>
     </a>
   </header>
 
