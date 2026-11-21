@@ -68,11 +68,11 @@
 
   /* ── top bar ── */
   .bng-topbar{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:2px 2px 12px;}
+  .bng-left{display:flex;align-items:center;gap:10px;min-width:0;}
   /* ── 도구 모음(허브)으로 돌아가기 ── */
-  .hub-nav{display:flex;align-items:center;padding:2px 2px 6px;}
   .hub-back{
-    display:inline-flex;align-items:center;justify-content:center;
-    min-height:42px;padding:0 16px;border-radius:999px;
+    display:inline-flex;align-items:center;justify-content:center;flex:0 0 auto;
+    min-height:42px;padding:0 14px;border-radius:999px;
     background:var(--teal-soft);border:1.5px solid #B9EBD8;color:#047857;
     font-size:14.5px;font-weight:800;letter-spacing:-.01em;line-height:1;
     text-decoration:none;white-space:nowrap;
@@ -81,6 +81,9 @@
   }
   .hub-back:active{transform:scale(.97);background:#C3F1E1}
   .hub-back:focus-visible{outline:3px solid rgba(5,150,105,.45);outline-offset:2px}
+  @media (max-width:400px){
+    .bng-brand span{display:none;}
+  }
   .bng-brand{display:flex;align-items:baseline;gap:7px;line-height:1;}
   .bng-brand b{font-size:18px;font-weight:900;letter-spacing:-.4px;color:var(--navy);}
   .bng-brand span{font-size:13.5px;font-weight:800;letter-spacing:1.2px;color:#7FA79A;}
@@ -270,10 +273,11 @@
 <body>
 <div id="bng">
 
-  <nav class="hub-nav" aria-label="도구 모음으로 돌아가기"><a class="hub-back" href="../">← 도구 모음으로</a></nav>
-
   <div class="bng-topbar">
-    <div class="bng-brand"><b>품스</b><span>PUMSS</span></div>
+    <div class="bng-left">
+      <a class="hub-back" href="../">← 도구 모음으로</a>
+      <div class="bng-brand"><b>품스</b><span>PUMSS</span></div>
+    </div>
     <button type="button" id="bngSoundBtn" class="bng-sound" aria-pressed="true" aria-label="소리 켜짐. 누르면 소리를 끕니다.">
       <span class="ico" id="bngSoundIco" aria-hidden="true">🔔</span><span id="bngSoundLbl">소리 켜짐</span>
     </button>
