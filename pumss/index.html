@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="light">
+<meta name="theme-color" content="#153A9C">
+<link rel="manifest" href="/pumss/manifest.json">
+<link rel="icon" type="image/png" sizes="192x192" href="/pumss/icons/icon-192.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/pumss/icons/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="개인품">
+<title>내 개인품 | 품스</title>
+<meta name="description" content="품스 개인품을 앱처럼 바로 여는 전용 화면. 내 개인품을 보고, 새 개인품 만들기·로그인·품스 앱 연동이 필요할 때는 공식 창에서 여세요.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="내 개인품">
+<meta property="og:description" content="품스 개인품을 바탕화면에 설치해 앱처럼 바로 여세요.">
+<style>
+  :root{
+    color-scheme:light;
+    --bar:#FFFFFF;
+    --ink:#0F172A;
+    --body:#475569;
+    --line:#E2E8F0;
+    --blue:#2563EB;
+    --blue-deep:#1D4ED8;
+    --navy:#153A9C;
+    --bar-h:50px;
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  html,body{margin:0;padding:0;height:100%}
+  html{background:var(--navy)}
+  body{
+    display:flex;flex-direction:column;
+    height:100vh;height:100dvh;
+    overflow:hidden;
+    background:#F8FAFC;
+    color:var(--body);
+    font-family:-apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Malgun Gothic", "Noto Sans KR", "Noto Sans CJK KR", "NanumGothic", "Segoe UI", sans-serif;
+    -webkit-text-size-adjust:100%;
+    word-break:keep-all;
+  }
+
+  /* ── 상단 슬림 툴바 ── */
+  .topbar{
+    flex:0 0 auto;
+    display:flex;align-items:center;gap:6px;
+    min-height:var(--bar-h);
+    padding:calc(6px + env(safe-area-inset-top)) 10px 6px 12px;
+    background:rgba(255,255,255,.96);
+    -webkit-backdrop-filter:saturate(180%) blur(8px);
+    backdrop-filter:saturate(180%) blur(8px);
+    border-bottom:1px solid var(--line);
+    box-shadow:0 2px 10px rgba(15,23,42,.05);
+    position:relative;z-index:2;
+  }
+  .title{
+    display:flex;align-items:center;gap:7px;
+    margin:0;font-size:15.5px;font-weight:800;letter-spacing:-.01em;color:var(--ink);
+    flex:0 0 auto;white-space:nowrap;
+  }
+  .title .mark{
+    width:20px;height:20px;border-radius:6px;flex:0 0 auto;
+    background:linear-gradient(150deg,#3A84FF 0%,#153A9C 100%);
+    box-shadow:0 2px 6px rgba(37,99,235,.30);
+    position:relative;
+  }
+  .title .mark::after{
+    content:"";position:absolute;left:50%;top:5px;
+    width:5px;height:5px;margin-left:-2.5px;border-radius:50%;background:#fff;
+  }
+  .title .mark::before{
+    content:"";position:absolute;left:50%;bottom:3.5px;
+    width:10px;height:6px;margin-left:-5px;border-radius:6px 6px 2px 2px;background:#fff;
+  }
+  .spacer{flex:1 1 auto;min-width:0}
+
+  .icon-btn{
+    flex:0 0 auto;display:inline-flex;align-items:center;justify-content:center;
+    width:32px;height:32px;border:0;border-radius:10px;
+    background:#F1F5F9;color:#475569;font-family:inherit;font-size:15px;line-height:1;
+    cursor:pointer;transition:transform .12s ease, background .12s ease;
+  }
+  .icon-btn:active{transform:scale(.94);background:#E2E8F0}
+  .icon-btn.spin svg{animation:spin .6s linear}
+  @keyframes spin{from{transform:rotate(0)}to{transform:rotate(360deg)}}
+
+  .btn{
+    flex:0 0 auto;display:inline-flex;align-items:center;gap:4px;
+    border:1.5px solid transparent;border-radius:999px;
+    padding:7px 10px;font-family:inherit;font-size:12.5px;font-weight:800;
+    letter-spacing:-.01em;line-height:1.2;white-space:nowrap;text-decoration:none;
+    cursor:pointer;transition:transform .12s ease;
+  }
+  .btn:active{transform:scale(.97)}
+  .btn-install{
+    background:#EFF6FF;border-color:#BFDBFE;color:var(--blue-deep);
+  }
+  .btn-install[hidden]{display:none}
+  .btn-install .ico{font-size:13px;line-height:1}
+  .btn-open{
+    background:linear-gradient(135deg,var(--blue) 0%,var(--blue-deep) 100%);
+    color:#fff;box-shadow:0 4px 12px rgba(37,99,235,.24);
+  }
+
+  /* ── 개인품 화면 ── */
+  .stage{
+    position:relative;flex:1 1 auto;min-height:0;
+    background:#fff;
+  }
+  .stage iframe{
+    display:block;width:100%;height:100%;border:0;background:#fff;
+  }
+  .loading{
+    position:absolute;inset:0;display:flex;flex-direction:column;
+    align-items:center;justify-content:center;gap:12px;
+    background:#fff;transition:opacity .3s ease;
+  }
+  .loading.gone{opacity:0;pointer-events:none}
+  .spinner{
+    width:26px;height:26px;border-radius:50%;
+    border:2.5px solid #DBEAFE;border-top-color:var(--blue);
+    animation:spin .8s linear infinite;
+  }
+  .loading p{margin:0;font-size:13.5px;color:#94A3B8;font-weight:600}
+
+  /* ── 설치 안내 모달 ── */
+  .sheet{
+    position:fixed;inset:0;z-index:1000;
+    display:flex;align-items:flex-end;justify-content:center;
+    padding:16px 16px calc(16px + env(safe-area-inset-bottom));
+    background:rgba(15,23,42,.45);
+    -webkit-backdrop-filter:blur(2px);backdrop-filter:blur(2px);
+  }
+  .sheet[hidden]{display:none}
+  .sheet-card{
+    position:relative;width:100%;max-width:430px;max-height:88vh;overflow:auto;
+    background:#fff;border-radius:22px;padding:26px 20px 20px;
+    box-shadow:0 -8px 40px rgba(15,23,42,.24);
+    animation:up .22s ease-out;
+  }
+  @keyframes up{from{transform:translateY(18px);opacity:.55}to{transform:none;opacity:1}}
+  @media (prefers-reduced-motion:reduce){.sheet-card{animation:none}}
+  .sheet-close{
+    position:absolute;top:10px;right:10px;width:40px;height:40px;
+    border:0;border-radius:50%;background:#F1F5F9;color:#475569;
+    font-size:17px;line-height:1;cursor:pointer;font-family:inherit;
+  }
+  .kicker{margin:0 0 6px;font-size:13px;font-weight:800;letter-spacing:.08em;color:var(--blue);text-transform:uppercase}
+  .sheet-title{margin:0 0 6px;font-size:21px;line-height:1.4;font-weight:800;letter-spacing:-.01em;color:var(--ink)}
+  .sheet-desc{margin:0 0 16px;font-size:15px;line-height:1.62;color:var(--body)}
+  .steps{list-style:none;margin:0 0 16px;padding:0;display:flex;flex-direction:column;gap:10px}
+  .steps li{display:flex;align-items:flex-start;gap:12px;background:#F8FAFC;border:1.5px solid var(--line);border-radius:14px;padding:12px 14px}
+  .num{
+    flex:0 0 24px;height:24px;margin-top:1px;border-radius:50%;background:var(--blue);color:#fff;
+    font-size:13px;font-weight:800;display:flex;align-items:center;justify-content:center;
+  }
+  .step-body{font-size:15.5px;line-height:1.55;color:var(--ink);font-weight:600}
+  .step-body em{font-style:normal;color:var(--blue);font-weight:800}
+  .glyph{
+    display:inline-block;padding:0 7px;border-radius:8px;
+    background:#EFF6FF;border:1.5px solid #BFDBFE;color:var(--blue-deep);
+    font-size:15px;font-weight:800;line-height:1.5;
+  }
+  .copy{
+    width:100%;border:0;border-radius:14px;padding:15px;cursor:pointer;
+    background:linear-gradient(135deg,var(--blue) 0%,var(--blue-deep) 100%);
+    color:#fff;font-family:inherit;font-size:16.5px;font-weight:800;
+    box-shadow:0 8px 18px rgba(37,99,235,.20);
+  }
+  .copy[hidden]{display:none}
+  .copy.done{background:linear-gradient(135deg,#059669 0%,#047857 100%)}
+  .tip{margin:12px 2px 0;text-align:center;font-size:13.5px;line-height:1.55;color:#64748B}
+  .tip[hidden]{display:none}
+
+  @media (max-width:360px){
+    .title{font-size:14.5px}
+    .btn{padding:7px 8px;font-size:12px;gap:3px}
+    .topbar{gap:5px;padding-left:10px}
+  }
+</style>
+</head>
+<body>
+  <header class="topbar">
+    <h1 class="title"><span class="mark" aria-hidden="true"></span>개인품</h1>
+    <div class="spacer"></div>
+
+    <button type="button" class="icon-btn" id="reloadBtn" aria-label="새로고침" title="새로고침">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <path d="M20 12a8 8 0 1 1-2.34-5.66" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
+        <path d="M20 4.5V10h-5.5" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
+
+    <button type="button" class="btn btn-install" id="installBtn">
+      <span class="ico" aria-hidden="true">📲</span>앱 설치
+    </button>
+
+    <a class="btn btn-open" id="openBtn" href="https://www.pumss.co.kr/SP/10.do" target="_blank" rel="noopener">
+      공식 창에서 열기 <span aria-hidden="true">↗</span>
+    </a>
+  </header>
+
+  <main class="stage">
+    <iframe
+      id="pumssFrame"
+      src="https://www.pumss.co.kr/SP/10.do"
+      title="품스 개인품"
+      allow="clipboard-write"
+      referrerpolicy="strict-origin-when-cross-origin"></iframe>
+    <div class="loading" id="loading">
+      <div class="spinner" aria-hidden="true"></div>
+      <p>개인품을 불러오는 중이에요…</p>
+    </div>
+  </main>
+
+  <div class="sheet" id="sheet" hidden>
+    <div class="sheet-card" role="dialog" aria-modal="true" aria-labelledby="sheetTitle" aria-describedby="sheetDesc">
+      <button type="button" class="sheet-close" id="sheetClose" aria-label="닫기">✕</button>
+      <p class="kicker">홈 화면에 추가</p>
+      <h2 class="sheet-title" id="sheetTitle">바탕화면에 앱으로 설치하기</h2>
+      <p class="sheet-desc" id="sheetDesc"></p>
+      <ol class="steps" id="steps"></ol>
+      <button type="button" class="copy" id="copyBtn" hidden>주소 복사하기</button>
+      <p class="tip" id="tip">설치하면 주소를 찾지 않아도 바탕화면 아이콘으로 개인품을 바로 열 수 있어요.</p>
+    </div>
+  </div>
+
+  <script>
+  (function () {
+    var frame = document.getElementById('pumssFrame');
+    var loading = document.getElementById('loading');
+    var reloadBtn = document.getElementById('reloadBtn');
+    var installBtn = document.getElementById('installBtn');
+    var sheet = document.getElementById('sheet');
+    var sheetClose = document.getElementById('sheetClose');
+    var elTitle = document.getElementById('sheetTitle');
+    var elDesc = document.getElementById('sheetDesc');
+    var elSteps = document.getElementById('steps');
+    var copyBtn = document.getElementById('copyBtn');
+    var elTip = document.getElementById('tip');
+    var deferredPrompt = null;
+    var promptDismissed = false;
+    var lastFocus = null;
+    var PWA_URL = location.origin + '/pumss/';
+
+    function isStandalone() {
+      return (window.matchMedia && window.matchMedia('(display-mode: standalone)').matches) ||
+             (window.matchMedia && window.matchMedia('(display-mode: fullscreen)').matches) ||
+             (window.matchMedia && window.matchMedia('(display-mode: minimal-ui)').matches) ||
+             window.navigator.standalone === true;
+    }
+
+    /* 설치된 앱(standalone)에서는 설치 버튼만 숨깁니다. */
+    function syncInstallVisibility() {
+      installBtn.hidden = isStandalone();
+    }
+    syncInstallVisibility();
+
+    /* 개인품 화면 로딩 표시 */
+    function hideLoading() { if (loading) loading.classList.add('gone'); }
+    frame.addEventListener('load', hideLoading);
+    setTimeout(hideLoading, 4000);
+
+    reloadBtn.addEventListener('click', function () {
+      reloadBtn.classList.add('spin');
+      setTimeout(function () { reloadBtn.classList.remove('spin'); }, 650);
+      try {
+        frame.contentWindow.location.reload();
+      } catch (e) {
+        /* 다른 출처라 직접 새로고침이 막히면 src를 다시 넣어 새로 불러옵니다. */
+        frame.src = 'https://www.pumss.co.kr/SP/10.do?t=' + Date.now();
+      }
+      loading.classList.remove('gone');
+      setTimeout(hideLoading, 4000);
+    });
+
+    window.addEventListener('beforeinstallprompt', function (e) {
+      e.preventDefault();
+      if (!promptDismissed) deferredPrompt = e;
+      syncInstallVisibility();
+    });
+
+    window.addEventListener('appinstalled', function () {
+      deferredPrompt = null;
+      installBtn.hidden = true;
+    });
+
+    document.addEventListener('visibilitychange', function () {
+      if (document.visibilityState === 'visible') syncInstallVisibility();
+    });
+
+    var ua = navigator.userAgent || '';
+
+    function detectPlatform(uaString) {
+      var s = uaString || '';
+      if (/KAKAOTALK|NAVER\(inapp|Instagram|FBAN|FBAV|FB_IAB|Line\/|DaumApps|everytimeApp|Snapchat|Twitter/i.test(s)) return 'inapp';
+      if (/iPad|iPhone|iPod/.test(s) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1)) return 'ios';
+      if (/Android/.test(s)) return 'android';
+      return 'desktop';
+    }
+
+    function steps(list) {
+      elSteps.innerHTML = '';
+      list.forEach(function (html, i) {
+        var li = document.createElement('li');
+        var num = document.createElement('span');
+        num.className = 'num';
+        num.textContent = String(i + 1);
+        var body = document.createElement('span');
+        body.className = 'step-body';
+        body.innerHTML = html;
+        li.appendChild(num);
+        li.appendChild(body);
+        elSteps.appendChild(li);
+      });
+    }
+
+    function guide(mode) {
+      copyBtn.hidden = true;
+      elTip.hidden = false;
+      elTip.textContent = '설치하면 주소를 찾지 않아도 바탕화면 아이콘으로 개인품을 바로 열 수 있어요.';
+
+      if (mode === 'inapp') {
+        elTitle.textContent = '브라우저로 열고 설치하기';
+        elDesc.textContent = '지금은 카카오톡·네이버 같은 앱 안에서 열려 있어요. Safari나 Chrome으로 열어야 바탕화면에 설치할 수 있어요.';
+        steps([
+          '오른쪽 위 <em>⋯</em> 또는 <em>⌄</em>를 누르고 <em>‘다른 브라우저로 열기’</em>를 골라 주세요.',
+          '아래 <em>‘주소 복사하기’</em>를 눌러 Safari나 Chrome 주소창에 붙여넣어도 됩니다.'
+        ]);
+        copyBtn.hidden = false;
+        elTip.hidden = true;
+        return;
+      }
+
+      if (mode === 'ios') {
+        elTitle.textContent = '아이폰에 설치하기';
+        elDesc.textContent = '사파리에서 아래 세 가지만 따라 하면 돼요.';
+        steps([
+          '화면 <em>아래쪽 가운데</em>의 공유 버튼 <span class="glyph">□↑</span>을 눌러요.',
+          '나온 메뉴를 조금 내려 <em>‘홈 화면에 추가’</em>를 눌러요.',
+          '오른쪽 위 <em>‘추가’</em>를 누르면 끝!'
+        ]);
+        elTip.textContent = '카카오톡·네이버 앱 안에서 열었다면, 먼저 Safari로 열어 주세요.';
+        return;
+      }
+
+      if (mode === 'android') {
+        elTitle.textContent = '안드로이드에 설치하기';
+        elDesc.textContent = '크롬에서 아래 세 가지만 따라 하면 돼요.';
+        steps([
+          '오른쪽 위 <span class="glyph">⋮</span> 메뉴를 눌러요.',
+          '<em>‘앱 설치’</em>(또는 ‘홈 화면에 추가’)를 눌러요.',
+          '<em>‘설치’</em>를 누르면 끝!'
+        ]);
+        return;
+      }
+
+      elTitle.textContent = '컴퓨터에 설치하기';
+      elDesc.textContent = '크롬·엣지에서 주소창의 설치 아이콘으로 바로 설치할 수 있어요.';
+      steps([
+        '주소창 오른쪽의 설치 아이콘 <span class="glyph">⊕</span>을 눌러요.',
+        '<em>‘설치’</em>를 누르면 끝!',
+        '아이콘이 안 보이면 오른쪽 위 <span class="glyph">⋮</span> → <em>‘저장 및 공유’</em> → <em>‘앱 설치’</em>를 눌러요.'
+      ]);
+    }
+
+    function openSheet(mode) {
+      guide(mode || detectPlatform(ua));
+      lastFocus = document.activeElement;
+      sheet.hidden = false;
+      sheetClose.focus({ preventScroll: true });
+    }
+
+    function closeSheet() {
+      sheet.hidden = true;
+      if (lastFocus && lastFocus.focus) lastFocus.focus({ preventScroll: true });
+    }
+
+    installBtn.addEventListener('click', function () {
+      if (deferredPrompt && !promptDismissed) {
+        var p = deferredPrompt;
+        deferredPrompt = null;
+        p.prompt();
+        if (p.userChoice && p.userChoice.then) {
+          p.userChoice.then(function (choice) {
+            if (choice && choice.outcome === 'accepted') {
+              installBtn.hidden = true;
+            } else {
+              /* 한 번 닫은 뒤에는 브라우저가 팝업을 다시 띄우지 않으므로 안내 모달로 넘어갑니다. */
+              promptDismissed = true;
+            }
+          }).catch(function () {});
+        }
+        return;
+      }
+      openSheet();
+    });
+
+    sheetClose.addEventListener('click', closeSheet);
+    sheet.addEventListener('click', function (e) { if (e.target === sheet) closeSheet(); });
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && !sheet.hidden) closeSheet();
+    });
+
+    function fallbackCopy(text) {
+      var ta = document.createElement('textarea');
+      ta.value = text;
+      ta.setAttribute('readonly', '');
+      ta.style.position = 'fixed';
+      ta.style.top = '-1000px';
+      document.body.appendChild(ta);
+      ta.select();
+      var ok = false;
+      try { ok = document.execCommand('copy'); } catch (err) { ok = false; }
+      document.body.removeChild(ta);
+      return ok;
+    }
+
+    copyBtn.addEventListener('click', function () {
+      var done = function (ok) {
+        copyBtn.textContent = ok ? '주소를 복사했어요 ✓' : '주소: ' + PWA_URL;
+        copyBtn.classList.toggle('done', ok);
+        setTimeout(function () {
+          copyBtn.textContent = '주소 복사하기';
+          copyBtn.classList.remove('done');
+        }, 2400);
+      };
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(PWA_URL).then(function () { done(true); }).catch(function () { done(fallbackCopy(PWA_URL)); });
+      } else {
+        done(fallbackCopy(PWA_URL));
+      }
+    });
+
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', function () {
+        navigator.serviceWorker.register('/pumss/sw.js', { scope: '/pumss/' }).catch(function () {});
+      });
+    }
+
+    /* 검증용 최소 인터페이스 */
+    window.PwaInstall = {
+      open: openSheet,
+      close: closeSheet,
+      platform: function (uaString) { return detectPlatform(uaString || ua); },
+      isStandalone: isStandalone,
+      url: PWA_URL,
+      version: '1.0.0'
+    };
+  })();
+  </script>
+</body>
+</html>

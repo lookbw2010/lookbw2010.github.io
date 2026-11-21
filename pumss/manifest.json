@@ -1,0 +1,35 @@
+{
+  "name": "내 개인품",
+  "short_name": "개인품",
+  "description": "품스 개인품(내 미니홈피)을 앱처럼 바로 여는 전용 화면입니다.",
+  "lang": "ko",
+  "dir": "ltr",
+  "id": "/pumss/",
+  "start_url": "/pumss/",
+  "scope": "/pumss/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#153A9C",
+  "theme_color": "#153A9C",
+  "categories": ["lifestyle", "social"],
+  "icons": [
+    {
+      "src": "/pumss/icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/pumss/icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/pumss/icons/icon-512-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}
