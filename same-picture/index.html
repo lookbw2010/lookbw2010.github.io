@@ -5,6 +5,13 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="color-scheme" content="light">
 <meta name="theme-color" content="#F4FAFF">
+<link rel="manifest" href="/manifest.json">
+<link rel="icon" type="image/png" sizes="192x192" href="/icons/icon-192.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/icons/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="같은 그림 찾기">
 <meta name="description" content="같은 그림 두 장을 찾는 품스 두뇌 건강 게임. 5단계, 2~3분이면 끝나요. 계산 없이 누구나 즐길 수 있어요.">
 <title>오늘의 같은 그림 찾기 | 품스</title>
 <meta property="og:type" content="website">
@@ -1074,5 +1081,6 @@
   ui.restartBtn.hidden = true;
 })();
 </script>
+<script>if('serviceWorker' in navigator){window.addEventListener('load',function(){navigator.serviceWorker.register('/sw.js').catch(function(){})});}</script>
 </body>
 </html>

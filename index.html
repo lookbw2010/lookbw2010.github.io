@@ -5,6 +5,13 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="color-scheme" content="light">
 <meta name="theme-color" content="#F8FAFC">
+<link rel="manifest" href="/manifest.json">
+<link rel="icon" type="image/png" sizes="192x192" href="/icons/icon-192.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/icons/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="품스 생활 도구">
 <title>품스 생활 도구 | 연말정산 테스트 · 두뇌 건강 게임 3종</title>
 <meta name="description" content="1분이면 끝나는 생활 도구 모음. 13월의 월급 연말정산 테스트, 두뇌 건강 게임 '오늘의 큰 수 찾기', '오늘의 같은 그림 찾기', '오늘의 틀린 그림 찾기'를 무료로 이용해 보세요.">
 <meta property="og:type" content="website">
@@ -124,6 +131,78 @@
     margin:22px 0 0;text-align:center;font-size:13.5px;color:#94A3B8;letter-spacing:.02em;
   }
 </style>
+<style>
+  /* ── 앱 설치 배너·안내 모달 (PWA) ── */
+  .pwa-install{
+    margin:0 0 20px;padding:12px;border-radius:18px;
+    background:linear-gradient(135deg,#EFF6FF 0%,#F7FBFF 58%,#FFF8EE 100%);
+    border:1.5px solid #BFDBFE;
+    box-shadow:0 8px 20px rgba(37,99,235,.10);
+  }
+  .pwa-install[hidden]{display:none}
+  .pwa-install button{
+    display:flex;align-items:center;gap:12px;width:100%;
+    border:0;border-radius:14px;padding:14px 16px;cursor:pointer;
+    background:linear-gradient(135deg,var(--blue) 0%,var(--blue-deep) 100%);
+    color:#fff;font-family:inherit;text-align:left;
+    box-shadow:0 6px 14px rgba(37,99,235,.22);
+    transition:transform .12s ease;
+  }
+  .pwa-install button:active{transform:scale(.985)}
+  .pwa-ico{font-size:22px;line-height:1;flex:0 0 auto}
+  .pwa-txt{display:flex;flex-direction:column;gap:2px}
+  .pwa-txt strong{font-size:17px;font-weight:800;letter-spacing:-.01em}
+  .pwa-txt small{font-size:13.5px;font-weight:600;color:#DBEAFE}
+
+  .pwa-sheet{
+    position:fixed;inset:0;z-index:1000;
+    display:flex;align-items:flex-end;justify-content:center;
+    padding:16px 16px calc(16px + env(safe-area-inset-bottom));
+    background:rgba(15,23,42,.45);
+    -webkit-backdrop-filter:blur(2px);backdrop-filter:blur(2px);
+  }
+  .pwa-sheet[hidden]{display:none}
+  .pwa-sheet-card{
+    position:relative;width:100%;max-width:430px;max-height:88vh;overflow:auto;
+    background:#FFFFFF;border-radius:22px;padding:26px 20px 20px;
+    box-shadow:0 -8px 40px rgba(15,23,42,.24);
+    animation:pwaUp .22s ease-out;
+  }
+  @keyframes pwaUp{from{transform:translateY(18px);opacity:.55}to{transform:none;opacity:1}}
+  @media (prefers-reduced-motion:reduce){.pwa-sheet-card{animation:none}}
+  .pwa-close{
+    position:absolute;top:10px;right:10px;width:40px;height:40px;
+    border:0;border-radius:50%;background:#F1F5F9;color:#475569;
+    font-size:17px;line-height:1;cursor:pointer;font-family:inherit;
+  }
+  .pwa-kicker{margin:0 0 6px;font-size:13px;font-weight:800;letter-spacing:.08em;color:var(--blue);text-transform:uppercase}
+  .pwa-title{margin:0 0 6px;font-size:21px;line-height:1.4;font-weight:800;letter-spacing:-.01em;color:var(--ink)}
+  .pwa-desc{margin:0 0 16px;font-size:15px;line-height:1.62;color:var(--body)}
+  .pwa-steps{list-style:none;margin:0 0 16px;padding:0;display:flex;flex-direction:column;gap:10px}
+  .pwa-steps li{display:flex;align-items:flex-start;gap:12px;background:#F8FAFC;border:1.5px solid var(--line);border-radius:14px;padding:12px 14px}
+  .pwa-num{
+    flex:0 0 24px;height:24px;margin-top:1px;border-radius:50%;background:var(--blue);color:#fff;
+    font-size:13px;font-weight:800;display:flex;align-items:center;justify-content:center;
+  }
+  .pwa-step-body{font-size:15.5px;line-height:1.55;color:var(--ink);font-weight:600}
+  .pwa-step-body em{font-style:normal;color:var(--blue);font-weight:800}
+  .pwa-glyph{
+    display:inline-block;padding:0 7px;border-radius:8px;
+    background:#EFF6FF;border:1.5px solid #BFDBFE;color:var(--blue-deep);
+    font-size:15px;font-weight:800;line-height:1.5;
+  }
+  .pwa-copy{
+    width:100%;border:0;border-radius:14px;padding:15px;cursor:pointer;
+    background:linear-gradient(135deg,var(--blue) 0%,var(--blue-deep) 100%);
+    color:#fff;font-family:inherit;font-size:16.5px;font-weight:800;
+    box-shadow:0 8px 18px rgba(37,99,235,.20);
+    transition:background .15s ease;
+  }
+  .pwa-copy[hidden]{display:none}
+  .pwa-copy.done{background:linear-gradient(135deg,#059669 0%,#047857 100%)}
+  .pwa-tip{margin:12px 2px 0;text-align:center;font-size:13.5px;line-height:1.55;color:#64748B}
+  .pwa-tip[hidden]{display:none}
+</style>
 </head>
 <body>
   <main class="wrap">
@@ -131,6 +210,16 @@
 
     <h1>1분이면 끝나는<br><em>생활 도구</em></h1>
     <p class="intro">설치도, 회원가입도 필요 없어요.<br>궁금한 것부터 골라 바로 시작해 보세요.</p>
+
+    <div class="pwa-install" id="pwaInstall">
+      <button type="button" id="pwaInstallBtn">
+        <span class="pwa-ico" aria-hidden="true">📲</span>
+        <span class="pwa-txt">
+          <strong>바탕화면에 앱으로 설치하기</strong>
+          <small>한 번 설치하면 앱처럼 바로 열려요</small>
+        </span>
+      </button>
+    </div>
 
     <div class="cards">
       <a class="card tax-card" href="./year-end-tax/">
@@ -169,5 +258,211 @@
 
     <p class="copy">© PUMSS</p>
   </main>
+
+  <div class="pwa-sheet" id="pwaSheet" hidden>
+    <div class="pwa-sheet-card" role="dialog" aria-modal="true" aria-labelledby="pwaSheetTitle" aria-describedby="pwaSheetDesc">
+      <button type="button" class="pwa-close" id="pwaSheetClose" aria-label="닫기">✕</button>
+      <p class="pwa-kicker">홈 화면에 추가</p>
+      <h2 class="pwa-title" id="pwaSheetTitle">바탕화면에 앱으로 설치하기</h2>
+      <p class="pwa-desc" id="pwaSheetDesc"></p>
+      <ol class="pwa-steps" id="pwaSteps"></ol>
+      <button type="button" class="pwa-copy" id="pwaCopy" hidden>주소 복사하기</button>
+      <p class="pwa-tip" id="pwaTip">설치하면 주소를 찾지 않아도 바탕화면 아이콘으로 바로 열 수 있어요.</p>
+    </div>
+  </div>
+
+  <script>
+  (function () {
+    var bar = document.getElementById('pwaInstall');
+    var btn = document.getElementById('pwaInstallBtn');
+    var sheet = document.getElementById('pwaSheet');
+    var sheetClose = document.getElementById('pwaSheetClose');
+    var elTitle = document.getElementById('pwaSheetTitle');
+    var elDesc = document.getElementById('pwaSheetDesc');
+    var elSteps = document.getElementById('pwaSteps');
+    var elCopy = document.getElementById('pwaCopy');
+    var elTip = document.getElementById('pwaTip');
+    var deferredPrompt = null;
+    var lastFocus = null;
+
+    function isStandalone() {
+      return (window.matchMedia && window.matchMedia('(display-mode: standalone)').matches) ||
+             (window.matchMedia && window.matchMedia('(display-mode: fullscreen)').matches) ||
+             window.navigator.standalone === true;
+    }
+
+    function hideBar() { if (bar) bar.hidden = true; }
+
+    if (isStandalone()) hideBar();
+
+    window.addEventListener('beforeinstallprompt', function (e) {
+      e.preventDefault();
+      deferredPrompt = e;
+    });
+
+    window.addEventListener('appinstalled', function () {
+      deferredPrompt = null;
+      hideBar();
+    });
+
+    document.addEventListener('visibilitychange', function () {
+      if (document.visibilityState === 'visible' && isStandalone()) hideBar();
+    });
+
+    var ua = navigator.userAgent || '';
+
+    function detectPlatform(uaString) {
+      var s = uaString || '';
+      if (/KAKAOTALK|NAVER\(inapp|Instagram|FBAN|FBAV|FB_IAB|Line\/|DaumApps|everytimeApp|Snapchat|Twitter/i.test(s)) return 'inapp';
+      if (/iPad|iPhone|iPod/.test(s) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1)) return 'ios';
+      if (/Android/.test(s)) return 'android';
+      return 'desktop';
+    }
+
+    function steps(list) {
+      elSteps.innerHTML = '';
+      list.forEach(function (html, i) {
+        var li = document.createElement('li');
+        var num = document.createElement('span');
+        num.className = 'pwa-num';
+        num.textContent = String(i + 1);
+        var body = document.createElement('span');
+        body.className = 'pwa-step-body';
+        body.innerHTML = html;
+        li.appendChild(num);
+        li.appendChild(body);
+        elSteps.appendChild(li);
+      });
+    }
+
+    function guide(mode) {
+      elCopy.hidden = true;
+      elTip.hidden = false;
+
+      if (mode === 'inapp') {
+        elTitle.textContent = '브라우저로 열고 설치하기';
+        elDesc.textContent = '지금은 카카오톡·네이버 같은 앱 안에서 열려 있어요. Safari나 Chrome으로 열어야 바탕화면에 설치할 수 있어요.';
+        steps([
+          '오른쪽 위 <em>⋯</em> 또는 <em>⌄</em>를 누르고 <em>‘다른 브라우저로 열기’</em>를 골라 주세요.',
+          '아래 <em>‘주소 복사하기’</em>를 눌러 Safari나 Chrome 주소창에 붙여넣어도 됩니다.'
+        ]);
+        elCopy.hidden = false;
+        elTip.hidden = true;
+        return;
+      }
+
+      if (mode === 'ios') {
+        elTitle.textContent = '아이폰에 설치하기';
+        elDesc.textContent = '사파리에서 아래 세 가지만 따라 하면 돼요.';
+        steps([
+          '화면 <em>아래쪽 가운데</em>의 공유 버튼 <span class="pwa-glyph">□↑</span>을 눌러요.',
+          '나온 메뉴를 조금 내려 <em>‘홈 화면에 추가’</em>를 눌러요.',
+          '오른쪽 위 <em>‘추가’</em>를 누르면 끝!'
+        ]);
+        elTip.textContent = '카카오톡·네이버 앱 안에서 열었다면, 먼저 Safari로 열어 주세요.';
+        return;
+      }
+
+      if (mode === 'android') {
+        elTitle.textContent = '안드로이드에 설치하기';
+        elDesc.textContent = '크롬에서 아래 세 가지만 따라 하면 돼요.';
+        steps([
+          '오른쪽 위 <span class="pwa-glyph">⋮</span> 메뉴를 눌러요.',
+          '<em>‘앱 설치’</em>(또는 ‘홈 화면에 추가’)를 눌러요.',
+          '<em>‘설치’</em>를 누르면 끝!'
+        ]);
+        return;
+      }
+
+      elTitle.textContent = '컴퓨터에 설치하기';
+      elDesc.textContent = '크롬·엣지에서 주소창의 설치 아이콘으로 바로 설치할 수 있어요.';
+      steps([
+        '주소창 오른쪽의 설치 아이콘 <span class="pwa-glyph">⊕</span>을 눌러요.',
+        '<em>‘설치’</em>를 누르면 끝!',
+        '아이콘이 안 보이면 오른쪽 위 <span class="pwa-glyph">⋮</span> → <em>‘저장 및 공유’</em> → <em>‘앱 설치’</em>를 눌러요.'
+      ]);
+    }
+
+    function openSheet(mode) {
+      guide(mode || detectPlatform(ua));
+      lastFocus = document.activeElement;
+      sheet.hidden = false;
+      document.body.style.overflow = 'hidden';
+      sheetClose.focus({ preventScroll: true });
+    }
+
+    function closeSheet() {
+      sheet.hidden = true;
+      document.body.style.overflow = '';
+      if (lastFocus && lastFocus.focus) lastFocus.focus({ preventScroll: true });
+    }
+
+    btn.addEventListener('click', function () {
+      if (deferredPrompt) {
+        var p = deferredPrompt;
+        deferredPrompt = null;
+        p.prompt();
+        if (p.userChoice && p.userChoice.then) {
+          p.userChoice.then(function (choice) {
+            if (choice && choice.outcome === 'accepted') hideBar();
+          }).catch(function () {});
+        }
+        return;
+      }
+      openSheet();
+    });
+
+    sheetClose.addEventListener('click', closeSheet);
+    sheet.addEventListener('click', function (e) { if (e.target === sheet) closeSheet(); });
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && !sheet.hidden) closeSheet();
+    });
+
+    function fallbackCopy(text) {
+      var ta = document.createElement('textarea');
+      ta.value = text;
+      ta.setAttribute('readonly', '');
+      ta.style.position = 'fixed';
+      ta.style.top = '-1000px';
+      document.body.appendChild(ta);
+      ta.select();
+      var ok = false;
+      try { ok = document.execCommand('copy'); } catch (err) { ok = false; }
+      document.body.removeChild(ta);
+      return ok;
+    }
+
+    elCopy.addEventListener('click', function () {
+      var url = location.origin + '/';
+      var done = function (ok) {
+        elCopy.textContent = ok ? '주소를 복사했어요 ✓' : '주소: ' + url;
+        elCopy.classList.toggle('done', ok);
+        setTimeout(function () {
+          elCopy.textContent = '주소 복사하기';
+          elCopy.classList.remove('done');
+        }, 2400);
+      };
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(url).then(function () { done(true); }).catch(function () { done(fallbackCopy(url)); });
+      } else {
+        done(fallbackCopy(url));
+      }
+    });
+
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', function () {
+        navigator.serviceWorker.register('/sw.js').catch(function () {});
+      });
+    }
+
+    /* 검증용 최소 인터페이스 (설치 동작에는 영향 없음) */
+    window.PwaInstall = {
+      open: openSheet,
+      close: closeSheet,
+      platform: function (uaString) { return detectPlatform(uaString || ua); },
+      version: '1.0.0'
+    };
+  })();
+  </script>
 </body>
 </html>
