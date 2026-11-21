@@ -283,6 +283,7 @@
     var elCopy = document.getElementById('pwaCopy');
     var elTip = document.getElementById('pwaTip');
     var deferredPrompt = null;
+    var promptDismissed = false;
     var lastFocus = null;
 
     function isStandalone() {
@@ -297,7 +298,7 @@
 
     window.addEventListener('beforeinstallprompt', function (e) {
       e.preventDefault();
-      deferredPrompt = e;
+      if (!promptDismissed) deferredPrompt = e;
     });
 
     window.addEventListener('appinstalled', function () {
@@ -398,13 +399,18 @@
     }
 
     btn.addEventListener('click', function () {
-      if (deferredPrompt) {
+      if (deferredPrompt && !promptDismissed) {
         var p = deferredPrompt;
         deferredPrompt = null;
         p.prompt();
         if (p.userChoice && p.userChoice.then) {
           p.userChoice.then(function (choice) {
-            if (choice && choice.outcome === 'accepted') hideBar();
+            if (choice && choice.outcome === 'accepted') {
+              hideBar();
+            } else {
+              /* 한 번 거절한 뒤에는 브라우저가 팝업을 다시 띄우지 않으므로 안내 모달로 넘어갑니다. */
+              promptDismissed = true;
+            }
           }).catch(function () {});
         }
         return;
