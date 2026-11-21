@@ -393,6 +393,11 @@
   }
   .toast.show{opacity:1;transform:translate(-50%,0)}
 
+  @media (max-height:700px){
+    /* 뒤로가기 줄이 생겨도 시작 화면이 한 화면에 들어오도록 여백 압축 */
+    .app{padding:14px 18px 22px}
+    .hub-nav{padding-bottom:8px}
+  }
   @media (min-width:520px){
     .app{padding:40px 18px}
     .start-card{padding:42px 32px 34px}
