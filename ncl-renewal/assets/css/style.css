@@ -1316,8 +1316,8 @@ a.tag:hover { border-color: var(--red-line); color: var(--red); }
 .pf-thumb.t-print { background: linear-gradient(135deg, #3d1c26, #b0472f 60%, #e8412c); }
 .pf-thumb.t-sales { background: linear-gradient(135deg, #241f42, #6a5aa8 60%, #8d7ad0); }
 .pf-body { padding: 22px 24px 24px; display: flex; flex-direction: column; flex: 1; }
-.pf-body .pf-cat { font-size: .64rem; letter-spacing: .14em; font-weight: 800; color: var(--red); }
-.pf-body h3 { margin-top: 9px; font-size: 1.02rem; line-height: 1.45; letter-spacing: -0.03em; }
+.pf-body .pf-cat { display: none; }
+.pf-body h3 { margin-top: 0; font-size: 1.02rem; line-height: 1.45; letter-spacing: -0.03em; }
 .pf-body .pf-client { margin-top: auto; padding-top: 16px; font-size: .78rem; color: var(--muted-2); font-weight: 700; display: flex; align-items: center; gap: 6px; }
 .pf-body .pf-client::before { content: ""; width: 14px; height: 1px; background: var(--line); }
 .pf-empty { display: none; text-align: center; padding: 60px 0; color: var(--muted); }
