@@ -819,6 +819,9 @@ a.tag:hover { border-color: var(--red-line); color: var(--red); }
 .partner-group h4 { font-size: .72rem; letter-spacing: .14em; color: var(--navy); text-transform: uppercase; margin-bottom: 6px; }
 .partner-group .pg-count { font-size: .7rem; color: var(--muted-2); font-weight: 700; }
 .partner-wall { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 16px; }
+.partner-group .partner-wall { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+.partner-group .logo-chip { width: 100%; min-width: 0; padding: 0 8px; }
+.partner-group .partner-chip { display: flex; align-items: center; justify-content: center; text-align: center; padding: 10px 6px; }
 .partner-chip {
   font-size: .78rem; font-weight: 600; color: var(--slate); background: var(--bg);
   border: 1px solid var(--line-2); border-radius: 8px; padding: 5px 9px;
@@ -1297,7 +1300,7 @@ a.tag:hover { border-color: var(--red-line); color: var(--red); }
 .sol-copy .sol-shot { margin-top: 24px; }
 .ins-shots { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 22px; }
 .ins-shots figure { margin: 0; border-radius: 16px; overflow: hidden; border: 1px solid var(--line); background: #fff; }
-.ins-shots img { width: 100%; height: 100%; object-fit: cover; }
+.ins-shots img { width: 100%; height: auto; aspect-ratio: 2 / 1; object-fit: cover; }
 .ins-shots figcaption { padding: 10px 14px; font-size: .76rem; color: var(--muted); font-weight: 600; }
 .srv-shots { display: grid; grid-template-columns: 1.15fr .85fr; gap: 14px; align-items: stretch; }
 .srv-shots figure { margin: 0; border-radius: 18px; overflow: hidden; border: 1px solid var(--line); background: #fff; display: flex; flex-direction: column; }
