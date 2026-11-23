@@ -1,0 +1,1425 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>DB생명 백년친구 리뉴얼 · 인터랙티브 데모 | 품스 PUMSS</title>
+<meta name="description" content="DB생명 모바일 컨텐츠 APP 리뉴얼 제안 인터랙티브 데모 — 본사 자료를 전 직원·FP 개인 채널에 자동 탑재해 활용률·고객 클릭·상담 DB로 회수하는 라스트마일 배포 엔진.">
+<meta name="theme-color" content="#006847">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23006847'/%3E%3Cpath d='M8 22c0-7 4.5-12 13-13 .6 8-4 13-11 13H8z' fill='%238FE3C1'/%3E%3Cpath d='M16 27c0-5 3-9 9-11 .4 6-2.5 10-6 11z' fill='%23fff' opacity='.9'/%3E%3C/svg%3E">
+<meta property="og:type" content="website">
+<meta property="og:title" content="DB생명 백년친구 리뉴얼 · 인터랙티브 데모">
+<meta property="og:description" content="본사가 만든 자료를 현장에서 팔리게 — 위드U·미니보험·계열사 캠페인을 전 직원·FP 개인 채널에 자동 탑재해 활용률·클릭·상담 DB로 회수하는 라스트마일 배포 엔진.">
+<meta property="og:image" content="https://lookbw2010.github.io/db-life-demo/og.png">
+<meta property="og:url" content="https://lookbw2010.github.io/db-life-demo/">
+<meta name="twitter:card" content="summary_large_image">
+<style>
+@font-face{
+  font-family:"Pretendard";
+  src:url("./fonts/PretendardVariable.woff2") format("woff2-variations");
+  font-weight:45 920;font-style:normal;font-display:swap;
+}
+:root{
+  --g900:#00392A; --g800:#00452F; --g700:#006847; --g650:#0A7554; --g600:#0B7A57; --g500:#12946D;
+  --g100:#E4F1EA; --g50:#F0F7F3;
+  --gold:#C29A4B; --gold2:#E7CB8C; --amber:#E8A33D; --pink:#F5E3E8;
+  --ink:#0E1B16; --ink2:#3A4B44; --muted:#71817A; --line:#E3EAE6;
+  --bg:#F2F5F3; --paper:#fff;
+  --sh:0 18px 40px -22px rgba(6,45,32,.35);
+  --r14:14px; --r18:18px;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;padding:0}
+body{
+  font-family:"Pretendard",-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Malgun Gothic",system-ui,sans-serif;
+  color:var(--ink);background:var(--bg);word-break:keep-all;overflow-wrap:break-word;
+  letter-spacing:-.01em;-webkit-font-smoothing:antialiased;
+}
+button{font:inherit;color:inherit;border:0;background:none;cursor:pointer;letter-spacing:inherit}
+ul,ol{margin:0;padding:0;list-style:none}
+h1,h2,h3,h4,p{margin:0}
+svg.ic{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round;flex:none}
+.sprite{position:absolute;width:0;height:0;overflow:hidden}
+[hidden]{display:none!important}
+
+/* ================= desktop stage ================= */
+.badge{
+  position:fixed;top:20px;left:24px;z-index:40;display:flex;align-items:center;gap:8px;
+  background:rgba(255,255,255,.86);backdrop-filter:blur(10px);border:1px solid #D9E4DE;
+  border-radius:999px;padding:7px 14px 7px 10px;font-size:12px;font-weight:650;color:var(--g800);
+  box-shadow:0 8px 24px -14px rgba(6,45,32,.4)
+}
+.badge .bmark{width:18px;height:18px;border-radius:6px;background:linear-gradient(140deg,#12946D,#00452F);display:grid;place-items:center;color:#fff;font-size:9px;font-weight:800}
+.badge em{font-style:normal;color:var(--muted);font-weight:500;padding-left:8px;border-left:1px solid #D9E4DE}
+.topmeta{position:fixed;top:22px;right:26px;z-index:40;font-size:11.5px;color:#7A8A83;letter-spacing:.02em}
+
+.stage{
+  min-height:100dvh;display:grid;grid-template-columns:minmax(280px,1fr) auto minmax(300px,1fr);
+  gap:clamp(20px,3vw,54px);align-items:center;max-width:1480px;margin:0 auto;
+  padding:84px clamp(20px,3vw,44px) 34px;position:relative;
+}
+.stage::before{
+  content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
+  background:
+    radial-gradient(60% 46% at 12% 4%,rgba(18,148,109,.10),transparent 62%),
+    radial-gradient(46% 40% at 92% 88%,rgba(194,154,75,.14),transparent 66%),
+    linear-gradient(180deg,#F6F8F7,#EEF2EF 70%,#F4F6F4);
+}
+
+/* left rail */
+.rail{display:flex;flex-direction:column;gap:22px;max-width:420px}
+.lockup{display:flex;align-items:center;gap:10px;font-size:12px;font-weight:700;letter-spacing:.14em;color:var(--g800)}
+.lockup .x{color:#A9B7B1;font-weight:500;letter-spacing:0}
+.lockup .pumss{color:#5D6D66;letter-spacing:.18em;font-weight:650}
+.rail h1{font-size:clamp(28px,2.5vw,40px);line-height:1.2;font-weight:800;letter-spacing:-.045em;color:#0B1B15}
+.rail h1 em{font-style:normal;color:var(--g700);position:relative;white-space:nowrap}
+.rail h1 em::after{content:"";position:absolute;left:0;right:0;bottom:-2px;height:7px;background:rgba(232,163,61,.28);border-radius:3px;z-index:-1}
+.rail .lead{font-size:14.2px;line-height:1.75;color:#46564F;font-weight:450}
+.rail .lead b{color:var(--g800);font-weight:700}
+.railtabs{display:flex;flex-direction:column;gap:6px;margin-top:2px}
+.rail-tab{
+  display:grid;grid-template-columns:30px 1fr auto;gap:11px;align-items:center;text-align:left;
+  padding:11px 13px;border-radius:12px;border:1px solid transparent;transition:.22s;color:#51625A
+}
+.rail-tab .n{font-size:10.5px;font-weight:750;letter-spacing:.04em;color:#9AA9A2}
+.rail-tab .tt{font-size:13.6px;font-weight:700;color:#22322B;display:block}
+.rail-tab .ts{font-size:11.6px;color:#86968F;display:block;margin-top:2px;font-weight:450}
+.rail-tab .ar{opacity:0;transition:.22s;color:var(--g700)}
+.rail-tab:hover{background:rgba(255,255,255,.7);border-color:#E2EAE5}
+.rail-tab.on{background:#fff;border-color:#D8E6DE;box-shadow:var(--sh)}
+.rail-tab.on .n{color:var(--gold)}
+.rail-tab.on .ar{opacity:1}
+.rail-foot{display:flex;flex-wrap:wrap;gap:7px;margin-top:4px}
+.chip{display:inline-flex;align-items:center;gap:6px;font-size:11.2px;font-weight:650;padding:6px 10px;border-radius:999px;background:#fff;border:1px solid #E1E9E4;color:#4C5D55}
+.chip i{width:6px;height:6px;border-radius:50%;background:var(--amber);display:block}
+.chip.dark{background:var(--g800);border-color:var(--g800);color:#DDF2E7}
+.chip.dark i{background:#6FE3BA}
+.rail-note{font-size:10.8px;color:#8B9A93;line-height:1.6}
+
+/* phone */
+.phone-wrap{display:flex;justify-content:center;align-items:center;position:relative}
+.phone{
+  position:relative;height:clamp(600px,calc(100dvh - 122px),812px);aspect-ratio:390/812;
+  background:linear-gradient(155deg,#28352F,#0B1512 55%,#1A2721);
+  border-radius:calc(clamp(600px,calc(100dvh - 122px),812px) * .068);
+  padding:9px;box-shadow:0 44px 90px -34px rgba(4,34,24,.6),0 6px 18px -8px rgba(4,34,24,.4),inset 0 0 0 1px rgba(255,255,255,.09);
+}
+.phone::after{content:"";position:absolute;right:-2px;top:22%;width:3px;height:9%;border-radius:0 3px 3px 0;background:#2E3C35}
+.screen-shell{position:relative;height:100%;border-radius:calc(clamp(600px,calc(100dvh - 122px),812px) * .055);overflow:hidden;background:#F4F6F5}
+.island{position:absolute;top:8px;left:50%;transform:translateX(-50%);width:88px;height:24px;border-radius:14px;background:#0A1210;z-index:60}
+.statusbar{position:absolute;top:0;left:0;right:0;height:34px;display:flex;align-items:center;justify-content:space-between;padding:0 20px;font-size:11px;font-weight:650;color:#fff;z-index:55;background:transparent;pointer-events:none}
+.statusbar .sb-r{display:flex;align-items:center;gap:5px}
+.sb-bars{display:flex;align-items:flex-end;gap:1.5px}
+.sb-bars i{width:2.5px;background:currentColor;border-radius:1px;display:block}
+.sb-bars i:nth-child(1){height:3px}.sb-bars i:nth-child(2){height:5px}.sb-bars i:nth-child(3){height:7px}.sb-bars i:nth-child(4){height:9px}
+.sb-batt{width:17px;height:9px;border:1px solid currentColor;border-radius:2.5px;position:relative;opacity:.9}
+.sb-batt::after{content:"";position:absolute;left:1.5px;top:1.5px;bottom:1.5px;width:10px;background:currentColor;border-radius:1px}
+.sb-batt::before{content:"";position:absolute;right:-3px;top:2.5px;width:2px;height:4px;background:currentColor;border-radius:0 1px 1px 0;opacity:.6}
+
+/* app frame */
+.app{position:absolute;inset:0;display:flex;flex-direction:column;background:#F2F5F3;overflow:hidden}
+.screens{position:relative;flex:1;min-height:0}
+.screen{position:absolute;inset:0;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;opacity:0;visibility:hidden;transform:translateX(14px);transition:opacity .26s ease,transform .3s cubic-bezier(.22,.9,.3,1),visibility .3s;scrollbar-width:none}
+.screen::-webkit-scrollbar{display:none}
+.screen.active{opacity:1;visibility:visible;transform:none}
+.tabbar{
+  flex:none;display:grid;grid-template-columns:repeat(4,1fr);background:rgba(255,255,255,.97);
+  border-top:1px solid #E6EDE9;padding:6px 4px 7px;position:relative;z-index:20;
+  padding-bottom:max(7px,env(safe-area-inset-bottom))
+}
+.tb-item{display:flex;flex-direction:column;align-items:center;gap:3px;font-size:10px;font-weight:600;color:#93A29B;padding:3px 0;position:relative}
+.tb-item svg{width:21px;height:21px}
+.tb-item.on{color:var(--g700)}
+.tb-item.on::before{content:"";position:absolute;top:-7px;left:50%;transform:translateX(-50%);width:20px;height:2.5px;border-radius:2px;background:var(--g700)}
+.tb-item.adminish.on::before{background:var(--gold)}
+
+/* home */
+.home-hero{background:linear-gradient(170deg,#0A7554 0%,#006847 42%,#00452F 100%);padding:34px 0 16px;position:relative;overflow:hidden}
+.home-hero::before{content:"";position:absolute;right:-40px;top:-50px;width:180px;height:180px;border-radius:50%;background:radial-gradient(circle,rgba(255,255,255,.14),transparent 70%)}
+.ht{display:flex;align-items:center;justify-content:space-between;padding:2px 16px 12px;position:relative}
+.ht-logo{display:flex;align-items:center;gap:6px;color:#fff;font-weight:750;font-size:14.5px;letter-spacing:-.02em}
+.ht-logo .mark{width:19px;height:19px;display:block}
+.ht-logo .caret{width:0;height:0;border-left:3.5px solid transparent;border-right:3.5px solid transparent;border-top:4px solid rgba(255,255,255,.8);margin-left:1px;margin-top:2px}
+.ht-actions{display:flex;gap:2px}
+.ht-actions .icb{width:32px;height:32px;border-radius:9px;color:#fff;display:grid;place-items:center;position:relative}
+.ht-actions .icb:active{background:rgba(255,255,255,.14)}
+.ht-actions .icb svg{width:19px;height:19px;stroke-width:1.8}
+.ht-actions .dot{position:absolute;top:7px;right:7px;width:5.5px;height:5.5px;border-radius:50%;background:var(--amber);border:1px solid #0A7554}
+.grid8{display:grid;grid-template-columns:repeat(4,1fr);gap:14px 4px;padding:4px 10px 2px;position:relative}
+.g-item{display:flex;flex-direction:column;align-items:center;gap:7px;padding:2px 0 4px;border-radius:12px;transition:transform .15s}
+.g-item:active{transform:scale(.94)}
+.g-ic{width:40px;height:40px;border-radius:50%;border:1.2px solid rgba(255,255,255,.55);display:grid;place-items:center;color:#fff;background:rgba(255,255,255,.07)}
+.g-ic svg{width:19px;height:19px;stroke-width:1.6}
+.g-item span{font-size:10.4px;color:rgba(255,255,255,.94);font-weight:550;letter-spacing:-.02em;white-space:nowrap}
+.g-item.flash .g-ic{animation:flash .7s ease}
+@keyframes flash{0%{box-shadow:0 0 0 0 rgba(255,255,255,.7)}100%{box-shadow:0 0 0 14px rgba(255,255,255,0)}}
+
+.app-body{padding:14px 14px 22px}
+.banners{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+.bn{border-radius:13px;overflow:hidden;position:relative;text-align:left;box-shadow:0 6px 16px -12px rgba(6,45,32,.5);background:#fff}
+.bn .bwrap{padding:11px 12px 12px;display:flex;flex-direction:column;gap:8px;min-height:112px;justify-content:space-between}
+.bn-wu{background:linear-gradient(150deg,#FFF8EC,#F3E7CE)}
+.bn-wu .wu-top{display:flex;align-items:baseline;gap:5px}
+.bn-wu .wu-logo{font-size:15px;font-weight:800;color:#C4703A;letter-spacing:-.04em}
+.bn-wu .wu-logo b{color:var(--g700);font-size:17px}
+.bn-wu .wu-date{font-size:9.5px;font-weight:700;color:#8A7458}
+.bn-wu .cover-art{display:flex;align-items:flex-end;gap:3px;height:44px;margin-top:2px}
+.bn-wu .cover-art i{display:block;border-radius:3px 3px 0 0;opacity:.9}
+.bn-wu .cap{font-size:10px;color:#7A6349;font-weight:600}
+.bn-me{background:linear-gradient(160deg,#2E7D46,#1D5F35);color:#fff}
+.bn-me .me-k{font-size:12.5px;font-weight:800;letter-spacing:-.03em}
+.bn-me .me-c{font-size:10px;line-height:1.5;color:rgba(255,255,255,.86)}
+.bn-tag{position:absolute;top:8px;right:8px;font-size:8.6px;font-weight:700;padding:3px 6px;border-radius:5px;background:rgba(0,0,0,.16);color:#fff;letter-spacing:.02em}
+.bn-me .bn-tag{background:rgba(255,255,255,.2)}
+
+.notice{display:flex;align-items:center;gap:8px;margin:11px 0 4px;padding:9px 11px;border-radius:10px;background:#fff;border:1px solid #E7EEE9;font-size:10.8px;color:#4C5D55;font-weight:550}
+.notice .pulse{width:6px;height:6px;border-radius:50%;background:var(--amber);flex:none;box-shadow:0 0 0 0 rgba(232,163,61,.5);animation:pulse 2.2s infinite}
+@keyframes pulse{70%{box-shadow:0 0 0 7px rgba(232,163,61,0)}100%{box-shadow:0 0 0 0 rgba(232,163,61,0)}}
+.notice b{color:var(--g800);font-weight:700}
+.notice .go{margin-left:auto;color:#9AA9A2;display:flex}
+
+.sec-h{display:flex;align-items:center;justify-content:space-between;margin:18px 2px 10px}
+.sec-h h3{font-size:13px;font-weight:750;color:#13251D;letter-spacing:-.03em}
+.sec-h .tagmini{font-size:9.4px;font-weight:700;color:var(--g700);background:var(--g100);padding:3px 7px;border-radius:5px}
+.sec-h .more{font-size:10px;color:#93A29B;font-weight:600;display:flex;align-items:center;gap:2px}
+.feed{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+.fcard{background:#fff;border-radius:12px;overflow:hidden;text-align:left;border:1px solid #EDF2EF;box-shadow:0 4px 12px -10px rgba(6,45,32,.4)}
+.fcover{height:74px;position:relative;display:flex;align-items:flex-start;justify-content:space-between;padding:8px 9px;overflow:hidden}
+.fcover .fnum{font-size:26px;font-weight:800;letter-spacing:-.06em;line-height:1;color:rgba(255,255,255,.92);align-self:flex-end}
+.fcover .fmini{font-size:8px;font-weight:700;color:rgba(255,255,255,.9);letter-spacing:.06em}
+.fcover .fdb{display:flex;align-items:center;gap:3px;font-size:7.5px;font-weight:700;color:rgba(255,255,255,.95)}
+.fcover .fdb .m{width:9px;height:9px}
+.fmeta{display:block;padding:8px 9px 9px}
+.fmeta .fl{display:block;font-size:8.8px;font-weight:700;color:var(--g600);letter-spacing:.01em}
+.fmeta .ft{display:block;font-size:10.4px;font-weight:600;color:#22322B;margin-top:3px;line-height:1.35;letter-spacing:-.03em}
+.fmeta .fs{display:flex;font-size:8.6px;color:#93A29B;margin-top:4px;align-items:center;gap:4px}
+.cv1{background:linear-gradient(150deg,#2C7A5C,#134A39)}
+.cv2{background:linear-gradient(150deg,#3E6E8E,#1F3F55)}
+.cv3{background:linear-gradient(150deg,#B98A4B,#7A5526)}
+.cv4{background:linear-gradient(150deg,#6E5A8E,#3D3054)}
+.fcover::after{content:"";position:absolute;right:-16px;bottom:-22px;width:64px;height:64px;border-radius:50%;border:1px solid rgba(255,255,255,.22)}
+.fcover::before{content:"";position:absolute;right:6px;bottom:-30px;width:52px;height:52px;border-radius:50%;background:rgba(255,255,255,.07)}
+
+/* generic screen header */
+.shead{position:sticky;top:0;z-index:12;background:rgba(255,255,255,.96);backdrop-filter:blur(8px);border-bottom:1px solid #EDF2EF;padding:9px 14px;display:flex;align-items:center;gap:8px}
+.shead h2{font-size:14px;font-weight:750;letter-spacing:-.03em;flex:1}
+.shead .back{width:30px;height:30px;border-radius:9px;display:grid;place-items:center;color:#2A3B34;margin-left:-6px}
+.shead .sm{font-size:10px;font-weight:650;color:var(--g700);background:var(--g50);border:1px solid #DCEDE4;padding:4px 8px;border-radius:999px}
+
+/* profile */
+.pf-cover{position:relative;height:168px;padding-top:34px;background:linear-gradient(140deg,#0A7554,#006847 40%,#2C6B4C 78%,#8A6B33 130%)}
+.pf-cover .pat{position:absolute;inset:0;opacity:.5;background-image:radial-gradient(circle at 20% 30%,rgba(255,255,255,.22),transparent 45%),radial-gradient(circle at 82% 12%,rgba(231,203,140,.35),transparent 42%)}
+.pf-cover .pfm{position:absolute;left:0;right:0;bottom:-1px;height:26px;background:linear-gradient(180deg,transparent,rgba(255,255,255,.35))}
+.pf-topbar{position:absolute;top:42px;left:12px;right:12px;display:flex;justify-content:space-between;z-index:2}
+.pf-mini{display:flex;align-items:center;gap:10px;font-size:10.4px;font-weight:600;color:rgba(255,255,255,.94)}
+.pf-mini button{display:flex;align-items:center;gap:4px}
+.pf-mini svg{width:13px;height:13px}
+.pf-card{margin:-38px 12px 0;position:relative;background:#fff;border-radius:16px;padding:0 14px 13px;box-shadow:0 12px 30px -20px rgba(6,45,32,.5);border:1px solid #EDF2EF}
+.pf-av{width:62px;height:62px;border-radius:50%;margin-top:-26px;background:linear-gradient(150deg,#E7CB8C,#B4863E);border:3px solid #fff;display:grid;place-items:center;font-size:23px;font-weight:800;color:#4A3410;box-shadow:0 6px 14px -8px rgba(74,52,16,.5)}
+.pf-row{display:flex;align-items:flex-start;justify-content:space-between;gap:8px}
+.pf-btns{display:flex;gap:5px;margin-top:10px}
+.pf-btns button{font-size:10.2px;font-weight:700;padding:6px 9px;border-radius:8px;border:1px solid #DCE7E1;color:#3A4B44}
+.pf-btns .solid{background:var(--g700);border-color:var(--g700);color:#fff}
+.pf-name{display:flex;align-items:center;gap:6px;margin-top:9px;font-size:16.5px;font-weight:800;letter-spacing:-.04em;color:#10211A}
+.pf-name .fbadge{font-size:9px;font-weight:700;color:var(--g700);background:var(--g100);padding:2.5px 6px;border-radius:5px;letter-spacing:0}
+.pf-role{font-size:10.6px;color:#6E7F77;margin-top:3px;font-weight:550}
+.pf-desc{font-size:10.8px;line-height:1.6;color:#4B5C54;margin-top:7px}
+.pf-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:4px;margin-top:11px;padding-top:10px;border-top:1px solid #F0F4F2}
+.pf-stats div{text-align:center}
+.pf-stats b{display:block;font-size:13px;font-weight:800;color:#13251D}
+.pf-stats span{font-size:9px;color:#93A29B;font-weight:550}
+.pf-acts{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-top:11px}
+.pf-acts button{display:flex;flex-direction:column;align-items:center;gap:5px;font-size:9.4px;font-weight:600;color:#4C5D55;padding:8px 0;border-radius:10px;background:#F7FAF8;border:1px solid #EEF3F0}
+.pf-acts svg{width:16px;height:16px;color:var(--g700)}
+
+.fixed-note{display:flex;align-items:center;gap:6px;font-size:8.8px;color:#93A29B;margin:12px 14px 6px;font-weight:600;letter-spacing:.01em}
+.fixed-note .lk{display:flex;align-items:center;gap:3px;color:var(--g650);font-weight:700}
+.fixed-note svg{width:11px;height:11px}
+.fxbn{margin:0 12px 8px;border-radius:13px;overflow:hidden;position:relative;display:flex;align-items:center;gap:11px;padding:11px 12px;text-align:left;animation:slideIn .45s ease both}
+@keyframes slideIn{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:none}}
+.fxbn .fxart{width:46px;height:46px;border-radius:10px;flex:none;display:grid;place-items:center;font-size:9px;font-weight:800;letter-spacing:-.02em;text-align:center;line-height:1.15}
+.fxbn .fxt{display:block;flex:1;min-width:0}
+.fxbn .fxl{display:flex;font-size:8.4px;font-weight:700;letter-spacing:.06em;color:#8FA098;margin-bottom:3px;align-items:center;gap:4px}
+.fxbn .fxl i{width:4px;height:4px;border-radius:50%;background:var(--amber)}
+.fxbn .fxh{display:block;font-size:11.6px;font-weight:750;color:#16261F;letter-spacing:-.03em}
+.fxbn .fxs{display:block;font-size:9.4px;color:#7E8F87;margin-top:2px}
+.fxbn .chev{color:#B7C4BE}
+.fxbn.trv{background:linear-gradient(120deg,#EAF3FB,#DCEAF6);border:1px solid #D7E6F2}
+.fxbn.trv .fxart{background:#2F6E9B;color:#fff}
+.fxbn.golf{background:linear-gradient(120deg,#0E3B2C,#1C5A41);color:#fff;border:1px solid #20573F}
+.fxbn.golf .fxart{background:rgba(231,203,140,.18);color:#E7CB8C;border:1px solid rgba(231,203,140,.4)}
+.fxbn.golf .fxh{color:#fff}
+.fxbn.golf .fxs{color:rgba(255,255,255,.72)}
+.fxbn.golf .fxl{color:#E7CB8C}
+.fxbn.golf .chev{color:rgba(255,255,255,.5)}
+.fxbn.golf .fxl i{background:#6FE3BA}
+.fxbn.mb{display:block;background:linear-gradient(115deg,#FBEDF1,#F7E6D8);border:1px solid #F0DDE1;padding:12px 13px}
+.fxbn.mb .mb-k{display:block;font-size:8.6px;font-weight:750;color:#B4636E;letter-spacing:.04em}
+.fxbn.mb .mb-h{display:block;font-size:13px;font-weight:800;color:#3B2A22;margin-top:3px;letter-spacing:-.035em}
+.fxbn.mb .mb-h b{color:#B4505E}
+.fxbn.mb .mb-s{display:block;font-size:9.6px;color:#8B7166;margin-top:3px}
+.fxbn.mb .mb-btn{margin-top:9px;font-size:10px;font-weight:750;background:#fff;border:1px solid #EBD5D9;color:#9C4A56;padding:6px 10px;border-radius:8px;display:inline-flex;align-items:center;gap:4px}
+.pf-sec{display:flex;align-items:center;justify-content:space-between;margin:16px 14px 8px}
+.pf-sec h3{font-size:11.6px;font-weight:750;color:#13251D;display:flex;align-items:center;gap:5px}
+.pf-sec .auto{font-size:8.6px;font-weight:700;color:var(--g650);background:var(--g50);padding:3px 6px;border-radius:5px;display:flex;align-items:center;gap:3px}
+.pf-sec .auto svg{width:9px;height:9px}
+.quote{margin:0 12px;background:#fff;border-radius:12px;border:1px solid #EDF2EF;padding:12px 13px;text-align:left;width:calc(100% - 24px)}
+.quote .qk{font-size:8.8px;font-weight:700;color:var(--gold);letter-spacing:.05em}
+.quote .qt{font-size:11.6px;line-height:1.62;color:#2C3D35;margin-top:5px;font-weight:550}
+.quote .qa{font-size:9.4px;color:#93A29B;margin-top:6px}
+.mini-feed{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:0 12px}
+.mini-feed .fcover{height:62px}
+.sns{display:flex;justify-content:center;gap:12px;padding:16px 0 8px}
+.sns button{width:34px;height:34px;border-radius:11px;background:#fff;border:1px solid #E9EFEB;display:grid;place-items:center;color:#5A6B63}
+.sns button svg{width:16px;height:16px}
+.pf-foot{text-align:center;font-size:8.6px;color:#A3B0AA;padding:4px 20px 18px;line-height:1.6}
+
+/* apptech */
+.at-hero{background:linear-gradient(165deg,#0B7A57,#02543C 60%,#013A2B);padding:46px 15px 16px;color:#fff;position:relative;overflow:hidden}
+.at-hero::before{content:"";position:absolute;right:-30px;top:-40px;width:150px;height:150px;border-radius:50%;border:1px solid rgba(231,203,140,.25)}
+.at-k{font-size:9.6px;font-weight:700;letter-spacing:.08em;color:rgba(231,203,140,.95)}
+.at-bal{display:flex;align-items:flex-end;gap:5px;margin-top:6px}
+.at-bal b{font-size:29px;font-weight:800;letter-spacing:-.05em;line-height:1}
+.at-bal span{font-size:12px;font-weight:650;opacity:.7;padding-bottom:3px}
+.at-sub{margin-top:7px;font-size:9.8px;color:rgba(255,255,255,.75);display:flex;align-items:center;gap:5px}
+.at-sub b{color:#8FE9C6;font-weight:700}
+.at-bar{margin-top:12px;height:5px;border-radius:3px;background:rgba(255,255,255,.16);overflow:hidden}
+.at-bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,#8FE9C6,#E7CB8C);border-radius:3px;transition:width .9s cubic-bezier(.2,.8,.2,1)}
+.at-goal{display:flex;justify-content:space-between;font-size:8.8px;color:rgba(255,255,255,.6);margin-top:5px}
+.mission{margin:0 12px 7px;background:#fff;border:1px solid #EDF2EF;border-radius:12px;padding:10px 11px;display:flex;align-items:center;gap:10px;text-align:left;width:calc(100% - 24px);transition:.2s}
+.mission .mic{width:34px;height:34px;border-radius:10px;display:grid;place-items:center;flex:none}
+.mission .mic svg{width:17px;height:17px}
+.mission .mt{display:block;flex:1;min-width:0}
+.mission .mh{display:block;font-size:11.2px;font-weight:700;color:#16261F;letter-spacing:-.03em}
+.mission .ms{display:block;font-size:9.2px;color:#86968F;margin-top:2px}
+.mission .mp{font-size:10.4px;font-weight:800;color:var(--g700);white-space:nowrap}
+.mission .go{width:26px;height:26px;border-radius:8px;background:var(--g50);color:var(--g700);display:grid;place-items:center;flex:none}
+.mission.done{background:#FAFCFB;border-color:#DDEBE4}
+.mission.done .mp{color:#A3B0AA;text-decoration:line-through}
+.mission.done .go{background:var(--g100);color:var(--g700)}
+.flow{display:grid;grid-template-columns:1fr auto 1fr auto 1fr;align-items:center;gap:4px;margin:4px 12px 0;padding:11px 10px;border-radius:12px;background:#fff;border:1px solid #EDF2EF}
+.flow div{text-align:center}
+.flow b{display:block;font-size:9.6px;font-weight:750;color:#22322B}
+.flow span{font-size:8.2px;color:#93A29B}
+.flow .ar{color:#B7C4BE;display:grid;place-items:center}
+.flow .ar svg{width:11px;height:11px}
+.partners{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:0 12px}
+.ptnr{border-radius:11px;padding:10px 11px;text-align:left;border:1px solid #EDF2EF;background:#fff}
+.ptnr .pk{display:block;font-size:8.4px;font-weight:700;color:#93A29B;letter-spacing:.04em}
+.ptnr .ph{display:block;font-size:11px;font-weight:750;color:#16261F;margin-top:3px;letter-spacing:-.03em}
+.ptnr .ps{display:block;font-size:8.8px;color:#86968F;margin-top:2px}
+.at-note{margin:12px 14px 20px;font-size:8.8px;color:#93A29B;line-height:1.65}
+
+/* admin */
+.ad-hero{background:linear-gradient(160deg,#0B2B22,#04211A 55%,#123A2B);padding:44px 15px 32px;color:#fff;position:relative}
+.ad-t{display:flex;align-items:center;gap:7px;font-size:9.4px;font-weight:700;letter-spacing:.1em;color:#8FE9C6}
+.ad-live{display:inline-flex;align-items:center;gap:4px;font-size:8.4px;color:#B7E9D3;background:rgba(255,255,255,.1);padding:3px 6px;border-radius:5px;margin-left:auto;letter-spacing:0}
+.ad-live i{width:5px;height:5px;border-radius:50%;background:#5BE9A8;animation:pulse 2s infinite}
+.ad-h{font-size:17px;font-weight:800;letter-spacing:-.04em;margin-top:7px}
+.ad-s{font-size:9.8px;color:rgba(255,255,255,.62);margin-top:4px}
+.ad-switch{margin:-14px 12px 0;position:relative;background:#fff;border-radius:14px;padding:12px 13px;border:1px solid #E6EEE9;box-shadow:0 14px 30px -22px rgba(4,34,24,.6);display:flex;align-items:center;gap:10px}
+.ad-switch .sw-t{flex:1;min-width:0}
+.ad-switch .sw-k{font-size:8.4px;font-weight:750;color:var(--gold);letter-spacing:.05em}
+.ad-switch .sw-h{font-size:11.6px;font-weight:750;color:#16261F;margin-top:2px;letter-spacing:-.03em}
+.ad-switch .sw-s{font-size:9.2px;color:#86968F;margin-top:2px}
+.sw{width:42px;height:24px;border-radius:999px;background:#DCE5E0;position:relative;flex:none;transition:.25s;border:0}
+.sw i{position:absolute;top:3px;left:3px;width:18px;height:18px;border-radius:50%;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.25);transition:.25s}
+.sw.on{background:var(--g700)}
+.sw.on i{left:21px}
+.kpis{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:11px 12px 0}
+.kpi{background:#fff;border:1px solid #E9EFEB;border-radius:12px;padding:10px 11px 9px}
+.kpi .kk{font-size:8.6px;font-weight:650;color:#86968F;display:flex;align-items:center;gap:4px}
+.kpi .kk svg{width:11px;height:11px;color:#A3B0AA}
+.kpi .kv{display:flex;align-items:baseline;gap:3px;margin-top:5px}
+.kpi .kv b{font-size:19px;font-weight:800;letter-spacing:-.05em;color:#11241C}
+.kpi .kv span{font-size:9px;color:#93A29B;font-weight:600}
+.kpi .kd{font-size:8.6px;color:var(--g600);font-weight:700;margin-top:3px}
+.kpi .kbar{margin-top:7px;height:4px;border-radius:2px;background:#EEF3F0;overflow:hidden}
+.kpi .kbar i{display:block;height:100%;width:0;background:var(--g600);border-radius:2px;transition:width 1s cubic-bezier(.2,.8,.2,1)}
+.kpi.hl{border-color:#CFE6DA;background:linear-gradient(180deg,#F7FCF9,#fff)}
+.ad-sec{display:flex;align-items:center;justify-content:space-between;margin:15px 14px 7px}
+.ad-sec h3{font-size:11px;font-weight:750;color:#16261F}
+.ad-sec span{font-size:8.6px;color:#93A29B}
+.review{margin:0 12px 6px;background:#fff;border:1px solid #E9EFEB;border-radius:11px;padding:9px 11px;display:flex;align-items:center;gap:9px;width:calc(100% - 24px);text-align:left}
+.review .rv{width:6px;height:6px;border-radius:50%;flex:none}
+.review .rt{display:block;flex:1;font-size:10.2px;font-weight:650;color:#22322B}
+.review .rt .rt{font-size:10.2px}
+.review .re{display:block;font-size:8.6px;color:#93A29B;margin-top:2px;font-weight:500}
+.rv.ok{background:#2FB37C}.rv.wait{background:var(--amber)}.rv.hold{background:#B7C4BE}
+.rtag{font-size:8.4px;font-weight:750;padding:3px 7px;border-radius:5px;flex:none}
+.rtag.ok{background:var(--g100);color:var(--g700)}
+.rtag.wait{background:#FCF0DC;color:#A9741F}
+.rtag.hold{background:#F0F3F1;color:#7E8F87}
+.log{padding:0 14px 4px}
+.log li{display:flex;gap:8px;font-size:9.4px;color:#5A6B63;padding:6px 0;border-bottom:1px dashed #EDF2EF}
+.log li:last-child{border:0}
+.log time{color:#A3B0AA;font-weight:650;flex:none;font-variant-numeric:tabular-nums}
+.ad-note{margin:10px 14px 20px;font-size:8.6px;color:#93A29B;line-height:1.6}
+
+/* right panel */
+.panel{display:flex;flex-direction:column;gap:14px;max-width:390px}
+.pcard{background:#fff;border:1px solid #E2EAE5;border-radius:18px;padding:18px 18px 16px;box-shadow:0 20px 40px -30px rgba(6,45,32,.5)}
+.p-kicker{font-size:10px;font-weight:750;letter-spacing:.12em;color:var(--gold)}
+.p-tabname{display:flex;align-items:center;gap:7px;margin-top:9px;font-size:10.6px;font-weight:700;color:#93A29B}
+.p-tabname b{color:var(--g700);font-weight:800}
+.p-h{font-size:16.5px;font-weight:800;letter-spacing:-.04em;color:#0F2018;margin-top:6px;line-height:1.36}
+.p-checks{margin-top:13px;display:flex;flex-direction:column;gap:9px}
+.p-checks li{display:flex;gap:8px;font-size:12.2px;line-height:1.6;color:#48584F}
+.p-checks li svg{width:13px;height:13px;margin-top:4px;color:var(--g600);flex:none}
+.p-checks b{color:#172A21;font-weight:700}
+.p-gain{margin-top:14px;padding:10px 12px;border-radius:11px;background:var(--g50);border:1px solid #DDEDE4;font-size:11.6px;line-height:1.6;color:#2F4A3E;font-weight:550}
+.p-gain b{color:var(--g800);font-weight:750}
+.impacts{display:flex;flex-direction:column;gap:1px;border-radius:16px;overflow:hidden;border:1px solid #E2EAE5;background:#E2EAE5;box-shadow:0 20px 40px -34px rgba(6,45,32,.5)}
+.impact{background:#fff;padding:12px 14px;display:flex;gap:10px;align-items:flex-start}
+.impact .iic{width:26px;height:26px;border-radius:8px;display:grid;place-items:center;flex:none;background:var(--g50);color:var(--g700)}
+.impact .iic svg{width:14px;height:14px}
+.impact .it b{display:block;font-size:11.8px;font-weight:750;color:#16261F;letter-spacing:-.03em}
+.impact .it span{display:block;font-size:10.8px;color:#77877F;margin-top:2px;line-height:1.5}
+.impact:first-child{border-radius:15px 15px 0 0}
+.impact:last-child{border-radius:0 0 15px 15px}
+.impacts .cap{background:#0E2C22;color:#A9CDBD;font-size:9.6px;font-weight:700;letter-spacing:.1em;padding:9px 14px;border-radius:15px 15px 0 0}
+.pilot{display:flex;align-items:center;gap:10px;background:#0E2C22;color:#fff;border-radius:14px;padding:12px 14px}
+.pilot b{font-size:12px;font-weight:750;letter-spacing:-.03em;display:block}
+.pilot span{font-size:10px;color:#9DBCAE;display:block;margin-top:2px}
+.pilot .num{margin-left:auto;font-size:11px;font-weight:800;color:#E7CB8C;white-space:nowrap}
+
+/* admin fab */
+.fab{position:absolute;right:12px;bottom:70px;z-index:25;display:inline-flex;align-items:center;gap:5px;height:30px;padding:0 10px 0 8px;border-radius:999px;background:rgba(11,43,34,.92);color:#CFEBDD;font-size:10px;font-weight:700;box-shadow:0 8px 18px -10px rgba(0,0,0,.7);backdrop-filter:blur(6px)}
+.fab svg{width:13px;height:13px}
+.fab.hide{display:none}
+
+/* toasts */
+.toasts{position:absolute;left:12px;right:12px;bottom:112px;z-index:70;display:flex;flex-direction:column;gap:6px;pointer-events:none}
+.toast{background:rgba(12,34,26,.94);color:#fff;border-radius:10px;padding:9px 12px;font-size:10.6px;font-weight:600;line-height:1.45;display:flex;align-items:flex-start;gap:7px;animation:toastIn .28s ease both;box-shadow:0 10px 24px -14px rgba(0,0,0,.8)}
+.toast svg{width:14px;height:14px;flex:none;color:#7DE3B8;margin-top:1px}
+.toast.out{animation:toastOut .3s ease forwards}
+@keyframes toastIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+@keyframes toastOut{to{opacity:0;transform:translateY(6px)}}
+
+/* modal & sheet */
+.modal{position:absolute;inset:0;z-index:80;display:grid;place-items:end center;visibility:hidden;opacity:0;transition:.24s}
+.modal.open{visibility:visible;opacity:1}
+.modal .bd{position:absolute;inset:0;background:rgba(8,26,19,.5);backdrop-filter:blur(2px)}
+.modal .box{position:relative;width:100%;background:#fff;border-radius:20px 20px 0 0;max-height:88%;overflow-y:auto;transform:translateY(16px);transition:.28s cubic-bezier(.2,.9,.3,1);scrollbar-width:none}
+.modal.open .box{transform:none}
+.box-h{position:sticky;top:0;background:#fff;z-index:2;padding:14px 16px 10px;border-bottom:1px solid #F0F4F2;display:flex;align-items:flex-start;gap:10px}
+.box-h .bk{font-size:8.8px;font-weight:750;letter-spacing:.08em;color:var(--gold)}
+.box-h h3{font-size:14.5px;font-weight:800;letter-spacing:-.04em;color:#10211A;margin-top:3px;line-height:1.35}
+.box-h .bs{font-size:9.8px;color:#86968F;margin-top:3px}
+.box-h .x{margin-left:auto;width:28px;height:28px;border-radius:9px;background:#F4F7F5;display:grid;place-items:center;color:#5A6B63;flex:none}
+.box-h .x svg{width:15px;height:15px}
+.box-b{padding:10px 16px 18px}
+.srch{padding:6px 16px 0}
+.srch .in{display:flex;align-items:center;gap:8px;background:#F5F8F6;border:1px solid #EAF0EC;border-radius:10px;padding:8px 10px;margin-bottom:8px}
+.srch .in svg{width:14px;height:14px;color:#9AA9A2}
+.srch .in span{font-size:10.4px;color:#9AA9A2}
+.librow{display:flex;align-items:center;gap:10px;padding:11px 0;border-bottom:1px solid #F2F6F4;width:100%;text-align:left}
+.librow:last-child{border:0}
+.librow .lic{width:32px;height:32px;border-radius:9px;background:var(--g50);color:var(--g700);display:grid;place-items:center;flex:none}
+.librow .lic svg{width:15px;height:15px}
+.librow .lt{display:block;flex:1;min-width:0}
+.librow .lh{display:block;font-size:11.4px;font-weight:700;color:#16261F;letter-spacing:-.03em}
+.librow .ls{font-size:9.2px;color:#86968F;margin-top:2px;display:flex;align-items:center;gap:5px;flex-wrap:wrap}
+.librow .ls .ok{color:var(--g650);font-weight:700;display:inline-flex;align-items:center;gap:2px}
+.librow .ls .ok svg{width:9px;height:9px}
+.librow .sh{font-size:9.6px;font-weight:750;color:var(--g700);background:var(--g50);border:1px solid #DCEDE4;padding:5px 8px;border-radius:7px;flex:none;display:inline-flex;align-items:center;gap:3px}
+.librow .sh svg{width:10px;height:10px}
+.notefoot{font-size:8.8px;color:#93A29B;line-height:1.6;margin-top:10px;padding-top:9px;border-top:1px dashed #EAF0EC}
+
+/* business card flip */
+.bizwrap{perspective:1200px;padding:4px 0 2px}
+.biz{width:100%;aspect-ratio:1.62;position:relative;transform-style:preserve-3d;transition:transform .7s cubic-bezier(.3,.8,.3,1);cursor:pointer}
+.biz.flip{transform:rotateY(180deg)}
+.biz-face{position:absolute;inset:0;border-radius:14px;backface-visibility:hidden;overflow:hidden;box-shadow:0 14px 30px -18px rgba(6,45,32,.6)}
+.biz-front{background:linear-gradient(145deg,#0A7554,#00452F);color:#fff;padding:16px 16px;display:flex;flex-direction:column;justify-content:space-between}
+.biz-front::after{content:"";position:absolute;right:-30px;bottom:-40px;width:130px;height:130px;border-radius:50%;border:1px solid rgba(231,203,140,.3)}
+.biz-front .bf-top{display:flex;align-items:center;gap:6px;font-size:9.6px;font-weight:700;color:rgba(255,255,255,.9);letter-spacing:.04em}
+.biz-front .bf-top .m{width:15px;height:15px}
+.biz-front .bf-name{font-size:19px;font-weight:800;letter-spacing:-.05em}
+.biz-front .bf-role{font-size:9.6px;color:rgba(255,255,255,.75);margin-top:3px}
+.biz-front .bf-b{display:flex;justify-content:space-between;align-items:flex-end}
+.biz-front .bf-tel{font-size:9.4px;color:rgba(255,255,255,.8);line-height:1.5}
+.biz-front .qr{width:40px;height:40px;background:#fff;border-radius:5px;display:grid;place-items:center;color:#00452F}
+.biz-front .qr svg{width:30px;height:30px;background:repeating-conic-gradient(#00452F 0 25%,#fff 0 50%) 0 0/6px 6px;border-radius:2px;stroke:none}
+.biz-back{background:#fff;border:1px solid #E6EEE9;transform:rotateY(180deg);padding:14px 16px;display:flex;flex-direction:column;justify-content:center;gap:7px}
+.biz-back .line{display:flex;align-items:center;gap:7px;font-size:10px;color:#4A5B53;font-weight:550}
+.biz-back .line svg{width:12px;height:12px;color:var(--g700)}
+.biz-back .hl{font-size:8.6px;color:#A3B0AA;font-weight:650;letter-spacing:.06em;margin-bottom:1px}
+.flip-hint{text-align:center;font-size:9px;color:#93A29B;margin-top:8px;display:flex;align-items:center;justify-content:center;gap:4px}
+.flip-hint svg{width:11px;height:11px}
+
+/* consult form */
+.form{padding:2px 0 0}
+.field{margin-bottom:11px}
+.field label{display:flex;align-items:center;gap:5px;font-size:9.8px;font-weight:700;color:#4A5B53;margin-bottom:5px}
+.field label i{font-style:normal;color:#D0695F}
+.field input,.field select,.field textarea{width:100%;font:inherit;font-size:11.4px;padding:10px 11px;border-radius:9px;border:1px solid #E1E9E4;background:#FAFCFB;color:#16261F;outline:0;transition:.18s}
+.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--g600);background:#fff;box-shadow:0 0 0 3px rgba(11,122,87,.1)}
+.field textarea{resize:none;height:56px;line-height:1.5}
+.chk{display:flex;align-items:flex-start;gap:7px;font-size:9.4px;color:#77877F;line-height:1.55;margin:2px 0 12px}
+.chk input{width:14px;height:14px;margin:1px 0 0;accent-color:var(--g700);flex:none}
+.submit{width:100%;padding:12px;border-radius:10px;background:var(--g700);color:#fff;font-size:12.4px;font-weight:750;letter-spacing:-.02em;transition:.2s}
+.submit:active{transform:scale(.99);background:var(--g800)}
+.submit:disabled{background:#B7C4BE}
+.err{font-size:9.4px;color:#C4544A;font-weight:650;margin-top:-6px;margin-bottom:9px;display:none}
+.err.on{display:block}
+.done-panel{text-align:center;padding:18px 6px 8px}
+.done-panel .dc{width:54px;height:54px;border-radius:50%;background:var(--g100);color:var(--g700);display:grid;place-items:center;margin:0 auto 12px;animation:pop .45s cubic-bezier(.2,1.4,.4,1) both}
+@keyframes pop{from{transform:scale(.6);opacity:0}to{transform:scale(1);opacity:1}}
+.done-panel .dc svg{width:26px;height:26px;stroke-width:2.4}
+.done-panel h4{font-size:15px;font-weight:800;letter-spacing:-.04em;color:#10211A}
+.done-panel p{font-size:10.4px;color:#77877F;line-height:1.65;margin-top:6px}
+.done-panel .dbox{margin-top:13px;background:#F7FAF8;border:1px solid #EAF0EC;border-radius:10px;padding:10px 12px;text-align:left;font-size:9.6px;color:#5A6B63;line-height:1.7}
+.done-panel .dbox b{color:var(--g800);font-weight:750}
+
+/* mobile-only proposal bar & sheet */
+.mbar{display:none}
+.msheet{display:none}
+@media (max-width:920px){
+  .badge,.topmeta,.rail,.panel{display:none}
+  body{background:#F2F5F3;overflow:hidden}
+  .mbar{
+    display:flex;align-items:center;gap:8px;height:38px;padding:0 11px;background:#0E2C22;color:#fff;
+    position:fixed;top:0;left:0;right:0;z-index:50;font-size:10.6px;font-weight:650;letter-spacing:-.01em;
+    padding-top:env(safe-area-inset-top)
+  }
+  .mbar .bm{width:15px;height:15px;border-radius:4px;background:linear-gradient(140deg,#12946D,#006847);display:grid;place-items:center;flex:none}
+  .mbar .bm svg{width:9px;height:9px}
+  .mbar span{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .mbar em{font-style:normal;color:#8FA79B;font-weight:500;font-size:9.4px;margin-left:4px}
+  .mbar button{display:inline-flex;align-items:center;gap:3px;font-size:9.8px;font-weight:700;color:#CFEBDD;background:rgba(255,255,255,.1);padding:5px 8px;border-radius:7px;flex:none}
+  .mbar button svg{width:10px;height:10px}
+  .stage{display:block;min-height:0;height:100dvh;padding:0;max-width:none}
+  .stage::before{display:none}
+  .phone-wrap{display:block;height:100dvh}
+  .phone{height:100dvh;width:100%;aspect-ratio:auto;border-radius:0;padding:0;box-shadow:none;background:none}
+  .phone::after{display:none}
+  .screen-shell{border-radius:0;height:100%}
+  .island,.statusbar{display:none}
+  .app{top:38px;padding-top:env(safe-area-inset-top)}
+  .home-hero{padding-top:14px}
+  .at-hero{padding-top:18px}
+  .ad-hero{padding-top:16px}
+  .pf-cover{height:132px;padding-top:0}
+  .pf-topbar{top:9px}
+  .statusbar{display:none}
+  .fab{bottom:calc(64px + env(safe-area-inset-bottom))}
+  .toasts{bottom:calc(112px + env(safe-area-inset-bottom))}
+  .msheet{display:block;position:fixed;inset:0;z-index:90;visibility:hidden;pointer-events:none}
+  .msheet.open{visibility:visible;pointer-events:auto}
+  .msheet .mbd{position:absolute;inset:0;background:rgba(8,26,19,.5);opacity:0;transition:.22s}
+  .msheet.open .mbd{opacity:1}
+  .msheet .mbox{position:absolute;left:0;right:0;bottom:0;background:#F6F8F7;border-radius:18px 18px 0 0;max-height:86%;overflow-y:auto;transform:translateY(100%);transition:.3s cubic-bezier(.2,.9,.3,1);padding-bottom:max(16px,env(safe-area-inset-bottom))}
+  .msheet.open .mbox{transform:none}
+  .mbox .mh{position:sticky;top:0;background:#fff;padding:14px 16px 11px;border-bottom:1px solid #EAF0EC;display:flex;align-items:center;gap:8px;z-index:2}
+  .mbox .mh b{font-size:12.6px;font-weight:800;letter-spacing:-.03em}
+  .mbox .mh span{font-size:9.4px;color:#86968F;font-weight:600;margin-left:auto}
+  .mbox .mh button{width:26px;height:26px;border-radius:8px;background:#F4F7F5;display:grid;place-items:center;color:#5A6B63}
+  .mbox .mh button svg{width:14px;height:14px}
+  .pcard{border-radius:0;border:0;box-shadow:none;background:#fff;padding:16px}
+  .impacts{margin:10px 12px;box-shadow:none}
+  .pilot{margin:10px 12px 0;border-radius:12px}
+  .mbox .pcard p.kicker2{font-size:9.6px;color:#93A29B;line-height:1.6;margin-top:12px}
+}
+@media (max-width:380px){
+  .g-item span{font-size:9.8px}
+  .grid8{gap:12px 2px}
+  .rail h1{font-size:26px}
+}
+@media (prefers-reduced-motion:reduce){
+  *{animation-duration:.01ms !important;transition-duration:.01ms !important}
+}
+</style>
+</head>
+<body>
+
+<svg class="sprite" aria-hidden="true">
+<symbol id="i-doc" viewBox="0 0 24 24"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8h8M8 12h8M8 16h5"/></symbol>
+<symbol id="i-play" viewBox="0 0 24 24"><rect x="3" y="4.5" width="18" height="15" rx="2.5"/><path d="M10 9.2l5 2.8-5 2.8z"/></symbol>
+<symbol id="i-file" viewBox="0 0 24 24"><path d="M6 3h8l4 4v14H6z"/><path d="M14 3v4h4M9 12h6M9 16h4"/></symbol>
+<symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 3l7 3v6c0 4.2-3 7.4-7 9-4-1.6-7-4.8-7-9V6z"/><path d="M9.4 12.2l1.9 1.9 3.4-3.7"/></symbol>
+<symbol id="i-qr" viewBox="0 0 24 24"><rect x="3.5" y="3.5" width="6" height="6" rx="1"/><rect x="14.5" y="3.5" width="6" height="6" rx="1"/><rect x="3.5" y="14.5" width="6" height="6" rx="1"/><path d="M14.5 14.5H17v2.5h3.5M20.5 20.5h-3M14.5 20.5h.01"/></symbol>
+<symbol id="i-cloud" viewBox="0 0 24 24"><path d="M7 18a4 4 0 01-.4-8A5.5 5.5 0 0117.4 10.5 3.8 3.8 0 0117 18z"/><path d="M12 11.5v6M9.6 15.1L12 17.5l2.4-2.4"/></symbol>
+<symbol id="i-gift" viewBox="0 0 24 24"><rect x="3.5" y="9" width="17" height="11" rx="2"/><path d="M3.5 13h17M12 9v11"/><path d="M12 9S10.5 4.6 8.3 5.5C6.3 6.3 7.5 9 12 9zM12 9s1.5-4.4 3.7-3.5C17.7 6.3 16.5 9 12 9z"/></symbol>
+<symbol id="i-bag" viewBox="0 0 24 24"><path d="M5 8h14l-1 12H6z"/><path d="M9 8V6.5a3 3 0 016 0V8"/></symbol>
+<symbol id="i-home" viewBox="0 0 24 24"><path d="M4 10.5L12 4l8 6.5V20H4z"/><path d="M9.5 20v-6h5v6"/></symbol>
+<symbol id="i-user" viewBox="0 0 24 24"><circle cx="12" cy="8" r="3.6"/><path d="M5 20c0-3.6 3.1-6 7-6s7 2.4 7 6"/></symbol>
+<symbol id="i-quote" viewBox="0 0 24 24"><path d="M4 6h12M4 11h9M4 16h12M4 21h6"/></symbol>
+<symbol id="i-coin" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5v9M9.6 9.8h4.2a1.9 1.9 0 010 3.8H10"/></symbol>
+<symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l4 4"/></symbol>
+<symbol id="i-bell" viewBox="0 0 24 24"><path d="M6.5 10a5.5 5.5 0 0111 0c0 4 1.5 5.5 1.5 5.5H5S6.5 14 6.5 10z"/><path d="M10 19a2 2 0 004 0"/></symbol>
+<symbol id="i-menu" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></symbol>
+<symbol id="i-share" viewBox="0 0 24 24"><path d="M12 15.5V4M8.5 7.5L12 4l3.5 3.5"/><path d="M5 13v6h14v-6"/></symbol>
+<symbol id="i-bookmark" viewBox="0 0 24 24"><path d="M7 4h10v16l-5-3.5L7 20z"/></symbol>
+<symbol id="i-phone" viewBox="0 0 24 24"><path d="M6.5 3.5h3l1.5 4-2 1.5a10 10 0 006 6l1.5-2 4 1.5v3a2 2 0 01-2 2A15 15 0 014.5 5.5a2 2 0 012-2z"/></symbol>
+<symbol id="i-chat" viewBox="0 0 24 24"><path d="M4.5 5h15v10H9l-4.5 4z"/><path d="M8 9h8M8 12h5"/></symbol>
+<symbol id="i-link" viewBox="0 0 24 24"><path d="M10 14a4 4 0 005.7 0l2.6-2.6a4 4 0 10-5.7-5.7L11 7.3"/><path d="M14 10a4 4 0 00-5.7 0L5.7 12.6a4 4 0 105.7 5.7L13 16.7"/></symbol>
+<symbol id="i-close" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></symbol>
+<symbol id="i-check" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7"/></symbol>
+<symbol id="i-chev" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></symbol>
+<symbol id="i-chev-down" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></symbol>
+<symbol id="i-bolt" viewBox="0 0 24 24"><path d="M13 3L6 13h5l-1 8 7-10h-5z"/></symbol>
+<symbol id="i-chart" viewBox="0 0 24 24"><path d="M5 20v-6M10 20V8M15 20v-9M20 20V5"/></symbol>
+<symbol id="i-lock" viewBox="0 0 24 24"><rect x="5" y="10" width="14" height="10" rx="2"/><path d="M8.5 10V7.5a3.5 3.5 0 017 0V10"/></symbol>
+<symbol id="i-users" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.2"/><path d="M2.5 19c0-3.2 2.9-5.4 6.5-5.4s6.5 2.2 6.5 5.4"/><path d="M16 5.2a3.2 3.2 0 010 5.9M17.5 13.9c2.3.6 4 2.3 4 5.1"/></symbol>
+<symbol id="i-layers" viewBox="0 0 24 24"><path d="M12 3l8 4.5-8 4.5-8-4.5z"/><path d="M4 12l8 4.5 8-4.5M4 16.5L12 21l8-4.5"/></symbol>
+<symbol id="i-car" viewBox="0 0 24 24"><path d="M4 16v-3l2-5h12l2 5v3"/><path d="M3 16h18v3H3z"/><circle cx="7.5" cy="19" r="1.4"/><circle cx="16.5" cy="19" r="1.4"/></symbol>
+<symbol id="i-plane" viewBox="0 0 24 24"><path d="M2.5 13.5l19-7-4 8.5-6.5 1.5-2 4-1.5-3-3-.5z"/></symbol>
+<symbol id="i-youtube" viewBox="0 0 24 24"><rect x="2.5" y="5.5" width="19" height="13" rx="4"/><path d="M10.5 9.6l5 2.4-5 2.4z"/></symbol>
+<symbol id="i-facebook" viewBox="0 0 24 24"><path d="M15 4h-2.5A3.5 3.5 0 009 7.5V10H7v3h2v8h3v-8h2.5l.5-3H12V7.5c0-.3.2-.5.5-.5H15z"/></symbol>
+<symbol id="i-x" viewBox="0 0 24 24"><path d="M4.5 4.5l15 15M19.5 4.5l-15 15"/></symbol>
+<symbol id="i-kakao" viewBox="0 0 24 24"><path d="M12 4c-4.7 0-8.5 3-8.5 6.7 0 2.4 1.6 4.5 4 5.7l-.8 3 3.4-2c.6.1 1.2.2 1.9.2 4.7 0 8.5-3 8.5-6.9S16.7 4 12 4z"/></symbol>
+<symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/></symbol>
+<symbol id="i-refresh" viewBox="0 0 24 24"><path d="M20 12a8 8 0 10-2.4 5.7"/><path d="M20 5v5h-5"/></symbol>
+<symbol id="i-flip" viewBox="0 0 24 24"><path d="M4 8h11a4 4 0 014 4M20 16H9a4 4 0 01-4-4"/><path d="M7 5L4 8l3 3M17 13l3 3-3 3"/></symbol>
+<symbol id="i-arrow-right" viewBox="0 0 24 24"><path d="M5 12h13M13 6l6 6-6 6"/></symbol>
+<symbol id="i-leaf" viewBox="0 0 24 24"><path d="M5 19c0-7 4.5-12 13-13 .6 8-4 13-11 13H5z"/><path d="M5 19c3-5 6-7 10-8"/></symbol>
+<symbol id="i-mega" viewBox="0 0 24 24"><path d="M4 10v4l3 1 9 5V4L7 9z"/><path d="M7 14v4a2 2 0 004 0"/></symbol>
+<symbol id="i-target" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="4"/><circle cx="12" cy="12" r=".6"/></symbol>
+</svg>
+
+<div class="badge"><span class="bmark">DB</span>DB생명 리뉴얼 제안용 인터랙티브 데모<em>샘플 데이터</em></div>
+<div class="topmeta">PUMSS × DB생명 · 2026.11</div>
+
+<div class="mbar">
+  <span class="bm"><svg class="ic"><use href="#i-leaf"/></svg></span>
+  <span>DB생명 리뉴얼 제안 데모<em>샘플</em></span>
+  <button id="mbar-open"><svg class="ic"><use href="#i-layers"/></svg>핵심 요약</button>
+</div>
+
+<div class="stage">
+  <!-- ============ left rail ============ -->
+  <aside class="rail">
+    <div class="lockup">DB생명<span class="x">×</span><span class="pumss">PUMSS</span></div>
+    <h1>본사가 만든 자료를,<br><em>현장에서 팔리게</em></h1>
+    <p class="lead">위드U 매거진도, 미니보험도 이미 충분히 잘 만들어져 있습니다. 문제는 <b>설계사 손에서 멈춘다</b>는 것. 백년프로필은 그 자료를 전 직원·FP 개인 채널에 자동 탑재해 <b>활용률·고객 클릭·상담 DB</b>로 회수하는 라스트마일 배포 엔진입니다.</p>
+    <div class="railtabs">
+      <button class="rail-tab on" data-tab="home"><span class="n">01</span><span><span class="tt">백년친구 메인</span><span class="ts">아이콘 그리드 · 캠페인 · 콘텐츠 피드</span></span><span class="ar"><svg class="ic" style="width:14px;height:14px"><use href="#i-arrow-right"/></svg></span></button>
+      <button class="rail-tab" data-tab="profile"><span class="n">02</span><span><span class="tt">백년프로필</span><span class="ts">전 직원 디지털 지점 · 상담 DB 접점</span></span><span class="ar"><svg class="ic" style="width:14px;height:14px"><use href="#i-arrow-right"/></svg></span></button>
+      <button class="rail-tab" data-tab="apptech"><span class="n">03</span><span><span class="tt">앱테크 · AD포인트</span><span class="ts">계열사 연계 부가수익 · 재방문</span></span><span class="ar"><svg class="ic" style="width:14px;height:14px"><use href="#i-arrow-right"/></svg></span></button>
+      <button class="rail-tab" data-tab="admin"><span class="n">04</span><span><span class="tt">관리자 컨트롤 타워</span><span class="ts">원클릭 배포 · 심의 · 실시간 지표</span></span><span class="ar"><svg class="ic" style="width:14px;height:14px"><use href="#i-arrow-right"/></svg></span></button>
+    </div>
+    <div class="rail-foot">
+      <span class="chip dark"><i></i>4주 파일럿 · 1개 본부 100석</span>
+      <span class="chip"><i></i>심의 통과 자료만 배포</span>
+    </div>
+    <p class="rail-note">화면의 모든 수치는 구조를 보여주기 위한 샘플입니다. 실제 개인정보·계약 금액은 포함하지 않았습니다.</p>
+  </aside>
+
+  <!-- ============ phone ============ -->
+  <div class="phone-wrap">
+    <div class="phone">
+      <div class="screen-shell">
+        <div class="island"></div>
+        <div class="statusbar" id="statusbar">
+          <span>9:41</span>
+          <span class="sb-r">
+            <span class="sb-bars"><i></i><i></i><i></i><i></i></span>
+            <svg class="ic" style="width:13px;height:13px" viewBox="0 0 24 24"><path d="M4 9a12 12 0 0116 0M7 12.5a8 8 0 0110 0M10 16a4 4 0 014 0"/><circle cx="12" cy="19" r=".8" fill="currentColor"/></svg>
+            <span class="sb-batt"></span>
+          </span>
+        </div>
+
+        <div class="app">
+          <div class="screens">
+
+            <!-- ===== HOME ===== -->
+            <section class="screen active" data-screen="home" aria-label="백년친구 메인">
+              <div class="home-hero">
+                <div class="ht">
+                  <div class="ht-logo">
+                    <svg class="mark" viewBox="0 0 24 24" fill="none"><path d="M4.2 15.5c0-4.9 3-8.8 7.9-11.7.3 6.2-2.1 9.4-5.2 11.7z" fill="#8FE3C1"/><path d="M12.4 20c0-3.9 2.4-6.8 6.9-8.7.3 4.9-2 7.7-4.9 8.7z" fill="#fff" opacity=".9"/></svg>
+                    DB생명<span class="caret"></span>
+                  </div>
+                  <div class="ht-actions">
+                    <button class="icb" data-toast="통합 검색 — 자료·상품·교육을 한 번에"><svg class="ic"><use href="#i-search"/></svg></button>
+                    <button class="icb" data-toast="알림 3건 · 본사 공지가 가장 위에 옵니다"><svg class="ic"><use href="#i-bell"/></svg><i class="dot"></i></button>
+                    <button class="icb" data-toast="전체 메뉴"><svg class="ic"><use href="#i-menu"/></svg></button>
+                  </div>
+                </div>
+                <div class="grid8" id="grid8">
+                  <button class="g-item" data-lib="상품자료"><span class="g-ic"><svg class="ic"><use href="#i-doc"/></svg></span><span>상품자료</span></button>
+                  <button class="g-item" data-lib="영상자료"><span class="g-ic"><svg class="ic"><use href="#i-play"/></svg></span><span>영상자료</span></button>
+                  <button class="g-item" data-lib="상품안내장"><span class="g-ic"><svg class="ic"><use href="#i-file"/></svg></span><span>상품안내장</span></button>
+                  <button class="g-item" data-lib="보험전문"><span class="g-ic"><svg class="ic"><use href="#i-shield"/></svg></span><span>보험전문</span></button>
+                  <button class="g-item" data-lib="QR출석"><span class="g-ic"><svg class="ic"><use href="#i-qr"/></svg></span><span>QR출석</span></button>
+                  <button class="g-item" data-lib="My자료실"><span class="g-ic"><svg class="ic"><use href="#i-cloud"/></svg></span><span>My자료실</span></button>
+                  <button class="g-item" data-lib="기프티쇼"><span class="g-ic"><svg class="ic"><use href="#i-gift"/></svg></span><span>기프티쇼</span></button>
+                  <button class="g-item" data-lib="AD몰"><span class="g-ic"><svg class="ic"><use href="#i-bag"/></svg></span><span>AD몰</span></button>
+                </div>
+              </div>
+
+              <div class="app-body">
+                <div class="banners">
+                  <button class="bn bn-wu" data-sheet="withu">
+                    <span class="bn-tag">본사 발행</span>
+                    <span class="bwrap">
+                      <span class="wu-top"><span class="wu-logo">위드<b>U</b></span><span class="wu-date">26년 11월호</span></span>
+                      <span class="cover-art"><i style="width:9px;height:22px;background:#C4703A"></i><i style="width:9px;height:34px;background:#0A7554"></i><i style="width:9px;height:28px;background:#C29A4B"></i><i style="width:9px;height:40px;background:#5A8E76"></i><i style="width:9px;height:26px;background:#E0A97A"></i></span>
+                      <span class="cap">고객에게 보낼 수 있는 11월 매거진</span>
+                    </span>
+                  </button>
+                  <button class="bn bn-me" data-sheet="metopia">
+                    <span class="bn-tag">FP 전용</span>
+                    <span class="bwrap" style="justify-content:center;gap:6px">
+                      <span class="me-k">GA M-etopia</span>
+                      <span class="me-c">고객동의 계약관리<br>스마트 언더라이팅</span>
+                      <span style="display:inline-flex;align-items:center;gap:4px;font-size:9.4px;font-weight:700;color:#E7CB8C;margin-top:2px">바로가기 <svg class="ic" style="width:10px;height:10px"><use href="#i-arrow-right"/></svg></span>
+                    </span>
+                  </button>
+                </div>
+
+                <div class="notice">
+                  <span class="pulse"></span>
+                  <span><b>11/24(월) 06:00</b> 위드U 12월호 · 전 직원 채널 자동 배포 예약</span>
+                  <span class="go"><svg class="ic" style="width:13px;height:13px"><use href="#i-chev"/></svg></span>
+                </div>
+
+                <div class="sec-h">
+                  <h3>최신 컨텐츠</h3>
+                  <button class="more" data-toast="자료 전체 보기 (데모)">전체 <svg class="ic" style="width:11px;height:11px"><use href="#i-chev"/></svg></button>
+                </div>
+                <div class="feed" id="feed">
+                  <button class="fcard" data-sheet="wu11">
+                    <span class="fcover cv1"><span class="fdb"><svg class="ic m"><use href="#i-leaf"/></svg>DB생명</span><span class="fnum">11</span></span>
+                    <span class="fmeta"><span class="fl">상품자료</span><span class="ft">26년 11월 위드U 매거진</span><span class="fs"><svg class="ic" style="width:9px;height:9px"><use href="#i-share"/></svg>공유 1,284 · 열람 68%</span></span>
+                  </button>
+                  <button class="fcard" data-sheet="wu10">
+                    <span class="fcover cv2"><span class="fdb"><svg class="ic m"><use href="#i-leaf"/></svg>DB생명</span><span class="fnum">10</span></span>
+                    <span class="fmeta"><span class="fl">상품자료</span><span class="ft">26년 10월 위드U 매거진</span><span class="fs"><svg class="ic" style="width:9px;height:9px"><use href="#i-share"/></svg>공유 1,102 · 열람 61%</span></span>
+                  </button>
+                  <button class="fcard" data-sheet="wu09">
+                    <span class="fcover cv3"><span class="fdb"><svg class="ic m"><use href="#i-leaf"/></svg>DB생명</span><span class="fnum">09</span></span>
+                    <span class="fmeta"><span class="fl">상품자료</span><span class="ft">26년 09월 위드U 매거진</span><span class="fs"><svg class="ic" style="width:9px;height:9px"><use href="#i-share"/></svg>공유 984 · 열람 57%</span></span>
+                  </button>
+                  <button class="fcard" data-sheet="metopia2">
+                    <span class="fcover cv4"><span class="fdb"><svg class="ic m"><use href="#i-leaf"/></svg>교육</span><span class="fnum" style="font-size:15px;letter-spacing:-.03em">M-etopia</span></span>
+                    <span class="fmeta"><span class="fl">교육자료</span><span class="ft">11월 FP 언더라이팅 실전</span><span class="fs"><svg class="ic" style="width:9px;height:9px"><use href="#i-clock"/></svg>12분 · 수료 412명</span></span>
+                  </button>
+                </div>
+              </div>
+            </section>
+
+            <!-- ===== PROFILE ===== -->
+            <section class="screen" data-screen="profile" aria-label="백년프로필">
+              <div class="pf-cover">
+                <span class="pat"></span>
+                <div class="pf-topbar">
+                  <div class="pf-mini">
+                    <button data-toast="구독했습니다 — 새 자료가 올라오면 알림 (데모)"><svg class="ic"><use href="#i-bookmark"/></svg>구독하기</button>
+                    <button data-share="profile"><svg class="ic"><use href="#i-share"/></svg>공유하기</button>
+                  </div>
+                  <button class="pf-mini" data-toast="프로필 편집 — 개인 자율 영역 (데모)" style="color:#fff"><svg class="ic" style="width:15px;height:15px"><use href="#i-menu"/></svg></button>
+                </div>
+              </div>
+              <div class="pf-card">
+                <div class="pf-row">
+                  <div class="pf-av">김</div>
+                  <div class="pf-btns">
+                    <button class="solid" data-modal="consult"><svg class="ic" style="width:11px;height:11px;display:inline-block;vertical-align:-1px"><use href="#i-chat"/></svg> 1:1 상담</button>
+                    <button data-modal="bizcard">전자명함</button>
+                  </div>
+                </div>
+                <div class="pf-name">김백년 <span class="fbadge">DB생명 FP</span></div>
+                <div class="pf-role">백년파트너 지점장 · 12년차 · 서울 서초</div>
+                <p class="pf-desc">고객의 100년을 함께 설계합니다. 종신·연금·미니보험 상담부터 리크루팅까지, 필요한 자료는 이 페이지에서 바로 보내드립니다.</p>
+                <div class="pf-stats">
+                  <div><b>128</b><span>상담</span></div>
+                  <div><b id="share-count">412</b><span>자료 공유</span></div>
+                  <div><b>36</b><span>보유 자료</span></div>
+                </div>
+                <div class="pf-acts">
+                  <button data-toast="전화 상담 연결 — 데모에서는 실제 발신되지 않습니다"><svg class="ic"><use href="#i-phone"/></svg>전화</button>
+                  <button data-toast="문자 템플릿 3종 — 본사 승인 문구만 사용합니다"><svg class="ic"><use href="#i-chat"/></svg>문자</button>
+                  <button data-toast="카카오톡 채널로 연결 (데모)"><svg class="ic"><use href="#i-kakao"/></svg>카톡</button>
+                  <button data-share="profile"><svg class="ic"><use href="#i-link"/></svg>링크</button>
+                </div>
+              </div>
+
+              <div class="fixed-note">
+                <span class="lk"><svg class="ic"><use href="#i-lock"/></svg>본사 고정 영역</span>
+                <span>·</span>
+                <span>심의 통과 자료만 노출 · 개인은 수정 불가</span>
+              </div>
+              <button class="fxbn trv" data-toast="DB손해보험 여행자보험 — 3분 견적 (계열사 연계)">
+                <span class="fxart">DB<br>손보</span>
+                <span class="fxt">
+                  <span class="fxl"><i></i>계열사 캠페인 · 본사 승인</span>
+                  <span class="fxh">여행 떠나기 전, 3분이면 끝</span>
+                  <span class="fxs">해외여행자보험 다이렉트 · AD포인트 연계</span>
+                </span>
+                <span class="chev"><svg class="ic" style="width:14px;height:14px"><use href="#i-chev"/></svg></span>
+              </button>
+              <button class="fxbn golf" data-admin-banner hidden data-toast="관리자 원클릭 배포로 전 직원 프로필에 반영된 배너입니다">
+                <span class="fxart">DB<br>증권</span>
+                <span class="fxt">
+                  <span class="fxl"><i></i>방금 배포됨 · 본사 고정</span>
+                  <span class="fxh">제1회 직장인 골프챌린지</span>
+                  <span class="fxs">3,240명 프로필에 동시 반영</span>
+                </span>
+                <span class="chev"><svg class="ic" style="width:14px;height:14px"><use href="#i-chev"/></svg></span>
+              </button>
+              <button class="fxbn mb" data-sheet="mini">
+                <span class="mb-k">미니보험 무료 체험 · 12월 한정</span>
+                <span class="mb-h">고객에게 <b>부담 없는 첫 보장</b>을</span>
+                <span class="mb-s">무료 미니보험 3종 · 상담 신청 시 본사 DB로 회수</span>
+                <span class="mb-btn">무료로 안내하기 <svg class="ic" style="width:10px;height:10px"><use href="#i-arrow-right"/></svg></span>
+              </button>
+
+              <div class="pf-sec">
+                <h3>오늘의 백년프로필</h3>
+                <span class="auto"><svg class="ic"><use href="#i-refresh"/></svg>매일 06:00 자동 갱신</span>
+              </div>
+              <button class="quote" data-sheet="quote">
+                <span class="qk">오늘의 좋은글</span>
+                <p class="qt">“고객은 자료를 기억하지 않는다.<br>자료를 보내준 사람을 기억한다.”</p>
+                <p class="qa">— 11월 23일 · 설계사가 고객에게 보내는 오늘의 문장</p>
+              </button>
+              <div class="mini-feed" style="margin-top:9px">
+                <button class="fcard" data-sheet="wu11">
+                  <span class="fcover cv1"><span class="fdb"><svg class="ic m"><use href="#i-leaf"/></svg>DB생명</span><span class="fnum" style="font-size:21px">11</span></span>
+                  <span class="fmeta"><span class="fl">추천 자료</span><span class="ft">위드U 11월호</span></span>
+                </button>
+                <button class="fcard" data-sheet="mini">
+                  <span class="fcover cv3"><span class="fdb"><svg class="ic m"><use href="#i-shield"/></svg>미니보험</span><span class="fnum" style="font-size:19px">3종</span></span>
+                  <span class="fmeta"><span class="fl">상품</span><span class="ft">무료 미니보험 안내</span></span>
+                </button>
+              </div>
+              <div class="sns">
+                <button aria-label="유튜브" data-toast="유튜브 채널로 연결 (데모)"><svg class="ic"><use href="#i-youtube"/></svg></button>
+                <button aria-label="페이스북" data-toast="페이스북으로 연결 (데모)"><svg class="ic"><use href="#i-facebook"/></svg></button>
+                <button aria-label="X" data-toast="X(트위터)로 연결 (데모)"><svg class="ic"><use href="#i-x"/></svg></button>
+                <button aria-label="카카오" data-toast="카카오톡 채널로 연결 (데모)"><svg class="ic"><use href="#i-kakao"/></svg></button>
+              </div>
+              <p class="pf-foot">백년프로필은 품스 ‘개인품’ 기반입니다.<br>노출 정보·순서는 개인이 설정하고, 고정 영역만 본사가 관리합니다.</p>
+            </section>
+
+            <!-- ===== APPTECH ===== -->
+            <section class="screen" data-screen="apptech" aria-label="앱테크 AD포인트">
+              <div class="at-hero">
+                <div class="at-k">AD POINT · 이번 달 적립</div>
+                <div class="at-bal"><b id="point-bal">12,400</b><span>P</span></div>
+                <div class="at-sub">이번 달 <b id="point-month">+2,100P</b> · 설계사 부가수익</div>
+                <div class="at-bar"><i id="point-bar" style="width:62%"></i></div>
+                <div class="at-goal"><span>다음 등급까지 3,600P</span><span>기프티쇼 교환 가능</span></div>
+              </div>
+              <div class="pf-sec">
+                <h3>오늘의 미션</h3>
+                <span class="auto"><svg class="ic"><use href="#i-clock"/></svg>매일 갱신</span>
+              </div>
+              <button class="mission" data-point="300" data-mission>
+                <span class="mic" style="background:#EAF3FB;color:#2F6E9B"><svg class="ic"><use href="#i-plane"/></svg></span>
+                <span class="mt"><span class="mh">여행자보험 3분 견적 확인</span><span class="ms">DB손해보험 다이렉트 · 계열사 연계</span></span>
+                <span class="mp">+300P</span>
+                <span class="go"><svg class="ic" style="width:13px;height:13px"><use href="#i-chev"/></svg></span>
+              </button>
+              <button class="mission" data-point="500" data-mission>
+                <span class="mic" style="background:#F3F6EC;color:#5D7A3C"><svg class="ic"><use href="#i-car"/></svg></span>
+                <span class="mt"><span class="mh">자동차 다이렉트 견적 확인</span><span class="ms">보험료 비교까지 3분</span></span>
+                <span class="mp">+500P</span>
+                <span class="go"><svg class="ic" style="width:13px;height:13px"><use href="#i-chev"/></svg></span>
+              </button>
+              <button class="mission" data-point="100" data-mission>
+                <span class="mic" style="background:#FBF0E4;color:#B4772C"><svg class="ic"><use href="#i-gift"/></svg></span>
+                <span class="mt"><span class="mh">기프티쇼 첫 구매 1% 적립</span><span class="ms">KT엠하우스 정식 제휴</span></span>
+                <span class="mp">+1%</span>
+                <span class="go"><svg class="ic" style="width:13px;height:13px"><use href="#i-chev"/></svg></span>
+              </button>
+              <button class="mission" data-point="100" data-mission>
+                <span class="mic" style="background:#F1EEF8;color:#6E5A8E"><svg class="ic"><use href="#i-bag"/></svg></span>
+                <span class="mt"><span class="mh">판촉몰 인기 상품 둘러보기</span><span class="ms">고객 사은품·명절 선물</span></span>
+                <span class="mp">+100P</span>
+                <span class="go"><svg class="ic" style="width:13px;height:13px"><use href="#i-chev"/></svg></span>
+              </button>
+
+              <div class="pf-sec"><h3>AD 수익 구조</h3><span class="auto">본사 정책에 맞춰 조정</span></div>
+              <div class="flow">
+                <div><b>AD 노출</b><span>프로필·메인</span></div>
+                <span class="ar"><svg class="ic"><use href="#i-chev"/></svg></span>
+                <div><b>가입·상담</b><span>고객 반응</span></div>
+                <span class="ar"><svg class="ic"><use href="#i-chev"/></svg></span>
+                <div><b>AD포인트</b><span>설계사 지급</span></div>
+              </div>
+
+              <div class="pf-sec"><h3>제휴 서비스</h3><span class="auto">노출·수정·숨김</span></div>
+              <div class="partners">
+                <button class="ptnr" data-toast="기프티쇼 — 교환권 발송·정산까지 운영 (데모)"><span class="pk">GIFTISHOW</span><span class="ph">기프티쇼</span><span class="ps">교환권·리워드 발송</span></button>
+                <button class="ptnr" data-toast="판촉몰 — 사은품 기획·제작·배송 (데모)"><span class="pk">PROMOTION</span><span class="ph">판촉몰</span><span class="ps">기획·제작·물류</span></button>
+                <button class="ptnr" data-toast="자동차 다이렉트 — DB손보 연계 (데모)"><span class="pk">DIRECT</span><span class="ph">자동차 다이렉트</span><span class="ps">보험료 비교</span></button>
+                <button class="ptnr" data-toast="여행자보험 — DB손보 진행 중 (데모)"><span class="pk">TRAVEL</span><span class="ph">여행자보험</span><span class="ps">3분 견적</span></button>
+              </div>
+              <p class="at-note">※ 앱테크·AD포인트는 품스가 운영 중인 모델을 DB생명 정책에 맞춰 노출·수정·숨김으로 제어하는 구조입니다. 지급 기준·수수료는 협의 후 확정합니다.</p>
+            </section>
+
+            <!-- ===== ADMIN ===== -->
+            <section class="screen" data-screen="admin" aria-label="관리자 컨트롤 타워">
+              <div class="ad-hero">
+                <div class="ad-t">ADMIN CONTROL TOWER<span class="ad-live"><i></i>실시간</span></div>
+                <div class="ad-h">본사 담당자 통합 제어</div>
+                <div class="ad-s">배너·자료·심의·지표를 한 화면에서 · 대상 3,240명</div>
+              </div>
+              <div class="ad-switch">
+                <div class="sw-t">
+                  <div class="sw-k">원클릭 배포</div>
+                  <div class="sw-h">전 직원 고정 배너 배포</div>
+                  <div class="sw-s">DB증권 제1회 직장인 골프챌린지</div>
+                </div>
+                <button class="sw" id="deploy-sw" role="switch" aria-checked="false" aria-label="전 직원 고정 배너 배포"><i></i></button>
+              </div>
+
+              <div class="kpis">
+                <div class="kpi">
+                  <div class="kk"><svg class="ic"><use href="#i-users"/></svg>프로필 개설</div>
+                  <div class="kv"><b>2,847</b><span>/ 3,240명</span></div>
+                  <div class="kd">87.9% · 이번 주 +64</div>
+                  <div class="kbar"><i data-w="87.9%"></i></div>
+                </div>
+                <div class="kpi">
+                  <div class="kk"><svg class="ic"><use href="#i-share"/></svg>자료 공유율</div>
+                  <div class="kv"><b>63.4</b><span>%</span></div>
+                  <div class="kd">위드U 11월호 기준 · +5.2p</div>
+                  <div class="kbar"><i data-w="63.4%"></i></div>
+                </div>
+                <div class="kpi hl">
+                  <div class="kk"><svg class="ic"><use href="#i-chat"/></svg>미니보험 상담 DB</div>
+                  <div class="kv"><b id="kpi-db">412</b><span>건</span></div>
+                  <div class="kd">이번 달 · 무료 미니보험</div>
+                  <div class="kbar"><i data-w="72%"></i></div>
+                </div>
+                <div class="kpi">
+                  <div class="kk"><svg class="ic"><use href="#i-target"/></svg>리크루팅 유입</div>
+                  <div class="kv"><b>96</b><span>건</span></div>
+                  <div class="kd">프로필 → 채용 문의</div>
+                  <div class="kbar"><i data-w="48%"></i></div>
+                </div>
+              </div>
+
+              <div class="ad-sec"><h3>심의 상태</h3><span>승인된 자료만 배포됩니다</span></div>
+              <button class="review" data-toast="심의필 26-1102 · 승인 범위 내에서만 배포">
+                <span class="rv ok"></span>
+                <span class="rt"><span class="rt">위드U 12월호</span><span class="re">심의필 26-1102 · 승인</span></span>
+                <span class="rtag ok">배포 가능</span>
+              </button>
+              <button class="review" data-toast="검수 중인 자료는 전 직원 채널에 노출되지 않습니다">
+                <span class="rv wait"></span>
+                <span class="rt"><span class="rt">미니보험 3종 안내장 (수정본)</span><span class="re">문구 수정 검수 중</span></span>
+                <span class="rtag wait">검수 중</span>
+              </button>
+              <button class="review" data-toast="계열사 배너는 본사 승인 후 게시됩니다">
+                <span class="rv ok"></span>
+                <span class="rt"><span class="rt">DB손보 여행자보험 배너</span><span class="re">계열사 승인 완료</span></span>
+                <span class="rtag ok">게시 중</span>
+              </button>
+
+              <div class="ad-sec"><h3>오늘의 배포 로그</h3><span>자동</span></div>
+              <ul class="log">
+                <li><time>06:00</time><span>일일 콘텐츠 자동 배포 · 전 직원 3,240석</span></li>
+                <li><time>11:20</time><span>위드U 11월호 공유 1,284건 · 클릭 3,912</span></li>
+                <li><time id="log-deploy-time">—</time><span id="log-deploy-text">고정 배너 배포 대기 중</span></li>
+              </ul>
+              <p class="ad-note">※ 표시된 수치는 화면 구조를 보여주기 위한 데모용 가정치입니다. 실제 KPI 정의·수집 범위는 DB생명과 협의해 확정합니다.</p>
+            </section>
+
+          </div>
+
+          <button class="fab" id="fab-admin"><svg class="ic"><use href="#i-shield"/></svg>관리자 뷰</button>
+
+          <nav class="tabbar" aria-label="하단 메뉴">
+            <button class="tb-item on" data-tab="home"><svg class="ic"><use href="#i-home"/></svg>홈</button>
+            <button class="tb-item" data-tab="profile"><svg class="ic"><use href="#i-user"/></svg>백년프로필</button>
+            <button class="tb-item" data-tab="quote"><svg class="ic"><use href="#i-quote"/></svg>좋은글</button>
+            <button class="tb-item" data-tab="apptech"><svg class="ic"><use href="#i-coin"/></svg>앱테크</button>
+          </nav>
+
+          <div class="toasts" id="toasts" aria-live="polite"></div>
+
+          <!-- generic sheet -->
+          <div class="modal" id="sheet" role="dialog" aria-modal="true" aria-label="자료 상세">
+            <div class="bd" data-close></div>
+            <div class="box">
+              <div class="box-h">
+                <div>
+                  <div class="bk" id="sheet-kicker">본사 승인 자료</div>
+                  <h3 id="sheet-title">자료</h3>
+                  <p class="bs" id="sheet-sub"></p>
+                </div>
+                <button class="x" data-close aria-label="닫기"><svg class="ic"><use href="#i-close"/></svg></button>
+              </div>
+              <div class="box-b" id="sheet-body"></div>
+            </div>
+          </div>
+
+          <!-- business card -->
+          <div class="modal" id="bizcard" role="dialog" aria-modal="true" aria-label="전자명함">
+            <div class="bd" data-close></div>
+            <div class="box">
+              <div class="box-h">
+                <div>
+                  <div class="bk">MOTION BUSINESS CARD</div>
+                  <h3>김백년 전자명함</h3>
+                  <p class="bs">명함을 눌러 앞면·뒷면을 확인하세요</p>
+                </div>
+                <button class="x" data-close aria-label="닫기"><svg class="ic"><use href="#i-close"/></svg></button>
+              </div>
+              <div class="box-b">
+                <div class="bizwrap">
+                  <div class="biz" id="biz">
+                    <div class="biz-face biz-front">
+                      <div class="bf-top"><svg class="mark m" viewBox="0 0 24 24" fill="none" style="width:15px;height:15px"><path d="M4.2 15.5c0-4.9 3-8.8 7.9-11.7.3 6.2-2.1 9.4-5.2 11.7z" fill="#8FE3C1"/><path d="M12.4 20c0-3.9 2.4-6.8 6.9-8.7.3 4.9-2 7.7-4.9 8.7z" fill="#fff" opacity=".9"/></svg>DB생명 · 백년파트너</div>
+                      <div>
+                        <div class="bf-name">김백년</div>
+                        <div class="bf-role">백년파트너 지점장 · FP</div>
+                      </div>
+                      <div class="bf-b">
+                        <div class="bf-tel">010-****-1024<br>db.100/bowon</div>
+                        <div class="qr"><svg viewBox="0 0 24 24"></svg></div>
+                      </div>
+                    </div>
+                    <div class="biz-face biz-back">
+                      <div class="hl">CONTACT</div>
+                      <div class="line"><svg class="ic"><use href="#i-phone"/></svg>010-****-1024</div>
+                      <div class="line"><svg class="ic"><use href="#i-link"/></svg>db.100/bowon</div>
+                      <div class="line"><svg class="ic"><use href="#i-chat"/></svg>1:1 상담 · 평일 09:00–18:00</div>
+                      <div class="line"><svg class="ic"><use href="#i-shield"/></svg>DB생명 백년파트너 · 12년차</div>
+                    </div>
+                  </div>
+                </div>
+                <p class="flip-hint"><svg class="ic"><use href="#i-flip"/></svg>탭해서 명함 뒤집기</p>
+                <button class="submit" style="margin-top:12px" data-toast="명함을 저장했습니다 — 연락처에 추가 (데모)">명함 저장</button>
+                <p class="notefoot">모션 전자명함은 DB생명 전용 템플릿으로 제공되며, 링크 공유만으로 명함 역할을 합니다. 표시된 번호는 데모용 자리표시자입니다.</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- consult form -->
+          <div class="modal" id="consult" role="dialog" aria-modal="true" aria-label="1:1 상담 신청">
+            <div class="bd" data-close></div>
+            <div class="box">
+              <div class="box-h">
+                <div>
+                  <div class="bk">1:1 상담 · DB 회수 지점</div>
+                  <h3>김백년 FP에게 상담 신청</h3>
+                  <p class="bs">동의 기반으로 접수되고 담당자에게 즉시 전달됩니다</p>
+                </div>
+                <button class="x" data-close aria-label="닫기"><svg class="ic"><use href="#i-close"/></svg></button>
+              </div>
+              <div class="box-b">
+                <form class="form" id="consult-form" novalidate>
+                  <div class="field"><label>이름 <i>*</i></label><input id="c-name" type="text" autocomplete="off" placeholder="고객 이름"></div>
+                  <div class="field"><label>연락처 <i>*</i></label><input id="c-tel" type="tel" inputmode="numeric" autocomplete="off" placeholder="010-0000-0000"></div>
+                  <div class="field"><label>관심 분야</label>
+                    <select id="c-type">
+                      <option>미니보험 (무료 체험)</option>
+                      <option>종신·연금 보장 설계</option>
+                      <option>자동차·여행자보험</option>
+                      <option>리크루팅·채용 문의</option>
+                    </select>
+                  </div>
+                  <div class="field"><label>문의 내용</label><textarea id="c-msg" placeholder="궁금한 점을 적어주세요 (선택)"></textarea></div>
+                  <p class="err" id="c-err">이름과 연락처, 동의가 필요합니다. 연락처는 숫자 9자리 이상 입력해주세요.</p>
+                  <label class="chk"><input type="checkbox" id="c-agree"><span>개인정보 수집·이용에 동의합니다. (상담 목적·보유 1년, 데모에서는 실제 저장·전송되지 않습니다)</span></label>
+                  <button type="submit" class="submit">상담 신청하기</button>
+                </form>
+                <div id="consult-done" hidden>
+                  <div class="done-panel">
+                    <div class="dc"><svg class="ic"><use href="#i-check"/></svg></div>
+                    <h4>상담 신청이 접수되었습니다</h4>
+                    <p>김백년 FP에게 즉시 전달되었고,<br>본사 관리자 화면의 <b>상담 DB 지표</b>에 반영됩니다.</p>
+                    <div class="dbox">
+                      접수 경로 · <b>백년프로필 / 1:1 상담</b><br>
+                      응답 기준 · 영업일 1일 이내<br>
+                      데모 안내 · 실제 전송·저장은 되지 않습니다
+                    </div>
+                    <button class="submit" style="margin-top:12px" data-close>확인</button>
+                  </div>
+                </div>
+                <p class="notefoot">※ 개인정보 수집·이용 동의와 DB 활용 범위는 DB생명 준법·정보보호 기준에 맞춰 설계하며, 가입·전송 연동 방식은 협의 후 확정합니다.</p>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ right panel ============ -->
+  <aside class="panel">
+    <div class="pcard">
+      <div class="p-kicker">이 화면에서 확인할 것</div>
+      <div class="p-tabname"><b id="p-num">01</b><span id="p-name">백년친구 메인</span></div>
+      <h2 class="p-h" id="p-title">본사 자료가 현장에서 쓰이는 구조</h2>
+      <ul class="p-checks" id="p-checks"></ul>
+      <div class="p-gain" id="p-gain"></div>
+    </div>
+    <div class="impacts">
+      <div class="cap">V2 전략 · 3대 임팩트</div>
+      <div class="impact"><span class="iic"><svg class="ic"><use href="#i-layers"/></svg></span><span class="it"><b>① 본사 자료 도달률</b><span>이미 만든 자료를 전 직원·FP 개인 채널에 자동 탑재. 공유 1클릭, 클릭·열람 추적.</span></span></div>
+      <div class="impact"><span class="iic"><svg class="ic"><use href="#i-shield"/></svg></span><span class="it"><b>② 심의 통제 + 개인화</b><span>고정(심의 통과) / 자율(개인) / 자동(일일 갱신) 3층 분리로 컴플라이언스 리스크 없이.</span></span></div>
+      <div class="impact"><span class="iic"><svg class="ic"><use href="#i-coin"/></svg></span><span class="it"><b>③ DB·AD 수익화</b><span>미니보험 무료 DB + 여행자보험·다이렉트 AD포인트 + 리크루팅. 비용이 아닌 수익 항목.</span></span></div>
+    </div>
+    <div class="pilot">
+      <span><b>4주 · 1개 본부 파일럿</b><span>100석 기준 · 측정 KPI 4종 · 본사 부담 최소</span></span>
+      <span class="num">제안</span>
+    </div>
+  </aside>
+</div>
+
+<!-- mobile summary sheet -->
+<div class="msheet" id="msheet" role="dialog" aria-modal="true" aria-label="제안 핵심 요약">
+  <div class="mbd" data-mclose></div>
+  <div class="mbox">
+    <div class="mh"><b>제안 핵심 요약</b><span>라스트마일 배포 엔진</span><button data-mclose aria-label="닫기"><svg class="ic"><use href="#i-close"/></svg></button></div>
+    <div id="msheet-body"></div>
+    <div class="impacts">
+      <div class="cap">V2 전략 · 3대 임팩트</div>
+      <div class="impact"><span class="iic"><svg class="ic"><use href="#i-layers"/></svg></span><span class="it"><b>① 본사 자료 도달률</b><span>이미 만든 자료를 전 직원·FP 개인 채널에 자동 탑재. 공유 1클릭, 클릭·열람 추적.</span></span></div>
+      <div class="impact"><span class="iic"><svg class="ic"><use href="#i-shield"/></svg></span><span class="it"><b>② 심의 통제 + 개인화</b><span>고정(심의 통과) / 자율(개인) / 자동(일일 갱신) 3층 분리.</span></span></div>
+      <div class="impact"><span class="iic"><svg class="ic"><use href="#i-coin"/></svg></span><span class="it"><b>③ DB·AD 수익화</b><span>미니보험 무료 DB + AD포인트 + 리크루팅.</span></span></div>
+    </div>
+    <div class="pilot"><span><b>4주 · 1개 본부 파일럿</b><span>100석 기준 · KPI 4종 · 본사 부담 최소</span></span><span class="num">제안</span></div>
+    <p style="font-size:9.6px;color:#93A29B;padding:12px 16px 4px;line-height:1.6">샘플 데이터로 동작하는 제안용 데모입니다. 개인정보·계약 금액은 포함하지 않았습니다.</p>
+  </div>
+</div>
+
+<script>
+(function(){
+  'use strict';
+  var $ = function(s,r){ return (r||document).querySelector(s); };
+  var $$ = function(s,r){ return Array.prototype.slice.call((r||document).querySelectorAll(s)); };
+  var state = { tab:'home', points:12400, share:412, consult:412, deployed:false };
+
+  /* ---------- panel copy ---------- */
+  var PANELS = {
+    home: { num:'01', name:'백년친구 메인', title:'본사 자료가 현장에서 쓰이는 구조', checks:[
+      '핵심 8개 메뉴를 첫 화면에 — 설계사가 <b>3초 안에</b> 자료를 찾습니다',
+      '위드U·GA M-etopia 배너에 <b>공유 버튼과 클릭 추적</b>을 붙였습니다',
+      '자료를 누르면 심의필 표시에서 개인 채널 공유까지 한 번에 이어집니다'
+    ], gain:'본사가 얻는 것 — 자료별 <b>설계사 활용률 · 고객 클릭</b> 리포트' },
+    profile: { num:'02', name:'백년프로필', title:'명함이 아니라, 매일 쓰는 개인 채널', checks:[
+      '전 직원이 자기 이름·얼굴·상담 버튼을 가진 <b>디지털 지점</b>을 갖습니다',
+      '1:1 상담 폼이 <b>미니보험 DB 회수 지점</b> — 동의 기반으로 본사에 적재됩니다',
+      '본사 고정 배너(심의 통과)와 개인 자율 영역을 분리해 리스크 없이 개성까지'
+    ], gain:'본사가 얻는 것 — 프로필별 <b>상담 신청 · 관심 상품</b> 데이터' },
+    apptech: { num:'03', name:'앱테크 · AD포인트', title:'앱을 다시 여는 이유를 만듭니다', checks:[
+      'AD포인트가 <b>재방문·체류</b>의 이유가 되고, 설계사에게는 부가수익이 됩니다',
+      'DB손보 여행자보험·자동차 다이렉트 등 <b>계열사 연계</b>가 기본 구성입니다',
+      '노출 → 가입·상담 → 포인트 지급의 3단계 수익 구조를 그대로 체험할 수 있습니다'
+    ], gain:'본사가 얻는 것 — 계열사 캠페인 <b>참여 · 전환</b> 지표' },
+    admin: { num:'04', name:'관리자 컨트롤 타워', title:'통제와 활력을 동시에', checks:[
+      '고정 배너를 <b>원클릭</b>으로 전 직원에게 — 승인된 자료만 나갑니다',
+      '개설·공유·상담 DB·리크루팅 <b>4개 지표</b>를 실시간으로 봅니다',
+      '심의 상태(승인 / 검수 중)가 배포 가능 여부를 결정합니다'
+    ], gain:'본사가 얻는 것 — 다음 예산을 정당화하는 <b>숫자</b>' }
+  };
+
+  /* ---------- toast ---------- */
+  var toastBox = $('#toasts');
+  function toast(msg){
+    if(!toastBox) return;
+    while(toastBox.children.length > 2) toastBox.removeChild(toastBox.firstChild);
+    var el = document.createElement('div');
+    el.className = 'toast';
+    el.innerHTML = '<svg class="ic"><use href="#i-check"/></svg><span></span>';
+    el.lastChild.textContent = msg;
+    toastBox.appendChild(el);
+    setTimeout(function(){ el.classList.add('out'); setTimeout(function(){ el.remove(); },320); }, 3000);
+  }
+
+  /* ---------- navigation ---------- */
+  var fab = $('#fab-admin');
+  function go(tab){
+    if(!PANELS[tab]) return;
+    state.tab = tab;
+    $$('.screen').forEach(function(s){ s.classList.toggle('active', s.dataset.screen === tab); });
+    $$('.rail-tab').forEach(function(b){ b.classList.toggle('on', b.dataset.tab === tab); });
+    $$('.tb-item').forEach(function(b){ b.classList.toggle('on', b.dataset.tab === tab); });
+    var sc = $('.screen.active');
+    if(sc) sc.scrollTop = 0;
+    renderPanel();
+    if(fab){
+      fab.classList.toggle('hide', false);
+      fab.innerHTML = (tab === 'admin')
+        ? '<svg class="ic"><use href="#i-home"/></svg>앱으로'
+        : '<svg class="ic"><use href="#i-shield"/></svg>관리자 뷰';
+    }
+    if(tab === 'admin') animateBars();
+  }
+
+  function renderPanel(){
+    var p = PANELS[state.tab];
+    $('#p-num').textContent = p.num;
+    $('#p-name').textContent = p.name;
+    $('#p-title').textContent = p.title;
+    var ul = $('#p-checks');
+    ul.innerHTML = p.checks.map(function(c){
+      return '<li><svg class="ic"><use href="#i-check"/></svg><span>' + c + '</span></li>';
+    }).join('');
+    $('#p-gain').innerHTML = p.gain;
+    var mb = $('#msheet-body');
+    if(mb){
+      mb.innerHTML = '<div class="pcard"><div class="p-kicker">' + p.num + ' · 이 화면에서 확인할 것</div>'
+        + '<h2 class="p-h">' + p.title + '</h2><ul class="p-checks">'
+        + p.checks.map(function(c){ return '<li><svg class="ic"><use href="#i-check"/></svg><span>' + c + '</span></li>'; }).join('')
+        + '</ul><div class="p-gain">' + p.gain + '</div></div>';
+    }
+  }
+
+  function animateBars(){
+    $$('.kpi .kbar i').forEach(function(el){
+      var w = el.getAttribute('data-w') || '0%';
+      el.style.width = '0%';
+      setTimeout(function(){ el.style.width = w; }, 60);
+    });
+  }
+
+  $$('.rail-tab').forEach(function(b){ b.addEventListener('click', function(){ go(b.dataset.tab); }); });
+  $$('.tb-item').forEach(function(b){
+    b.addEventListener('click', function(){
+      if(b.dataset.tab === 'quote'){ openSheet('quote'); return; }
+      go(b.dataset.tab);
+    });
+  });
+  if(fab) fab.addEventListener('click', function(){ go(state.tab === 'admin' ? 'home' : 'admin'); });
+
+  /* ---------- sheets ---------- */
+  var sheet = $('#sheet');
+  var lastFocus = null;
+  function openModal(el){
+    lastFocus = document.activeElement;
+    el.classList.add('open');
+    var f = el.querySelector('input,button,select');
+    el.setAttribute('aria-hidden','false');
+  }
+  function closeModal(el){
+    el.classList.remove('open');
+    el.setAttribute('aria-hidden','true');
+    if(lastFocus && lastFocus.focus) lastFocus.focus();
+  }
+  $$('.modal').forEach(function(m){
+    m.addEventListener('click', function(e){ if(e.target.closest('[data-close]')) closeModal(m); });
+  });
+  document.addEventListener('keydown', function(e){
+    if(e.key === 'Escape'){ $$('.modal.open').forEach(closeModal); closeMsheet(); }
+  });
+
+  function shareRow(title, meta, approved){
+    return '<div class="librow"><span class="lic"><svg class="ic"><use href="#i-file"/></svg></span>'
+      + '<span class="lt"><span class="lh">' + title + '</span><span class="ls">'
+      + (approved ? '<span class="ok"><svg class="ic"><use href="#i-check"/></svg>심의 승인</span> · ' : '')
+      + meta + '</span></span>'
+      + '<button class="sh" data-share-item="' + title.replace(/"/g,'') + '"><svg class="ic"><use href="#i-share"/></svg>공유</button></div>';
+  }
+
+  var SHEETS = {
+    withu: { kick:'본사 발행 · 상품자료', title:'위드U 26년 11월호', sub:'심의필 26-1102 · 12p · 이번 달 공유 1,284건', body:
+      '<div class="srch"><div class="in"><svg class="ic"><use href="#i-search"/></svg><span>위드U · 고객에게 보낼 자료 검색</span></div></div>'
+      + shareRow('위드U 26년 11월호 (고객 발송용)', 'PDF · 카드뉴스 6장 · 링크 공유', true)
+      + shareRow('위드U 11월호 표지 이미지', '이미지 1장 · SNS 게시용', true)
+      + shareRow('11월 고객 안부 문구 3종', '본사 승인 문구 · 문자·카톡', true)
+      + '<p class="notefoot">보내는 순간 설계사 이름·상담 버튼이 붙은 링크로 나갑니다. 누가 열었고 무엇을 눌렀는지는 본사 리포트에 남습니다.</p>' },
+    wu11: { kick:'상품자료 · 공유 1,284', title:'26년 11월 위드U 매거진', sub:'심의필 26-1102 · 열람률 68% (샘플)', body:
+      shareRow('고객 발송용 링크', '설계사 명함·상담 버튼 자동 결합', true)
+      + shareRow('PDF 원본 (12p)', '인쇄 없이 링크로 대체', true)
+      + shareRow('카드뉴스 6장', '인스타·밴드 게시용', true)
+      + '<p class="notefoot">본사 자료를 그대로 쓰기 때문에 제작비가 들지 않습니다. 배포·추적만 얹는 구조입니다.</p>' },
+    wu10: { kick:'상품자료 · 공유 1,102', title:'26년 10월 위드U 매거진', sub:'지난 호 다시 보내기 · 열람률 61% (샘플)', body:
+      shareRow('고객 발송용 링크', '설계사 명함·상담 버튼 자동 결합', true)
+      + shareRow('10월호 카드뉴스', '이미지 4장', true)
+      + '<p class="notefoot">지난 호도 개인 링크로 다시 보낼 수 있어, 자료가 사내에서 죽지 않습니다.</p>' },
+    wu09: { kick:'상품자료 · 공유 984', title:'26년 09월 위드U 매거진', sub:'지난 호 다시 보내기 · 열람률 57% (샘플)', body:
+      shareRow('고객 발송용 링크', '설계사 명함·상담 버튼 자동 결합', true)
+      + shareRow('09월호 PDF', '12p', true)
+      + '<p class="notefoot">자료가 쌓일수록 설계사가 고객에게 보낼 것이 늘어납니다.</p>' },
+    metopia: { kick:'FP 전용 · 교육', title:'GA M-etopia', sub:'고객동의 계약관리 · 스마트 언더라이팅', body:
+      shareRow('M-etopia 바로가기 링크', 'FP 전용 · 로그인 필요', true)
+      + shareRow('11월 언더라이팅 실전 (12분)', '교육영상 · 수료 412명', true)
+      + '<p class="notefoot">교육·계약관리 같은 업무 도구가 앱 안에서 자료와 같은 동선에 놓입니다.</p>' },
+    metopia2: { kick:'교육자료', title:'11월 FP 언더라이팅 실전', sub:'12분 · 수료 412명 (샘플)', body:
+      shareRow('교육 영상 (12분)', 'M-etopia 연계', true)
+      + shareRow('요약 카드 3장', '팀 공유용', true)
+      + '<p class="notefoot">교육 수료율도 같은 관리자 화면에서 지표로 확인합니다.</p>' },
+    mini: { kick:'미니보험 · DB 회수', title:'무료 미니보험 3종', sub:'12월 한정 · 상담 신청 시 본사 DB로 회수', body:
+      shareRow('일상생활 배상책임 (무료)', '1개월 · 상담 연결', true)
+      + shareRow('여행 중 상해 (무료)', '국내여행 · 7일', true)
+      + shareRow('어린이 놀이시설 (무료)', '자녀 동반 고객', true)
+      + '<button class="submit" style="margin-top:12px" data-share="mini">고객에게 무료 안내 링크 보내기</button>'
+      + '<p class="notefoot">무료 미니보험은 부담 없이 상담을 시작하는 접점입니다. 신청 정보는 동의 기반으로 본사에 적재되고 담당 FP에게 배정됩니다.</p>' },
+    quote: { kick:'매일 06:00 자동 갱신', title:'오늘의 좋은글', sub:'11월 23일 · 고객에게 보내는 오늘의 문장', body:
+      '<div style="padding:14px 2px 4px"><p style="font-size:14px;line-height:1.75;font-weight:600;color:#22322B;letter-spacing:-.03em">“고객은 자료를 기억하지 않는다.<br>자료를 보내준 사람을 기억한다.”</p>'
+      + '<p style="font-size:10px;color:#93A29B;margin-top:8px">— 11월 23일 · 백년프로필 자동 갱신 콘텐츠</p></div>'
+      + shareRow('오늘의 좋은글 카드', '이미지 1장 · 문자·카톡', true)
+      + '<p class="notefoot">개인이 매일 콘텐츠를 만들 필요 없이, 본사가 채운 문장으로 매일 고객 접점이 생깁니다.</p>' }
+  };
+
+  var LIB = {
+    '상품자료': { ic:'i-doc', items:[['26년 11월 위드U 매거진','PDF · 공유 1,284'],['종신·연금 보장 요약','카드뉴스 6장'],['미니보험 3종 안내장','검수 중']] },
+    '영상자료': { ic:'i-play', items:[['고객 설명용 60초 영상','4편'],['11월 언더라이팅 실전','12분 · 수료 412명'],['보장 점검 인포그래픽','이미지 3장']] },
+    '상품안내장': { ic:'i-file', items:[['종신보험 안내장 (심의필 26-0987)','PDF'],['연금보험 안내장','PDF'],['어린이보험 안내장','PDF']] },
+    '보험전문': { ic:'i-shield', items:[['보험 전문가 과정 11월','영상 8편'],['약관 핵심 요약','카드뉴스 5장'],['고객 질문 Top 20','PDF']] },
+    'QR출석': { ic:'i-qr', items:[['오늘의 출석 QR','출석 시 50P'],['지점 세미나 체크인','11/26 예정'],['교육 수료 QR','수료증 발급']] },
+    'My자료실': { ic:'i-cloud', items:[['내가 보낸 자료','36건'],['고객 열람 알림','12건'],['즐겨찾기 자료','9건']] },
+    '기프티쇼': { ic:'i-gift', items:[['커피 교환권','2,500원대'],['편의점 상품권','5,000원대'],['내 포인트로 교환','12,400P']] },
+    'AD몰': { ic:'i-bag', items:[['판촉몰 인기 상품','사은품·명절 선물'],['여행자보험 배너','AD포인트'],['자동차 다이렉트','AD포인트']] }
+  };
+
+  function openSheet(kind){
+    var d = SHEETS[kind];
+    if(!d) return;
+    $('#sheet-kicker').textContent = d.kick;
+    $('#sheet-title').textContent = d.title;
+    $('#sheet-sub').textContent = d.sub;
+    $('#sheet-body').innerHTML = d.body;
+    openModal(sheet);
+  }
+
+  function openLib(name){
+    var d = LIB[name];
+    if(!d) return;
+    $('#sheet-kicker').textContent = '본사 승인 자료 · 자동 탑재';
+    $('#sheet-title').textContent = name;
+    $('#sheet-sub').textContent = '심의 통과 자료만 · 공유 1클릭 · 클릭 추적';
+    $('#sheet-body').innerHTML = d.items.map(function(it){
+      var pending = /검수/.test(it[1]);
+      return '<div class="librow"><span class="lic"><svg class="ic"><use href="#' + d.ic + '"/></svg></span>'
+        + '<span class="lt"><span class="lh">' + it[0] + '</span><span class="ls">'
+        + (pending ? '<span style="color:#A9741F;font-weight:700">검수 중</span> · ' : '<span class="ok"><svg class="ic"><use href="#i-check"/></svg>심의 승인</span> · ')
+        + it[1] + '</span></span>'
+        + (pending ? '<span class="sh" style="color:#93A29B;background:#F4F7F5;border-color:#E9EFEB">대기</span>'
+                   : '<button class="sh" data-share-item="' + it[0] + '"><svg class="ic"><use href="#i-share"/></svg>공유</button>')
+        + '</div>';
+    }).join('') + '<p class="notefoot">검수 중인 자료는 전 직원 채널에 노출되지 않습니다. 승인되면 자동으로 배포됩니다.</p>';
+    openModal(sheet);
+  }
+
+  function bumpShare(n){
+    state.share += (n || 1);
+    var el = $('#share-count');
+    if(el) el.textContent = state.share.toLocaleString('ko-KR');
+    toast('고객에게 보낼 링크가 복사되었습니다 · 누가 열었는지 본사 리포트에 남습니다');
+  }
+
+  /* ---------- delegated actions ---------- */
+  document.addEventListener('click', function(e){
+    var t = e.target;
+    var lib = t.closest('[data-lib]');
+    if(lib){ openLib(lib.dataset.lib); return; }
+    var sh = t.closest('[data-sheet]');
+    if(sh){ openSheet(sh.dataset.sheet); return; }
+    var mi = t.closest('[data-modal]');
+    if(mi){ openBizOrConsult(mi.dataset.modal); return; }
+    var si = t.closest('[data-share-item]');
+    if(si){ bumpShare(1); return; }
+    var shr = t.closest('[data-share]');
+    if(shr){ bumpShare(2); return; }
+    var tt = t.closest('[data-toast]');
+    if(tt){ toast(tt.dataset.toast); return; }
+    var ms = t.closest('[data-mission]');
+    if(ms){ doMission(ms); return; }
+  });
+
+  /* ---------- business card ---------- */
+  var biz = $('#biz');
+  if(biz) biz.addEventListener('click', function(){ biz.classList.toggle('flip'); });
+
+  function openBizOrConsult(kind){
+    if(kind === 'bizcard'){ openModal($('#bizcard')); }
+    if(kind === 'consult'){
+      var f = $('#consult-form'), done = $('#consult-done');
+      if(f) f.hidden = false;
+      if(done) done.hidden = true;
+      $('#c-err').classList.remove('on');
+      openModal($('#consult'));
+    }
+  }
+
+  /* ---------- consult form ---------- */
+  var form = $('#consult-form');
+  if(form){
+    form.addEventListener('submit', function(e){
+      e.preventDefault();
+      var name = $('#c-name').value.trim();
+      var tel = $('#c-tel').value.replace(/[^0-9]/g,'');
+      var agree = $('#c-agree').checked;
+      if(name.length < 2 || tel.length < 9 || !agree){
+        $('#c-err').classList.add('on');
+        return;
+      }
+      $('#c-err').classList.remove('on');
+      form.hidden = true;
+      $('#consult-done').hidden = false;
+      state.consult += 1;
+      var kpi = $('#kpi-db');
+      if(kpi) kpi.textContent = state.consult.toLocaleString('ko-KR');
+      var sub = $('.pf-stats div:first-child b');
+      if(sub) sub.textContent = '129';
+      toast('상담 DB 1건이 본사 관리자 지표에 반영되었습니다 (데모)');
+    });
+  }
+
+  /* ---------- points ---------- */
+  function doMission(btn){
+    if(btn.classList.contains('done')){ toast('오늘 미션은 이미 완료했습니다'); return; }
+    var p = parseInt(btn.dataset.point, 10) || 0;
+    btn.classList.add('done');
+    var go = btn.querySelector('.go');
+    if(go) go.innerHTML = '<svg class="ic" style="width:13px;height:13px"><use href="#i-check"/></svg>';
+    state.points += p;
+    var bal = $('#point-bal');
+    if(bal){
+      bal.textContent = state.points.toLocaleString('ko-KR');
+      bal.style.transition = 'transform .3s';
+      bal.style.transform = 'scale(1.08)';
+      setTimeout(function(){ bal.style.transform = 'scale(1)'; }, 260);
+    }
+    var bar = $('#point-bar');
+    if(bar) bar.style.width = Math.min(92, 62 + (state.points - 12400) / 120).toFixed(1) + '%';
+    var mo = $('#point-month');
+    if(mo) mo.textContent = '+' + (2100 + state.points - 12400).toLocaleString('ko-KR') + 'P';
+    toast('+' + p + 'P 적립 · AD포인트 잔액에 반영했습니다 (데모)');
+  }
+
+  /* ---------- admin deploy toggle ---------- */
+  var sw = $('#deploy-sw');
+  var adminBanner = $('[data-admin-banner]');
+  if(sw){
+    sw.addEventListener('click', function(){
+      state.deployed = !state.deployed;
+      sw.classList.toggle('on', state.deployed);
+      sw.setAttribute('aria-checked', state.deployed ? 'true' : 'false');
+      if(adminBanner) adminBanner.hidden = !state.deployed;
+      var t = $('#log-deploy-time'), txt = $('#log-deploy-text');
+      var now = new Date();
+      var hh = String(now.getHours()).padStart(2,'0') + ':' + String(now.getMinutes()).padStart(2,'0');
+      if(t) t.textContent = state.deployed ? hh : '—';
+      if(txt) txt.textContent = state.deployed
+        ? 'DB증권 골프챌린지 배너 · 3,240명 프로필에 즉시 반영'
+        : '고정 배너 배포 취소 · 프로필에서 내려감';
+      toast(state.deployed
+        ? '전 직원 3,240명 프로필에 즉시 배포했습니다 · 백년프로필 탭에서 확인하세요'
+        : '배포를 취소했습니다 · 프로필에서 배너가 내려갔습니다');
+    });
+  }
+
+  /* ---------- mobile summary sheet ---------- */
+  var msheet = $('#msheet');
+  function openMsheet(){ if(msheet) msheet.classList.add('open'); }
+  function closeMsheet(){ if(msheet) msheet.classList.remove('open'); }
+  var mo = $('#mbar-open');
+  if(mo) mo.addEventListener('click', openMsheet);
+  if(msheet) msheet.addEventListener('click', function(e){ if(e.target.closest('[data-mclose]')) closeMsheet(); });
+
+  /* ---------- init ---------- */
+  renderPanel();
+  var start = location.hash.replace('#','');
+  if(PANELS[start]) go(start);
+
+  /* 등장 스태거 */
+  $$('.g-item').forEach(function(el,i){
+    el.style.opacity = '0'; el.style.transform = 'translateY(6px)';
+    setTimeout(function(){ el.style.transition = '.35s cubic-bezier(.2,.9,.3,1)'; el.style.opacity='1'; el.style.transform='none'; }, 120 + i*28);
+  });
+})();
+</script>
+</body>
+</html>
