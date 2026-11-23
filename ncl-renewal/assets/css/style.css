@@ -822,14 +822,14 @@ a.tag:hover { border-color: var(--red-line); color: var(--red); }
 .partner-wall { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 16px; }
 .partner-group .partner-wall { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
 .partner-group .logo-chip { width: 100%; min-width: 0; padding: 0 8px; }
-.partner-group .partner-chip { display: flex; align-items: center; justify-content: center; text-align: center; padding: 10px 6px; }
+.partner-group .partner-chip { display: flex; align-items: center; justify-content: center; text-align: center; padding: 10px 4px; font-size: .68rem; white-space: nowrap; letter-spacing: -0.02em; }
 .partner-chip {
   font-size: .78rem; font-weight: 600; color: var(--slate); background: var(--bg);
   border: 1px solid var(--line-2); border-radius: 8px; padding: 5px 9px;
   transition: border-color .18s, color .18s, background .18s;
 }
 .partner-chip:hover { border-color: var(--red-line); color: var(--red); background: var(--red-soft); }
-.partner-chip i { display: inline-grid; place-items: center; width: 17px; height: 17px; border-radius: 5px; background: var(--navy); color: #fff; font-style: normal; font-size: .52rem; font-weight: 800; margin-right: 5px; vertical-align: -2px; letter-spacing: 0; }
+.partner-chip i { display: inline-grid; place-items: center; width: 16px; height: 16px; border-radius: 5px; background: var(--navy); color: #fff; font-style: normal; font-size: .52rem; font-weight: 800; margin-right: 5px; vertical-align: -2px; letter-spacing: 0; }
 
 /* ---------- CTA band ---------- */
 .cta-band {
