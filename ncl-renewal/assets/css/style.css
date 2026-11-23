@@ -498,7 +498,7 @@ body.nav-open { overflow: hidden; }
 .hv-float .k i { width: 5px; height: 5px; border-radius: 50%; background: #47d7a0; box-shadow: 0 0 8px rgba(71, 215, 160, .9); }
 .hv-float .v { font-size: .82rem; font-weight: 700; color: #fff; line-height: 1.35; }
 .hv-float .v em { font-style: normal; color: #ff8a6d; }
-.hv-f1 { top: 52px; left: 6px; }
+.hv-f1 { top: -58px; left: 50%; margin-left: -82px; }
 .hv-f2 { bottom: 118px; right: calc(50% - 186px); animation-delay: -2.4s; }
 .hv-f2 .k i { background: #6ea0ff; box-shadow: 0 0 8px rgba(110, 160, 255, .9); }
 @keyframes floaty { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
@@ -1410,8 +1410,7 @@ a.tag:hover { border-color: var(--red-line); color: var(--red); }
   .hero { padding: calc(var(--nav-h) + 62px) 0 140px; }
   .hero-grid { grid-template-columns: 1fr; gap: 52px; }
   .hero-visual { min-height: 590px; }
-  .hv-f1 { top: 30px; left: 0; }
-  .hv-f2 { right: calc(50% - 210px); bottom: 96px; }
+  .hv-f1 { top: -54px; left: 50%; margin-left: -82px; }
   .stats { margin-top: -64px; }
   .stats-card { grid-template-columns: repeat(2, 1fr); }
   .stat { padding: 26px 24px; }
