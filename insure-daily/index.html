@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="ko" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>인슈어데일리 | INSURE DAILY — 보험·금융 전문 일간지</title>
+<meta name="description" content="인슈어데일리(INSURE DAILY)는 생명·손해보험, GA·영업, 정책·규제, 신상품, 인슈어테크와 글로벌 보험시장을 다루는 보험 전문 일간지입니다. 매일 아침, 보험업계의 판단에 필요한 뉴스와 데이터를 전합니다.">
+<meta name="theme-color" content="#0F1E36">
+<meta property="og:type" content="website">
+<meta property="og:title" content="인슈어데일리 | INSURE DAILY">
+<meta property="og:description" content="보험·금융의 모든 판단을 위한 데일리 브리핑. 생보·손보, GA·영업, 정책·규제, 인슈어테크·글로벌.">
+<meta property="og:site_name" content="인슈어데일리">
+<meta property="og:image" content="https://lookbw2010.github.io/insure-daily/assets/img/hero-seoul.jpg">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="favicon.svg">
+<link rel="stylesheet" href="assets/css/style.css">
+<script defer src="assets/js/data.js"></script>
+<script defer src="assets/js/app.js"></script>
+</head>
+<body>
+
+<a class="sr-only" href="#latest">본문으로 바로가기</a>
+
+<header class="site-head">
+  <div class="topbar">
+    <div class="wrap topbar-in">
+      <div class="tb-left">
+        <span class="live-dot" aria-hidden="true"></span>
+        <span>2026년 11월 23일 월요일</span>
+        <span class="sep">|</span>
+        <span class="loc">서울 9.4℃ 맑음</span>
+        <span class="sep tb-hide">|</span>
+        <span class="demo-chip tb-hide">시안 DEMO</span>
+      </div>
+      <div class="tb-right">
+        <button class="tb-btn" id="openSearchTop" type="button" aria-label="기사 검색">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+          <span>검색</span>
+        </button>
+        <button class="tb-btn" id="themeTop" type="button" aria-label="읽기 모드 전환">
+          <svg class="ic-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20 14.5A8.5 8.5 0 1 1 9.5 4a6.6 6.6 0 0 0 10.5 10.5Z"/></svg>
+          <span class="tb-label">다크 모드</span>
+        </button>
+        <button class="tb-btn tb-sub" data-open-sub type="button">뉴스레터 무료 구독</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="wrap masthead">
+    <a class="brand" href="./" aria-label="인슈어데일리 홈">
+      <svg class="brand-mark" viewBox="0 0 56 56" role="img" aria-hidden="true">
+        <path d="M28 5.2 46.5 11.6v12.6c0 11.6-7.6 19.8-18.5 23.9C17.1 44 9.5 35.8 9.5 24.2V11.6L28 5.2Z" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linejoin="round"/>
+        <path d="M17.6 20.4h10.2M17.6 26.2h10.2M17.6 32h6.2" stroke="currentColor" stroke-width="2.1" stroke-linecap="round"/>
+        <path class="gold-stroke" d="M35.8 18.6v17.2" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/>
+        <circle class="gold-fill" cx="35.8" cy="40.9" r="1.9" fill="currentColor"/>
+      </svg>
+      <span class="brand-text">
+        <strong>인슈어데일리</strong>
+        <em>INSURE DAILY</em>
+      </span>
+    </a>
+    <p class="brand-tag">
+      <b>보험의 모든 판단을 위한 데일리 브리핑</b>
+      <span>INSURANCE · POLICY · INSURTECH</span>
+    </p>
+    <div class="head-actions">
+      <button class="icon-btn" id="openSearch" type="button" aria-label="기사 검색">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+      </button>
+      <button class="icon-btn" id="themeBtn" type="button" aria-label="다크 모드 전환">
+        <svg class="ic-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20 14.5A8.5 8.5 0 1 1 9.5 4a6.6 6.6 0 0 0 10.5 10.5Z"/></svg>
+      </button>
+      <button class="btn btn-sub" data-open-sub type="button"><span class="dot"></span><span class="lbl-full">뉴스레터 구독</span><span class="lbl-short">구독</span></button>
+    </div>
+  </div>
+
+  <nav class="mainnav" aria-label="주요 카테고리">
+    <div class="wrap nav-in">
+      <button class="burger icon-btn" id="burger" type="button" aria-label="메뉴 열기" aria-expanded="false">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+      </button>
+      <div class="nav-list" id="navList" role="tablist" aria-label="카테고리"></div>
+      <div class="nav-right">
+        <label class="nav-search" aria-label="기사 검색">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+          <input type="search" id="navSearch" placeholder="기사·키워드 검색" autocomplete="off">
+        </label>
+      </div>
+    </div>
+  </nav>
+
+  <div class="ticker" aria-label="마켓·업계 브리핑">
+    <div class="ticker-in">
+      <div class="ticker-label"><span class="live-dot" aria-hidden="true"></span>MARKET BRIEF</div>
+      <div class="ticker-viewport">
+        <div class="ticker-track" id="tickerTrack"></div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main>
+  <section class="wrap hero" aria-label="오늘의 톱뉴스">
+    <aside class="hero-live" aria-label="실시간 속보">
+      <div class="sec-head">
+        <span class="sq" aria-hidden="true"></span>
+        <h2>실시간 속보</h2>
+        <span class="pill-live"><i></i>LIVE</span>
+      </div>
+      <ol class="timeline" id="timeline"></ol>
+    </aside>
+
+    <article class="hero-lead lead" id="lead"></article>
+
+    <aside class="hero-side" aria-label="많이 본 뉴스와 오늘의 데이터">
+      <section class="most">
+        <div class="sec-head">
+          <span class="sq" aria-hidden="true"></span>
+          <h2>많이 본 뉴스</h2>
+          <span class="kicker">TOP 5</span>
+        </div>
+        <ol class="most-list" id="mostList"></ol>
+      </section>
+      <section class="data-widget" id="dataWidget" aria-label="오늘의 보험 데이터"></section>
+    </aside>
+  </section>
+
+  <section class="special" aria-label="신상품·GA 실무 스페셜">
+    <div class="special-in">
+      <div class="special-head">
+        <h2>신상품 · GA 실무 스페셜</h2>
+        <span class="tag">FIELD SPECIAL</span>
+        <a href="#latest" data-cat-jump="신상품">현장 리포트 전체보기
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </a>
+      </div>
+      <div class="special-grid" id="specialGrid"></div>
+    </div>
+  </section>
+
+  <section class="wrap news" id="latest" aria-label="최신 기사">
+    <div class="news-head">
+      <h2 id="latestTitle">최신 기사 <small>LATEST</small></h2>
+      <span class="count" id="latestCount"></span>
+    </div>
+    <div class="result-note" id="resultNote"></div>
+    <div class="grid" id="grid"></div>
+    <div class="load-more" id="moreWrap">
+      <button class="btn-outline" id="moreBtn" type="button">기사 더 보기
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+      </button>
+    </div>
+  </section>
+
+  <section class="opinion" aria-label="오피니언">
+    <div class="wrap">
+      <div class="op-head">
+        <h2>오피니언 · 시론</h2>
+        <a href="#" class="btn-read" data-cat-jump="오피니언·데이터" style="font-size:12px">칼럼 전체보기
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="13" height="13"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </a>
+      </div>
+      <div class="op-grid" id="opGrid"></div>
+    </div>
+  </section>
+
+  <section class="wrap datafeat" aria-label="데이터 인포그래픽">
+    <div class="df-grid" id="dfGrid"></div>
+  </section>
+
+  <section class="newsletter" aria-label="뉴스레터 구독">
+    <div class="nl-box">
+      <div class="nl-txt">
+        <p class="k">INSURE DAILY MORNING</p>
+        <h2>매일 아침 7시,<br>보험업계가 움직이는 숫자와 사람</h2>
+        <p>정책·규제 변화, GA 현장의 목소리, CSM과 손해율, 글로벌 보험시장까지. 읽는 데 5분, 판단에 필요한 것만 골라 보냅니다.</p>
+      </div>
+      <div>
+        <form class="nl-form" id="nlForm" novalidate>
+          <input type="email" id="nlEmail" placeholder="이메일 주소를 입력하세요" aria-label="이메일 주소" required>
+          <button type="submit">무료 구독</button>
+        </form>
+        <p class="nl-fine">광고성 정보 수신에 동의하며, 언제든지 구독을 해지할 수 있습니다.</p>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="site-foot">
+  <div class="wrap">
+    <div class="foot-top">
+      <div>
+        <div class="foot-brand">
+          <svg class="brand-mark" viewBox="0 0 56 56" aria-hidden="true">
+            <path d="M28 5.2 46.5 11.6v12.6c0 11.6-7.6 19.8-18.5 23.9C17.1 44 9.5 35.8 9.5 24.2V11.6L28 5.2Z" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linejoin="round"/>
+            <path d="M17.6 20.4h10.2M17.6 26.2h10.2M17.6 32h6.2" stroke="currentColor" stroke-width="2.1" stroke-linecap="round"/>
+            <path class="gold-stroke" d="M35.8 18.6v17.2" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/>
+            <circle class="gold-fill" cx="35.8" cy="40.9" r="1.9" fill="currentColor"/>
+          </svg>
+          <div>
+            <strong>인슈어데일리</strong>
+            <em>INSURE DAILY</em>
+          </div>
+        </div>
+        <p class="foot-desc">보험 산업의 정책·시장·현장을 연결하는 보험 전문 일간지. 생명보험·손해보험·GA·인슈어테크·글로벌 시장의 오늘을 데이터와 함께 전합니다.</p>
+      </div>
+      <div class="foot-cols">
+        <div class="foot-col">
+          <h4>SECTION</h4>
+          <a href="#" data-cat-jump="생보·손보">생보·손보</a>
+          <a href="#" data-cat-jump="GA·영업">GA·영업</a>
+          <a href="#" data-cat-jump="정책·규제">정책·규제</a>
+          <a href="#" data-cat-jump="신상품">신상품</a>
+        </div>
+        <div class="foot-col">
+          <h4>MORE</h4>
+          <a href="#" data-cat-jump="인슈어테크·글로벌">인슈어테크·글로벌</a>
+          <a href="#" data-cat-jump="오피니언·데이터">오피니언·데이터</a>
+          <a href="#" data-open-sub>뉴스레터 구독</a>
+        </div>
+        <div class="foot-col">
+          <h4>ABOUT</h4>
+          <a href="#">편집 방침</a>
+          <a href="#">윤리 강령</a>
+          <a href="#">제보·보도자료</a>
+          <a href="#">광고 문의</a>
+        </div>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <p class="legal">
+        <b>인슈어데일리(INSURE DAILY)</b> · 발행·편집인 인슈어데일리 편집국 · 서울특별시 영등포구 여의대로<br>
+        본 사이트는 보험 전문 언론사 사이트 구축 <b>시안(DEMO)</b>입니다. 수록된 기사·수치는 편집 구조와 읽기 경험을 보여주기 위한 예시 콘텐츠로, 실제 보도가 아닙니다. 일부 기사는 공개된 보도자료·공시를 참고해 작성했습니다.
+      </p>
+      <p>© 2026 인슈어데일리 INSURE DAILY. All rights reserved.</p>
+    </div>
+  </div>
+</footer>
+
+<!-- article reader -->
+<div class="reader" id="reader" role="dialog" aria-modal="true" aria-label="기사 읽기" data-fs="md">
+  <div class="r-progress" id="rProgress"></div>
+  <div class="reader-bar">
+    <div class="reader-bar-in">
+      <button class="r-back" id="readerBack" type="button">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M11 6l-6 6 6 6"/></svg>
+        목록으로
+      </button>
+      <span class="r-brand">인슈어데일리</span>
+      <div class="r-tools">
+        <div class="r-fs" role="group" aria-label="글자 크기">
+          <button type="button" data-fs="sm" aria-pressed="false">작게</button>
+          <button type="button" data-fs="md" aria-pressed="true">보통</button>
+          <button type="button" data-fs="lg" aria-pressed="false">크게</button>
+        </div>
+        <button class="r-tool" id="rBookmark" type="button" aria-pressed="false">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M6 4h12v17l-6-4.2L6 21V4Z"/></svg>
+          <span>북마크</span>
+        </button>
+        <button class="r-tool" id="rShare" type="button">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M12 16V3M8 7l4-4 4 4"/><path d="M5 12v8h14v-8"/></svg>
+          <span>공유</span>
+        </button>
+        <button class="r-tool" id="readerClose" type="button" aria-label="기사 닫기">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 6l12 12M18 6 6 18"/></svg>
+        </button>
+      </div>
+    </div>
+  </div>
+  <div class="reader-inner" id="readerInner"></div>
+</div>
+
+<!-- search panel -->
+<div class="search-panel" id="searchPanel" role="dialog" aria-modal="true" aria-label="기사 검색">
+  <div class="sp-box">
+    <div class="sp-field">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+      <input type="search" id="spInput" placeholder="기사 제목, 키워드, 기자명으로 검색" autocomplete="off">
+      <button type="button" id="spClose">ESC 닫기</button>
+    </div>
+    <div class="sp-hint" id="spHint">
+      <button type="button" data-q="CSM">CSM</button>
+      <button type="button" data-q="실손">실손보험</button>
+      <button type="button" data-q="GA">GA 수수료</button>
+      <button type="button" data-q="금통위">금통위</button>
+      <button type="button" data-q="캐노피우스">캐노피우스</button>
+      <button type="button" data-q="퇴직연금">퇴직연금</button>
+    </div>
+    <div class="sp-results" id="spResults"></div>
+  </div>
+</div>
+
+<!-- mobile drawer -->
+<div class="drawer" id="drawer" role="dialog" aria-modal="true" aria-label="메뉴">
+  <div class="drawer-bg" data-close-drawer></div>
+  <div class="drawer-panel">
+    <div class="drawer-top">
+      <div class="brand">
+        <svg class="brand-mark" viewBox="0 0 56 56" aria-hidden="true">
+          <path d="M28 5.2 46.5 11.6v12.6c0 11.6-7.6 19.8-18.5 23.9C17.1 44 9.5 35.8 9.5 24.2V11.6L28 5.2Z" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linejoin="round"/>
+          <path d="M17.6 20.4h10.2M17.6 26.2h10.2M17.6 32h6.2" stroke="currentColor" stroke-width="2.1" stroke-linecap="round"/>
+          <path class="gold-stroke" d="M35.8 18.6v17.2" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/>
+          <circle class="gold-fill" cx="35.8" cy="40.9" r="1.9" fill="currentColor"/>
+        </svg>
+        <span class="brand-text"><strong>인슈어데일리</strong><em>INSURE DAILY</em></span>
+      </div>
+      <button class="drawer-close" type="button" data-close-drawer aria-label="메뉴 닫기">×</button>
+    </div>
+    <nav class="drawer-nav" id="drawerNav"></nav>
+    <button class="btn btn-sub" data-open-sub type="button">뉴스레터 무료 구독</button>
+  </div>
+</div>
+
+<!-- subscribe modal -->
+<div class="modal" id="subModal" role="dialog" aria-modal="true" aria-labelledby="subTitle">
+  <div class="modal-box">
+    <button class="modal-close" id="subClose" type="button" aria-label="닫기">×</button>
+    <div class="modal-head">
+      <p class="k">INSURE DAILY MORNING</p>
+      <h3 id="subTitle">보험업계의 아침을<br>5분으로 정리해 드립니다</h3>
+      <p>매일 오전 7시, 정책·시장·현장의 핵심만 골라 보내는 무료 뉴스레터.</p>
+    </div>
+    <div class="modal-body">
+      <form id="subForm" novalidate>
+        <div class="field">
+          <label for="subName">이름 <span style="color:var(--muted-2);font-weight:400">(선택)</span></label>
+          <input type="text" id="subName" placeholder="홍길동" autocomplete="name">
+        </div>
+        <div class="field">
+          <label for="subEmail">이메일</label>
+          <input type="email" id="subEmail" placeholder="name@company.co.kr" autocomplete="email" required>
+        </div>
+        <div class="field">
+          <label for="subJob">업무 분야</label>
+          <select id="subJob">
+            <option>생명보험</option>
+            <option>손해보험</option>
+            <option>GA · 설계사</option>
+            <option>인슈어테크 · 핀테크</option>
+            <option>정책 · 감독 · 연구</option>
+            <option>기자 · 콘텐츠</option>
+            <option>기타</option>
+          </select>
+        </div>
+        <label class="check"><input type="checkbox" id="subAgree" required> 개인정보 수집·이용 및 광고성 정보 수신에 동의합니다. (수집 항목: 이메일·이름, 이용 목적: 뉴스레터 발송, 보유 기간: 구독 해지 시까지)</label>
+        <button class="modal-submit" type="submit">무료 구독 신청</button>
+        <p class="modal-fine">주 5회 발송 · 언제든 해지 가능 · 구독자는 기사 전문 열람이 가능합니다.</p>
+      </form>
+    </div>
+    <div class="modal-done">
+      <div class="ic">✓</div>
+      <h3>구독 신청이 접수되었습니다</h3>
+      <p id="subDoneMsg">내일 아침 7시, 인슈어데일리 모닝 브리핑으로 찾아뵙겠습니다.</p>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+</body>
+</html>
