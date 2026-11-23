@@ -1360,7 +1360,7 @@ function renderYt(){
   var play = $('#ytPlay');
   if(play) play.addEventListener('click', function(){
     var card = $('#ytCard');
-    card.innerHTML = '<iframe src="'+esc(res.embed)+'?rel=0" title="'+esc(title)+'" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>';
+    card.innerHTML = '<iframe src="'+esc(res.embed)+'" title="'+esc(title)+'" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>';
     toast('정제된 주소로 재생합니다 · '+res.embed);
   });
 }
