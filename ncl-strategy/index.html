@@ -718,6 +718,82 @@ input[type=range]:focus-visible{outline:2px solid var(--gold);outline-offset:6px
 .sim-three span{font-size:11.5px;color:var(--muted);font-weight:650;display:block;line-height:1.4}
 .sim-three b{display:block;margin-top:3px;font-size:16.5px;color:#fff;letter-spacing:-.025em;font-variant-numeric:tabular-nums}
 .sim-three div:last-child{grid-column:1/-1}
+
+/* ---------- v2 additions ---------- */
+.note-mini{margin-top:10px;font-size:12px;color:var(--muted);line-height:1.62}
+
+/* thesis flow */
+.flow3{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr) auto minmax(0,1fr);gap:10px;align-items:stretch;margin-top:26px}
+.flow-step{border:1px solid var(--line);border-radius:18px;padding:20px;background:var(--card);min-width:0}
+.flow-step .st{font-size:11.5px;font-weight:800;letter-spacing:.12em;color:var(--emerald-2)}
+.flow-step h4{margin-top:8px;font-size:16.5px;line-height:1.4;letter-spacing:-.025em}
+.flow-step p{margin-top:7px;font-size:13.8px;color:var(--muted);line-height:1.62}
+.flow-arrow{display:grid;place-items:center;color:rgba(255,255,255,.28);font-size:20px;min-width:14px}
+@media (max-width:980px){
+  .flow3{grid-template-columns:1fr}
+  .flow-arrow{transform:rotate(90deg);height:20px}
+}
+
+/* AI factory pipeline */
+.pipe{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px;margin-top:22px}
+.pipe div{border:1px solid var(--line);border-radius:14px;padding:14px 12px;background:rgba(0,0,0,.18);min-width:0}
+.pipe b{display:block;font-size:13.5px;color:#fff;letter-spacing:-.02em}
+.pipe span{display:block;margin-top:4px;font-size:12px;color:var(--muted);line-height:1.5}
+.pipe .human{border-color:rgba(217,174,99,.38);background:rgba(217,174,99,.08)}
+.pipe .human b{color:var(--gold-2)}
+@media (max-width:980px){.pipe{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:480px){.pipe{grid-template-columns:1fr}}
+
+/* last-mile flow */
+.bflow{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-top:22px}
+.bflow span{font-size:12.5px;font-weight:700;color:var(--ink-2);border:1px solid var(--line-2);border-radius:999px;padding:7px 13px;background:rgba(255,255,255,.04)}
+.bflow span b{color:#fff;font-weight:750}
+.bflow i{color:rgba(255,255,255,.3);font-style:normal;font-size:14px}
+
+/* simulator extra stats */
+.sim-three{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
+.sim-three div{border:1px solid var(--line);border-radius:12px;padding:11px 12px;background:rgba(0,0,0,.22);min-width:0}
+.sim-three span{font-size:11.5px;color:var(--muted);font-weight:650;display:block;line-height:1.4}
+.sim-three b{display:block;margin-top:3px;font-size:16.5px;color:#fff;letter-spacing:-.025em;font-variant-numeric:tabular-nums}
+.sim-three div:last-child{grid-column:1/-1}
+
+/* ---------- v2 additions ---------- */
+.note-mini{margin-top:10px;font-size:12px;color:var(--muted);line-height:1.62}
+
+/* thesis flow */
+.flow3{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr) auto minmax(0,1fr);gap:10px;align-items:stretch;margin-top:26px}
+.flow-step{border:1px solid var(--line);border-radius:18px;padding:20px;background:var(--card);min-width:0}
+.flow-step .st{font-size:11.5px;font-weight:800;letter-spacing:.12em;color:var(--emerald-2)}
+.flow-step h4{margin-top:8px;font-size:16.5px;line-height:1.4;letter-spacing:-.025em}
+.flow-step p{margin-top:7px;font-size:13.8px;color:var(--muted);line-height:1.62}
+.flow-arrow{display:grid;place-items:center;color:rgba(255,255,255,.28);font-size:20px;min-width:14px}
+@media (max-width:980px){
+  .flow3{grid-template-columns:1fr}
+  .flow-arrow{transform:rotate(90deg);height:20px}
+}
+
+/* AI factory pipeline */
+.pipe{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px;margin-top:22px}
+.pipe div{border:1px solid var(--line);border-radius:14px;padding:14px 12px;background:rgba(0,0,0,.18);min-width:0}
+.pipe b{display:block;font-size:13.5px;color:#fff;letter-spacing:-.02em}
+.pipe span{display:block;margin-top:4px;font-size:12px;color:var(--muted);line-height:1.5}
+.pipe .human{border-color:rgba(217,174,99,.38);background:rgba(217,174,99,.08)}
+.pipe .human b{color:var(--gold-2)}
+@media (max-width:980px){.pipe{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:480px){.pipe{grid-template-columns:1fr}}
+
+/* last-mile flow */
+.bflow{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-top:22px}
+.bflow span{font-size:12.5px;font-weight:700;color:var(--ink-2);border:1px solid var(--line-2);border-radius:999px;padding:7px 13px;background:rgba(255,255,255,.04)}
+.bflow span b{color:#fff;font-weight:750}
+.bflow i{color:rgba(255,255,255,.3);font-style:normal;font-size:14px}
+
+/* simulator extra stats */
+.sim-three{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
+.sim-three div{border:1px solid var(--line);border-radius:12px;padding:11px 12px;background:rgba(0,0,0,.22);min-width:0}
+.sim-three span{font-size:11.5px;color:var(--muted);font-weight:650;display:block;line-height:1.4}
+.sim-three b{display:block;margin-top:3px;font-size:16.5px;color:#fff;letter-spacing:-.025em;font-variant-numeric:tabular-nums}
+.sim-three div:last-child{grid-column:1/-1}
 </style>
 <noscript><style>.rv{opacity:1;transform:none}</style></noscript>
 </head>
@@ -827,11 +903,16 @@ input[type=range]:focus-visible{outline:2px solid var(--gold);outline-offset:6px
       </table>
     </div>
 
-    <div class="grid g2 rv" style="margin-top:22px">
+    <div class="grid g3 rv" style="margin-top:22px">
       <div class="card card--gold">
         <span class="num" style="color:var(--gold-2)">CASH-COW BRIDGE</span>
         <h3>기존 사업은 ‘끌고 갈 것’이 아니라 ‘건너갈 다리’입니다</h3>
         <p>31개사 연간 계약과 46건의 납품 이력은 당장의 현금과 접점입니다. 이 다리를 유지하되, <b>더 크게 만들려고 애쓰지 않습니다.</b> 다리 위에서 품스·개인품 캠페인을 팔고, 고객을 플랫폼으로 옮겨 태운 뒤, 인쇄·수작업 비중은 줄입니다. 90일 뒤 신규 수주에서 플랫폼·구독이 차지하는 비중을 30~40%로 끌어올리는 것이 1차 목표입니다.</p>
+      </div>
+      <div class="card">
+        <span class="num">PRINT → PUMSS</span>
+        <h3>종이 브로슈어를 ‘데이터가 남는 페이지’로 대체합니다</h3>
+        <p>대량 배포용 브로슈어·리플렛을 QR이 붙은 인터랙티브 품스 페이지로 바꾸면 <b>인쇄·배송비가 0원</b>이 되고, 누가 열었고 무엇을 눌렀고 누가 상담했는지가 실시간 DB로 남습니다. 지점 비치·VIP용 소량 인쇄만 남기고, 발송물부터 디지털로 전환하는 것이 첫 제안입니다.</p>
       </div>
       <div class="card card--em">
         <span class="num">AI CONTENT FACTORY</span>
@@ -1021,6 +1102,7 @@ input[type=range]:focus-visible{outline:2px solid var(--gold);outline-offset:6px
             <li><b>성과로 말할 수 있다</b> — 캠페인 단가가 아니라 <b>리드당 비용(CPL)</b>으로 제안. 예산 승인이 쉽고, 단가 인하 압력에서 벗어납니다.</li>
             <li><b>미열람 리타게팅이 전환을 만든다</b> — 한 번 보내고 끝내지 않고, 미열람·미신청자에게 리워드와 메시지를 다시 설계합니다.</li>
             <li><b>DB가 다음 캠페인을 판다</b> — 리드 품질·전환율 데이터가 쌓이면 다음 분기 제안은 우리가 먼저 합니다.</li>
+            <li><b>종이를 줄이는 제안도 함께</b> — 대량 배포물은 QR 품스 페이지로 대체해 인쇄·배송비를 없애고, 지점 비치·VIP용 소량만 남깁니다.</li>
           </ul>
         </div>
         <div>
