@@ -763,6 +763,7 @@ a.tag:hover { border-color: var(--red-line); color: var(--red); }
 .news-card h3 { margin-top: 8px; font-size: 1.02rem; line-height: 1.5; letter-spacing: -0.03em; }
 .news-card p { margin-top: 8px; font-size: .86rem; color: var(--muted); }
 .news-card .nc-more { margin-top: auto; padding-top: 16px; font-size: .8rem; font-weight: 700; color: var(--navy); display: inline-flex; align-items: center; gap: 6px; }
+.news-card .nc-more svg { width: 15px; height: 15px; flex: none; }
 .news-card:hover .nc-more { color: var(--red); }
 .news-grid + .news-more-link { text-align: center; margin-top: 32px; }
 .news-feature { display: grid; grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr); align-items: stretch; }
@@ -1326,9 +1327,9 @@ a.tag:hover { border-color: var(--red-line); color: var(--red); }
 .news-archive { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 44px; }
 .na-item { padding: 24px 0; border-bottom: 1px solid var(--line); transition: padding .25s; }
 .na-item:hover { padding-left: 6px; }
-.na-meta { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+.na-meta { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; flex-wrap: wrap; }
 .na-meta time { font-size: .76rem; font-weight: 800; color: var(--navy); letter-spacing: .04em; }
-.na-meta .tag { font-size: .64rem; padding: 2px 8px; }
+.na-meta .tag { font-size: .64rem; padding: 2px 8px; white-space: nowrap; }
 .na-item h3 { font-size: 1rem; letter-spacing: -0.02em; line-height: 1.5; }
 .news-archive .is-extra { display: none; }
 .news-archive.is-expanded .is-extra { display: block; }
