@@ -17,7 +17,7 @@
   function onScroll() {
     var y = window.scrollY || window.pageYOffset;
     var limit = 24;
-    if (heroEl) limit = Math.max(24, heroEl.offsetTop + heroEl.offsetHeight - navH - 8);
+    if (heroEl) limit = Math.max(24, heroEl.offsetTop + heroEl.offsetHeight - navH - 120);
     if (header) header.classList.toggle('is-stuck', y > limit);
     if (toTop) toTop.classList.toggle('is-visible', y > 700);
     if (progress) {
@@ -158,8 +158,9 @@
       var target = parseFloat(el.getAttribute('data-count'));
       var from = parseFloat(el.getAttribute('data-from') || '0');
       var out = el.querySelector('.cn') || el;
+      var raw = el.hasAttribute('data-raw');
       if (reduceMotion || !('requestAnimationFrame' in window)) {
-        out.textContent = target.toLocaleString('ko-KR');
+        out.textContent = raw ? String(target) : target.toLocaleString('ko-KR');
         return;
       }
       var start = null;
@@ -169,9 +170,9 @@
         var t = Math.min(1, (ts - start) / dur);
         var eased = 1 - Math.pow(1 - t, 3);
         var val = Math.round(from + (target - from) * eased);
-        out.textContent = val.toLocaleString('ko-KR');
+        out.textContent = raw ? String(val) : val.toLocaleString('ko-KR');
         if (t < 1) window.requestAnimationFrame(step);
-        else out.textContent = target.toLocaleString('ko-KR');
+        else out.textContent = raw ? String(target) : target.toLocaleString('ko-KR');
       };
       window.requestAnimationFrame(step);
     };
@@ -296,6 +297,31 @@
       }, { rootMargin: '-25% 0px -60% 0px', threshold: 0 });
       blocks.forEach(function (b) { spy.observe(b); });
     }
+  }
+
+  /* ---------- news year filter ---------- */
+  var newsFilter = doc.querySelector('[data-news-filter]');
+  if (newsFilter) {
+    var nbtns = Array.prototype.slice.call(newsFilter.querySelectorAll('.filter-btn'));
+    var nitems = Array.prototype.slice.call(doc.querySelectorAll('.na-item'));
+    var nempty = doc.querySelector('.news-empty');
+    newsFilter.addEventListener('click', function (e) {
+      var btn = e.target.closest('.filter-btn');
+      if (!btn) return;
+      var year = btn.getAttribute('data-year');
+      nbtns.forEach(function (b) {
+        var on = b === btn;
+        b.classList.toggle('is-active', on);
+        b.setAttribute('aria-pressed', on ? 'true' : 'false');
+      });
+      var shown = 0;
+      nitems.forEach(function (it) {
+        var show = year === 'all' || it.getAttribute('data-year') === year;
+        it.classList.toggle('is-hidden', !show);
+        if (show) shown++;
+      });
+      if (nempty) nempty.style.display = shown ? 'none' : 'block';
+    });
   }
 
   /* ---------- news archive: reveal older items ---------- */
