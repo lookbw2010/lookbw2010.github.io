@@ -114,5 +114,17 @@
     }
   }
 
+  /* news archive: reveal older items */
+  var newsMore = doc.getElementById('newsMore');
+  if (newsMore) {
+    newsMore.addEventListener('click', function () {
+      var arch = doc.getElementById('newsArchive');
+      if (arch) arch.classList.add('is-expanded');
+      newsMore.setAttribute('aria-expanded', 'true');
+      var wrap = newsMore.parentNode;
+      if (wrap) wrap.style.display = 'none';
+    });
+  }
+
   /* footer year / count animation not needed */
 })();

@@ -565,6 +565,11 @@ body.nav-open { overflow: hidden; }
 .na-meta time { font-size: .78rem; font-weight: 800; color: var(--navy); letter-spacing: .04em; }
 .na-meta .tag { font-size: .66rem; padding: 2px 8px; }
 .na-item h3 { font-size: 1rem; letter-spacing: -0.02em; line-height: 1.5; }
+.news-archive .is-extra { display: none; }
+.news-archive.is-expanded .is-extra { display: block; }
+.news-more { text-align: center; margin-top: 34px; }
+.news-more .cnt { color: var(--muted-2); font-size: .82em; margin-left: 2px; }
+.news-more svg { width: 16px; height: 16px; }
 .na-item p { margin-top: 7px; font-size: .86rem; color: var(--muted); }
 
 /* ---------- Footer ---------- */
