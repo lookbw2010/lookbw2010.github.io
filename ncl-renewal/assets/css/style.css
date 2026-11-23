@@ -482,6 +482,7 @@ body.nav-open { overflow: hidden; }
   background: linear-gradient(90deg, var(--coral), var(--red)); transform-origin: left;
 }
 .phone-tabs.is-running button.is-active::after { animation: tab-timer 4s linear infinite; }
+.hero-demo-note { margin-top: 12px; text-align: center; font-size: .62rem; color: rgba(255,255,255,.34); letter-spacing: .02em; }
 @keyframes tab-timer { from { transform: scaleX(0); } to { transform: scaleX(1); } }
 
 /* floating callouts */
