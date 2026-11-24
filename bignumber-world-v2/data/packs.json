@@ -1,0 +1,188 @@
+{
+ "schema": "bnw-v2/packs@1",
+ "meta": {
+  "name": "빅넘버월드 V2",
+  "en": "BigNumber World V2",
+  "version": "2.0.0",
+  "updated": "2026-11-24",
+  "dailyPack": "cross",
+  "dailyCount": 10,
+  "levels": {
+   "1": "입문",
+   "2": "중수",
+   "3": "고수",
+   "4": "오타쿠"
+  },
+  "note": "새 팩은 이 인덱스에 항목을 추가하고 data/packs/<id>.json 만 놓으면 자동 편입됩니다."
+ },
+ "packs": [
+  {
+   "id": "cross",
+   "name": "크로스오버",
+   "emoji": "🌀",
+   "color": "#E11D48",
+   "soft": "#FFE4EA",
+   "tagline": "분야를 부수는 이종격투기",
+   "desc": "마라톤 거리·광속·서울 인구·볼링 점수를 한 줄에. 단위가 달라도 숫자로만 겨루는 V2의 간판 팩.",
+   "badge": "NEW",
+   "featured": true,
+   "daily": true,
+   "schema": "bnw-v2/pack@1",
+   "levels": {
+    "1": 2,
+    "2": 4,
+    "3": 5,
+    "4": 5
+   },
+   "count": 16,
+   "file": "data/packs/cross.json"
+  },
+  {
+   "id": "intuition",
+   "name": "직관 착시",
+   "emoji": "🧠",
+   "color": "#7C3AED",
+   "soft": "#F1E9FE",
+   "tagline": "뇌가 먼저 틀리는 숫자",
+   "desc": "종이 42번 접기, 100만 초, 하루 1%의 복리. 직관이 배신하는 순간만 모았습니다.",
+   "badge": "NEW",
+   "featured": false,
+   "daily": false,
+   "schema": "bnw-v2/pack@1",
+   "levels": {
+    "1": 3,
+    "2": 4,
+    "3": 4,
+    "4": 4
+   },
+   "count": 15,
+   "file": "data/packs/intuition.json"
+  },
+  {
+   "id": "cosmos",
+   "name": "우주·자연",
+   "emoji": "🌌",
+   "color": "#0EA5E9",
+   "soft": "#E0F4FE",
+   "tagline": "지구 밖까지 자로 재기",
+   "desc": "광속·마리아나 해구·태양 지름·태평양 면적. 검증된 과학 상수로만 만든 스케일 팩.",
+   "badge": "NEW",
+   "featured": false,
+   "daily": false,
+   "schema": "bnw-v2/pack@1",
+   "levels": {
+    "1": 4,
+    "2": 4,
+    "3": 4,
+    "4": 4
+   },
+   "count": 16,
+   "file": "data/packs/cosmos.json"
+  },
+  {
+   "id": "life",
+   "name": "생활·경제",
+   "emoji": "💸",
+   "color": "#059669",
+   "soft": "#DCFCE7",
+   "tagline": "통장과 달력의 숫자들",
+   "desc": "최저임금·로또 조합 수·1만 시간·평수 환산. 오늘 바로 써먹는 생활 계산.",
+   "badge": "NEW",
+   "featured": false,
+   "daily": false,
+   "schema": "bnw-v2/pack@1",
+   "levels": {
+    "1": 4,
+    "2": 4,
+    "3": 3,
+    "4": 4
+   },
+   "count": 15,
+   "file": "data/packs/life.json"
+  },
+  {
+   "id": "sports",
+   "name": "스포츠·게임",
+   "emoji": "⚡",
+   "color": "#EA580C",
+   "soft": "#FFEDD5",
+   "tagline": "기록으로 겨루는 숫자",
+   "desc": "마라톤·볼링 퍼펙트·바둑판·월드컵 우승. 공식 기록만 모은 스포츠 팩.",
+   "badge": "NEW",
+   "featured": false,
+   "daily": false,
+   "schema": "bnw-v2/pack@1",
+   "levels": {
+    "1": 4,
+    "2": 4,
+    "3": 4,
+    "4": 2
+   },
+   "count": 14,
+   "file": "data/packs/sports.json"
+  },
+  {
+   "id": "math",
+   "name": "연산 배틀",
+   "emoji": "🧮",
+   "color": "#4B3BFF",
+   "soft": "#E8E6FF",
+   "tagline": "암산으로 여는 첫 문",
+   "desc": "덧셈부터 이차방정식까지. 모든 보기 값을 코드로 검산한 연산 팩.",
+   "badge": "CLASSIC",
+   "featured": false,
+   "daily": false,
+   "schema": "bnw-v2/pack@1",
+   "levels": {
+    "1": 6,
+    "2": 6,
+    "3": 6,
+    "4": 4
+   },
+   "count": 22,
+   "file": "data/packs/math.json"
+  },
+  {
+   "id": "history",
+   "name": "역사 연대기",
+   "emoji": "🏛",
+   "color": "#B45309",
+   "soft": "#FEF3C7",
+   "tagline": "연도가 곧 숫자다",
+   "desc": "한국사·세계사 연표를 숫자로. 기원전은 음수로 계산하는 규칙까지.",
+   "badge": "CLASSIC",
+   "featured": false,
+   "daily": false,
+   "schema": "bnw-v2/pack@1",
+   "levels": {
+    "1": 6,
+    "2": 6,
+    "3": 6,
+    "4": 4
+   },
+   "count": 22,
+   "file": "data/packs/history.json"
+  },
+  {
+   "id": "culture",
+   "name": "문화 기록",
+   "emoji": "🎬",
+   "color": "#DB2777",
+   "soft": "#FCE7F3",
+   "tagline": "개봉·발매·수상의 숫자",
+   "desc": "영화 러닝타임, 오스카 수, 관객 수, 데뷔 연도. 문화 기록을 한 판에.",
+   "badge": "CLASSIC",
+   "featured": false,
+   "daily": false,
+   "schema": "bnw-v2/pack@1",
+   "levels": {
+    "1": 6,
+    "2": 6,
+    "3": 6,
+    "4": 4
+   },
+   "count": 22,
+   "file": "data/packs/culture.json"
+  }
+ ]
+}

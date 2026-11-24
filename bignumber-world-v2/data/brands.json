@@ -1,0 +1,41 @@
+{
+ "schema": "bnw-v2/brands@1",
+ "brands": [
+  {
+   "id": "shinramyun",
+   "name": "신라면",
+   "company": "농심",
+   "emoji": "🍜",
+   "color": "#E23B2E",
+   "color2": "#FFB020",
+   "slogan": "한 봉지 120g에 담긴 40년",
+   "desc": "출시연도·중량·봉지 수만으로 만든 5문제. 마지막에 가상 쿠폰 화면까지 이어지는 스폰서드 팩 데모입니다.",
+   "cta": {
+    "label": "우리 브랜드로 제작",
+    "href": "#brand"
+   },
+   "demo": true,
+   "schema": "bnw-v2/brand@1",
+   "file": "data/brands/shinramyun.json",
+   "count": 5
+  },
+  {
+   "id": "dblife",
+   "name": "DB생명",
+   "company": "DB생명",
+   "emoji": "🛡️",
+   "color": "#0F766E",
+   "color2": "#67E8F9",
+   "slogan": "건강 숫자로 만드는 3분 퀴즈",
+   "desc": "건강·보험 관련 일반 상식 숫자로 구성한 가상 제휴 데모입니다. 실제 DB생명 상품·내부 수치와 무관합니다.",
+   "cta": {
+    "label": "이 팩으로 제휴 문의",
+    "href": "#brand"
+   },
+   "demo": true,
+   "schema": "bnw-v2/brand@1",
+   "file": "data/brands/dblife.json",
+   "count": 6
+  }
+ ]
+}

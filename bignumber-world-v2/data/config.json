@@ -1,0 +1,14 @@
+{
+ "schema": "bnw-v2/config@1",
+ "repository": "static",
+ "scoreStore": "local",
+ "leadRepository": "local",
+ "apiBase": null,
+ "leadEndpoint": null,
+ "features": {
+  "brandWhitelabel": true,
+  "sheetBuilder": true,
+  "modePreview": true
+ },
+ "note": "어댑터 이름만 바꾸면 Google Sheets·Supabase·자체 API로 전환됩니다. assets/adapters.js 참고."
+}
