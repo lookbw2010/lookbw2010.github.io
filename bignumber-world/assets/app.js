@@ -512,7 +512,7 @@
           '</ul>' + prevHtml +
           '<div class="start-foot">' +
             '<button type="button" class="btn btn-primary btn-lg" id="daily-start">10문제 시작</button>' +
-            '<p class="start-note">문제 ' + DATA.length + '개 검산 완료 · 로그인 없음 · 기록은 이 브라우저에만 저장</p>' +
+            '<p class="start-note">검증 문제 ' + BASE_COUNT + '개 + 연산 자동 출제 · 로그인 없음 · 기록은 이 브라우저에만 저장</p>' +
           '</div>' +
         '</div>';
       this.host.querySelector('#daily-start').addEventListener('click', function () { self.play(); });
