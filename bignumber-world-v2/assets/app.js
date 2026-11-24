@@ -322,7 +322,10 @@
     },
     questions: function () {
       var rnd = util.seeded('bnw2-cross-' + util.todayKey());
-      var pool = poolFor(['cross'], 0);
+      /* 크로스오버 풀 = 모든 팩의 lens:"numeral" 문항.
+         새 팩에 numeral 문항을 넣으면 데일리 크로스오버에도 자동 편입됩니다. */
+      var pool = App.all.filter(function (q) { return q.lens === 'numeral'; });
+      if (pool.length < 10) pool = poolFor(['cross'], 0);
       var plan = [[1, 2], [2, 3], [3, 3], [4, 2]];
       var out = [];
       plan.forEach(function (p) {
