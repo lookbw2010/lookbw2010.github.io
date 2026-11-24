@@ -117,7 +117,7 @@
     }
     var best = null;
     Object.keys(byPack).forEach(function (pack) {
-      if (!TYPE_DEFS[pack] || byPack[pack].total < 2) return;
+      if (pack === 'cross' || !TYPE_DEFS[pack] || byPack[pack].total < 2) return;
       var acc = byPack[pack].correct / byPack[pack].total;
       if (acc >= 0.7 && (!best || acc > best.acc)) best = { pack: pack, acc: acc };
     });
