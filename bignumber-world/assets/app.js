@@ -35,7 +35,7 @@
         return { t: o.t, v: v, u: o.u || '', n: o.n || '' };
       });
       return {
-        id: q.id, lv: q.lv, cat: q.cat, subs: q.subs || [], pack: q.pack || '',
+        id: q.id, lv: q.lv, cat: q.cat, subs: q.subs || [], pack: q.pack || '', unit: q.unit || '',
         q: q.q, tip: q.tip || '', opts: opts
       };
     });
@@ -58,7 +58,7 @@
         var t = opts[i]; opts[i] = opts[j]; opts[j] = t;
       }
     }
-    return { id: q.id, lv: q.lv, cat: q.cat, subs: q.subs, pack: q.pack, gen: !!q.gen, q: q.q, tip: q.tip, opts: opts };
+    return { id: q.id, lv: q.lv, cat: q.cat, subs: q.subs, pack: q.pack, gen: !!q.gen, unit: q.unit || '', q: q.q, tip: q.tip, opts: opts };
   }
 
   function answerIndex(q) {
@@ -66,6 +66,8 @@
     for (var i = 1; i < q.opts.length; i++) if (q.opts[i].v > q.opts[best].v) best = i;
     return best;
   }
+
+  function unitSuffix(u) { return u ? (u === '년' ? u : ' ' + u) : ''; }
 
   function tierFor(pct) {
     for (var i = 0; i < TIERS.length; i++) if (pct >= TIERS[i].min) return TIERS[i];
@@ -413,8 +415,8 @@
     tip.hidden = false;
     var hint = this.host.querySelector('[data-hint]');
     hint.innerHTML = ok
-      ? '정답입니다. 최댓값은 <b>' + fmt(q.opts[ans].v, q.opts[ans].u) + (q.opts[ans].u || '') + '</b>.'
-      : '아쉽습니다. 정답은 <b>' + esc(q.opts[ans].t) + '</b> = ' + fmt(q.opts[ans].v, q.opts[ans].u) + (q.opts[ans].u || '') + '.';
+      ? '정답입니다. 최댓값은 <b>' + fmt(q.opts[ans].v, q.opts[ans].u || q.unit) + unitSuffix(q.opts[ans].u || q.unit) + '</b>.'
+      : '아쉽습니다. 정답은 <b>' + esc(q.opts[ans].t) + '</b> = ' + fmt(q.opts[ans].v, q.opts[ans].u || q.unit) + unitSuffix(q.opts[ans].u || q.unit) + '.';
 
     var next = this.host.querySelector('[data-next]');
     next.hidden = false;
@@ -873,7 +875,7 @@
           return { t: fmt(v) + (unit ? ' ' + unit : ''), v: v, u: '', n: '' };
         });
         qs.push({
-          id: 'sheet-' + (i + 1), lv: 2, cat: 'brand', subs: [], pack: '', sheet: true,
+          id: 'sheet-' + (i + 1), lv: 2, cat: 'brand', subs: [], pack: '', sheet: true, unit: unit,
           q: q, tip: r.tip.trim() || '고객사 출제 시트에서 입력한 문항입니다.', opts: opts
         });
       });
