@@ -113,7 +113,7 @@
     });
     var single = Object.keys(byPack).length === 1 ? Object.keys(byPack)[0] : null;
     if (single && single !== 'cross' && TYPE_DEFS[single] && stats.pct >= 60 && byPack[single].total >= 3) {
-      return Object.assign({ key: single, tag: 'PACK TYPE' }, TYPE_DEFS[single]);
+      return Object.assign({ key: single, tag: '팩 적중' }, TYPE_DEFS[single]);
     }
     var best = null;
     Object.keys(byPack).forEach(function (pack) {
@@ -122,13 +122,13 @@
       if (acc >= 0.7 && (!best || acc > best.acc)) best = { pack: pack, acc: acc };
     });
     if (best && stats.pct >= 45) {
-      return Object.assign({ key: best.pack, tag: 'PACK TYPE' }, TYPE_DEFS[best.pack]);
+      return Object.assign({ key: best.pack, tag: '팩 적중' }, TYPE_DEFS[best.pack]);
     }
     var t = FALLBACK_TYPES[FALLBACK_TYPES.length - 1];
     for (var i = 0; i < FALLBACK_TYPES.length; i++) {
       if (stats.pct >= FALLBACK_TYPES[i].min) { t = FALLBACK_TYPES[i]; break; }
     }
-    return Object.assign({ tag: 'SCORE TYPE' }, t);
+    return Object.assign({ tag: '점수 기준' }, t);
   }
 
   function packBreakdown(stats) {
@@ -145,7 +145,9 @@
   }
 
   function shareText(stats, type, title) {
-    var lines = [type.emoji + ' 빅넘버월드 V2 · ' + title, util.todayKey() + ' · ' + util.todayLabel()];
+    var days = ['일', '월', '화', '수', '목', '금', '토'];
+    var lines = [type.emoji + ' 빅넘버월드 V2 · ' + title,
+      util.todayKey() + ' (' + days[new Date().getDay()] + ')'];
     lines.push('정답 ' + stats.correct + '/' + stats.total + ' · ' + stats.pct + '% · ' + type.name);
     var bd = packBreakdown(stats);
     if (bd.length > 1) {
