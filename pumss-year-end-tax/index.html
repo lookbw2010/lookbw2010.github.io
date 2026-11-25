@@ -1,0 +1,1161 @@
+<!--
+  ┌────────────────────────────────────────────────────────────────────┐
+  │ 품스(PUMSS) 개인품 전용 · 13월의 월급 1분 연말정산 테스트           │
+  └────────────────────────────────────────────────────────────────────┘
+  · 단일 정적 HTML 파일입니다. 외부 파일·이미지·API·로그인·DB 의존이 전혀 없습니다.
+  · '이 사람의 개인품' 주소는 아래 PUMSS_CONFIG 블록이
+      1) ?sp=번호  2) ?pumssUrl=전체주소  3) document.referrer(pumss.co.kr/SP/...)
+      4) sessionStorage  5) 기본값
+    순서로 감지해 상단 '← 개인품으로', 결과 '더 보기' 버튼, 공유 문구에 씁니다.
+  · 개발팀 연동·세팅 안내: downloads/pumss-year-end-tax-dev-notes.md
+-->
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="light">
+<meta name="theme-color" content="#FFFDF7">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="연말정산 테스트">
+<title>13월의 월급, 나는 받을까 토할까? | 1분 연말정산 감각 테스트</title>
+<meta name="description" content="7문항, 숫자 입력 없이 1분. 올해 연말정산에서 내가 놓치고 있는 환급금을 확인하고, 지금 당장 더 챙길 수 있는 절세 포인트를 받아보세요.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="13월의 월급, 나는 받을까 토할까? — 1분 연말정산 감각 테스트">
+<meta property="og:description" content="7문항 선택만 하면 끝. 내 연말정산 유형과 맞춤 절세 포인트 TOP 3를 확인하세요.">
+<meta name="twitter:card" content="summary_large_image">
+<style>
+  :root{
+    color-scheme:light;
+    --cream-50:#FFFDF7;
+    --cream-100:#FEF9EC;
+    --card:#FFFFFF;
+    --line:#F0E2C6;
+    --line-soft:#F6EBD7;
+    --gold:#D97706;
+    --gold-deep:#B45309;
+    --gold-soft:#FDE68A;
+    --gold-tint:#FFF7E6;
+    --emerald:#047857;
+    --emerald-soft:#D1FAE5;
+    --danger:#B91C1C;
+    --amber:#B45309;
+    --ink:#241C11;
+    --body-ink:#4A3F2F;
+    --muted:#6F6047;
+    --muted-2:#857458;
+    --radius:22px;
+    --shadow:0 16px 40px rgba(180,120,30,.10), 0 1px 0 rgba(255,255,255,.9) inset;
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  html,body{padding:0;margin:0}
+  html{background:#FEF9EC}
+  body{
+    min-height:100%;
+    background:
+      radial-gradient(1100px 560px at 50% -12%, #FFF1CE 0%, rgba(255,241,206,0) 62%),
+      radial-gradient(900px 520px at 104% 108%, #FDF0DB 0%, rgba(253,240,219,0) 62%),
+      linear-gradient(180deg, #FFFDF7 0%, #FEF9EC 100%);
+    background-color:var(--cream-50);
+    color:var(--body-ink);
+    font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Malgun Gothic","맑은 고딕",system-ui,"Segoe UI",Roboto,sans-serif;
+    font-size:17px;
+    line-height:1.55;
+    letter-spacing:-.01em;
+    word-break:keep-all;
+    overflow-wrap:break-word;
+    -webkit-font-smoothing:antialiased;
+    text-rendering:optimizeLegibility;
+  }
+  .app{
+    min-height:100dvh;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    padding:26px 18px 34px;
+  }
+  .phone{width:100%;max-width:430px}
+
+  /* ── 브랜드 ── */
+  .brand{
+    display:flex;align-items:center;gap:8px;
+    padding:0 4px 16px;
+    font-size:14px;font-weight:800;letter-spacing:.14em;
+    color:var(--gold-deep);text-transform:uppercase;
+  }
+  .brand .dot{
+    width:8px;height:8px;border-radius:50%;
+    background:linear-gradient(135deg,#FBBF24,var(--gold-deep));
+    box-shadow:0 0 0 4px rgba(217,119,6,.12);
+  }
+  .brand .brand-sub{
+    margin-left:auto;font-size:13px;font-weight:600;letter-spacing:.02em;
+    color:var(--muted-2);text-transform:none;
+  }
+
+  /* ── 도구 모음(허브)으로 돌아가기 ── */
+  .hub-nav{display:flex;align-items:center;padding:0 4px 12px}
+  .hub-back{
+    display:inline-flex;align-items:center;justify-content:center;
+    min-height:42px;padding:0 16px;border-radius:999px;
+    background:var(--gold-tint);border:1px solid var(--line);color:var(--gold-deep);
+    font-size:14.5px;font-weight:800;letter-spacing:-.01em;line-height:1;
+    text-decoration:none;white-space:nowrap;
+    box-shadow:0 2px 10px rgba(217,119,6,.10);
+    transition:transform .15s ease,background .15s ease;
+  }
+  .hub-back:active{transform:scale(.97);background:#FDEFD3}
+  .hub-back:focus-visible{outline:3px solid rgba(217,119,6,.45);outline-offset:2px}
+
+  /* ── 화면 ── */
+  .screen{display:none}
+  .screen.active{display:block;animation:screenIn .42s cubic-bezier(.22,.61,.36,1) both}
+  @keyframes screenIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+
+  .card{
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    box-shadow:var(--shadow);
+    padding:26px 22px;
+  }
+
+  /* ── 시작 화면 ── */
+  .start-card{
+    text-align:center;padding:34px 24px 28px;
+    background:
+      radial-gradient(120% 90% at 50% -10%, #FFF8E6 0%, rgba(255,248,230,0) 62%),
+      var(--card);
+  }
+  .start-emoji{
+    font-size:40px;line-height:1;
+    filter:drop-shadow(0 6px 14px rgba(217,119,6,.22));
+  }
+  .start-card h1{
+    margin:16px 0 0;
+    font-size:31px;line-height:1.32;font-weight:900;letter-spacing:-.03em;
+    color:var(--ink);
+  }
+  .start-card h1 .accent{
+    display:block;
+    background:linear-gradient(180deg,#D97706,#B45309);
+    -webkit-background-clip:text;background-clip:text;
+    color:transparent;-webkit-text-fill-color:transparent;
+  }
+  .start-sub{
+    margin:14px auto 0;max-width:315px;
+    font-size:17px;line-height:1.62;color:var(--muted);font-weight:500;
+  }
+  .chips{display:flex;justify-content:center;gap:8px;margin:22px 0 0;flex-wrap:wrap}
+  .chip{
+    padding:7px 13px;border-radius:99px;
+    border:1px solid #F3DCAE;
+    background:#FFF6E0;
+    font-size:14px;font-weight:700;color:#92600F;letter-spacing:.01em;
+  }
+  .start-note{
+    margin:14px 0 0;font-size:14px;color:var(--muted-2);line-height:1.55;
+  }
+
+  /* ── 버튼 ── */
+  .btn{
+    display:flex;align-items:center;justify-content:center;gap:8px;
+    width:100%;min-height:58px;padding:14px 18px;
+    border:none;border-radius:16px;
+    font-family:inherit;font-size:18.5px;font-weight:800;letter-spacing:-.01em;
+    cursor:pointer;text-decoration:none;
+    transition:transform .16s ease, box-shadow .2s ease, background .2s ease, opacity .2s ease;
+  }
+  .btn:active{transform:scale(.985)}
+  .btn-primary{
+    background:linear-gradient(135deg,#D97706,var(--gold) 45%,var(--gold-deep));
+    color:#fff;
+    box-shadow:0 12px 26px rgba(180,83,9,.22);
+  }
+  .btn-primary:hover{box-shadow:0 14px 30px rgba(180,83,9,.30)}
+  .btn-outline{
+    background:#FFF9EC;
+    border:1.5px solid #EBC98B;
+    color:#9A5B0A;
+  }
+  .btn-outline:hover{background:#FFF4DC}
+  .btn-ghost{
+    background:transparent;color:var(--muted);min-height:46px;font-size:16.5px;font-weight:700;
+  }
+  .btn-ghost:hover{color:var(--gold-deep)}
+  .btn-lg{margin-top:24px}
+
+  /* ── 퀴즈 ── */
+  .quiz-card{padding:20px 20px 24px}
+  .quiz-top{display:flex;align-items:center;gap:10px;margin-bottom:14px}
+  .back-btn{
+    display:inline-flex;align-items:center;gap:4px;
+    background:transparent;border:none;padding:8px 6px 8px 0;
+    font-family:inherit;font-size:15px;font-weight:700;color:var(--muted-2);
+    cursor:pointer;border-radius:8px;
+  }
+  .back-btn:hover{color:var(--gold-deep)}
+  .step{
+    margin-left:auto;font-size:14.5px;font-weight:800;letter-spacing:.06em;
+    color:var(--gold-deep);
+  }
+  .step .total{color:var(--muted-2);font-weight:700}
+  .progress{
+    height:7px;border-radius:99px;
+    background:#F4E8D2;
+    overflow:hidden;margin-bottom:22px;
+  }
+  .progress > i{
+    display:block;height:100%;width:14.28%;border-radius:99px;
+    background:linear-gradient(90deg,#F59E0B,var(--gold-deep));
+    transition:width .38s cubic-bezier(.22,.61,.36,1);
+  }
+  .quiz-inner.anim-right{animation:qRight .36s cubic-bezier(.22,.61,.36,1) both}
+  .quiz-inner.anim-left{animation:qLeft .36s cubic-bezier(.22,.61,.36,1) both}
+  @keyframes qRight{from{opacity:0;transform:translateX(22px)}to{opacity:1;transform:none}}
+  @keyframes qLeft{from{opacity:0;transform:translateX(-22px)}to{opacity:1;transform:none}}
+
+  .q-tag{
+    display:inline-block;margin-bottom:10px;padding:5px 11px;border-radius:99px;
+    background:#FFF4DE;border:1px solid #F3D9A6;
+    font-size:13.5px;font-weight:800;color:#92600F;letter-spacing:.02em;
+  }
+  .q-title{
+    margin:0;font-size:25px;line-height:1.42;font-weight:800;letter-spacing:-.025em;
+    color:var(--ink);
+  }
+  .q-sub{margin:9px 0 0;font-size:16px;line-height:1.55;color:var(--muted);font-weight:500}
+  .options{display:flex;flex-direction:column;gap:10px;margin-top:22px}
+  .option{
+    display:flex;align-items:center;gap:13px;
+    width:100%;min-height:62px;padding:15px 16px;
+    border-radius:15px;border:1.5px solid #EFE3CB;
+    background:#FFFDF8;
+    color:var(--ink);font-family:inherit;font-size:17.5px;font-weight:700;
+    line-height:1.42;letter-spacing:-.015em;text-align:left;
+    cursor:pointer;
+    transition:background .18s ease,border-color .18s ease,transform .16s ease,color .18s ease,opacity .2s ease;
+    animation:optIn .34s cubic-bezier(.22,.61,.36,1) both;
+  }
+  @keyframes optIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+  .option:hover{background:#FFF7E6;border-color:#E7C88F}
+  .option:active{transform:scale(.988)}
+  .option .opt-mark{
+    flex:0 0 27px;width:27px;height:27px;border-radius:50%;
+    display:flex;align-items:center;justify-content:center;
+    border:1.5px solid #D9AE62;
+    font-size:13px;font-weight:800;color:#A9660A;
+    transition:all .18s ease;
+  }
+  .option.picked{
+    background:linear-gradient(135deg,#FDE68A,#F5C24B);
+    border-color:transparent;color:#3A2A08;
+    box-shadow:0 10px 22px rgba(217,119,6,.22);
+  }
+  .option.picked .opt-mark{border-color:#3A2A08;color:#3A2A08}
+  .option.dim{opacity:.34;transform:none}
+  .quiz-hint{
+    margin:16px 2px 0;text-align:center;font-size:14px;color:var(--muted-2);
+  }
+
+  /* ── 결과 ── */
+  .result-type{
+    --accent:var(--gold);
+    position:relative;overflow:hidden;
+    padding:26px 22px 24px;border-radius:var(--radius);
+    border:1px solid color-mix(in srgb, var(--accent) 26%, #ffffff);
+    background:
+      radial-gradient(120% 100% at 12% 0%, color-mix(in srgb, var(--accent) 13%, transparent), transparent 62%),
+      linear-gradient(168deg,#FFFFFF,#FFFCF4);
+    box-shadow:var(--shadow);
+    text-align:center;
+  }
+  .result-type::after{
+    content:"";position:absolute;inset:0;pointer-events:none;
+    border-radius:var(--radius);
+    box-shadow:inset 0 0 0 1px color-mix(in srgb, var(--accent) 20%, transparent);
+  }
+  .type-emoji{font-size:44px;line-height:1;filter:drop-shadow(0 8px 16px rgba(180,120,30,.18))}
+  .type-kicker{
+    margin-top:12px;font-size:13.5px;font-weight:800;letter-spacing:.18em;
+    color:var(--accent);text-transform:uppercase;opacity:.95;
+  }
+  .type-name{
+    margin:8px 0 0;font-size:29px;line-height:1.34;font-weight:900;letter-spacing:-.03em;
+    color:var(--ink);
+  }
+  .type-quote{
+    margin:12px 0 0;font-size:16.5px;line-height:1.6;font-weight:700;
+    color:color-mix(in srgb, var(--accent) 82%, #2A2113);
+  }
+  .score-row{
+    display:flex;align-items:baseline;justify-content:center;gap:6px;
+    margin-top:20px;
+  }
+  .score-row .num{font-size:42px;font-weight:900;letter-spacing:-.04em;color:var(--ink);line-height:1}
+  .score-row .of{font-size:17px;font-weight:800;color:var(--muted-2)}
+  .score-row .label{
+    margin-left:10px;font-size:14px;font-weight:700;color:var(--muted-2);letter-spacing:.02em;
+  }
+  .gauge{
+    position:relative;height:9px;border-radius:99px;background:#F3E7D3;
+    overflow:hidden;margin:12px 0 0;
+  }
+  .gauge > i{
+    display:block;height:100%;width:0%;border-radius:99px;
+    background:linear-gradient(90deg, color-mix(in srgb, var(--accent) 45%, #ffffff), var(--accent));
+    transition:width .9s cubic-bezier(.22,.61,.36,1);
+  }
+  .type-desc{
+    margin:18px 0 0;font-size:16.5px;line-height:1.66;color:var(--body-ink);font-weight:500;
+    text-align:left;
+  }
+
+  .section-head{
+    display:flex;align-items:center;gap:9px;
+    margin:30px 2px 13px;
+  }
+  .section-head h2{
+    margin:0;font-size:19.5px;font-weight:900;letter-spacing:-.02em;color:var(--ink);
+  }
+  .section-head .badge{
+    margin-left:auto;flex:0 0 auto;white-space:nowrap;padding:4px 9px;border-radius:8px;
+    background:#FFF4DE;border:1px solid #F0D8A6;
+    font-size:13px;font-weight:800;color:#92600F;letter-spacing:.04em;
+  }
+  .tips{display:flex;flex-direction:column;gap:12px}
+  .tip{
+    position:relative;
+    padding:18px 17px 17px;border-radius:17px;
+    background:linear-gradient(158deg,#FFFFFF,#FFFCF4);
+    border:1px solid var(--line);
+    box-shadow:0 6px 18px rgba(180,120,30,.06);
+    animation:optIn .4s cubic-bezier(.22,.61,.36,1) both;
+  }
+  .tip-top{display:flex;align-items:center;gap:9px;margin-bottom:9px}
+  .tip-no{
+    flex:0 0 auto;padding:3px 8px;border-radius:7px;
+    background:linear-gradient(135deg,#FDE68A,#F7C75C);
+    color:#4A3208;font-size:12.5px;font-weight:900;letter-spacing:.02em;
+  }
+  .tip-benefit{
+    margin-left:auto;font-size:13.5px;font-weight:800;color:var(--emerald);letter-spacing:.01em;
+    text-align:right;
+  }
+  .tip-title{
+    margin:0 0 7px;font-size:18px;line-height:1.42;font-weight:800;letter-spacing:-.02em;color:var(--ink);
+  }
+  .tip-body{margin:0;font-size:16px;line-height:1.68;color:var(--body-ink);font-weight:500}
+  .tip-kind{
+    display:inline-block;margin-left:6px;font-size:12.5px;font-weight:800;letter-spacing:.02em;
+    color:var(--danger);vertical-align:2px;
+  }
+  .tip-kind.partial{color:var(--amber)}
+
+  .checklist{
+    border:1px solid var(--line);border-radius:17px;overflow:hidden;
+    background:#FFFCF5;
+  }
+  .check-row{
+    display:flex;align-items:center;gap:10px;
+    padding:13px 15px;font-size:16px;font-weight:600;color:var(--body-ink);
+    border-bottom:1px solid var(--line-soft);
+  }
+  .check-row:last-child{border-bottom:none}
+  .check-row .mark{
+    flex:0 0 20px;width:20px;height:20px;border-radius:50%;
+    display:flex;align-items:center;justify-content:center;
+    font-size:12px;font-weight:900;
+  }
+  .check-row .mark.ok{background:#DCFCE7;color:#047857;border:1px solid #86EFAC}
+  .check-row .mark.partial{background:#FEF3C7;color:#B45309;border:1px solid #FCD34D}
+  .check-row .mark.miss{background:#FEE2E2;color:#B91C1C;border:1px solid #FCA5A5}
+  .check-row .status{margin-left:auto;font-size:13.5px;font-weight:800;color:var(--muted-2)}
+  .check-row .status.ok{color:var(--emerald)}
+  .check-row .status.partial{color:var(--amber)}
+  .check-row .status.miss{color:var(--danger)}
+
+  .actions{display:flex;flex-direction:column;gap:10px;margin-top:26px}
+  .disclaimer{
+    margin:18px 4px 0;font-size:14px;line-height:1.65;color:#8C7B62;text-align:center;
+  }
+  .foot-note{
+    margin:10px 4px 0;font-size:13.5px;color:#9C8C74;text-align:center;
+  }
+
+  /* ── 토스트 ── */
+  .toast{
+    position:fixed;left:50%;bottom:26px;z-index:60;
+    max-width:calc(100% - 36px);
+    padding:13px 19px;border-radius:14px;
+    background:linear-gradient(135deg,#FDE68A,#F5C24B);
+    color:#3A2A08;font-size:16px;font-weight:800;line-height:1.45;
+    text-align:center;
+    box-shadow:0 16px 36px rgba(180,83,9,.28);
+    opacity:0;transform:translate(-50%,150%);
+    transition:transform .36s cubic-bezier(.22,.61,.36,1),opacity .3s ease;
+    pointer-events:none;
+  }
+  .toast.show{opacity:1;transform:translate(-50%,0)}
+
+  @media (max-height:700px){
+    /* 뒤로가기 줄이 생겨도 시작 화면이 한 화면에 들어오도록 여백 압축 */
+    .app{padding:14px 18px 22px}
+    .hub-nav{padding-bottom:8px}
+  }
+  @media (min-width:520px){
+    .app{padding:40px 18px}
+    .start-card{padding:42px 32px 34px}
+    .start-card h1{font-size:37px}
+    .quiz-card{padding:24px 26px 28px}
+    .q-title{font-size:27px}
+    .type-name{font-size:31px}
+  }
+  @media (max-width:360px){
+    .start-card h1{font-size:29px}
+    .q-title{font-size:22.5px}
+    .option{font-size:17px;padding:13px 14px;min-height:58px}
+    .card{padding:22px 17px}
+  }
+  @media (prefers-reduced-motion:reduce){
+    *{animation-duration:.01ms !important;transition-duration:.01ms !important}
+  }
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="phone">
+    <nav class="hub-nav" aria-label="개인품 페이지로 돌아가기"><a class="hub-back" id="pumssBackLink" href="https://www.pumss.co.kr/SP/10.do">← 개인품으로</a></nav>
+    <div class="brand"><span class="dot"></span>PUMSS<span class="brand-sub">연말정산 감각 테스트</span></div>
+
+    <!-- 시작 -->
+    <section id="screen-start" class="screen active" aria-labelledby="startTitle">
+      <div class="card start-card">
+        <div class="start-emoji" aria-hidden="true">🧾</div>
+        <h1 id="startTitle">13월의 월급,<span class="accent">나는 받을까 토할까?</span></h1>
+        <p class="start-sub">7문항, 숫자 입력 없이 1분.<br>올해 연말정산에서 내가 놓치고 있는 돈이 얼마인지 감각으로 확인해 보세요.</p>
+        <div class="chips">
+          <span class="chip">7문항</span>
+          <span class="chip">약 1분</span>
+          <span class="chip">가입 없음</span>
+        </div>
+        <button id="startBtn" class="btn btn-primary btn-lg" type="button">1분 만에 확인하기 <span aria-hidden="true">→</span></button>
+        <p class="start-note">선택만 하면 결과와 맞춤 절세 팁이 바로 나옵니다.</p>
+      </div>
+    </section>
+
+    <!-- 퀴즈 -->
+    <section id="screen-quiz" class="screen" aria-labelledby="qTitle">
+      <div class="card quiz-card">
+        <div class="quiz-top">
+          <button id="backBtn" class="back-btn" type="button">← 처음으로</button>
+          <div class="step"><span id="stepNow">1</span> <span class="total">/ 7</span></div>
+        </div>
+        <div class="progress" role="progressbar" aria-valuemin="1" aria-valuemax="7" aria-valuenow="1" aria-label="진행률">
+          <i id="progressFill"></i>
+        </div>
+        <div id="quizInner" class="quiz-inner">
+          <span id="qTag" class="q-tag">결제 습관</span>
+          <h2 id="qTitle" class="q-title">카드값, 주로 어떻게 내세요?</h2>
+          <p id="qSub" class="q-sub">한 달 카드 사용 내역을 떠올려 보세요.</p>
+          <div id="options" class="options"></div>
+        </div>
+        <p class="quiz-hint">해당하는 것을 하나만 골라 주세요.</p>
+      </div>
+    </section>
+
+    <!-- 결과 -->
+    <section id="screen-result" class="screen" aria-labelledby="typeName">
+      <div id="resultType" class="result-type">
+        <div class="type-emoji" id="typeEmoji" aria-hidden="true">🏆</div>
+        <div class="type-kicker">내 연말정산 유형</div>
+        <h2 class="type-name" id="typeName">13월의 월급 수확왕</h2>
+        <p class="type-quote" id="typeQuote"></p>
+        <div class="score-row">
+          <span class="num" id="scoreNum">14</span>
+          <span class="of">/ 14</span>
+          <span class="label">절세 감각 점수</span>
+        </div>
+        <div class="gauge"><i id="gaugeFill"></i></div>
+        <p class="type-desc" id="typeDesc"></p>
+      </div>
+
+      <div class="section-head">
+        <h2 id="tipsHead">지금 당장 더 챙길 수 있는 절세 포인트</h2>
+        <span class="badge" id="tipsBadge">TOP 3</span>
+      </div>
+      <div id="tips" class="tips"></div>
+
+      <div class="section-head">
+        <h2>내 7문항 점검표</h2>
+        <span class="badge" id="checkBadge">0 챙김</span>
+      </div>
+      <div id="checklist" class="checklist"></div>
+
+      <div class="actions">
+        <button id="shareBtn" class="btn btn-primary" type="button">카톡·문자로 내 결과 공유하기 <span aria-hidden="true">📋</span></button>
+        <a id="pumssLink" class="btn btn-outline" href="https://www.pumss.co.kr/SP/10.do" target="_self">품스 개인품에서 절세 정보 더 보기 <span aria-hidden="true">→</span></a>
+        <button id="againBtn" class="btn btn-ghost" type="button">다시 테스트하기</button>
+      </div>
+
+      <p class="disclaimer">※ 본 테스트는 연말정산 감각 점검용이며, 실제 세액은 국세청 홈택스·세무 확인을 권장합니다.</p>
+      <p class="foot-note">Copyright ⓒ PUMSS. All rights reserved.</p>
+    </section>
+  </div>
+</div>
+
+<div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+<script>
+/* ══════════════════════════════════════════════════════════════════════
+   PUMSS_CONFIG — '이 사람의 개인품' 주소를 로그인·DB 없이 찾아내는 블록.
+   이 페이지는 품스(PUMSS) 개인품에서 열리는 것을 전제로 하며,
+   아래 우선순위로 개인품 URL(pumssUrl) 하나를 정해
+   상단 '← 개인품으로' · 결과 '더 보기' 버튼 · 공유 문구의 링크에 씁니다.
+
+     1순위  주소 쿼리  ?pumssUrl=https://www.pumss.co.kr/SP/77.do   (전체 주소)
+                       ?sp=77                                        (개인품 번호)
+     2순위  직전 페이지(document.referrer)가 pumss.co.kr/SP/... 인 경우 그 주소
+     3순위  같은 탭에서 이미 감지한 값(sessionStorage: pumss_personal_url)
+     4순위  기본값 DEFAULT_PUMSS_URL
+
+   ※ 개발팀: 배너 링크에 ?sp={개인품번호}만 붙여 주면 가장 확실합니다.
+   ══════════════════════════════════════════════════════════════════════ */
+(function (w) {
+  "use strict";
+
+  var DEFAULT_PUMSS_URL = "https://www.pumss.co.kr/SP/10.do";
+  var STORAGE_KEY = "pumss_personal_url";
+  var PUMSS_HOST = /(^|\.)pumss\.co\.kr$/i;   /* pumss.co.kr 및 그 하위 도메인 */
+  var SP_RE = /^[0-9A-Za-z_-]{1,20}$/;         /* 개인품 번호: 숫자·영문·_·- */
+
+  /* 주소에서 파라미터 하나 읽기 (URLSearchParams 미지원 환경 대비 직접 파싱) */
+  function param(name) {
+    var q = (w.location.search || "").replace(/^\?/, "");
+    if (!q) return null;
+    var parts = q.split("&");
+    for (var i = 0; i < parts.length; i++) {
+      var kv = parts[i].split("=");
+      var k;
+      try { k = decodeURIComponent(kv[0].replace(/\+/g, " ")); }
+      catch (e) { k = kv[0]; }
+      if (k === name) {
+        var v = kv.length > 1 ? kv.slice(1).join("=") : "";
+        try { return decodeURIComponent(v.replace(/\+/g, " ")); }
+        catch (e2) { return v; }
+      }
+    }
+    return null;
+  }
+
+  /* http/https 주소만 통과시키고, 쿼리·해시는 정리해 돌려준다 */
+  function normalizeUrl(raw) {
+    if (!raw) return null;
+    var s = String(raw).trim();
+    if (!s) return null;
+    if (s.indexOf("//") === 0) s = "https:" + s;
+    if (!/^https?:\/\//i.test(s)) s = "https://" + s;
+    var a = w.document.createElement("a");
+    a.href = s;
+    if (a.protocol !== "http:" && a.protocol !== "https:") return null;
+    if (!a.hostname) return null;
+    return a.protocol + "//" + a.host + a.pathname;
+  }
+
+  /* ?sp=77 → https://www.pumss.co.kr/SP/77.do */
+  function fromSp(v) {
+    if (!v) return null;
+    v = String(v).trim();
+    if (!SP_RE.test(v)) return null;
+    return "https://www.pumss.co.kr/SP/" + v + ".do";
+  }
+
+  /* 직전 페이지가 품스 개인품(/SP/...)이면 그 주소를 그대로 쓴다 */
+  function fromReferrer() {
+    var ref = w.document.referrer || "";
+    if (!ref) return null;
+    var a = w.document.createElement("a");
+    a.href = ref;
+    if (!PUMSS_HOST.test(a.hostname || "")) return null;
+    var m = (a.pathname || "").match(/\/SP\/[^\/]+/i);
+    if (!m) return null;
+    return a.protocol + "//" + a.host + m[0];
+  }
+
+  function readStore() {
+    try { return w.sessionStorage.getItem(STORAGE_KEY); } catch (e) { return null; }
+  }
+  function writeStore(v) {
+    try { w.sessionStorage.setItem(STORAGE_KEY, v); } catch (e) {}
+  }
+
+  /* ── 우선순위대로 하나 결정 ── */
+  var url = null, source = "";
+
+  if (!url) {
+    var full = param("pumssUrl");
+    if (full) { url = normalizeUrl(full); if (url) source = "query:pumssUrl"; }
+  }
+  if (!url) {
+    url = fromSp(param("sp"));
+    if (url) source = "query:sp";
+  }
+  if (!url) {
+    url = fromReferrer();
+    if (url) source = "referrer";
+  }
+  if (!url) {
+    url = normalizeUrl(readStore());
+    if (url) source = "sessionStorage";
+  }
+  if (!url) {
+    url = DEFAULT_PUMSS_URL;
+    source = "default";
+  }
+
+  writeStore(url);
+
+  w.PUMSS_CONFIG = {
+    pumssUrl: url,
+    source: source,
+    defaultUrl: DEFAULT_PUMSS_URL,
+    storageKey: STORAGE_KEY
+  };
+})(window);
+</script>
+<script>
+(function () {
+  "use strict";
+
+  /* ── 개인품 주소 (PUMSS_CONFIG에서 결정된 값) ── */
+  var PUMSS_URL = (window.PUMSS_CONFIG && window.PUMSS_CONFIG.pumssUrl) || "https://www.pumss.co.kr/SP/10.do";
+
+  /* 상단 '← 개인품으로'와 결과 '더 보기' 버튼을 이 사람의 개인품으로 연결 */
+  var backLinkEl = document.getElementById("pumssBackLink");
+  if (backLinkEl) backLinkEl.href = PUMSS_URL;
+  var pumssLinkEl = document.getElementById("pumssLink");
+  if (pumssLinkEl) {
+    pumssLinkEl.href = PUMSS_URL;
+    pumssLinkEl.setAttribute("target", "_self");
+  }
+
+  /* ───────────────────────── 문항 데이터 ───────────────────────── */
+  var QUESTIONS = [
+    {
+      id: "card",
+      tag: "결제 습관",
+      title: "카드값, 주로 어떻게 내세요?",
+      sub: "한 달 카드 사용 내역을 떠올려 보세요.",
+      priority: 70,
+      tip: {
+        title: "남은 두 달은 체크카드로 바꿔보세요",
+        benefit: "공제율 2배",
+        body: "카드 소득공제는 총급여의 25%를 넘게 쓴 금액부터 시작되고, 신용카드는 15%·체크카드와 현금영수증은 30%로 공제율이 두 배입니다. 11~12월 결제를 체크카드로 옮기기만 해도 같은 지출로 공제액이 커집니다. 전통시장·대중교통은 공제율이 40%로 더 높고, 올해부터는 공제 대상 자녀가 있으면 기본 한도도 300만원에서 350~400만원으로 늘었습니다."
+      },
+      options: [
+        { label: "체크카드·현금영수증 위주로 쓴다", score: 2 },
+        { label: "신용카드와 반반 섞어서 쓴다", score: 1 },
+        { label: "신용카드 위주로 쓴다", score: 0 }
+      ]
+    },
+    {
+      id: "pension",
+      tag: "노후·절세",
+      title: "연금저축·IRP, 올해 얼마나 넣으셨어요?",
+      sub: "세액공제 한도까지 채우면 돌려받는 돈이 가장 큰 항목입니다.",
+      priority: 100,
+      tip: {
+        title: "연금저축·IRP, 12월 31일 전에 한 번 더",
+        benefit: "최대 16.5% 세액공제",
+        body: "연금저축과 IRP는 12월 31일까지 넣은 금액만 올해 세액공제 대상입니다. 연 900만원 한도(연금저축 600만원 + IRP 300만원)까지 채우면 납입액의 13.2~16.5%(지방소득세 포함)를 돌려받습니다. IRP는 12월에 몰아 넣어도 인정되니 여유자금이 있으면 올해 안에 납입하세요. (중도인출 제한은 미리 확인)"
+      },
+      options: [
+        { label: "한도까지 꽉 채웠다", score: 2 },
+        { label: "조금씩 넣고 있다", score: 1 },
+        { label: "하나도 안 넣었다", score: 0 },
+        { label: "그런 게 있는지도 몰랐다", score: 0 }
+      ]
+    },
+    {
+      id: "housing",
+      tag: "주거비",
+      title: "월세나 전세 이자, 공제받고 계세요?",
+      sub: "무주택 세대주라면 대부분 대상이 됩니다.",
+      priority: 62,
+      tip: {
+        title: "월세·전세이자, 영수증부터 모으세요",
+        benefit: "월세액 15~17% 공제",
+        body: "무주택 세대주라면 월세액의 15~17%를 세액공제 받을 수 있고, 전세자금·주택담보대출 이자도 공제 대상입니다. 12월까지 낸 월세는 홈택스에서 조회되고, 은행 이자내역서는 12월에 미리 발급해 두면 회사 제출 때 놓치지 않습니다."
+      },
+      options: [
+        { label: "월세 세액공제 챙기고 있다", score: 2 },
+        { label: "전세·주택담보대출 이자 공제받고 있다", score: 2 },
+        { label: "자가라 해당 없다", score: 2 },
+        { label: "해당되는 것 같은데 아직 안 봤다", score: 0 }
+      ]
+    },
+    {
+      id: "family",
+      tag: "가족·경조사",
+      title: "부양가족·혼인·출산, 다 올리셨어요?",
+      sub: "회사에 내는 '부양가족 신고서'가 기준입니다.",
+      priority: 80,
+      tip: {
+        title: "부양가족 신고서, 12월에 꼭 제출",
+        benefit: "1인당 150만원 소득공제",
+        body: "부모님·자녀·형제 중 소득·나이 요건이 맞으면 1명당 150만원씩 소득공제가 늘어납니다. 올해 혼인신고·출생신고를 했다면 그 연도에 공제가 적용되니 신고일을 확인하고, 회사에 부양가족 신고서와 가족관계증명서를 12월 중 내세요."
+      },
+      options: [
+        { label: "부양가족·혼인·출산 공제 다 챙겼다", score: 2 },
+        { label: "부양가족은 챙겼고, 혼인·출산은 해당 없다", score: 2 },
+        { label: "혼인·출산도 부양가족도 해당 없다", score: 2 },
+        { label: "부양가족이 있는데 몰라서 안 봤다", score: 0 }
+      ]
+    },
+    {
+      id: "giving",
+      tag: "기부·저축",
+      title: "고향사랑기부나 청약저축, 하셨어요?",
+      sub: "10만원이면 전액 돌려받고 답례품까지 오는 제도가 있습니다.",
+      priority: 90,
+      tip: {
+        title: "고향사랑기부 10만원, 올해 안에",
+        benefit: "10만원 전액 공제 + 답례품",
+        body: "고향사랑기부금은 10만원까지 전액(지방소득세 포함) 세액공제되고, 10만원 초과~20만원 구간은 40%(지방세 포함 44%), 그 이상은 15% 공제됩니다. 기부액의 30%는 포인트로 돌려받아 지역특산물 답례품으로 고를 수 있습니다. 1월에 하면 내년 공제가 되니, 올해 환급을 원한다면 12월 31일 전에 신청하세요. 무주택 세대주라면 주택청약저축 연 300만원까지 40% 소득공제도 함께 챙기세요."
+      },
+      options: [
+        { label: "고향사랑기부 했다", score: 2 },
+        { label: "주택청약저축 꾸준히 납입 중", score: 2 },
+        { label: "둘 다 안 했다", score: 0 },
+        { label: "이런 게 있는지 몰랐다", score: 0 }
+      ]
+    },
+    {
+      id: "receipts",
+      tag: "숨은 영수증",
+      title: "안경·병원·학원 영수증, 챙기고 있나요?",
+      sub: "한 장씩은 작아도 모이면 꽤 큽니다.",
+      priority: 55,
+      tip: {
+        title: "안경·콘택트·교육비 영수증 찾기",
+        benefit: "1인당 50만원 + 15%",
+        body: "시력보정용 안경·콘택트렌즈 구입비는 1인당 연 50만원까지 의료비 세액공제 대상입니다. 의료비는 총급여의 3%를 넘는 금액부터 15%, 자녀 교육비도 15% 세액공제되니 병원·약국·학원 영수증을 홈택스에서 미리 조회해 두세요."
+      },
+      options: [
+        { label: "영수증·내역을 다 모아 뒀다", score: 2 },
+        { label: "일부만 챙겼다", score: 1 },
+        { label: "거의 안 챙겼다", score: 0 }
+      ]
+    },
+    {
+      id: "yearend",
+      tag: "연말 막판 점검",
+      title: "남은 두 달, 한도 점검은 하셨어요?",
+      sub: "12월에 몰아서 하면 늘 빠지는 게 생깁니다.",
+      priority: 50,
+      tip: {
+        title: "12월 캘린더에 '연말정산 점검일' 표시",
+        benefit: "12월 31일 마감",
+        body: "홈택스 '연말정산 미리보기'로 지금까지의 예상 환급액을 확인하고, 남은 두 달 동안 무엇을 더 넣을지 정하세요. 기부금영수증·의료비·교육비·월세 계약서처럼 회사에 낼 서류의 마감일을 캘린더에 넣어 두면 12월 마지막 주에 몰려도 놓치지 않습니다."
+      },
+      options: [
+        { label: "이미 점검하고 남은 한도까지 계산했다", score: 2 },
+        { label: "대충 한 번 봤다", score: 1 },
+        { label: "생각만 하고 있다", score: 0 },
+        { label: "점검해야 하는지도 몰랐다", score: 0 }
+      ]
+    }
+  ];
+
+  var TYPES = [
+    {
+      min: 12, emoji: "🏆", name: "13월의 월급 수확왕", accent: "#B45309",
+      quote: "이 정도면 연말정산이 아니라 '수확'입니다.",
+      desc: "챙길 건 거의 다 챙겼습니다. 남은 두 달은 이미 넣은 항목의 서류만 확인하면 충분합니다. 주변에도 이 테스트 한 번 돌려보라고 해 주세요."
+    },
+    {
+      min: 8, emoji: "💡", name: "절반만 챙긴 실속파", accent: "#047857",
+      quote: "챙긴 것도 있지만, 반은 그냥 흘려보내고 있습니다.",
+      desc: "지금 잡으면 환급액이 한 단계 올라갑니다. 아래 포인트 중 하나만 처리해도 내년 2월 통장이 달라집니다."
+    },
+    {
+      min: 4, emoji: "💸", name: "숨은 환급금 흘리는 중", accent: "#C2410C",
+      quote: "세금은 내면서 받을 돈은 놓치고 있습니다.",
+      desc: "아직 12월 31일 전입니다. 아래 2~3개만 메우면 지금보다 꽤 많은 금액을 돌려받을 수 있습니다."
+    },
+    {
+      min: 0, emoji: "🚨", name: "세금 토할 위기 경보", accent: "#B91C1C",
+      quote: "냈는데도 못 받고, 낼 것도 더 내는 중입니다.",
+      desc: "놓친 게 많지만 순서대로만 하면 됩니다. 아래 포인트부터 하나씩, 12월 안에 처리하세요."
+    }
+  ];
+
+  var BONUS_TIPS = [
+    {
+      title: "홈택스 '연말정산 미리보기'로 예상 환급액 확인",
+      benefit: "5분이면 확인",
+      body: "국세청 홈택스에 로그인해 '연말정산 미리보기'를 열면 지금까지의 예상 환급·추납액이 나옵니다. 숫자를 먼저 보면 남은 두 달에 무엇을 더 넣을지 판단이 빨라집니다."
+    },
+    {
+      title: "혼인·출산 증여재산공제 1억원",
+      benefit: "최대 1억원 비과세",
+      body: "혼인신고일이나 자녀 출생일 전후 2년 이내에 부모에게 받은 증여는 1억원까지 증여세 없이 받을 수 있습니다. 올해 혼인·출산했다면 증여 시기와 신고일을 함께 확인해 보세요."
+    },
+    {
+      title: "12월 마감 서류, 캘린더에 미리 넣기",
+      benefit: "12월 31일 마감",
+      body: "기부금영수증, 의료비·교육비 영수증, 월세 계약서, 연금납입확인서는 회사 제출 마감이 12월 말에 몰립니다. 지금 캘린더에 마감일을 넣어 두면 마지막 주에 빠지는 서류가 없습니다."
+    }
+  ];
+
+  var SHORT_LABELS = {
+    card: "카드 결제 습관",
+    pension: "연금저축·IRP",
+    housing: "주거비 공제",
+    family: "부양가족·혼인출산",
+    giving: "기부·청약",
+    receipts: "숨은 영수증",
+    yearend: "연말 점검"
+  };
+
+  /* ───────────────────────── 상태 ───────────────────────── */
+  var state = { index: 0, answers: [], result: null };
+  var locked = false;
+  var toastTimer = null;
+
+  /* ───────────────────────── DOM ───────────────────────── */
+  var screens = {
+    start: document.getElementById("screen-start"),
+    quiz: document.getElementById("screen-quiz"),
+    result: document.getElementById("screen-result")
+  };
+  var backBtn = document.getElementById("backBtn");
+  var stepNow = document.getElementById("stepNow");
+  var progressBar = document.querySelector(".progress");
+  var progressFill = document.getElementById("progressFill");
+  var quizInner = document.getElementById("quizInner");
+  var qTag = document.getElementById("qTag");
+  var qTitle = document.getElementById("qTitle");
+  var qSub = document.getElementById("qSub");
+  var optionsEl = document.getElementById("options");
+  var toastEl = document.getElementById("toast");
+
+  function showScreen(name) {
+    Object.keys(screens).forEach(function (k) {
+      screens[k].classList.toggle("active", k === name);
+    });
+  }
+
+  /* ───────────────────────── 퀴즈 ───────────────────────── */
+  function renderQuiz(dir) {
+    var i = state.index;
+    var q = QUESTIONS[i];
+
+    stepNow.textContent = String(i + 1);
+    progressFill.style.width = ((i + 1) / QUESTIONS.length * 100) + "%";
+    progressBar.setAttribute("aria-valuenow", String(i + 1));
+    backBtn.textContent = i === 0 ? "← 처음으로" : "← 이전 문항";
+    qTag.textContent = q.tag;
+    qTitle.textContent = q.title;
+    qSub.textContent = q.sub;
+
+    optionsEl.innerHTML = "";
+    q.options.forEach(function (opt, oi) {
+      var b = document.createElement("button");
+      b.type = "button";
+      b.className = "option";
+      b.style.animationDelay = (55 + oi * 50) + "ms";
+      var mark = document.createElement("span");
+      mark.className = "opt-mark";
+      mark.textContent = String(oi + 1);
+      var txt = document.createElement("span");
+      txt.className = "opt-text";
+      txt.textContent = opt.label;
+      b.appendChild(mark);
+      b.appendChild(txt);
+      b.addEventListener("click", function () { pick(oi, b); });
+      optionsEl.appendChild(b);
+    });
+
+    quizInner.classList.remove("anim-right", "anim-left");
+    void quizInner.offsetWidth;
+    quizInner.classList.add(dir === "back" ? "anim-left" : "anim-right");
+
+    showScreen("quiz");
+    window.scrollTo({ top: 0, behavior: "auto" });
+  }
+
+  function pick(oi, btn) {
+    if (locked) return;
+    locked = true;
+    state.answers[state.index] = oi;
+
+    var kids = optionsEl.children;
+    for (var k = 0; k < kids.length; k++) {
+      kids[k].classList.add(k === oi ? "picked" : "dim");
+    }
+
+    window.setTimeout(function () {
+      locked = false;
+      if (state.index === QUESTIONS.length - 1) {
+        showResult();
+      } else {
+        state.index += 1;
+        renderQuiz("next");
+      }
+    }, 270);
+  }
+
+  function goBack() {
+    if (locked) return;
+    if (state.index === 0) {
+      state.index = 0;
+      state.answers = [];
+      showScreen("start");
+      window.scrollTo({ top: 0, behavior: "auto" });
+      return;
+    }
+    state.index -= 1;
+    state.answers = state.answers.slice(0, state.index);
+    renderQuiz("back");
+  }
+
+  /* ───────────────────────── 결과 계산 ───────────────────────── */
+  function computeResult() {
+    var score = 0;
+    var rows = QUESTIONS.map(function (q, qi) {
+      var oi = state.answers[qi];
+      var opt = q.options[oi];
+      score += opt.score;
+      return { q: q, opt: opt, level: opt.score };
+    });
+
+    var type = TYPES[0];
+    for (var t = 0; t < TYPES.length; t++) {
+      if (score >= TYPES[t].min) { type = TYPES[t]; break; }
+    }
+
+    var missed = rows.filter(function (r) { return r.level < 2; })
+      .sort(function (a, b) {
+        if (a.level !== b.level) return a.level - b.level;      // '놓침' 먼저, '일부' 다음
+        return b.q.priority - a.q.priority;                      // 효과 큰 항목 먼저
+      });
+
+    var tips = missed.slice(0, 3).map(function (r) {
+      return {
+        title: r.q.tip.title,
+        benefit: r.q.tip.benefit,
+        body: r.q.tip.body,
+        kind: r.level === 0 ? "miss" : "partial"
+      };
+    });
+    for (var b = 0; b < BONUS_TIPS.length && tips.length < 2; b++) {
+      tips.push({
+        title: BONUS_TIPS[b].title,
+        benefit: BONUS_TIPS[b].benefit,
+        body: BONUS_TIPS[b].body,
+        kind: "bonus"
+      });
+    }
+
+    return {
+      score: score,
+      max: QUESTIONS.length * 2,
+      type: type,
+      rows: rows,
+      tips: tips
+    };
+  }
+
+  function showResult() {
+    var r = computeResult();
+    state.result = r;
+
+    var root = document.getElementById("resultType");
+    root.style.setProperty("--accent", r.type.accent);
+    document.getElementById("typeEmoji").textContent = r.type.emoji;
+    document.getElementById("typeName").textContent = r.type.name;
+    document.getElementById("typeQuote").textContent = "“" + r.type.quote + "”";
+    document.getElementById("typeDesc").textContent = r.type.desc;
+    document.getElementById("scoreNum").textContent = String(r.score);
+
+    var pct = Math.round(r.score / r.max * 100);
+    var fill = document.getElementById("gaugeFill");
+    fill.style.width = "0%";
+    window.setTimeout(function () { fill.style.width = pct + "%"; }, 120);
+
+    /* 절세 포인트 */
+    var hasMiss = r.tips.some(function (t) { return t.kind === "miss" || t.kind === "partial"; });
+    document.getElementById("tipsBadge").textContent = "TOP " + r.tips.length;
+    document.getElementById("tipsHead").textContent = hasMiss
+      ? "지금 당장 더 챙길 수 있는 절세 포인트"
+      : "한 번 더 확인하면 좋은 절세 포인트";
+    var tipsEl = document.getElementById("tips");
+    tipsEl.innerHTML = "";
+    r.tips.forEach(function (tip, ti) {
+      var box = document.createElement("div");
+      box.className = "tip";
+      box.style.animationDelay = (80 + ti * 70) + "ms";
+
+      var top = document.createElement("div");
+      top.className = "tip-top";
+      var no = document.createElement("span");
+      no.className = "tip-no";
+      no.textContent = "0" + (ti + 1);
+      top.appendChild(no);
+      if (tip.kind === "miss" || tip.kind === "partial") {
+        var kind = document.createElement("span");
+        kind.className = "tip-kind" + (tip.kind === "partial" ? " partial" : "");
+        kind.textContent = tip.kind === "miss" ? "놓친 항목" : "일부만 챙김";
+        top.appendChild(kind);
+      }
+      var ben = document.createElement("span");
+      ben.className = "tip-benefit";
+      ben.textContent = tip.benefit;
+      top.appendChild(ben);
+      box.appendChild(top);
+
+      var h = document.createElement("p");
+      h.className = "tip-title";
+      h.textContent = tip.title;
+      box.appendChild(h);
+
+      var p = document.createElement("p");
+      p.className = "tip-body";
+      p.textContent = tip.body;
+      box.appendChild(p);
+
+      tipsEl.appendChild(box);
+    });
+
+    /* 점검표 */
+    var caught = 0;
+    var rowsEl = document.getElementById("checklist");
+    rowsEl.innerHTML = "";
+    r.rows.forEach(function (row) {
+      if (row.level === 2) caught += 1;
+      var div = document.createElement("div");
+      div.className = "check-row";
+      var mark = document.createElement("span");
+      mark.className = "mark " + (row.level === 2 ? "ok" : row.level === 1 ? "partial" : "miss");
+      mark.textContent = row.level === 2 ? "✓" : row.level === 1 ? "!" : "✕";
+      var label = document.createElement("span");
+      label.textContent = SHORT_LABELS[row.q.id] || row.q.tag;
+      var status = document.createElement("span");
+      status.className = "status " + (row.level === 2 ? "ok" : row.level === 1 ? "partial" : "miss");
+      status.textContent = row.level === 2 ? "챙김" : row.level === 1 ? "일부만" : "놓침";
+      div.appendChild(mark);
+      div.appendChild(label);
+      div.appendChild(status);
+      rowsEl.appendChild(div);
+    });
+    document.getElementById("checkBadge").textContent = caught + " / " + QUESTIONS.length + " 챙김";
+
+    showScreen("result");
+    window.scrollTo({ top: 0, behavior: "auto" });
+  }
+
+  /* ───────────────────────── 공유 ───────────────────────── */
+  /* 공유 링크는 이 테스트 페이지가 아니라 '이 사람의 개인품' 주소를 가리킨다 */
+  function shareUrl() {
+    return PUMSS_URL;
+  }
+
+  function buildShareText() {
+    var r = state.result;
+    if (!r) return "";
+    return [
+      "13월의 월급, 나는 받을까 토할까?",
+      "",
+      "내 결과: " + r.type.emoji + " " + r.type.name + " (" + r.score + "/" + r.max + ")",
+      "“" + r.type.quote + "”",
+      "",
+      "1분이면 내 연말정산 감각도 확인 가능 👉 " + shareUrl()
+    ].join("\n");
+  }
+
+  function legacyCopy(text) {
+    var ta = document.createElement("textarea");
+    ta.value = text;
+    ta.setAttribute("readonly", "");
+    ta.style.position = "fixed";
+    ta.style.top = "-1000px";
+    ta.style.opacity = "0";
+    document.body.appendChild(ta);
+    ta.select();
+    ta.setSelectionRange(0, text.length);
+    var ok = false;
+    try { ok = document.execCommand("copy"); } catch (e) { ok = false; }
+    document.body.removeChild(ta);
+    return ok;
+  }
+
+  function copyShare() {
+    var text = buildShareText();
+    if (!text) return;
+
+    function done(ok) {
+      toast(ok
+        ? "결과가 복사됐어요! 카톡·문자에 붙여넣기 하세요 📋"
+        : "복사가 안 됐어요. 화면을 길게 눌러 복사해 주세요.");
+    }
+
+    if (navigator.clipboard && navigator.clipboard.writeText && window.isSecureContext) {
+      navigator.clipboard.writeText(text).then(function () { done(true); }, function () {
+        done(legacyCopy(text));
+      });
+    } else {
+      done(legacyCopy(text));
+    }
+  }
+
+  function toast(msg) {
+    toastEl.textContent = msg;
+    toastEl.classList.add("show");
+    window.clearTimeout(toastTimer);
+    toastTimer = window.setTimeout(function () {
+      toastEl.classList.remove("show");
+    }, 2600);
+  }
+
+  /* ───────────────────────── 이벤트 ───────────────────────── */
+  document.getElementById("startBtn").addEventListener("click", function () {
+    state.index = 0;
+    state.answers = [];
+    renderQuiz("next");
+  });
+
+  backBtn.addEventListener("click", goBack);
+  document.getElementById("shareBtn").addEventListener("click", copyShare);
+
+  document.getElementById("againBtn").addEventListener("click", function () {
+    state.index = 0;
+    state.answers = [];
+    state.result = null;
+    stepNow.textContent = "1";
+    progressFill.style.width = (1 / QUESTIONS.length * 100) + "%";
+    progressBar.setAttribute("aria-valuenow", "1");
+    backBtn.textContent = "← 처음으로";
+    document.getElementById("gaugeFill").style.width = "0%";
+    showScreen("start");
+    window.scrollTo({ top: 0, behavior: "auto" });
+  });
+
+  /* 첫 화면이 준비되면 진행률 초기화 */
+  progressFill.style.width = (1 / QUESTIONS.length * 100) + "%";
+
+  /* 테스트/디버그용 (화면에는 노출되지 않음) */
+  window.__yearEndTaxTest = {
+    questions: QUESTIONS,
+    types: TYPES,
+    state: state,
+    compute: computeResult,
+    shareText: buildShareText
+  };
+})();
+</script>
+</body>
+</html>
