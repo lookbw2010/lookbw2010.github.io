@@ -232,11 +232,15 @@ button { cursor: pointer; -webkit-tap-highlight-color: transparent; }
 .chips.small {
   padding: 2px 0 0;
   margin: 0;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
   overflow: visible;
   -webkit-mask-image: none;
   mask-image: none;
 }
+
+.chips.small .chip { display: flex; align-items: center; justify-content: center; min-width: 0; }
 
 .chip {
   flex: none;
@@ -943,9 +947,9 @@ button { cursor: pointer; -webkit-tap-highlight-color: transparent; }
   border-radius: 20px;
   background: linear-gradient(150deg, #F4F8F3, #EDF3EC);
   border: 1px solid #DDE8DD;
-  padding: 16px 14px 12px;
+  padding: 14px 14px 8px;
   text-align: center;
-  margin-bottom: 18px;
+  margin-bottom: 16px;
   transition: box-shadow .25s, border-color .25s;
 }
 .voice-box.live { border-color: #B9D0BE; box-shadow: 0 0 0 4px rgba(45, 90, 67, .08); }
@@ -954,14 +958,14 @@ button { cursor: pointer; -webkit-tap-highlight-color: transparent; }
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
   width: 100%;
-  min-height: 96px;
+  min-height: 86px;
   border: 0;
   border-radius: 16px;
   background: var(--green);
   color: #FFFDF8;
-  padding: 16px 12px;
+  padding: 14px 12px;
   font-size: calc(var(--fs) * .95);
   font-weight: 700;
   letter-spacing: -.01em;
@@ -977,7 +981,7 @@ button { cursor: pointer; -webkit-tap-highlight-color: transparent; }
   line-height: 1.35;
 }
 
-.mic { font-size: 1.08em; line-height: 1; }
+.mic { width: 22px; height: 22px; flex: none; }
 
 .wave { display: flex; align-items: center; justify-content: center; gap: 4px; height: 22px; }
 .wave i {
@@ -1001,26 +1005,26 @@ button { cursor: pointer; -webkit-tap-highlight-color: transparent; }
 }
 
 .voice-status {
-  margin: 11px 2px 2px;
+  margin: 9px 2px 0;
   font-size: calc(var(--fs) * .76);
   color: var(--ink-2);
   line-height: 1.5;
 }
 
 .voice-demo {
-  margin-top: 6px;
+  margin-top: 2px;
   border: 0;
   background: none;
   color: var(--green);
   font-size: calc(var(--fs) * .72);
   text-decoration: underline;
   text-underline-offset: 3px;
-  padding: 8px;
-  min-height: 40px;
+  padding: 6px;
+  min-height: 36px;
 }
 
 /* fields */
-.field { display: block; margin-bottom: 18px; }
+.field { display: block; margin-bottom: 16px; }
 
 .field-label {
   display: block;
@@ -1033,7 +1037,7 @@ button { cursor: pointer; -webkit-tap-highlight-color: transparent; }
 
 #writeText {
   width: 100%;
-  min-height: 132px;
+  min-height: 112px;
   resize: vertical;
   border: 1px solid var(--line);
   border-radius: 16px;
