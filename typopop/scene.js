@@ -295,12 +295,12 @@
     umbrella: { maxFont: 120, maxFontKo: 100, maxW: 330, baseY: 344 },
     steps: { maxFont: 128, maxFontKo: 112, maxW: 322, baseY: 340 },
     kick: { maxFont: 132, maxFontKo: 118, maxW: 300, baseY: 336 },
-    help: { maxFont: 128, maxFontKo: 114, maxW: 300, baseY: 322 },
-    foot: { maxFont: 128, maxFontKo: 112, maxW: 300, baseY: 330 },
+    help: { maxFont: 128, maxFontKo: 114, maxW: 300, baseY: 302 },
+    foot: { maxFont: 128, maxFontKo: 112, maxW: 300, baseY: 318 },
     coffee: { maxFont: 132, maxFontKo: 118, maxW: 300, baseY: 340 },
     love: { maxFont: 138, maxFontKo: 118, maxW: 316, baseY: 334 },
     cheers: { maxFont: 128, maxFontKo: 116, maxW: 310, baseY: 330 },
-    sleep: { maxFont: 124, maxFontKo: 112, maxW: 300, baseY: 336 },
+    sleep: { maxFont: 124, maxFontKo: 112, maxW: 300, baseY: 342 },
     rocket: { maxFont: 134, maxFontKo: 116, maxW: 306, baseY: 336 },
     pop: { maxFont: 150, maxFontKo: 132, maxW: 340, baseY: 326 }
   };
