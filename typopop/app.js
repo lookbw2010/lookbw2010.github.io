@@ -15,7 +15,17 @@
     { key: 'love', en: ['love', 'heart', 'thanks', 'thank'], ko: ['사랑', '고마워', '고맙', '하트'] },
     { key: 'cheers', en: ['cheers', 'cheer', 'congrats', 'congratulation', 'congratulations', 'hooray', 'birthday', 'party'], ko: ['축하', '생일', '파티', '만세'] },
     { key: 'sleep', en: ['sleep', 'sleepy', 'goodnight', 'rest', 'dream'], ko: ['잘자', '휴식', '굿나잇', '꿈'] },
-    { key: 'rocket', en: ['rocket', 'launch', 'fight', 'fighting', 'challenge'], ko: ['도전', '화이팅', '파이팅', '로켓', '출발'] }
+    { key: 'rocket', en: ['rocket', 'launch', 'fight', 'fighting', 'challenge'], ko: ['도전', '화이팅', '파이팅', '로켓', '출발'] },
+    {
+      key: 'christmas', en: ['christmas', 'xmas', 'santa', 'merry'],
+      ko: ['크리스마스', '성탄', '메리크리스마스', '산타'],
+      ph: ['merry christmas', '메리 크리스마스', '메리크리스마스']
+    },
+    {
+      key: 'newyear', en: ['newyear', '2026', '2027', 'happynewyear'],
+      ko: ['신년', '새해', '새해복', '신정', '해돋이'],
+      ph: ['happy new year', 'new year', '새해 복', '새해복 많이', '신년 인사']
+    }
   ];
 
   /* Korean particles and common verb endings that may follow a keyword */
@@ -23,11 +33,29 @@
 
   function escapeRe(s) { return s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); }
 
+  /* "Merry Christmas" / "새해 복" 같이 띄어 쓴 구문도 한 덩어리로 잡는다 */
+  function phraseRe(p) {
+    var body = String(p).split(/\s+/).map(escapeRe).join('[\\s,\\.]+');
+    return new RegExp('(^|[^\\uAC00-\\uD7A3A-Za-z0-9])(' + body + ')($|[^\\uAC00-\\uD7A3A-Za-z0-9])', 'i');
+  }
+
   function detect(text) {
     var best = null;
     if (!text) return { key: 'pop', word: '' };
 
     MOTIONS.forEach(function (m) {
+      // whole phrases first — they highlight and cover the full expression
+      if (m.ph) {
+        m.ph.forEach(function (p) {
+          var mm = phraseRe(p).exec(text);
+          if (mm) {
+            var pidx = mm.index + mm[1].length, pword = mm[2];
+            if (!best || pword.length > best.word.length || (pword.length === best.word.length && pidx < best.idx)) {
+              best = { idx: pidx, key: m.key, word: pword };
+            }
+          }
+        });
+      }
       // English words
       m.en.forEach(function (w) {
         var re = new RegExp('(^|[^A-Za-z0-9])(' + escapeRe(w) + ')(s|es|ing|ed)?($|[^A-Za-z0-9])', 'i');
@@ -89,8 +117,18 @@
       copied: '복사했어요',
       preview: '받는 사람 화면',
       cta: '나도 만들어 보기',
+      mic: '말로 만들기',
+      micOn: '듣는 중',
+      vUnsupported: '이 브라우저에서는 음성 인식을 지원하지 않아요. 직접 입력해 주세요.',
+      vPermission: '마이크 권한이 필요해요. 주소창 옆 설정에서 마이크를 허용해 주세요.',
+      vNoSpeech: '잘 들리지 않았어요. 다시 말해 주세요.',
+      vNetwork: '음성 인식 서버에 연결하지 못했어요. 직접 입력해 주세요.',
+      vAudio: '마이크를 찾지 못했어요. 기기 마이크를 확인해 주세요.',
+      vError: '음성 인식이 되지 않았어요. 직접 입력해 주세요.',
       themes: { studio: '스튜디오', ink: '잉크', blue: '블루', yellow: '포스터' },
       presets: [
+        { w: '크리스마스', text: '크리스마스 잘 보내세요' },
+        { w: '새해', text: '새해 복 많이 받으세요' },
         { w: '우산', text: '오늘 비 오는데, 우산 챙겨' },
         { w: '계단', text: '한 칸씩 계단을 올라가자' },
         { w: '퇴근', text: '오늘은 여기서 퇴근!' },
@@ -112,8 +150,18 @@
       copied: 'Link copied',
       preview: 'Recipient view',
       cta: 'Make your own',
+      mic: 'Voice',
+      micOn: 'Listening',
+      vUnsupported: 'This browser can\u2019t do voice input. Please type instead.',
+      vPermission: 'Mic access is needed. Allow the microphone in your browser settings.',
+      vNoSpeech: 'I didn\u2019t catch that. Try again.',
+      vNetwork: 'Couldn\u2019t reach the speech service. Please type instead.',
+      vAudio: 'No microphone found. Check your device.',
+      vError: 'Voice input failed. Please type instead.',
       themes: { studio: 'Studio', ink: 'Ink', blue: 'Blue', yellow: 'Poster' },
       presets: [
+        { w: 'christmas', text: 'Merry Christmas, everyone' },
+        { w: 'newyear', text: 'Happy New Year, 2027' },
         { w: 'umbrella', text: 'Don\u2019t forget your umbrella' },
         { w: 'STEPS', text: 'STEPS to the top, one at a time' },
         { w: 'KICK', text: 'Weekend starts now, KICK it off' },
@@ -150,6 +198,7 @@
   var input = $('#input'), detectEl = $('#detect'), detectText = $('#detect-text');
   var presetsEl = $('#presets'), swatchesEl = $('#swatches'), toastEl = $('#toast');
   var copyBtn = $('#copy'), copyText = $('#copy-text'), previewBtn = $('#preview');
+  var micBtn = $('#mic'), micText = $('#mic-text');
 
   var scene = null;
   var current = { key: null, word: null, caption: null };
@@ -292,6 +341,11 @@
     $('#themes-label').textContent = t.stage;
     copyText.textContent = t.copy;
     previewBtn.textContent = t.preview;
+    if (micBtn) {
+      micText.textContent = listening ? t.micOn : t.mic;
+      micBtn.setAttribute('aria-label', listening ? t.micOn : t.mic);
+      micBtn.setAttribute('title', listening ? t.micOn : t.mic);
+    }
     $('#sv-cta').innerHTML = t.cta + ' <span aria-hidden="true">→</span>';
     Array.prototype.forEach.call(document.querySelectorAll('#lang button'), function (b) {
       b.classList.toggle('on', b.dataset.lang === state.lang);
@@ -391,6 +445,7 @@
   Array.prototype.forEach.call(document.querySelectorAll('#lang button'), function (b) {
     b.addEventListener('click', function () {
       if (state.lang === b.dataset.lang) return;
+      stopVoice();
       state.lang = b.dataset.lang;
       if (!state.touched) {
         state.text = T[state.lang].dflt;
@@ -418,6 +473,118 @@
   window.addEventListener('resize', function () {
     // stage width is CSS-driven; only repaint sizes that depend on the stage
   });
+
+  /* ---------- voice input (Web Speech API) ---------- */
+  var SR = window.SpeechRecognition || window.webkitSpeechRecognition || null;
+  var recog = null, listening = false;
+
+  function setListening(on) {
+    listening = on;
+    if (!micBtn) return;
+    micBtn.classList.toggle('on', on);
+    micBtn.setAttribute('aria-pressed', on ? 'true' : 'false');
+    micText.textContent = on ? T[state.lang].micOn : T[state.lang].mic;
+    micBtn.setAttribute('aria-label', on ? T[state.lang].micOn : T[state.lang].mic);
+  }
+
+  var voiceTimer = null, startTimer = null, voiceStarted = false;
+  var voiceHeard = false, voiceErrored = false, voiceByUser = false;
+
+  function clearVoiceTimer() {
+    if (voiceTimer) { clearTimeout(voiceTimer); voiceTimer = null; }
+    if (startTimer) { clearTimeout(startTimer); startTimer = null; }
+  }
+
+  function stopVoice() {
+    clearVoiceTimer();
+    if (!recog) { setListening(false); return; }
+    var r = recog;
+    recog = null;
+    voiceByUser = true;
+    try { r.abort ? r.abort() : r.stop(); } catch (e) { }
+    setListening(false);
+  }
+
+  function startVoice() {
+    var t = T[state.lang];
+    if (!SR || !window.isSecureContext) { toast(t.vUnsupported); return; }
+    try {
+      recog = new SR();
+    } catch (e) { toast(t.vUnsupported); return; }
+
+    recog.lang = state.lang === 'ko' ? 'ko-KR' : 'en-US';
+    recog.interimResults = true;
+    recog.continuous = false;
+    recog.maxAlternatives = 1;
+
+    recog.onstart = function () { voiceStarted = true; if (startTimer) { clearTimeout(startTimer); startTimer = null; } setListening(true); };
+    recog.onaudiostart = function () { voiceStarted = true; setListening(true); };
+    recog.onspeechend = function () { setListening(false); };
+    recog.onresult = function (ev) {
+      clearVoiceTimer();
+      voiceHeard = true;
+      var out = '';
+      for (var i = 0; i < ev.results.length; i++) out += ev.results[i][0].transcript;
+      out = out.replace(/\s+/g, ' ').replace(/^[\s,.;:!?]+|[\s,]+$/g, '').slice(0, 90);
+      if (!out) return;
+      state.text = out;
+      state.touched = true;
+      input.value = out;
+      clearTimeout(typingTimer);
+      apply();
+    };
+    recog.onerror = function (ev) {
+      clearVoiceTimer();
+      voiceErrored = true;
+      var code = (ev && ev.error) || '';
+      if (code === 'aborted') { voiceByUser = true; return; }
+      var msg = t.vError;
+      if (code === 'not-allowed' || code === 'service-not-allowed') msg = t.vPermission;
+      else if (code === 'no-speech') msg = t.vNoSpeech;
+      else if (code === 'network') msg = t.vNetwork;
+      else if (code === 'audio-capture') msg = t.vAudio;
+      toast(msg);
+    };
+    recog.onend = function () {
+      clearVoiceTimer();
+      recog = null;
+      setListening(false);
+      if (!voiceHeard && !voiceErrored && !voiceByUser) toast(T[state.lang].vNoSpeech);
+    };
+
+    voiceHeard = false;
+    voiceErrored = false;
+    voiceByUser = false;
+
+    try {
+      recog.start();
+      setListening(true);            /* instant feedback on the tap */
+      clearVoiceTimer();
+      voiceStarted = false;
+      startTimer = setTimeout(function () {
+        if (!recog || voiceStarted) return;
+        toast(T[state.lang].vUnsupported);
+        stopVoice();
+      }, 3000);
+      voiceTimer = setTimeout(function () {
+        if (!recog) return;
+        toast(T[state.lang].vNoSpeech);
+        stopVoice();
+      }, 9000);
+    } catch (e) {
+      recog = null;
+      setListening(false);
+      toast(t.vUnsupported);
+    }
+  }
+
+  if (micBtn) {
+    micBtn.addEventListener('click', function (e) {
+      e.preventDefault();
+      e.stopPropagation();
+      if (listening) stopVoice(); else startVoice();
+    });
+  }
 
   /* ---------- boot ---------- */
   applyLang();

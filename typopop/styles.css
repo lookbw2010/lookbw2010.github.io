@@ -76,14 +76,32 @@ main{flex:1;display:flex;flex-direction:column;gap:9px;min-height:0}
 .field{position:relative;flex:none}
 #input{
   width:100%;height:50px;border-radius:13px;border:1px solid #DDE1E6;background:var(--surface);
-  padding:0 42px 0 15px;outline:none;
+  padding:0 108px 0 15px;outline:none;
   font-family:var(--textf);font-weight:500;font-size:15px;color:var(--ui-ink);letter-spacing:-.005em;word-spacing:.1em;
   box-shadow:0 1px 2px rgba(15,15,18,.045);
   transition:border-color .16s, box-shadow .16s;
 }
 #input::placeholder{color:#9BA0A8;font-weight:400}
 #input:focus{border-color:#0F0F12;box-shadow:0 0 0 3px rgba(15,15,18,.07)}
-.field-key{position:absolute;right:14px;top:50%;transform:translateY(-52%);font-size:13px;color:#C2C7CE;pointer-events:none}
+html[lang="en"] #input{padding-right:84px}
+
+/* ---------- voice mic (inside the field) ---------- */
+.mic{
+  position:absolute;right:6px;top:50%;transform:translateY(-50%);
+  display:inline-flex;align-items:center;gap:5px;
+  height:36px;padding:0 10px 0 9px;border-radius:999px;
+  border:1px solid #E1E4E9;background:#F7F8FA;cursor:pointer;
+  font-family:var(--textf);font-weight:600;font-size:11.5px;line-height:1;letter-spacing:.005em;color:#3C3F46;
+  white-space:nowrap;
+  transition:background .16s,color .16s,border-color .16s,box-shadow .2s;
+}
+.mic svg{width:14px;height:14px;display:block;flex:none}
+.mic:focus-visible{outline:2px solid #0F0F12;outline-offset:2px}
+.mic:active{transform:translateY(-50%) scale(.97)}
+.mic.on{background:var(--acc);border-color:var(--acc);color:#fff;box-shadow:0 0 0 4px rgba(255,59,29,.15)}
+.mic.on svg{animation:micpulse 1.05s ease-in-out infinite}
+@keyframes micpulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.45;transform:scale(.9)}}
+@media (prefers-reduced-motion:reduce){.mic.on svg{animation:none}}
 
 .hintrow{display:flex;align-items:center;justify-content:space-between;gap:10px;flex:none;margin-top:-3px}
 .detect{display:inline-flex;align-items:center;gap:7px;min-width:0;font-size:11.5px;font-weight:500;color:var(--ui-muted);letter-spacing:.005em}
@@ -194,6 +212,7 @@ svg .s-mute{fill:var(--mute)}
 svg .s-bg{fill:var(--stage-bg)}
 svg .k-ink{stroke:var(--ink);fill:none}
 svg .k-acc{stroke:var(--acc);fill:none}
+svg .k-bg{stroke:var(--stage-bg);fill:none}
 svg .rnd{stroke-linecap:round;stroke-linejoin:round}
 .hero-txt{font-family:var(--display);font-weight:400;fill:var(--ink)}
 .hero-txt.ko{font-weight:900}

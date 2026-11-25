@@ -302,6 +302,8 @@
     cheers: { maxFont: 128, maxFontKo: 116, maxW: 310, baseY: 330 },
     sleep: { maxFont: 124, maxFontKo: 112, maxW: 300, baseY: 342 },
     rocket: { maxFont: 134, maxFontKo: 116, maxW: 306, baseY: 336 },
+    christmas: { maxFont: 116, maxFontKo: 102, maxW: 312, baseY: 352 },
+    newyear: { maxFont: 124, maxFontKo: 106, maxW: 304, baseY: 330 },
     pop: { maxFont: 150, maxFontKo: 132, maxW: 340, baseY: 326 }
   };
 
@@ -946,6 +948,301 @@
       var lift = c.E.outCubic(c.seg(t, 0.25, 0.8)) * 9;
       var r = -2 * c.seg(t, 0.25, 0.85);
       n.setAttribute('transform', 'translate(' + dx.toFixed(2) + ' ' + (-lift).toFixed(2) + ') rotate(' + r.toFixed(2) + ' 0 ' + (-CH * 0.5) + ')');
+    });
+  };
+
+  /* ============================================================
+     11. christmas — the letters themselves stack into a tree
+     ============================================================ */
+  function star5(r, inner) {
+    var d = '';
+    for (var i = 0; i < 10; i++) {
+      var a = -Math.PI / 2 + (i * Math.PI) / 5;
+      var rr = (i % 2 === 0) ? r : inner;
+      d += (i === 0 ? 'M' : 'L') + (Math.cos(a) * rr).toFixed(2) + ' ' + (Math.sin(a) * rr).toFixed(2) + ' ';
+    }
+    return d + 'Z';
+  }
+
+  SCENES.christmas = function (c) {
+    var info = c.info, CH = info.CH, letters = info.letters, S = info.size;
+    var chars = Array.from(info.word);
+    var n = chars.length;
+    var capRatio = CH / Math.max(1, S);
+
+    /* the word repeats on tapering lines: a tree built out of the word itself */
+    var rows = [{ size: S, y: 0, text: null }];                       /* bottom = the live letters */
+    if (n >= 2) {
+      var c1 = Math.max(1, Math.min(n - 1, Math.floor(n * 0.68)));
+      rows.push({ size: S * 0.91, y: -(S * 1.03), text: chars.slice(0, c1).join('') });
+    }
+    if (n >= 4) {
+      var c2 = Math.max(1, Math.floor(n * 0.38));
+      rows.push({ size: S * 0.82, y: rows[1].y - S * 0.91 * 1.03, text: chars.slice(0, c2).join('') });
+    }
+    var topRow = rows[rows.length - 1];
+    var topY = topRow.y - topRow.size * capRatio;
+
+    /* ---- upper lines drop in ---- */
+    var treeG = el('g', {}, c.front);
+    rows.forEach(function (rd, ri) {
+      if (!rd.text) return;
+      var node = c.tx(rd.text, {
+        x: 0, y: rd.y, 'text-anchor': 'middle', 'font-size': rd.size,
+        'letter-spacing': (info.track || 0).toFixed(4) + 'em',
+        class: 'hero-txt' + (info.isKo ? ' ko' : '')
+      }, treeG);
+      var at = 0.1 + (ri - 1) * 0.13;
+      c.part(node, function (nd, t) {
+        var p = c.E.outBack(c.seg(t, at, at + 0.44), 1.45);
+        nd.setAttribute('opacity', c.c01(p * 1.7).toFixed(3));
+        nd.setAttribute('y', (rd.y + (1 - c.c01(p)) * 36).toFixed(2));
+      });
+    });
+
+    /* ---- the whole tree sways ---- */
+    function sway(node, t, ms) {
+      var on = c.seg(t, 0.62, 0.88);
+      var a = on * 0.85 * c.sin(ms / 1250);
+      node.setAttribute('transform', 'rotate(' + a.toFixed(2) + ' 0 ' + (topY * 0.42).toFixed(1) + ')');
+    }
+    c.part(info.lettersG, sway);
+    c.part(treeG, sway);
+
+    /* ---- star on the apex ---- */
+    var starR = Math.max(10, S * 0.2);
+    var starY = topY - starR * 0.92;
+    var starG = el('g', {}, c.front);
+    el('path', { d: star5(starR, starR * 0.44), class: 's-acc' }, starG);
+    c.part(starG, function (node, t, ms) {
+      var p = c.E.outElastic(c.seg(t, 0.44, 0.74));
+      var tw = 1 + 0.06 * c.sin(ms / 250);
+      var sc = (0.16 + 0.84 * c.c01(p)) * tw;
+      node.setAttribute('opacity', p > 0.02 ? '1' : '0');
+      node.setAttribute('transform', 'translate(0 ' + starY.toFixed(1) + ') scale(' + sc.toFixed(3) + ')');
+    });
+
+    /* sparkle glints around the star */
+    [[-1.6, -0.3, 6.4, 0], [1.5, 0.55, 4.8, 0.4], [-0.75, 1.0, 3.4, 0.7]].forEach(function (g) {
+      var node = el('path', { d: starPath(g[2], g[2] * 0.24), class: 's-acc' }, c.front);
+      var gx = g[0] * starR, gy = starY + g[1] * starR;
+      c.part(node, function (nn, t, ms) {
+        var on = c.seg(t, 0.54, 0.7);
+        var tw = 0.55 + 0.45 * c.sin(ms / 420 + g[3] * 9);
+        nn.setAttribute('opacity', (on * tw * 0.9).toFixed(3));
+        nn.setAttribute('transform', 'translate(' + gx.toFixed(1) + ' ' + gy.toFixed(1) + ') scale(' + (0.55 + 0.45 * tw).toFixed(2) + ')' +
+          ' rotate(' + ((ms / 26) % 360).toFixed(0) + ')');
+      });
+    });
+
+    /* ---- baubles hung under the bottom line ---- */
+    var gaps = [];
+    for (var i = 0; i < letters.length - 1; i++) {
+      gaps.push((letters[i].base.x + letters[i].w / 2 + letters[i + 1].base.x - letters[i + 1].w / 2) / 2);
+    }
+    if (!gaps.length) gaps = [0];
+    function nearest(target) {
+      var bb = gaps[0];
+      gaps.forEach(function (gx) { if (Math.abs(gx - target) < Math.abs(bb - target)) bb = gx; });
+      return bb;
+    }
+    var hang = gaps.length > 1 ? [nearest(-info.W * 0.28), nearest(info.W * 0.28)] : gaps.slice(0, 1);
+    hang.forEach(function (bx, bi) {
+      var len = 14 + bi * 9, rr = 4.3 + (bi % 2) * 1.1;
+      var g = el('g', {}, c.front);
+      el('path', { d: 'M0 0 L0 ' + (len - 1), 'stroke-width': 1.4, class: 'k-ink rnd' }, g);
+      el('circle', { cx: 0, cy: len + rr - 1, r: rr, class: 's-acc' }, g);
+      el('circle', { cx: -rr * 0.34, cy: len + rr * 0.45, r: rr * 0.26, class: 's-bg' }, g);
+      c.part(g, function (node, t, ms) {
+        var p = c.E.outBack(c.seg(t, 0.46 + bi * 0.07, 0.7 + bi * 0.07), 2.1);
+        var swing = (t > 0.72 ? 1 : 0) * 3.1 * c.sin(ms / 760 + bi * 1.7);
+        node.setAttribute('opacity', p > 0.02 ? '1' : '0');
+        node.setAttribute('transform', 'translate(' + bx.toFixed(1) + ' ' + ((1 - c.c01(p)) * -26).toFixed(1) + ')' +
+          ' rotate(' + (swing + (1 - c.c01(p)) * 12).toFixed(2) + ' 0 0)');
+      });
+    });
+
+    /* ---- snow ---- */
+    var yTop = -info.baseY + 108, ySpan = 356;
+    var flakes = [];
+    for (var f = 0; f < 9; f++) {
+      var fr = 3 + (f % 3) * 1.15;
+      var g2 = el('g', {}, c.front);
+      el('path', {
+        d: 'M0 ' + (-fr) + ' L0 ' + fr + ' M' + (-fr) + ' 0 L' + fr + ' 0 ' +
+          'M' + (-fr * 0.7) + ' ' + (-fr * 0.7) + ' L' + (fr * 0.7) + ' ' + (fr * 0.7) + ' ' +
+          'M' + (fr * 0.7) + ' ' + (-fr * 0.7) + ' L' + (-fr * 0.7) + ' ' + (fr * 0.7),
+        'stroke-width': 1.15, class: (f % 4 === 0 ? 'k-acc' : 'k-ink'), 'stroke-linecap': 'round'
+      }, g2);
+      flakes.push({ n: g2, x: -166 + ((f * 53) % 332), ph: (f * 0.137) % 1, spd: 0.8 + (f % 4) * 0.13, op: 0.3 + (f % 3) * 0.14 });
+      hide(g2);
+    }
+    c.part(c.front, function (n2, t, ms) {
+      var on = c.seg(t, 0.34, 0.6);
+      for (var i = 0; i < flakes.length; i++) {
+        var fl = flakes[i];
+        var p = ((ms / 3000) * fl.spd + fl.ph) % 1;
+        var edge = Math.min(1, p < 0.08 ? p / 0.08 : (p > 0.86 ? (1 - p) / 0.14 : 1));
+        fl.n.setAttribute('opacity', (on * edge * fl.op).toFixed(3));
+        var fx = fl.x + c.sin(p * 6.2 + fl.ph * 11) * 13;
+        var fy = yTop + p * ySpan;
+        fl.n.setAttribute('transform', 'translate(' + fx.toFixed(1) + ' ' + fy.toFixed(1) + ') rotate(' + ((p * 190 + fl.ph * 360) % 360).toFixed(0) + ')');
+      }
+    });
+  };
+  /* ============================================================
+     12. newyear — first sunrise behind the word, fireworks, luck pouch
+     ============================================================ */
+  SCENES.newyear = function (c) {
+    var info = c.info, CH = info.CH, W = info.W;
+    var hy = 76;                                        /* horizon (local y) */
+    var LIFT = -(30 + Math.max(0, 96 - CH) * 0.62);      /* the type sits above the sunrise */
+    var R = clamp(CH * 0.58, 46, 66);
+    var sunY0 = hy + R * 1.2, sunY1 = hy - R * 0.98;
+
+    /* ---- glow ---- */
+    var grad = el('radialGradient', { id: c.uid + 'ny' }, c.defs);
+    el('stop', { offset: '0', style: 'stop-color:var(--acc);stop-opacity:.4' }, grad);
+    el('stop', { offset: '.48', style: 'stop-color:var(--acc);stop-opacity:.16' }, grad);
+    el('stop', { offset: '1', style: 'stop-color:var(--acc);stop-opacity:0' }, grad);
+    var glow = el('ellipse', { cx: 0, cy: sunY0, rx: R * 2.6, ry: R * 2.2, fill: 'url(#' + c.uid + 'ny)' }, c.back);
+
+    /* ---- light rays (behind the type) ---- */
+    var rayD = '';
+    for (var i = 0; i < 9; i++) {
+      var a = -Math.PI + 0.34 + i * ((Math.PI - 0.68) / 8);
+      var r1 = R * 1.12, r2 = R * (1.55 + (i % 3) * 0.16);
+      rayD += 'M' + (Math.cos(a) * r1).toFixed(1) + ' ' + (Math.sin(a) * r1).toFixed(1) +
+        ' L' + (Math.cos(a) * r2).toFixed(1) + ' ' + (Math.sin(a) * r2).toFixed(1) + ' ';
+    }
+    var rays = el('path', { d: rayD, 'stroke-width': 2.6, class: 'k-acc rnd' }, c.back);
+
+    var sun = el('circle', { cx: 0, cy: sunY0, r: R, class: 's-acc' }, c.back);
+    var ring = el('circle', { cx: 0, cy: sunY0, r: R * 1.02, fill: 'none', 'stroke-width': 1.6, class: 'k-acc' }, c.back);
+
+    function sunFrame(n, t, ms) {
+      var p = c.E.outCubic(c.seg(t, 0.03, 0.64));
+      var cy = c.lerp(sunY0, sunY1, p) + ((t >= 1) ? 1.6 * c.sin(ms / 1500) : 0);
+      return { cy: cy, p: p };
+    }
+    c.part(sun, function (n, t, ms) {
+      var f = sunFrame(n, t, ms);
+      n.setAttribute('cy', f.cy.toFixed(2));
+      n.setAttribute('r', (R * (0.9 + 0.1 * f.p)).toFixed(2));
+      n.setAttribute('opacity', c.seg(t, 0.02, 0.16).toFixed(3));
+    });
+    c.part(glow, function (n, t, ms) {
+      var f = sunFrame(n, t, ms);
+      n.setAttribute('cy', f.cy.toFixed(2));
+      n.setAttribute('opacity', (c.seg(t, 0.05, 0.5) * (0.8 + 0.2 * c.sin(ms / 1700))).toFixed(3));
+    });
+    c.part(rays, function (n, t, ms) {
+      var f = sunFrame(n, t, ms);
+      n.setAttribute('transform', 'translate(0 ' + f.cy.toFixed(2) + ') rotate(' + (4 * c.sin(ms / 2600)).toFixed(2) + ')');
+      n.setAttribute('opacity', (c.seg(t, 0.2, 0.6) * 0.34).toFixed(3));
+    });
+    c.part(ring, function (n, t, ms) {
+      var f = sunFrame(n, t, ms);
+      n.setAttribute('cy', f.cy.toFixed(2));
+      n.setAttribute('r', (R * (1.04 + 0.02 * c.sin(ms / 2100))).toFixed(2));
+      n.setAttribute('opacity', (c.seg(t, 0.16, 0.55) * 0.16).toFixed(3));
+    });
+
+    /* ---- ground swallows the lower half of the sun, then the horizon ---- */
+    el('rect', { x: -200, y: hy, width: 400, height: 240, class: 's-bg' }, c.back);
+    el('rect', { x: -196, y: hy - 0.9, width: 392, height: 1.8, class: 's-ink', opacity: '.6' }, c.back);
+    el('rect', { x: -52, y: hy + 9, width: 104, height: 1.6, class: 's-acc', opacity: '.4', rx: .8 }, c.back);
+    el('rect', { x: -26, y: hy + 17, width: 52, height: 1.4, class: 's-acc', opacity: '.26', rx: .7 }, c.back);
+
+    /* ---- letters rise out of the horizon ---- */
+    info.letters.forEach(function (L, i) {
+      var at = 0.08 + i * 0.042;
+      c.part(L.g, function (n, t, ms) {
+        var p = c.E.outCubic(c.seg(t, at, at + 0.5));
+        var float = (t >= 0.85 ? 1 : 0) * 1.3 * c.sin(ms / 1150 + i * 0.55);
+        var sc = 0.94 + 0.06 * p;
+        c.setT(n, L.base, { dy: LIFT + (1 - p) * 62 + float, sx: sc, sy: sc });
+        n.setAttribute('opacity', c.c01(p * 1.7).toFixed(3));
+      });
+    });
+
+    /* ---- firework trails in the open sky ---- */
+    var bursts = [
+      { x: -134, y: -CH - 54, s: 1.0, at: 0.46 },
+      { x: 138, y: -CH - 48, s: 0.82, at: 0.62 }
+    ];
+    bursts.forEach(function (b, bi) {
+      var host = el('g', {}, c.front);
+      var startX = b.x * 0.3, startY = hy - 6;
+      var streak = el('path', { 'stroke-width': 2.2, class: 'k-acc rnd' }, host);
+      var head = el('circle', { r: 3, class: 's-acc' }, host);
+      var sparks = [];
+      for (var j = 0; j < 10; j++) {
+        var ang = -Math.PI / 2 + (j / 10) * Math.PI * 2 + bi * 0.4;
+        sparks.push({ n: el('circle', { r: 2.6, class: 's-acc' }, host), a: ang, d: (34 + (j % 3) * 10) * b.s });
+      }
+      var twinkle = el('path', { d: starPath(11 * b.s, 2.6 * b.s), class: 's-acc' }, host);
+      c.part(host, function (n, t, ms) {
+        var up = c.seg(t, b.at - 0.3, b.at);
+        var up2 = c.E.outCubic(up);
+        var hx = c.lerp(startX, b.x, up2);
+        var hyy = c.lerp(startY, b.y, c.E.inQuad(up)) + c.sin(up * Math.PI) * 5;
+        head.setAttribute('cx', hx.toFixed(1));
+        head.setAttribute('cy', hyy.toFixed(1));
+        head.setAttribute('opacity', (up > 0 && up < 1) ? '1' : '0');
+        streak.setAttribute('d', 'M' + startX + ' ' + startY + ' L' + hx.toFixed(1) + ' ' + hyy.toFixed(1));
+        streak.setAttribute('opacity', (up > 0 && up < 1 ? 0.5 : 0).toFixed(2));
+        var bp = c.E.outQuart(c.seg(t, b.at, b.at + 0.24));
+        var fade = 1 - c.seg(t, b.at + 0.28, b.at + 0.52);
+        sparks.forEach(function (sp) {
+          sp.n.setAttribute('cx', (b.x + Math.cos(sp.a) * sp.d * bp).toFixed(1));
+          sp.n.setAttribute('cy', (b.y + Math.sin(sp.a) * sp.d * bp + bp * bp * 12).toFixed(1));
+          sp.n.setAttribute('opacity', (bp > 0 ? fade * 0.95 : 0).toFixed(3));
+          sp.n.setAttribute('r', (3 * (1 - 0.35 * bp)).toFixed(2));
+        });
+        var tg = c.c01((t - b.at - 0.18) / 0.12);
+        var tw = 0.5 + 0.5 * c.sin(ms / 500 + bi * 2);
+        twinkle.setAttribute('opacity', (tg * tw * 0.95).toFixed(3));
+        twinkle.setAttribute('transform', 'translate(' + b.x + ' ' + b.y + ') scale(' + (0.6 + 0.5 * tw).toFixed(2) + ') rotate(' + ((ms / 40) % 360).toFixed(0) + ')');
+      });
+    });
+
+    /* ---- luck pouch on the ground, right of the word ---- */
+    var px = clamp(W / 2 - 2, 44, 146);
+    var pouch = el('g', {}, c.front);
+    el('path', {
+      d: 'M0 0 C-15 2 -25 15 -25 29 C-25 43 -13 51 0 51 C13 51 25 43 25 29 C25 15 15 2 0 0 Z',
+      class: 's-acc', stroke: 'currentColor', 'stroke-opacity': '.5', 'stroke-width': 1.6
+    }, pouch);
+    el('rect', { x: -10, y: -12, width: 20, height: 15, rx: 5, class: 's-acc' }, pouch);
+    el('rect', { x: -13, y: -3.5, width: 26, height: 5.4, rx: 2.7, class: 's-ink' }, pouch);
+    el('path', { d: 'M-13 -1 C-21 -9 -26 1 -15 3 Z', class: 's-ink' }, pouch);
+    el('path', { d: 'M13 -1 C21 -9 26 1 15 3 Z', class: 's-ink' }, pouch);
+    el('path', { d: 'M-13 21 C-17 27 -15 35 -8 39', 'stroke-width': 2.6, style: 'stroke:var(--stage-bg);opacity:.75', fill: 'none', 'stroke-linecap': 'round' }, pouch);
+    c.part(pouch, function (n, t, ms) {
+      var p = c.E.outBack(c.seg(t, 0.48, 0.76), 1.9);
+      var bob = (t > 0.8 ? 1 : 0) * 1.3 * c.sin(ms / 900);
+      n.setAttribute('opacity', p > 0.02 ? '1' : '0');
+      n.setAttribute('transform', 'translate(' + px.toFixed(1) + ' ' + (hy - 2 + (1 - c.c01(p)) * 30 + bob).toFixed(1) + ')' +
+        ' scale(' + (0.7 + 0.3 * c.c01(p)).toFixed(2) + ') rotate(' + ((1 - c.c01(p)) * -10).toFixed(1) + ')');
+    });
+
+    /* sparkles drifting up out of the pouch mouth */
+    var sh = [];
+    for (var i2 = 0; i2 < 5; i2++) {
+      var node = el('path', { d: starPath(3.4 + (i2 % 2), 1.1), class: 's-acc' }, c.front);
+      sh.push({ n: node, ph: i2 * 0.21, x: px + (i2 - 2) * 5 });
+      hide(node);
+    }
+    c.part(c.front, function (n, t, ms) {
+      var on = c.seg(t, 0.64, 0.84);
+      sh.forEach(function (s2, i) {
+        var p = ((ms / 2400) + s2.ph) % 1;
+        var edge = Math.min(1, p < 0.15 ? p / 0.15 : (p > 0.7 ? (1 - p) / 0.3 : 1));
+        s2.n.setAttribute('opacity', (on * edge * 0.95).toFixed(3));
+        s2.n.setAttribute('transform', 'translate(' + (s2.x + c.sin(p * 6 + i) * 6).toFixed(1) + ' ' +
+          (hy + 4 - p * 86).toFixed(1) + ') scale(' + (0.7 + 0.5 * p).toFixed(2) + ')');
+      });
     });
   };
 
