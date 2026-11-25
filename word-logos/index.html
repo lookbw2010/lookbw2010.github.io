@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="light">
+<meta name="theme-color" content="#F5F6F8">
+<title>WORDMARK 20 — 보험·안심 영단어 벡터 로고 카탈로그</title>
+<meta name="description" content="보험·안심·동행을 뜻하는 영단어 20종을 글자와 심볼이 한 몸이 되도록 설계한 순수 SVG 벡터 로고 컬렉션. 색상 변경, 에코백·텀블러·티셔츠 인쇄 미리보기, SVG·PNG 다운로드.">
+<link rel="icon" href="logos/cover.svg">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="wrap">
+
+  <header class="head">
+    <div class="eyebrow">
+      <span class="dot"></span>WORDMARK COLLECTION
+      <span class="count">20</span>
+    </div>
+    <h1>보험·안심 키워드,<br>글자 속에 심볼을 심다</h1>
+    <p class="lede">보장·보호·건강·미래·가족을 뜻하는 영단어 20종. 알파벳의 획과 속공간 자체를 심볼로 설계해 글자와 그림이 한 몸이 되도록 만든 순수 SVG 벡터 로고입니다.</p>
+  </header>
+
+  <div class="controls" id="controls">
+    <div class="row">
+      <span class="ctrl-label">포인트 컬러</span>
+      <div class="swatches" id="swatches" role="radiogroup" aria-label="포인트 컬러"></div>
+    </div>
+    <div class="cats" id="cats" role="tablist" aria-label="카테고리"></div>
+  </div>
+
+  <main class="grid" id="grid"></main>
+
+  <footer class="foot">
+    <p>모든 로고는 폰트가 아닌 <strong>순수 SVG 패스</strong>로 제작되어 어떤 크기에서도 깨지지 않습니다.</p>
+    <p class="tiny">INK #111827 · POINT 1 COLOR · VIEWBOX HEIGHT 120 · NO TEXT, NO EMBEDDED IMAGE</p>
+  </footer>
+</div>
+
+<!-- ───────────── detail modal ───────────── -->
+<div class="modal" id="modal" hidden>
+  <div class="modal-backdrop" data-close></div>
+  <div class="sheet" role="dialog" aria-modal="true" aria-labelledby="mTitle">
+    <button class="x" data-close aria-label="닫기">
+      <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/></svg>
+    </button>
+
+    <div class="sheet-head">
+      <div class="sheet-eyebrow" id="mCat">보호 · 안심</div>
+      <h2 id="mTitle">COVER</h2>
+      <p id="mKo">보장 · 덮어줌</p>
+    </div>
+
+    <div class="stage" id="stage">
+      <!-- artboard -->
+      <div class="view view-art" data-view="art">
+        <div class="artboard" id="artboard"></div>
+      </div>
+      <!-- eco bag -->
+      <div class="view view-bag" data-view="bag" hidden>
+        <div class="bag">
+          <div class="handle left"></div><div class="handle right"></div>
+          <div class="bag-body"><img class="print" alt="" data-print="bag"></div>
+          <div class="bag-fold"></div>
+        </div>
+      </div>
+      <!-- tumbler -->
+      <div class="view view-tumbler" data-view="tumbler" hidden>
+        <div class="tumbler">
+          <div class="tumbler-lid"></div>
+          <div class="tumbler-body"><img class="print" alt="" data-print="tumbler"></div>
+          <div class="tumbler-sheen"></div>
+          <div class="tumbler-base"></div>
+        </div>
+      </div>
+      <!-- t-shirt -->
+      <div class="view view-tee" data-view="tee" hidden>
+        <div class="tee">
+          <svg viewBox="0 0 400 440" aria-hidden="true" class="tee-shape">
+            <defs>
+              <linearGradient id="cloth" x1=".1" y1="0" x2=".9" y2="1">
+                <stop offset="0" stop-color="#FFFFFF"/>
+                <stop offset=".48" stop-color="#F9FAFB"/>
+                <stop offset="1" stop-color="#E7EBEF"/>
+              </linearGradient>
+              <linearGradient id="sleeveG" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0" stop-color="#F4F6F8"/>
+                <stop offset="1" stop-color="#E2E7EB"/>
+              </linearGradient>
+              <radialGradient id="neckG" cx=".5" cy=".25" r=".85">
+                <stop offset="0" stop-color="#D8DEE4"/>
+                <stop offset="1" stop-color="#F3F5F7"/>
+              </radialGradient>
+            </defs>
+            <path d="M162 36 C168 60 232 60 238 36 L292 52 L352 130 L300 194 L280 166 L280 420 L120 420 L120 166 L100 194 L48 130 L108 52 Z"
+                  fill="url(#cloth)" stroke="#E1E5EA" stroke-width="1.6" stroke-linejoin="round"/>
+            <path d="M120 166 L100 194 L48 130 L108 52" fill="none" stroke="#EDF0F3" stroke-width="1.2"/>
+            <path d="M280 166 L300 194 L352 130 L292 52" fill="none" stroke="#EDF0F3" stroke-width="1.2"/>
+            <path d="M162 36 C168 60 232 60 238 36 C230 51 170 51 162 36 Z" fill="url(#neckG)" stroke="#DCE2E7" stroke-width="1.2"/>
+            <path d="M120 172 L120 420 M280 172 L280 420" stroke="#E8ECF0" stroke-width="1.1" fill="none"/>
+            <path d="M120 415 L280 415" stroke="#E0E5EA" stroke-width="2.4" fill="none"/>
+          </svg>
+          <img class="print tee-print" alt="" data-print="tee">
+        </div>
+      </div>
+
+      <div class="stage-note" id="stageNote">순수 화이트 아트보드</div>
+    </div>
+
+    <div class="tabs" id="tabs" role="tablist">
+      <button class="tab is-on" data-view="art" role="tab">아트보드</button>
+      <button class="tab" data-view="bag" role="tab">에코백</button>
+      <button class="tab" data-view="tumbler" role="tab">텀블러</button>
+      <button class="tab" data-view="tee" role="tab">티셔츠</button>
+    </div>
+
+    <p class="note" id="mNote"></p>
+
+    <div class="dl">
+      <button class="btn primary" id="dlSvg">
+        <span class="bi">SVG</span>
+        <span class="bt">SVG 원본 다운로드<em>벡터 · 무한 확대</em></span>
+      </button>
+      <button class="btn" id="dlPng">
+        <span class="bi">PNG</span>
+        <span class="bt">고해상도 PNG 저장<em>약 1600px · 투명 배경</em></span>
+      </button>
+    </div>
+  </div>
+</div>
+
+<script src="logos.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
