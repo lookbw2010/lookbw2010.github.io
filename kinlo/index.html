@@ -3,182 +3,190 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Kinlo 킨로 — 5060을 위한 깨끗한 일상 SNS</title>
-<meta name="theme-color" content="#FAF8F5">
-<meta name="description" content="Kinlo — a calm, clean everyday SNS for active people in their 50s and 60s. Walk, cook, grow, read, and share a warm line with neighbors.">
+<title>킨로 Kinlo — 오늘의 사진과 글</title>
+<meta name="theme-color" content="#FFFFFF">
+<meta name="description" content="Kinlo — a midnight photo magazine for everyday life. Walk, cook, grow, and write one honest line a day.">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
-<meta property="og:title" content="Kinlo 킨로">
-<meta property="og:description" content="A warm, ad-free everyday SNS for active 50s and 60s.">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='16' fill='%232D5A43'/%3E%3Cpath d='M10 21c0-6 4-9 9-9 0 5-3 9-9 9z' fill='%23F3E7D6'/%3E%3Ccircle cx='21.5' cy='10.5' r='2.4' fill='%23C86D51'/%3E%3C/svg%3E">
-<link rel="stylesheet" href="styles.css?v=7">
+<meta property="og:title" content="킨로 Kinlo">
+<meta property="og:description" content="오늘의 사진과 글을 담는 다크 매거진.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23FFFFFF'/%3E%3Crect x='7' y='7' width='18' height='18' fill='%231D4ED8'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="styles.css?v=8">
 </head>
 <body>
 <div class="app" id="app">
 
-  <header class="hdr">
-    <div class="hdr-top">
-      <div class="brand">
-        <svg class="brand-mark" viewBox="0 0 32 32" aria-hidden="true">
-          <circle cx="16" cy="16" r="16" fill="#2D5A43"></circle>
-          <path d="M9.6 21.4c0-6.2 4.1-9.4 9.6-9.4 0 5.4-3.3 9.4-9.6 9.4z" fill="#F3E7D6"></path>
-          <circle cx="21.7" cy="10.3" r="2.5" fill="#C86D51"></circle>
-        </svg>
-        <span class="brand-name">Kinlo</span>
-        <span class="brand-local" data-i18n="brand.local">킨로</span>
-      </div>
-      <div class="lang-switch" role="group" aria-label="Language" id="langSwitch">
-        <button type="button" data-lang="ko" class="on">한국어</button>
-        <button type="button" data-lang="en">EN</button>
-        <button type="button" data-lang="ja">日本語</button>
-      </div>
-    </div>
-    <div class="hdr-font">
-      <span class="font-label" data-i18n="ui.fontLabel">글자 크기</span>
-      <div class="font-btns" role="group" aria-label="Text size" id="fontBtns">
-        <button type="button" data-font="0" class="on" data-i18n-aria="ui.fontSmall"><span class="g g1" data-i18n="ui.fontGlyph">가</span><em data-i18n="ui.fontSmall">보통</em></button>
-        <button type="button" data-font="1" data-i18n-aria="ui.fontLarge"><span class="g g2" data-i18n="ui.fontGlyph">가</span><em data-i18n="ui.fontLarge">크게</em></button>
-        <button type="button" data-font="2" data-i18n-aria="ui.fontXLarge"><span class="g g3" data-i18n="ui.fontGlyph">가</span><em data-i18n="ui.fontXLarge">아주 크게</em></button>
-      </div>
+  <header class="top">
+    <div class="brand"><span class="brand-mark" aria-hidden="true"></span>KINLO</div>
+    <div class="tools">
+      <button type="button" class="tool" id="langBtn" aria-label="Language">
+        <span class="tool-globe" aria-hidden="true">🌐</span><span class="tool-t" id="langLabel">KO</span>
+      </button>
+      <button type="button" class="tool" id="fontBtn" aria-label="Text size">
+        <span class="tool-aa">Aa</span>
+        <span class="bars" id="fontBars" aria-hidden="true"><i></i><i></i><i></i></span>
+      </button>
     </div>
   </header>
 
   <main class="main">
-    <!-- FEED -->
+
+    <!-- ============ FEED ============ -->
     <section class="view" id="view-feed">
-      <div class="view-head">
-        <h1 class="view-title" data-i18n="feed.title">오늘의 피드</h1>
-        <p class="view-date" id="feedDate"></p>
+      <div class="masthead">
+        <div class="mast-row">
+          <span class="kicker" data-i18n="feed.title">오늘의 피드</span>
+          <span class="kicker" id="issueNo">ISSUE 48</span>
+        </div>
+        <div class="mast-main">
+          <h1 class="mast-date" id="feedDate"></h1>
+          <div class="mast-side">
+            <b id="feedWeek"></b>
+            <span id="feedCount"></span>
+          </div>
+        </div>
+        <p class="mast-tag" id="mastTag"></p>
       </div>
 
-      <div class="chips" id="chips" role="group" aria-label="Topics"></div>
+      <nav class="tabs" id="tabs" role="tablist" aria-label="Topics"></nav>
 
       <div id="questionCard"></div>
 
-      <div class="post-list" id="postList"></div>
+      <div class="timeline" id="postList"></div>
       <p class="feed-end" id="feedEnd" data-i18n="feed.end">여기까지예요. 오늘도 천천히 둘러보세요.</p>
     </section>
 
-    <!-- CLUBS -->
+    <!-- ============ CLUBS ============ -->
     <section class="view" id="view-clubs" hidden>
-      <div class="view-head">
-        <h1 class="view-title" data-i18n="clubs.title">취향 모임</h1>
-        <p class="view-sub" data-i18n="clubs.sub">같은 것을 좋아하는 사람들과, 부담 없이.</p>
+      <div class="section-head">
+        <span class="kicker">Kinlo Clubs</span>
+        <h1 class="section-title" data-i18n="clubs.title">취향 모임</h1>
+        <p class="section-sub" data-i18n="clubs.sub">같은 것을 좋아하는 사람들과, 부담 없이.</p>
+        <p class="section-meta" id="clubMeta"></p>
       </div>
-      <div class="club-list" id="clubList"></div>
+      <div class="club-grid" id="clubList"></div>
     </section>
 
-    <!-- MINE -->
+    <!-- ============ MINE ============ -->
     <section class="view" id="view-mine" hidden>
       <div id="profileCard"></div>
 
-      <section class="panel">
-        <h2 class="panel-title" data-i18n="mine.postsTitle">내가 쓴 글</h2>
-        <div id="myPosts" class="my-posts"></div>
-      </section>
+      <div class="myposts-head">
+        <span class="kicker" data-i18n="mine.postsTitle">내가 쓴 글</span>
+        <span class="myposts-count" id="myCount"></span>
+      </div>
+      <div class="myposts" id="myPosts"></div>
+    </section>
 
-      <section class="panel">
-        <h2 class="panel-title" data-i18n="mine.settings">설정</h2>
+    <!-- ============ SETTINGS ============ -->
+    <section class="view" id="view-settings" hidden>
+      <div class="section-head">
+        <span class="kicker">Kinlo Settings</span>
+        <h1 class="section-title" data-i18n="mine.settings">설정</h1>
+        <p class="section-sub" id="settingsSub"></p>
+      </div>
+
+      <div class="set-list">
         <div class="set-row">
           <span class="set-label" data-i18n="ui.fontLabel">글자 크기</span>
-          <div class="font-btns compact" role="group" aria-label="Text size" id="fontBtns2">
-            <button type="button" data-font="0" class="on"><span class="g g1" data-i18n="ui.fontGlyph">가</span><em data-i18n="ui.fontSmall">보통</em></button>
-            <button type="button" data-font="1"><span class="g g2" data-i18n="ui.fontGlyph">가</span><em data-i18n="ui.fontLarge">크게</em></button>
-            <button type="button" data-font="2"><span class="g g3" data-i18n="ui.fontGlyph">가</span><em data-i18n="ui.fontXLarge">아주 크게</em></button>
-          </div>
+          <div class="seg" id="fontRow" role="group" aria-label="Text size"></div>
         </div>
         <div class="set-row">
           <span class="set-label" data-i18n="mine.language">언어</span>
-          <div class="lang-switch inline" role="group" aria-label="Language" id="langSwitch2">
-            <button type="button" data-lang="ko" class="on">한국어</button>
-            <button type="button" data-lang="en">EN</button>
-            <button type="button" data-lang="ja">日本語</button>
-          </div>
+          <div class="seg" id="langRow" role="group" aria-label="Language"></div>
         </div>
-      </section>
+      </div>
 
-      <section class="panel note-panel">
-        <h2 class="panel-title" data-i18n="mine.noteTitle">킨로가 지키는 것</h2>
-        <p class="note-body" data-i18n="mine.note">광고와 낯선 링크를 받지 않습니다. 서로의 하루에 조용히 인사하는 공간입니다.</p>
-      </section>
+      <div class="note">
+        <h3 data-i18n="mine.noteTitle">킨로가 지키는 것</h3>
+        <p data-i18n="mine.note">광고와 낯선 링크를 받지 않습니다. 서로의 하루에 조용히 인사하는 공간입니다.</p>
+      </div>
+
       <p class="build-note" data-i18n="mine.build">Kinlo — prototype</p>
     </section>
   </main>
 
-  <button type="button" class="fab" id="fab" data-i18n-aria="ui.writeShort">
-    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></svg>
-    <span data-i18n="ui.writeShort">글 올리기</span>
-  </button>
+  <!-- ============ DOCK ============ -->
+  <nav class="dock" role="tablist" aria-label="Main">
+    <div class="dock-in">
+      <button type="button" class="dock-b" data-tab="feed" role="tab" aria-selected="true">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 11.2 12 4.5l8 6.7V20a1 1 0 0 1-1 1h-4.6v-5.4H9.6V21H5a1 1 0 0 1-1-1z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg>
+        <span class="dock-l" data-ui="dock.feed">피드</span>
+      </button>
+      <button type="button" class="dock-b" data-tab="clubs" role="tab" aria-selected="false">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="8.4" r="3.4" fill="none" stroke="currentColor" stroke-width="1.7"/><circle cx="16.6" cy="9.6" r="2.6" fill="none" stroke="currentColor" stroke-width="1.7"/><path d="M2.8 19.6c.6-3.2 3.1-4.9 6.2-4.9s5.6 1.7 6.2 4.9M15.4 14.9c2.6.1 4.7 1.5 5.3 4.1" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+        <span class="dock-l" data-ui="dock.clubs">모임</span>
+      </button>
 
-  <nav class="nav" role="tablist" aria-label="Main">
-    <div class="nav-inner">
-      <button type="button" class="tab on" data-tab="feed" role="tab" aria-selected="true">
-        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 11.2 12 4.5l8 6.7V20a1 1 0 0 1-1 1h-4.6v-5.4H9.6V21H5a1 1 0 0 1-1-1z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>
-        <span data-i18n="nav.feed">오늘의 피드</span>
+      <button type="button" class="dock-mic" id="dockMic" aria-label="Write by voice">
+        <span class="mic-circle">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="2.8" width="6" height="11" rx="3" fill="none" stroke="currentColor" stroke-width="1.9"></rect><path d="M5.4 11.4a6.6 6.6 0 0 0 13.2 0M12 18v3.2" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"></path></svg>
+        </span>
+        <span class="dock-l" data-ui="dock.write">기록</span>
       </button>
-      <button type="button" class="tab" data-tab="clubs" role="tab" aria-selected="false">
-        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="8.4" r="3.4" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="16.6" cy="9.6" r="2.6" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M2.8 19.6c.6-3.2 3.1-4.9 6.2-4.9s5.6 1.7 6.2 4.9M15.4 14.9c2.6.1 4.7 1.5 5.3 4.1" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
-        <span data-i18n="nav.clubs">취향 모임</span>
+
+      <button type="button" class="dock-b" data-tab="mine" role="tab" aria-selected="false">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4.4" y="3.6" width="15.2" height="16.8" fill="none" stroke="currentColor" stroke-width="1.7"/><path d="M8 8.2h8M8 12h8M8 15.8h4.6" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+        <span class="dock-l" data-ui="dock.mine">내 기록</span>
       </button>
-      <button type="button" class="tab" data-tab="mine" role="tab" aria-selected="false">
-        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M4.5 20.5c.8-3.7 3.8-5.6 7.5-5.6s6.7 1.9 7.5 5.6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
-        <span data-i18n="nav.mine">나의 킨로</span>
+      <button type="button" class="dock-b" data-tab="settings" role="tab" aria-selected="false">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7.6h16M4 12h16M4 16.4h16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/><circle cx="9" cy="7.6" r="2" fill="#FFFFFF" stroke="currentColor" stroke-width="1.7"/><circle cx="15.5" cy="12" r="2" fill="#FFFFFF" stroke="currentColor" stroke-width="1.7"/><circle cx="8" cy="16.4" r="2" fill="#FFFFFF" stroke="currentColor" stroke-width="1.7"/></svg>
+        <span class="dock-l" data-ui="dock.settings">설정</span>
       </button>
     </div>
   </nav>
 
-  <!-- WRITE SHEET -->
-  <div class="sheet-wrap" id="writeWrap" aria-hidden="true">
-    <div class="sheet-backdrop" data-close-write></div>
-    <div class="sheet" role="dialog" aria-modal="true" aria-labelledby="writeTitle">
-      <div class="sheet-head">
-        <div>
-          <h2 class="sheet-title" id="writeTitle" data-i18n="write.title">글쓰기</h2>
-          <p class="sheet-sub" data-i18n="write.sub">말로 하면, 글이 됩니다.</p>
-        </div>
-        <button type="button" class="icon-btn" data-close-write data-i18n-aria="ui.close" aria-label="닫기">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+  <!-- ============ WRITE STUDIO ============ -->
+  <div class="studio" id="writeWrap" aria-hidden="true">
+    <header class="studio-top">
+      <button type="button" class="studio-close" data-close-write data-i18n-aria="ui.close" aria-label="닫기">
+        <svg viewBox="0 0 24 24" aria-hidden="true" width="18" height="18"><path d="M6 6l12 12M18 6 6 18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      </button>
+      <div class="studio-h">
+        <h2 data-i18n="write.title">글쓰기</h2>
+        <p data-i18n="write.sub">말로 하면, 글이 됩니다.</p>
+      </div>
+      <span class="rec" aria-hidden="true"><i></i>REC</span>
+    </header>
+
+    <div class="studio-scroll">
+      <div class="stage" id="micStage">
+        <button type="button" class="mic-btn" id="voiceBtn">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="2.6" width="6" height="11" rx="3" fill="none" stroke="currentColor" stroke-width="1.9"></rect><path d="M5.2 11.4a6.8 6.8 0 0 0 13.6 0M12 18.2v3.2" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"></path></svg>
         </button>
+        <div class="wave" id="wave" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+        <p class="stage-label" id="voiceText">말로 편하게 쓰기</p>
+        <p class="stage-status" id="voiceStatus">버튼을 누르고 오늘 있었던 일을 편하게 말해 보세요.</p>
+        <button type="button" class="demo" id="voiceDemo">마이크가 안 되면 체험 모드로 채우기</button>
       </div>
 
-      <div class="sheet-body">
-        <div class="voice-box" id="voiceBox">
-          <button type="button" class="voice-btn" id="voiceBtn">
-            <span class="wave" id="wave" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span>
-            <span class="voice-label"><svg class="mic" viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="2.8" width="6" height="11" rx="3" fill="none" stroke="currentColor" stroke-width="1.8"></rect><path d="M5.4 11.4a6.6 6.6 0 0 0 13.2 0M12 18v3.2" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"></path></svg><span id="voiceText" data-i18n="write.voice">말로 편하게 쓰기</span></span>
-          </button>
-          <p class="voice-status" id="voiceStatus" data-i18n="write.voiceHint">버튼을 누르고 오늘 있었던 일을 편하게 말해 보세요.</p>
-          <button type="button" class="voice-demo" id="voiceDemo" data-i18n="write.demo">마이크가 안 되면 체험 모드로 채우기</button>
-        </div>
+      <label class="field">
+        <span class="field-k" data-i18n="write.body">내용</span>
+        <textarea id="writeText" rows="5" data-i18n-ph="write.placeholder" placeholder="오늘 있었던 일을 편하게 적어 주세요."></textarea>
+      </label>
 
-        <label class="field">
-          <span class="field-label" data-i18n="write.body">내용</span>
-          <textarea id="writeText" rows="4" data-i18n-ph="write.placeholder" placeholder="오늘 있었던 일을 편하게 적어 주세요."></textarea>
-        </label>
-
-        <div class="field">
-          <span class="field-label" data-i18n="write.topic">주제</span>
-          <div class="chips small" id="writeChips" role="group" aria-label="Topics"></div>
-        </div>
-
-        <div class="field">
-          <span class="field-label" data-i18n="write.photo">사진 (선택)</span>
-          <div class="photo-row" id="photoRow"></div>
-        </div>
+      <div class="field">
+        <span class="field-k" data-i18n="write.topic">주제</span>
+        <div class="topics" id="writeChips" role="group" aria-label="Topics"></div>
       </div>
 
-      <div class="sheet-foot">
-        <button type="button" class="btn-primary" id="submitPost" data-i18n="write.submit">킨로에 올리기</button>
+      <div class="field">
+        <span class="field-k" data-i18n="write.photo">사진 (선택)</span>
+        <div class="photos" id="photoRow"></div>
       </div>
     </div>
+
+    <footer class="studio-foot">
+      <button type="button" id="submitPost" data-i18n="write.submit">킨로에 올리기</button>
+    </footer>
   </div>
 
-  <!-- MODAL -->
+  <!-- ============ MODAL ============ -->
   <div class="modal-wrap" id="modalWrap" aria-hidden="true">
     <div class="modal-backdrop" data-close-modal></div>
     <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
-      <button type="button" class="icon-btn modal-x" data-close-modal data-i18n-aria="ui.close" aria-label="닫기">
-        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      <button type="button" class="modal-x" data-close-modal data-i18n-aria="ui.close" aria-label="닫기">
+        <svg viewBox="0 0 24 24" aria-hidden="true" width="18" height="18"><path d="M6 6l12 12M18 6 6 18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
       </button>
       <div id="modalBody"></div>
     </div>
@@ -187,7 +195,7 @@
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
 </div>
 
-<script src="i18n.js?v=7"></script>
-<script src="app.js?v=7"></script>
+<script src="i18n.js?v=8"></script>
+<script src="app.js?v=8"></script>
 </body>
 </html>
