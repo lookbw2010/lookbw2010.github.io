@@ -16,8 +16,23 @@
 <body>
 <div class="wrap">
   <div>
-    <div class="frame"><iframe id="app" title="Kinlo 390x844" sandbox="allow-scripts allow-forms allow-modals"></iframe>
-<script>document.getElementById("app").src = "./index.html?qa=" + Date.now();</script></div>
+    <div class="frame"><iframe id="app" title="Kinlo 390x844"></iframe>
+<script>
+  document.getElementById("app").src = "./index.html?qa=" + Date.now();
+  setInterval(function () {
+    var f = document.getElementById("app");
+    var d = f.contentDocument;
+    if (!d || !d.documentElement) return;
+    var de = d.documentElement, wide = [];
+    d.querySelectorAll("body *").forEach(function (el) {
+      var r = el.getBoundingClientRect();
+      if (r.width > 0 && r.right > de.clientWidth + 0.5) wide.push((el.className || el.tagName) + ":" + Math.round(r.right));
+    });
+    document.getElementById("m").textContent =
+      "W " + de.clientWidth + " / SCROLL " + de.scrollWidth + " / FS " + getComputedStyle(d.body).fontSize +
+      " / " + de.lang.toUpperCase() + " / WIDE " + (wide.slice(0, 3).join(",") || "none");
+  }, 400);
+</script></div>
     <div class="cap">390 × 844<br><span id="m">measuring…</span></div>
   </div>
 </div>
