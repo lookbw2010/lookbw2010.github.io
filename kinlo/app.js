@@ -62,7 +62,7 @@
       fontToast: "文字の大きさ · {v}",
       settingsSub: "文字の大きさと言語はここでも変えられます。",
       myCount: "{n}件",
-      clubMeta: "{n}の集い · 気になるものから",
+      clubMeta: "集い {n}つ · 気になるものから",
       qNo: "Q · {n}",
       profileKicker: "Profile · 私のキンロ",
       myKicker: "My Kinlo",
