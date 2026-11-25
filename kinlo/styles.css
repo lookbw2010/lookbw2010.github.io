@@ -129,7 +129,7 @@ svg { display: block; }
 }
 .tool:active { background: var(--accent-wash); border-color: var(--accent); }
 
-.tool-globe { font-size: 13px; line-height: 1; }
+.tool-globe { flex: none; color: var(--mute); }
 .tool-t { font-variant-numeric: tabular-nums; letter-spacing: .1em; }
 
 .tool-aa { font-weight: 800; font-size: 15px; letter-spacing: 0; }
