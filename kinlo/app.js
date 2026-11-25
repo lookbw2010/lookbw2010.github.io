@@ -363,7 +363,7 @@
         '<p class="post-text">' + esc(item.text) + "</p>" +
         '<div class="post-by">' +
           '<span class="avatar" aria-hidden="true">' + esc(item.initial) + "</span>" +
-          "<span><span class=\"by-name\">" + esc(item.author) + "</span>" + age + "</span>" +
+          "<span><span class=\"by-name\">" + esc(item.author) + "</span> " + age + "</span>" +
           badge +
         "</div>" +
       "</div>" +
@@ -463,7 +463,9 @@
         "</div>" +
       "</div>";
 
-    $("#myCount").textContent = ui("myCount").replace("{n}", mine.length);
+    var myCountText = ui("myCount").replace("{n}", mine.length);
+    if (state.lang === "en" && mine.length === 1) myCountText = "1 post";
+    $("#myCount").textContent = myCountText;
 
     var box = $("#myPosts");
     if (!mine.length) {
@@ -753,6 +755,7 @@
     document.documentElement.setAttribute("data-fs", String(state.font));
     save();
     syncControls();
+    $("#fontBtn").setAttribute("aria-label", t("ui.fontLabel") + " · " + t("ui." + ["fontSmall", "fontLarge", "fontXLarge"][state.font]));
     toast(ui("fontToast").replace("{v}", t("ui." + ["fontSmall", "fontLarge", "fontXLarge"][state.font])));
   }
 
