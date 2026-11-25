@@ -372,7 +372,7 @@
     renderPhotoRow();
     $("#writeText").value = state.draft.text || "";
     $("#voiceStatus").textContent = t("write.voiceHint");
-    $("#voiceBtn .voice-label").textContent = t("write.voice");
+    $("#voiceText").textContent = t("write.voice");
     $("#voiceDemo").textContent = t("write.demo");
   }
 
@@ -384,7 +384,7 @@
     html += PHOTOS.map(function (p) {
       var on = state.draft.photo === p.key;
       return '<button type="button" class="photo-tile' + (on ? " on" : "") + '" data-photo="' + p.key +
-        '" aria-pressed="' + on + '"><img src="' + p.file + '" alt="' + esc(PHOTO_ALT[state.lang][p.key]) + '"></button>';
+        '" aria-pressed="' + on + '" aria-label="' + esc(PHOTO_ALT[state.lang][p.key]) + '"><img src="' + p.file + '" alt="' + esc(PHOTO_ALT[state.lang][p.key]) + '"></button>';
     }).join("");
     row.innerHTML = html;
   }
@@ -446,13 +446,13 @@
 
   function setVoiceIdle() {
     setWave(false);
-    $("#voiceBtn .voice-label").textContent = t("write.voice");
+    $("#voiceText").textContent = t("write.voice");
     $("#voiceBtn").classList.remove("stop");
   }
 
   function setVoiceListening() {
     setWave(true);
-    $("#voiceBtn .voice-label").textContent = t("write.stop");
+    $("#voiceText").textContent = t("write.stop");
     $("#voiceBtn").classList.add("stop");
     $("#voiceStatus").textContent = t("write.listening");
   }
@@ -474,7 +474,7 @@
     var mySession = voiceSession;
     setWave(true);
     $("#voiceBtn").classList.add("stop");
-    $("#voiceBtn .voice-label").textContent = t("write.stop");
+    $("#voiceText").textContent = t("write.stop");
     $("#voiceStatus").textContent = t("write.demoOn");
     demoInterval = setInterval(function () {
       if (mySession !== voiceSession) { clearInterval(demoInterval); demoInterval = null; return; }

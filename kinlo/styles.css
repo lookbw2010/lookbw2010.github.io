@@ -872,10 +872,11 @@ button { cursor: pointer; -webkit-tap-highlight-color: transparent; }
 .sheet {
   position: relative;
   width: min(560px, 100%);
-  max-height: 92vh;
-  max-height: 92dvh;
+  height: 100vh;
+  height: 100dvh;
+  max-height: 100dvh;
   background: var(--bg);
-  border-radius: 26px 26px 0 0;
+  border-radius: 24px 24px 0 0;
   transform: translateY(102%);
   transition: transform .32s cubic-bezier(.4, .02, .28, 1);
   display: flex;
@@ -968,7 +969,15 @@ button { cursor: pointer; -webkit-tap-highlight-color: transparent; }
 }
 .voice-btn.stop { background: #7A4433; box-shadow: 0 16px 28px -18px rgba(122, 68, 51, .95); }
 
-.voice-label { line-height: 1.35; }
+.voice-label {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  line-height: 1.35;
+}
+
+.mic { font-size: 1.08em; line-height: 1; }
 
 .wave { display: flex; align-items: center; justify-content: center; gap: 4px; height: 22px; }
 .wave i {

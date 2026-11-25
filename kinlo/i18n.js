@@ -155,7 +155,7 @@ const I18N = {
     write: {
       title: "글쓰기",
       sub: "말로 하면, 글이 됩니다.",
-      voice: "🎤 말로 편하게 쓰기",
+      voice: "말로 편하게 쓰기",
       voiceHint: "버튼을 누르고 오늘 있었던 일을 편하게 말해 보세요.",
       listening: "듣고 있어요… 천천히 말씀해 주세요.",
       stop: "그만 말하기",
@@ -320,7 +320,7 @@ const I18N = {
     write: {
       title: "New post",
       sub: "Say it, and it becomes a post.",
-      voice: "🎤 Write by speaking",
+      voice: "Write by speaking",
       voiceHint: "Tap and tell us about your day, in your own words.",
       listening: "Listening… take your time.",
       stop: "Stop",
@@ -485,7 +485,7 @@ const I18N = {
     write: {
       title: "投稿する",
       sub: "話せば、文章になります。",
-      voice: "🎤 話して書く",
+      voice: "話して書く",
       voiceHint: "ボタンを押して、今日のことを気軽に話してみてください。",
       listening: "聞いています… ゆっくりで大丈夫です。",
       stop: "話すのをやめる",

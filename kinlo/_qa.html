@@ -18,7 +18,7 @@
   frame.addEventListener('load', function () {
     var d = frame.contentDocument;
     var s = d.createElement('style');
-    s.textContent = 'html{scrollbar-width:none}html::-webkit-scrollbar{display:none}';
+    s.textContent = 'html{scrollbar-width:none}html::-webkit-scrollbar{display:none}*{scrollbar-width:none}*::-webkit-scrollbar{display:none}';
     d.head.appendChild(s);
   });
   document.getElementById('reset').addEventListener('click', function () {

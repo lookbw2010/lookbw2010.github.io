@@ -11,7 +11,7 @@
 <meta property="og:title" content="Kinlo 킨로">
 <meta property="og:description" content="A warm, ad-free everyday SNS for active 50s and 60s.">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='16' fill='%232D5A43'/%3E%3Cpath d='M10 21c0-6 4-9 9-9 0 5-3 9-9 9z' fill='%23F3E7D6'/%3E%3Ccircle cx='21.5' cy='10.5' r='2.4' fill='%23C86D51'/%3E%3C/svg%3E">
-<link rel="stylesheet" href="styles.css?v=4">
+<link rel="stylesheet" href="styles.css?v=5">
 </head>
 <body>
 <div class="app" id="app">
@@ -145,7 +145,7 @@
         <div class="voice-box" id="voiceBox">
           <button type="button" class="voice-btn" id="voiceBtn">
             <span class="wave" id="wave" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span>
-            <span class="voice-label" data-i18n="write.voice">🎤 말로 편하게 쓰기</span>
+            <span class="voice-label"><span class="mic" aria-hidden="true">🎤</span><span id="voiceText" data-i18n="write.voice">말로 편하게 쓰기</span></span>
           </button>
           <p class="voice-status" id="voiceStatus" data-i18n="write.voiceHint">버튼을 누르고 오늘 있었던 일을 편하게 말해 보세요.</p>
           <button type="button" class="voice-demo" id="voiceDemo" data-i18n="write.demo">마이크가 안 되면 체험 모드로 채우기</button>
@@ -187,7 +187,7 @@
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
 </div>
 
-<script src="i18n.js?v=4"></script>
-<script src="app.js?v=4"></script>
+<script src="i18n.js?v=5"></script>
+<script src="app.js?v=5"></script>
 </body>
 </html>
