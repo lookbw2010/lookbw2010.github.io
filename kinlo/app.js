@@ -204,8 +204,8 @@
     var now = new Date();
     $("#feedDate").innerHTML = pad(now.getMonth() + 1) + "<i>.</i>" + pad(now.getDate());
     $("#feedWeek").textContent = new Intl.DateTimeFormat(LOCALE_TAG[state.lang], {
-      month: "long", day: "numeric", weekday: "long"
-    }).format(now).replace(/\s/g, " ");
+      month: "short", day: "numeric", weekday: "short"
+    }).format(now);
     var total = myItems().length + I18N[state.lang].posts.length;
     $("#feedCount").textContent = ui("storyCount").replace("{n}", total);
     $("#issueNo").textContent = "ISSUE " + pad(isoWeek(now)) + " · " + pad(now.getFullYear()).slice(2);
