@@ -1574,7 +1574,8 @@ svg { display: block; }
 
 /* ------------------------------ larger type ------------------------------ */
 :root[data-fs="2"] .rx { gap: 7px; padding: 13px 0; }
-:root[data-fs="2"] .rx-e { display: none; }
+:root[data-fs="2"] .rx + .rx { padding-left: 10px; }
+:root[data-fs="2"] .rx-e { display: none !important; }
 :root[data-fs="2"] .rx-l { font-size: .8em; letter-spacing: 0; }
 :root[data-fs="2"] .rx-c {
   margin-left: auto;
