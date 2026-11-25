@@ -135,8 +135,11 @@
      ============================================================ */
   var params = new URLSearchParams(location.search);
   var state = {
-    lang: (params.get('l') === 'en' ? 'en' : (params.get('l') === 'ko' ? 'ko' : (/^ko/i.test(navigator.language || '') ? 'ko' : 'en'))),
-    theme: THEMES.indexOf(params.get('t')) >= 0 ? params.get('t') : 'studio',
+    lang: (function () {
+      var l = params.get('l') || params.get('lang');
+      return l === 'en' ? 'en' : (l === 'ko' ? 'ko' : (/^ko/i.test(navigator.language || '') ? 'ko' : 'en'));
+    })(),
+    theme: THEMES.indexOf(params.get('t') || params.get('theme')) >= 0 ? (params.get('t') || params.get('theme')) : 'studio',
     text: params.get('m') || '',
     touched: !!params.get('m')
   };
@@ -303,8 +306,8 @@
     u.search = '';
     u.hash = '';
     u.searchParams.set('m', state.text || current.word || '');
-    u.searchParams.set('t', state.theme);
-    u.searchParams.set('l', state.lang);
+    u.searchParams.set('theme', state.theme);
+    u.searchParams.set('lang', state.lang);
     return u.toString();
   }
 
