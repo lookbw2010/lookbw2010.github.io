@@ -76,7 +76,7 @@ main{flex:1;display:flex;flex-direction:column;gap:9px;min-height:0}
 #input{
   width:100%;height:50px;border-radius:13px;border:1px solid #DDE1E6;background:var(--surface);
   padding:0 42px 0 15px;outline:none;
-  font-family:var(--textf);font-weight:500;font-size:15px;color:var(--ui-ink);letter-spacing:-.005em;word-spacing:.06em;
+  font-family:var(--textf);font-weight:500;font-size:15px;color:var(--ui-ink);letter-spacing:-.005em;word-spacing:.1em;
   box-shadow:0 1px 2px rgba(15,15,18,.045);
   transition:border-color .16s, box-shadow .16s;
 }
