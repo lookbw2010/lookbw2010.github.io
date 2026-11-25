@@ -880,7 +880,7 @@ button { cursor: pointer; -webkit-tap-highlight-color: transparent; }
   height: 100dvh;
   max-height: 100dvh;
   background: var(--bg);
-  border-radius: 24px 24px 0 0;
+  border-radius: 0;
   transform: translateY(102%);
   transition: transform .32s cubic-bezier(.4, .02, .28, 1);
   display: flex;
@@ -897,7 +897,7 @@ button { cursor: pointer; -webkit-tap-highlight-color: transparent; }
   align-items: flex-start;
   justify-content: space-between;
   gap: 12px;
-  padding: 20px 16px 12px;
+  padding: 18px 16px 10px;
   border-bottom: 1px solid var(--line);
 }
 
@@ -1024,7 +1024,7 @@ button { cursor: pointer; -webkit-tap-highlight-color: transparent; }
 }
 
 /* fields */
-.field { display: block; margin-bottom: 16px; }
+.field { display: block; margin-bottom: 14px; }
 
 .field-label {
   display: block;
