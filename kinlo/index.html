@@ -1,0 +1,193 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Kinlo 킨로 — 5060을 위한 깨끗한 일상 SNS</title>
+<meta name="theme-color" content="#FAF8F5">
+<meta name="description" content="Kinlo — a calm, clean everyday SNS for active people in their 50s and 60s. Walk, cook, grow, read, and share a warm line with neighbors.">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta property="og:title" content="Kinlo 킨로">
+<meta property="og:description" content="A warm, ad-free everyday SNS for active 50s and 60s.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='16' fill='%232D5A43'/%3E%3Cpath d='M10 21c0-6 4-9 9-9 0 5-3 9-9 9z' fill='%23F3E7D6'/%3E%3Ccircle cx='21.5' cy='10.5' r='2.4' fill='%23C86D51'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="app" id="app">
+
+  <header class="hdr">
+    <div class="hdr-top">
+      <div class="brand">
+        <svg class="brand-mark" viewBox="0 0 32 32" aria-hidden="true">
+          <circle cx="16" cy="16" r="16" fill="#2D5A43"></circle>
+          <path d="M9.6 21.4c0-6.2 4.1-9.4 9.6-9.4 0 5.4-3.3 9.4-9.6 9.4z" fill="#F3E7D6"></path>
+          <circle cx="21.7" cy="10.3" r="2.5" fill="#C86D51"></circle>
+        </svg>
+        <span class="brand-name">Kinlo</span>
+        <span class="brand-local" data-i18n="brand.local">킨로</span>
+      </div>
+      <div class="lang-switch" role="group" aria-label="Language" id="langSwitch">
+        <button type="button" data-lang="ko" class="on">한국어</button>
+        <button type="button" data-lang="en">EN</button>
+        <button type="button" data-lang="ja">日本語</button>
+      </div>
+    </div>
+    <div class="hdr-font">
+      <span class="font-label" data-i18n="ui.fontLabel">글자 크기</span>
+      <div class="font-btns" role="group" aria-label="Text size" id="fontBtns">
+        <button type="button" data-font="0" class="on" data-i18n-aria="ui.fontSmall"><span class="g g1">가</span><em data-i18n="ui.fontSmall">보통</em></button>
+        <button type="button" data-font="1" data-i18n-aria="ui.fontLarge"><span class="g g2">가</span><em data-i18n="ui.fontLarge">크게</em></button>
+        <button type="button" data-font="2" data-i18n-aria="ui.fontXLarge"><span class="g g3">가</span><em data-i18n="ui.fontXLarge">아주 크게</em></button>
+      </div>
+    </div>
+  </header>
+
+  <main class="main">
+    <!-- FEED -->
+    <section class="view" id="view-feed">
+      <div class="view-head">
+        <h1 class="view-title" data-i18n="feed.title">오늘의 피드</h1>
+        <p class="view-date" id="feedDate"></p>
+      </div>
+
+      <div class="chips" id="chips" role="group" aria-label="Topics"></div>
+
+      <div id="questionCard"></div>
+
+      <div class="post-list" id="postList"></div>
+      <p class="feed-end" id="feedEnd" data-i18n="feed.end">여기까지예요. 오늘도 천천히 둘러보세요.</p>
+    </section>
+
+    <!-- CLUBS -->
+    <section class="view" id="view-clubs" hidden>
+      <div class="view-head">
+        <h1 class="view-title" data-i18n="clubs.title">취향 모임</h1>
+        <p class="view-sub" data-i18n="clubs.sub">같은 것을 좋아하는 사람들과, 부담 없이.</p>
+      </div>
+      <div class="club-list" id="clubList"></div>
+    </section>
+
+    <!-- MINE -->
+    <section class="view" id="view-mine" hidden>
+      <div id="profileCard"></div>
+
+      <section class="panel">
+        <h2 class="panel-title" data-i18n="mine.postsTitle">내가 쓴 글</h2>
+        <div id="myPosts" class="my-posts"></div>
+      </section>
+
+      <section class="panel">
+        <h2 class="panel-title" data-i18n="mine.settings">설정</h2>
+        <div class="set-row">
+          <span class="set-label" data-i18n="ui.fontLabel">글자 크기</span>
+          <div class="font-btns compact" role="group" aria-label="Text size" id="fontBtns2">
+            <button type="button" data-font="0" class="on"><span class="g g1">가</span><em data-i18n="ui.fontSmall">보통</em></button>
+            <button type="button" data-font="1"><span class="g g2">가</span><em data-i18n="ui.fontLarge">크게</em></button>
+            <button type="button" data-font="2"><span class="g g3">가</span><em data-i18n="ui.fontXLarge">아주 크게</em></button>
+          </div>
+        </div>
+        <div class="set-row">
+          <span class="set-label" data-i18n="mine.language">언어</span>
+          <div class="lang-switch inline" role="group" aria-label="Language" id="langSwitch2">
+            <button type="button" data-lang="ko" class="on">한국어</button>
+            <button type="button" data-lang="en">EN</button>
+            <button type="button" data-lang="ja">日本語</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="panel note-panel">
+        <h2 class="panel-title" data-i18n="mine.noteTitle">킨로가 지키는 것</h2>
+        <p class="note-body" data-i18n="mine.note">광고와 낯선 링크를 받지 않습니다. 서로의 하루에 조용히 인사하는 공간입니다.</p>
+      </section>
+      <p class="build-note" data-i18n="mine.build">Kinlo — prototype</p>
+    </section>
+  </main>
+
+  <button type="button" class="fab" id="fab" data-i18n-aria="ui.writeShort">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></svg>
+    <span data-i18n="ui.writeShort">글 올리기</span>
+  </button>
+
+  <nav class="nav" role="tablist" aria-label="Main">
+    <div class="nav-inner">
+      <button type="button" class="tab on" data-tab="feed" role="tab" aria-selected="true">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 11.2 12 4.5l8 6.7V20a1 1 0 0 1-1 1h-4.6v-5.4H9.6V21H5a1 1 0 0 1-1-1z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>
+        <span data-i18n="nav.feed">오늘의 피드</span>
+      </button>
+      <button type="button" class="tab" data-tab="clubs" role="tab" aria-selected="false">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="8.4" r="3.4" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="16.6" cy="9.6" r="2.6" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M2.8 19.6c.6-3.2 3.1-4.9 6.2-4.9s5.6 1.7 6.2 4.9M15.4 14.9c2.6.1 4.7 1.5 5.3 4.1" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        <span data-i18n="nav.clubs">취향 모임</span>
+      </button>
+      <button type="button" class="tab" data-tab="mine" role="tab" aria-selected="false">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M4.5 20.5c.8-3.7 3.8-5.6 7.5-5.6s6.7 1.9 7.5 5.6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        <span data-i18n="nav.mine">나의 킨로</span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- WRITE SHEET -->
+  <div class="sheet-wrap" id="writeWrap" aria-hidden="true">
+    <div class="sheet-backdrop" data-close-write></div>
+    <div class="sheet" role="dialog" aria-modal="true" aria-labelledby="writeTitle">
+      <div class="sheet-head">
+        <div>
+          <h2 class="sheet-title" id="writeTitle" data-i18n="write.title">글쓰기</h2>
+          <p class="sheet-sub" data-i18n="write.sub">말로 하면, 글이 됩니다.</p>
+        </div>
+        <button type="button" class="icon-btn" data-close-write data-i18n-aria="ui.close" aria-label="닫기">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+        </button>
+      </div>
+
+      <div class="sheet-body">
+        <div class="voice-box" id="voiceBox">
+          <button type="button" class="voice-btn" id="voiceBtn">
+            <span class="wave" id="wave" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span>
+            <span class="voice-label" data-i18n="write.voice">🎤 말로 편하게 쓰기</span>
+          </button>
+          <p class="voice-status" id="voiceStatus" data-i18n="write.voiceHint">버튼을 누르고 오늘 있었던 일을 편하게 말해 보세요.</p>
+          <button type="button" class="voice-demo" id="voiceDemo" data-i18n="write.demo">마이크가 안 되면 체험 모드로 채우기</button>
+        </div>
+
+        <label class="field">
+          <span class="field-label" data-i18n="write.body">내용</span>
+          <textarea id="writeText" rows="5" data-i18n-ph="write.placeholder" placeholder="오늘 있었던 일을 편하게 적어 주세요."></textarea>
+        </label>
+
+        <div class="field">
+          <span class="field-label" data-i18n="write.topic">주제</span>
+          <div class="chips small" id="writeChips" role="group" aria-label="Topics"></div>
+        </div>
+
+        <div class="field">
+          <span class="field-label" data-i18n="write.photo">사진 (선택)</span>
+          <div class="photo-row" id="photoRow"></div>
+        </div>
+      </div>
+
+      <div class="sheet-foot">
+        <button type="button" class="btn-primary" id="submitPost" data-i18n="write.submit">킨로에 올리기</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL -->
+  <div class="modal-wrap" id="modalWrap" aria-hidden="true">
+    <div class="modal-backdrop" data-close-modal></div>
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+      <button type="button" class="icon-btn modal-x" data-close-modal data-i18n-aria="ui.close" aria-label="닫기">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      </button>
+      <div id="modalBody"></div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+</div>
+
+<script src="i18n.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
