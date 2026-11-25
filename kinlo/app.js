@@ -30,7 +30,8 @@
       myKicker: "My Kinlo",
       postNo: "이야기 {n}",
       totalNo: "{n}편 중",
-      langToast: "언어 · {v}"
+      langToast: "언어 · {v}",
+      emptyCta: "말로 첫 기록 남기기"
     },
     en: {
       title: "Kinlo — a photo and a line, every day",
@@ -48,7 +49,8 @@
       myKicker: "My Kinlo",
       postNo: "Story {n}",
       totalNo: "of {n}",
-      langToast: "Language · {v}"
+      langToast: "Language · {v}",
+      emptyCta: "Record your first line"
     },
     ja: {
       title: "キンロ Kinlo — 今日の写真とことば",
@@ -66,7 +68,8 @@
       myKicker: "My Kinlo",
       postNo: "話 {n}",
       totalNo: "{n}件中",
-      langToast: "言語 · {v}"
+      langToast: "言語 · {v}",
+      emptyCta: "話して最初の記録"
     }
   };
 
@@ -406,6 +409,7 @@
         '<button type="button" class="tile-hit" data-notice="' + c.id + '" aria-label="' + esc(c.name + " — " + data.notice) + '"></button>' +
         '<div class="tile-body">' +
           "<h3>" + esc(c.name) + "</h3>" +
+          '<p class="tile-desc">' + esc(c.desc) + "</p>" +
           '<p class="tile-meta">' + esc(c.members) + "</p>" +
           '<button type="button" class="tile-join' + (joined ? " joined" : "") + '" data-join="' + c.id +
             '" aria-pressed="' + joined + '">' + esc(joined ? data.joined : data.join) + "</button>" +
@@ -463,7 +467,8 @@
 
     var box = $("#myPosts");
     if (!mine.length) {
-      box.innerHTML = '<p class="empty">' + esc(m.empty) + "</p>";
+      box.innerHTML = '<p class="empty">' + esc(m.empty) +
+        '<br><button type="button" class="empty-cta" data-write-open>' + esc(ui("emptyCta")) + "</button></p>";
     } else {
       box.innerHTML = mine.map(function (p) {
         var rx = state.reactions[p.id] || {};
@@ -563,6 +568,7 @@
     save();
     closeWrite();
     switchTab("feed", true);
+    renderMasthead();
     renderFeed();
     renderMine();
     syncControls();
@@ -758,7 +764,7 @@
   document.addEventListener("click", function (e) {
     var el = e.target.closest ? e.target.closest(
       "[data-filter],[data-wcat],[data-rx],[data-cm],[data-cm-send],[data-join],[data-notice],[data-photo]," +
-      "[data-close-write],[data-close-modal],#langBtn,#fontBtn,#dockMic,#voiceBtn,#voiceDemo,#qSend,#qEdit,#submitPost,[data-tab]," +
+      "[data-close-write],[data-close-modal],[data-write-open],#langBtn,#fontBtn,#dockMic,#voiceBtn,#voiceDemo,#qSend,#qEdit,#submitPost,[data-tab]," +
       "#langRow [data-lang],#fontRow [data-font]"
     ) : null;
     if (!el) return;
@@ -849,7 +855,7 @@
     if (el.hasAttribute("data-notice")) { openClubModal(el.getAttribute("data-notice")); return; }
 
     /* write studio */
-    if (el.id === "dockMic") { openWrite(); return; }
+    if (el.id === "dockMic" || el.hasAttribute("data-write-open")) { openWrite(); return; }
     if (el.hasAttribute("data-close-write")) { closeWrite(); return; }
     if (el.hasAttribute("data-close-modal")) { closeModal(); return; }
     if (el.id === "voiceBtn") { onVoiceClick(); return; }
