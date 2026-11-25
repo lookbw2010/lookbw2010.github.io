@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>TypoPop — 살아 움직이는 1초 카드</title>
+<meta name="description" content="문장 하나를 넣으면 핵심 단어가 우산이 되고, 계단이 되고, 발이 됩니다. 1초 모션 타이포그래피 카드를 만들고 링크로 보내세요.">
+<meta name="theme-color" content="#F2F3F5">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="format-detection" content="telephone=no">
+<meta property="og:title" content="TypoPop — 살아 움직이는 1초 카드">
+<meta property="og:description" content="글자가 우산이 되고, 계단이 되고, 발이 됩니다. 문장 하나로 만드는 1초 모션 타이포 카드.">
+<meta property="og:image" content="https://lookbw2010.github.io/typopop/assets/og.png">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="./assets/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+
+<div id="studio">
+  <header class="top">
+    <a class="brand" href="./" aria-label="TypoPop"><span>TypoPop</span><i class="brand-dot" aria-hidden="true"></i></a>
+    <div class="lang" id="lang" role="group" aria-label="Language">
+      <button type="button" data-lang="ko">KO</button>
+      <button type="button" data-lang="en">EN</button>
+    </div>
+  </header>
+
+  <main>
+    <div class="field">
+      <input id="input" type="text" maxlength="90" autocomplete="off" autocapitalize="none" spellcheck="false"
+             aria-label="문장 입력">
+      <span class="field-key" aria-hidden="true">↵</span>
+    </div>
+
+    <div class="hintrow">
+      <span id="detect" class="detect"><i class="live-dot"></i><span id="detect-text">문장을 쓰면 핵심 단어가 살아나요</span></span>
+      <button type="button" id="replay" class="replay">↻ 다시 재생</button>
+    </div>
+
+    <section class="stage" id="stage" data-theme="studio" aria-label="모션 무대">
+      <svg id="svg" viewBox="0 0 400 500" preserveAspectRatio="xMidYMid meet" role="img" aria-label="모션 타이포 카드"></svg>
+    </section>
+
+    <div class="presets" id="presets" role="group" aria-label="프리셋"></div>
+
+    <div class="themes">
+      <span class="themes-label" id="themes-label">무대</span>
+      <div class="swatches" id="swatches" role="group" aria-label="무대 테마"></div>
+    </div>
+
+    <div class="actions">
+      <button type="button" class="btn primary" id="copy"><span id="copy-text">링크 복사</span></button>
+      <button type="button" class="btn ghost" id="preview">받는 사람 화면</button>
+    </div>
+  </main>
+</div>
+
+<div id="shareview" hidden data-theme="studio">
+  <div class="sv-inner">
+    <div class="sv-stage" id="sv-stage"></div>
+    <div class="sv-foot">
+      <button type="button" class="sv-cta" id="sv-cta">나도 만들어 보기 <span aria-hidden="true">→</span></button>
+      <div class="sv-brand">TypoPop</div>
+    </div>
+  </div>
+  <button type="button" class="sv-close" id="sv-close" aria-label="닫기">✕</button>
+</div>
+
+<div id="toast" class="toast" hidden></div>
+
+<script src="./scene.js"></script>
+<script src="./app.js"></script>
+</body>
+</html>
