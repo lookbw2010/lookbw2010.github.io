@@ -1573,7 +1573,9 @@ svg { display: block; }
 .toast.show { opacity: 1; transform: translate(-50%, 0); }
 
 /* ------------------------------ larger type ------------------------------ */
-:root[data-fs="2"] .rx-l { display: none; }
+:root[data-fs="2"] .rx { gap: 5px; }
+:root[data-fs="2"] .rx-l { font-size: .9em; }
+:root[data-fs="2"] .rx-c { margin-left: 6px; min-width: 22px; padding: 0 3px; }
 :root[data-fs="2"] .tabs .tab { font-size: .7em; padding: 12px 9px 11px; }
 :root[data-fs="2"] .mast-side { max-width: 48%; font-size: .64em; }
 :root[data-fs="2"] .tool-t { letter-spacing: .04em; }
