@@ -117,7 +117,6 @@
       b.classList.toggle("on", on);
       b.setAttribute("aria-pressed", on ? "true" : "false");
     });
-    var active = t("nav." + (currentTab || "feed"));
   }
 
   /* ---------------- feed ---------------- */
@@ -751,7 +750,9 @@
     state.comments[pid].push({ author: myName(), text: val });
     save();
     openComments[pid] = true;
+    var y = window.scrollY;
     renderFeed();
+    window.scrollTo(0, y);
     var again = document.querySelector('[data-cm-input="' + pid + '"]');
     if (again) again.focus();
     toast(t("feed.comment.added"));

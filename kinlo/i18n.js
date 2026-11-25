@@ -21,6 +21,7 @@ const I18N = {
 
     ui: {
       fontLabel: "글자 크기",
+      fontGlyph: "가",
       fontSmall: "보통",
       fontLarge: "크게",
       fontXLarge: "아주 크게",
@@ -171,7 +172,7 @@ const I18N = {
       submit: "킨로에 올리기",
       needText: "내용을 먼저 적어 주세요.",
       posted: "킨로에 올렸어요.",
-      demoText: "오늘 아침에는 오랜만에 집 근처 공원을 천천히 걸었습니다. 바람이 시원해서 기분이 좋았고, 벤치에 앉아 한참 앉아 있었어요."
+      demoText: "오늘 아침에는 오랜만에 집 근처 공원을 천천히 걸었습니다. 바람이 시원해서 기분이 좋았고, 벤치에 앉아 한참 쉬었어요."
     },
 
     toast: { saved: "저장했어요." }
@@ -181,10 +182,11 @@ const I18N = {
   en: {
     htmlLang: "en",
     title: "Kinlo — a clean everyday SNS for active 50s and 60s",
-    brand: { local: "Kinlo", tagline: "Warm kinship, gentle glow" },
+    brand: { local: "", tagline: "Warm kinship, gentle glow" },
 
     ui: {
       fontLabel: "Text size",
+      fontGlyph: "A",
       fontSmall: "Normal",
       fontLarge: "Large",
       fontXLarge: "XL",
@@ -349,6 +351,7 @@ const I18N = {
 
     ui: {
       fontLabel: "文字の大きさ",
+      fontGlyph: "あ",
       fontSmall: "標準",
       fontLarge: "大",
       fontXLarge: "特大",
