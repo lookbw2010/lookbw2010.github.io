@@ -85,6 +85,7 @@
   function applyStatic() {
     document.title = t("title");
     document.documentElement.lang = I18N[state.lang].htmlLang;
+    document.documentElement.setAttribute("data-fs", String(state.font));
 
     $$("[data-i18n]").forEach(function (el) {
       el.textContent = t(el.getAttribute("data-i18n"));
@@ -613,6 +614,7 @@
     if (el.hasAttribute("data-font")) {
       state.font = Number(el.getAttribute("data-font"));
       document.documentElement.style.setProperty("--fs", FONT_SCALES[state.font]);
+      document.documentElement.setAttribute("data-fs", String(state.font));
       save();
       syncButtons();
       return;

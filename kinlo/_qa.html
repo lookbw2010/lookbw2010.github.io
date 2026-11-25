@@ -10,5 +10,16 @@
 </head>
 <body>
 <iframe id="phone" src="./index.html" title="Kinlo at 390x844"></iframe>
+<script>
+  // QA only: hide the desktop scrollbar so the iframe measures a true 390px
+  // mobile viewport, then report overflow to whoever is inspecting.
+  var frame = document.getElementById('phone');
+  frame.addEventListener('load', function () {
+    var d = frame.contentDocument;
+    var s = d.createElement('style');
+    s.textContent = 'html{scrollbar-width:none}html::-webkit-scrollbar{display:none}';
+    d.head.appendChild(s);
+  });
+</script>
 </body>
 </html>
