@@ -16,7 +16,8 @@
 <body>
 <div class="wrap">
   <div>
-    <div class="frame"><iframe id="app" src="./index.html?qa=1" title="Kinlo 390x844" sandbox="allow-scripts allow-forms allow-modals"></iframe></div>
+    <div class="frame"><iframe id="app" title="Kinlo 390x844" sandbox="allow-scripts allow-forms allow-modals"></iframe>
+<script>document.getElementById("app").src = "./index.html?qa=" + Date.now();</script></div>
     <div class="cap">390 × 844<br><span id="m">measuring…</span></div>
   </div>
 </div>
