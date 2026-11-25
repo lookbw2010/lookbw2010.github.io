@@ -6,19 +6,24 @@
 <style>
   html, body { margin: 0; padding: 0; background: #DCD7CF; }
   iframe { display: block; width: 390px; height: 844px; border: 0; background: #FAF8F5; }
+  #reset { position: fixed; right: 12px; top: 12px; font: 12px/1 sans-serif; padding: 6px 10px; }
 </style>
 </head>
 <body>
-<iframe id="phone" src="./index.html" title="Kinlo at 390x844"></iframe>
+<iframe id="phone" src="./index.html?v=4" title="Kinlo at 390x844"></iframe>
+<button id="reset" type="button">reset state</button>
 <script>
-  // QA only: hide the desktop scrollbar so the iframe measures a true 390px
-  // mobile viewport, then report overflow to whoever is inspecting.
+  // QA only.
   var frame = document.getElementById('phone');
   frame.addEventListener('load', function () {
     var d = frame.contentDocument;
     var s = d.createElement('style');
     s.textContent = 'html{scrollbar-width:none}html::-webkit-scrollbar{display:none}';
     d.head.appendChild(s);
+  });
+  document.getElementById('reset').addEventListener('click', function () {
+    frame.contentWindow.localStorage.clear();
+    frame.contentWindow.location.reload();
   });
 </script>
 </body>
