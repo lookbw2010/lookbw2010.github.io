@@ -11,6 +11,8 @@
   · 결과 화면 '더 보기' 버튼과 공유 링크는 아래 DBLIFE_CONFIG 한 곳에서 정합니다.
     MORE_URL 이 비어 있으면 버튼이 나오지 않고,
     SHARE_URL 이 비어 있으면 공유 문구에 이 페이지 주소가 들어갑니다.
+    INCLUDE_SHARE_URL 을 false 로 두면(또는 ?includeShareUrl=0, SHARE_URL:"NONE")
+    공유 문구에서 주소 줄을 빼고 결과 문구만 복사합니다.
   · 개발팀 배치·설정 안내: downloads/dblife-year-end-tax-dev-notes.md
 -->
 <!DOCTYPE html>
@@ -504,16 +506,20 @@
 <script>
 /* ══════════════════════════════════════════════════════════════════════
    DBLIFE_CONFIG — DB생명 서버에 올릴 때 개발팀이 손볼 값만 모은 블록.
-   로그인·DB·서버 연동은 없고, 아래 세 값만 바꾸면 됩니다.
+   로그인·DB·서버 연동은 없고, 아래 네 값만 바꾸면 됩니다.
 
      MORE_URL    결과 화면에 붙일 '더 보기' 버튼 주소.
                  비워 두면(기본값) 버튼이 아예 나오지 않습니다.
      MORE_LABEL  '더 보기' 버튼 문구.
      SHARE_URL   공유 문구에 넣을 공식 주소(이벤트 페이지 등).
                  비워 두면 지금 열려 있는 이 테스트 페이지 주소를 씁니다.
+                 "NONE" 으로 두면 공유 문구에 주소 줄을 넣지 않습니다.
+     INCLUDE_SHARE_URL  공유 문구 마지막에 '1분이면 … 👉 주소' 줄을 넣을지.
+                 true(기본값) = 넣음, false = 빼고 결과 문구만 공유.
 
    파일을 고치지 않고 미리보기로 확인하려면 아래 쿼리로 덮어쓸 수 있습니다.
      ?shareUrl=https://...   ?moreUrl=https://...   (?moreUrl 을 주면 버튼이 보입니다)
+     ?includeShareUrl=0  → 공유 문구에서 주소 줄 제거 (?includeShareUrl=1 이면 포함)
    ══════════════════════════════════════════════════════════════════════ */
 (function (w) {
   "use strict";
@@ -521,7 +527,8 @@
   var CONFIG = {
     MORE_URL: "",
     MORE_LABEL: "DB생명에서 더 알아보기",
-    SHARE_URL: ""
+    SHARE_URL: "",
+    INCLUDE_SHARE_URL: true
   };
 
   /* 주소에서 파라미터 하나 읽기 (URLSearchParams 미지원 환경 대비 직접 파싱) */
@@ -557,11 +564,32 @@
     return a.href;
   }
 
-  /* 미리보기용 쿼리 덮어쓰기 (?shareUrl= / ?moreUrl=) */
-  var qShare = httpUrl(param("shareUrl"));
-  if (qShare) CONFIG.SHARE_URL = qShare;
+  /* "NONE" 이면 공유 문구에서 주소 줄을 뺀다 */
+  function isNone(raw) {
+    return String(raw == null ? "" : raw).trim().toUpperCase() === "NONE";
+  }
+
+  /* 참/거짓 파라미터 읽기 (0·false·no·off = 거짓, 1·true·yes·on = 참) */
+  function flag(raw, dflt) {
+    var s = String(raw == null ? "" : raw).trim().toLowerCase();
+    if (s === "0" || s === "false" || s === "no" || s === "off") return false;
+    if (s === "1" || s === "true" || s === "yes" || s === "on") return true;
+    return dflt;
+  }
+
+  /* 미리보기용 쿼리 덮어쓰기 (?shareUrl= / ?moreUrl= / ?includeShareUrl=) */
+  var rawShare = param("shareUrl");
+  if (rawShare !== null) {
+    if (isNone(rawShare)) { CONFIG.INCLUDE_SHARE_URL = false; }
+    else {
+      var qShare = httpUrl(rawShare);
+      if (qShare) CONFIG.SHARE_URL = qShare;
+    }
+  }
   var qMore = httpUrl(param("moreUrl"));
   if (qMore) CONFIG.MORE_URL = qMore;
+  var qInclude = param("includeShareUrl");
+  if (qInclude !== null) CONFIG.INCLUDE_SHARE_URL = flag(qInclude, CONFIG.INCLUDE_SHARE_URL);
 
   w.DBLIFE_CONFIG = CONFIG;
 })(window);
@@ -575,6 +603,12 @@
   var MORE_URL = CFG.MORE_URL || "";
   var MORE_LABEL = CFG.MORE_LABEL || "DB생명에서 더 알아보기";
   var SHARE_URL = CFG.SHARE_URL || "";
+  var INCLUDE_SHARE_URL = CFG.INCLUDE_SHARE_URL !== false;
+  /* SHARE_URL: "NONE" 으로 두면 주소 줄을 넣지 않는다 */
+  if (String(SHARE_URL).trim().toUpperCase() === "NONE") {
+    INCLUDE_SHARE_URL = false;
+    SHARE_URL = "";
+  }
 
   /* 결과 화면 '더 보기' 버튼 — MORE_URL 이 비어 있으면 아예 두지 않는다 */
   var moreLinkEl = document.getElementById("moreLink");
@@ -1021,14 +1055,17 @@
   function buildShareText() {
     var r = state.result;
     if (!r) return "";
-    return [
+    var lines = [
       "13월의 월급, 나는 받을까 토할까?",
       "",
       "내 결과: " + r.type.emoji + " " + r.type.name + " (" + r.score + "/" + r.max + ")",
-      "“" + r.type.quote + "”",
-      "",
-      "1분이면 내 연말정산 감각도 확인 가능 👉 " + shareUrl()
-    ].join("\n");
+      "“" + r.type.quote + "”"
+    ];
+    if (INCLUDE_SHARE_URL) {
+      lines.push("");
+      lines.push("1분이면 내 연말정산 감각도 확인 가능 👉 " + shareUrl());
+    }
+    return lines.join("\n");
   }
 
   function legacyCopy(text) {
