@@ -1096,10 +1096,10 @@ svg { display: block; }
 .mic-circle {
   position: absolute;
   left: 50%;
-  top: -12px;
+  top: -13px;
   transform: translateX(-50%);
-  width: 56px;
-  height: 56px;
+  width: 52px;
+  height: 52px;
   border-radius: 50%;
   display: grid;
   place-items: center;
@@ -1109,7 +1109,7 @@ svg { display: block; }
   box-shadow: 0 8px 20px -8px rgba(29, 78, 216, .72), 0 0 0 4px #FFFFFF;
   transition: transform .16s;
 }
-.mic-circle svg { width: 24px; height: 24px; }
+.mic-circle svg { width: 22px; height: 22px; }
 .mic-circle::after {
   content: "";
   position: absolute;

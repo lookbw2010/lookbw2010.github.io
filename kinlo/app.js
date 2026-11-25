@@ -15,6 +15,7 @@
      Everything else lives in i18n.js. */
   var UI = {
     ko: {
+      title: "킨로 Kinlo — 오늘의 사진과 글",
       tabs: { all: "전체", walk: "산책", meal: "밥상", flower: "풍경", thought: "생각" },
       tabsLong: { all: "전체 보기", walk: "산책·등산", meal: "오늘의 밥상", flower: "꽃·풍경", thought: "소소한 생각" },
       dock: { feed: "피드", clubs: "모임", write: "기록", mine: "내 기록", settings: "설정" },
@@ -32,6 +33,7 @@
       langToast: "언어 · {v}"
     },
     en: {
+      title: "Kinlo — a photo and a line, every day",
       tabs: { all: "All", walk: "Walks", meal: "Table", flower: "Scenes", thought: "Thoughts" },
       tabsLong: { all: "Everything", walk: "Walks & hikes", meal: "Today's table", flower: "Flowers & views", thought: "Small thoughts" },
       dock: { feed: "Feed", clubs: "Clubs", write: "Record", mine: "My log", settings: "Settings" },
@@ -49,6 +51,7 @@
       langToast: "Language · {v}"
     },
     ja: {
+      title: "キンロ Kinlo — 今日の写真とことば",
       tabs: { all: "すべて", walk: "散歩", meal: "食卓", flower: "景色", thought: "想い" },
       tabsLong: { all: "すべて見る", walk: "散歩・山歩き", meal: "今日の食卓", flower: "花と景色", thought: "ちょっとした想い" },
       dock: { feed: "フィード", clubs: "集い", write: "記録", mine: "マイ記録", settings: "設定" },
@@ -160,7 +163,7 @@
 
   /* ---------------- chrome ---------------- */
   function applyStatic() {
-    document.title = t("title");
+    document.title = ui("title") || t("title");
     document.documentElement.lang = I18N[state.lang].htmlLang;
     document.documentElement.setAttribute("data-fs", String(state.font));
 
