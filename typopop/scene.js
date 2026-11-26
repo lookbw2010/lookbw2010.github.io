@@ -1403,7 +1403,7 @@
     for (var side = 0; side < 2; side++) {
       var dir = side === 0 ? 1 : -1;
       var ox = dir * 162;
-      for (var i = 0; i < 14; i++) {
+      for (var i = 0; i < 16; i++) {
         var kind = i % 4;
         var cls = (i % 3 === 0) ? 's-acc' : (i % 3 === 1 ? 's-ink' : 's-mute');
         var g = el('g', {}, (kind === 3 ? c.front : c.back));
@@ -1412,17 +1412,18 @@
         else if (kind === 2) el('path', { d: 'M0 -5.6 L5 3.6 L-5 3.6 Z', class: cls }, g);
         else el('path', { d: starPath(6.4, 1.7), class: cls }, g);
         hide(g);
-        var lane = i / 13;
+        var lane = i / 15;
+        var cross = (i % 3 === 2);                 /* every third piece flies over the word */
         var b = {
           g: g,
           ox: ox, oy: mouthY + 6 + rand() * 10,
-          cx: dir * (26 + lane * 140 + rand() * 12),
+          cx: cross ? dir * (6 + rand() * 34) : dir * (70 + rand() * 100),
           cy: -392 - rand() * 80,
-          ex: dir * (150 - lane * 222 + rand() * 10),
-          ey: 104 + rand() * 108,
+          ex: cross ? -dir * (54 + rand() * 92) : dir * (118 + lane * 46 + rand() * 14),
+          ey: 96 + rand() * 104,
           s: 0.9 + rand() * 0.45,
           spin: dir * (200 + rand() * 600),
-          delay: 0.1 + lane * 0.16 + rand() * 0.03,
+          delay: 0.1 + lane * 0.17 + rand() * 0.03,
           dur: 0.42 + rand() * 0.2,
           wob: rand() * 6.28
         };
