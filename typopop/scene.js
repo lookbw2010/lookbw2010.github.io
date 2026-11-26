@@ -1524,13 +1524,13 @@
     info.letters.forEach(function (L, i) {
       var dist = Math.abs(i - mid) / Math.max(1, mid);
       c.part(L.g, function (node, t, ms) {
-        var at = 0.03 + dist * 0.1;
+        var at = 0.02 + dist * 0.06;
         var p = c.seg(t, at, at + 0.4);
         var e = c.E.outElastic(p);                 /* overshoots past 1 as it lands */
-        var hop = c.sin(c.c01(p) * Math.PI) * CH * 0.18;
+        var hop = c.sin(c.c01(p) * Math.PI) * CH * 0.14;
         var float = (t >= 0.88 ? 1 : 0) * 1.5 * c.sin(ms / 980 + i * 0.55);
         var sc = 0.55 + 0.45 * e;
-        node.setAttribute('opacity', c.c01(p * 6).toFixed(3));
+        node.setAttribute('opacity', c.c01(p * 12).toFixed(3));
         c.setT(node, L.base, {
           dy: (1 - e) * CH * 0.95 - hop + float,
           r: (i < mid ? -1 : 1) * (1 - c.c01(e)) * 10,
