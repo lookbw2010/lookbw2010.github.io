@@ -1449,51 +1449,30 @@
       }
     });
 
-    /* ---- a small flash and a ring at each cannon mouth ---- */
+    /* ---- a small flash at each cannon mouth ---- */
     [1, -1].forEach(function (dir) {
       var flash = el('g', {}, c.front);
-      el('path', { d: starPath(11, 3.4), class: 's-acc' }, flash);
+      el('path', { d: starPath(8, 2.6), class: 's-acc' }, flash);
       hide(flash);
       c.part(flash, function (n, t) {
-        var p = c.seg(t, 0.09, 0.31);
+        var p = c.seg(t, 0.08, 0.22);
         var on = p > 0 && p < 1 ? c.sin(p * Math.PI) : 0;
-        n.setAttribute('opacity', (on * 0.85).toFixed(3));
+        n.setAttribute('opacity', (on * 0.8).toFixed(3));
         n.setAttribute('transform', 'translate(' + (dir * 162) + ' ' + mouthY + ')' +
-          ' rotate(' + (p * 60).toFixed(1) + ') scale(' + (0.55 + p * 0.8).toFixed(2) + ')');
+          ' rotate(' + (p * 50).toFixed(1) + ') scale(' + (0.6 + p * 0.6).toFixed(2) + ')');
       });
-
-      var ring = el('circle', { cx: dir * 162, cy: mouthY, r: 4, fill: 'none', 'stroke-width': 1.8, class: 'k-acc' }, c.front);
-      c.part(ring, function (n, t) {
-        var p = c.E.outCubic(c.seg(t, 0.1, 0.42));
-        n.setAttribute('opacity', (p > 0 && p < 1 ? (1 - p) * 0.5 : 0).toFixed(3));
-        n.setAttribute('r', (4 + p * 21).toFixed(1));
-      });
-    });
-
-    /* ---- soft shock ring as the word lands ---- */
-    var ringW = Math.max(W / 2 + 16, 94);
-    var shock = el('ellipse', {
-      cx: 0, cy: -CH * 0.45, rx: ringW, ry: CH * 0.9,
-      fill: 'none', 'stroke-width': 1.6, class: 'k-acc'
-    }, c.back);
-    c.part(shock, function (n, t) {
-      var p = c.E.outCubic(c.seg(t, 0.24, 0.6));
-      n.setAttribute('opacity', (p > 0 && p < 1 ? (1 - p) * 0.26 : 0).toFixed(3));
-      n.setAttribute('rx', (ringW * (0.72 + 0.5 * p)).toFixed(1));
-      n.setAttribute('ry', (CH * 0.9 * (0.72 + 0.5 * p)).toFixed(1));
     });
 
     /* ---- a short accent line snaps in under the word ---- */
     var baseW = Math.min(W * 0.62, 186);
     var line = el('path', {
-      d: 'M' + (-baseW / 2).toFixed(1) + ' 26 L' + (baseW / 2).toFixed(1) + ' 26',
-      'stroke-width': 3, class: 'k-acc rnd', pathLength: 1,
-      'stroke-dasharray': '1', 'stroke-dashoffset': '1', opacity: 0
+      d: 'M' + (-baseW / 2).toFixed(1) + ' 0 L' + (baseW / 2).toFixed(1) + ' 0',
+      'stroke-width': 3, class: 'k-acc rnd'
     }, c.front);
     c.part(line, function (n, t) {
-      var p = c.E.outCubic(c.seg(t, 0.28, 0.7));
-      n.setAttribute('stroke-dashoffset', (1 - p).toFixed(4));
-      n.setAttribute('opacity', p > 0.01 ? 0.9 : 0);
+      var p = c.E.outCubic(c.seg(t, 0.28, 0.62));
+      n.setAttribute('opacity', p > 0.001 ? 0.9 : 0);
+      n.setAttribute('transform', 'translate(0 26) scale(' + (0.18 + 0.82 * p).toFixed(3) + ' 1)');
     });
 
     /* ---- star glints around the word ---- */
