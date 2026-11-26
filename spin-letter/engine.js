@@ -483,32 +483,6 @@
     return pts;
   }
 
-  function inPoly(poly, x, y) {
-    var inside = false;
-    for (var i = 0, j = poly.length - 1; i < poly.length; j = i++) {
-      var xi = poly[i].x, yi = poly[i].y, xj = poly[j].x, yj = poly[j].y;
-      if (((yi > y) !== (yj > y)) && (x < (xj - xi) * (y - yi) / (yj - yi) + xi)) inside = !inside;
-    }
-    return inside;
-  }
-
-  // 폴리곤 내부를 고르게 채운다 (하트 잎처럼 오목한 실루엣도 그대로)
-  function fillPoly(poly, count) {
-    var minX = 1e9, maxX = -1e9, minY = 1e9, maxY = -1e9;
-    for (var i = 0; i < poly.length; i++) {
-      if (poly[i].x < minX) minX = poly[i].x;
-      if (poly[i].x > maxX) maxX = poly[i].x;
-      if (poly[i].y < minY) minY = poly[i].y;
-      if (poly[i].y > maxY) maxY = poly[i].y;
-    }
-    var out = [], guard = count * 40 + 200;
-    while (out.length < count && guard-- > 0) {
-      var px = rand(minX, maxX), py = rand(minY, maxY);
-      if (inPoly(poly, px, py)) out.push({ x: px, y: py });
-    }
-    return out;
-  }
-
   // 별 테두리를 같은 간격으로 걷는다 (작은 반짝이용)
   function starOutline(cx, cy, r, count) {
     var verts = [], i;
@@ -567,7 +541,8 @@
     ring(yBot, R1, Math.round(n * 0.07), 0.005, pts, 1);
     ring(yBot + 0.014, R1 * 0.86, Math.round(n * 0.03), 0.006, pts, 1);
 
-    // 크림 물결 + 흘러내리는 크림
+    // 크림 물결 + 흘러내리는 크림 (아이싱 색으로 층 경계를 뚜렷하게)
+    var CREAM = '#FFF1DC';
     function cream(yy, R, cnt, dripCnt) {
       for (var j = 0; j < cnt; j++) {
         var ca = (j / cnt) * TAU;
@@ -575,7 +550,8 @@
         pts.push({
           x: Math.cos(ca) * rr,
           y: yy + Math.cos(ca * 7) * 0.010,
-          z: Math.sin(ca) * rr
+          z: Math.sin(ca) * rr,
+          color: CREAM, size: rand(1.5, 2.1)
         });
       }
       for (j = 0; j < dripCnt; j++) {
@@ -587,13 +563,14 @@
         pts.push({
           x: Math.cos(da) * dr,
           y: yy - 0.008 - L * u,
-          z: Math.sin(da) * dr
+          z: Math.sin(da) * dr,
+          color: CREAM, size: rand(1.4, 2.0)
         });
-        if (u > 0.86) pts.push({ x: Math.cos(da) * dr * 0.98, y: yy - 0.010 - L, z: Math.sin(da) * dr * 0.98 });
+        if (u > 0.86) pts.push({ x: Math.cos(da) * dr * 0.98, y: yy - 0.010 - L, z: Math.sin(da) * dr * 0.98, color: CREAM, size: rand(1.4, 2.0) });
       }
     }
-    cream(yMid, R1, Math.round(n * 0.09), Math.round(n * 0.035));
-    cream(yTop, R2, Math.round(n * 0.06), Math.round(n * 0.022));
+    cream(yMid, R1, Math.round(n * 0.10), Math.round(n * 0.035));
+    cream(yTop, R2, Math.round(n * 0.07), Math.round(n * 0.022));
 
     // 위층 윗면
     var tf = Math.round(n * 0.055);
@@ -650,7 +627,7 @@
     var i, a, r;
 
     // 본체 벽(위가 살짝 넓은 원통)
-    var w = Math.round(n * 0.30);
+    var w = Math.round(n * 0.33);
     for (i = 0; i < w; i++) {
       var t = Math.random();
       a = rand(0, TAU);
@@ -686,19 +663,19 @@
       });
     }
 
-    // 피어오르는 김 3줄기
-    var stN = Math.round(n * 0.13);
+    // 피어오르는 김 3줄기 (위로 갈수록 잔잔하게 흔들리는 기둥)
+    var stN = Math.round(n * 0.17);
     for (var s2 = 0; s2 < 3; s2++) {
       var cnt = Math.round(stN / 3);
-      var baseX = (s2 - 1) * 0.095;
+      var baseX = (s2 - 1) * 0.105;
       for (i = 0; i < cnt; i++) {
         var u = i / cnt;
-        var yy = 0.215 + u * 0.245;
-        var xx = baseX + Math.sin(u * Math.PI * 1.8 + s2 * 1.15) * 0.05 * (0.3 + u);
+        var yy = 0.20 + u * 0.34;
+        var xx = baseX + Math.sin(u * Math.PI * 2.2 + s2 * 1.2) * (0.012 + 0.022 * u);
         pts.push({
-          x: xx + rand(-0.006, 0.006),
-          y: yy + rand(-0.004, 0.004),
-          z: rand(-0.035, 0.035) * (0.4 + u)
+          x: xx + rand(-0.007, 0.007),
+          y: yy + rand(-0.005, 0.005),
+          z: rand(-0.02, 0.02) * (0.4 + u)
         });
       }
     }
@@ -744,26 +721,46 @@
       for (i = 0; i < edge; i++) pts.push({ x: ex2 + rand(-0.003, 0.003), y: ey2 + rand(-0.003, 0.003), z: lerp(-hd, hd, i / (edge - 1)) });
     }
 
-    // 리본(세로·가로 십자) — 상자 위를 감아 돈다
+    // 리본(세로·가로 십자) — 띠의 두 가장자리를 선으로 그어 상자를 감아 돈다
     var RIB = '#FFB3CB';
-    var ribW = 0.052;
-    var rN = Math.round(n * 0.075);
-    for (i = 0; i < rN; i++) {
-      var side = Math.random() < 0.5 ? 1 : -1;
-      pts.push({ x: rand(-ribW, ribW), y: rand(bottom, top), z: side * (hd + 0.007), color: RIB, size: rand(1.5, 2.2) });
+    var ribW = 0.055;
+    function bandLine(count, x0, y0, z0, x1, y1, z1) {
+      for (var j = 0; j < count; j++) {
+        var u = count > 1 ? j / (count - 1) : 0;
+        pts.push({
+          x: lerp(x0, x1, u) + rand(-0.003, 0.003),
+          y: lerp(y0, y1, u) + rand(-0.003, 0.003),
+          z: lerp(z0, z1, u) + rand(-0.003, 0.003),
+          color: RIB, size: rand(1.5, 2.1)
+        });
+      }
     }
-    for (i = 0; i < Math.round(n * 0.03); i++) {
-      pts.push({ x: rand(-ribW, ribW), y: top + 0.007, z: rand(-hd, hd), color: RIB, size: rand(1.5, 2.2) });
+    var bandN = Math.max(12, Math.round(n * 0.014));
+    var zF = hd + 0.006, zB = -hd - 0.006;
+    // 세로 띠: 앞·뒤 가장자리 + 윗면을 건너는 선
+    bandLine(bandN, -ribW, bottom, zF, -ribW, top, zF);
+    bandLine(bandN, ribW, bottom, zF, ribW, top, zF);
+    bandLine(bandN, -ribW, bottom, zB, -ribW, top, zB);
+    bandLine(bandN, ribW, bottom, zB, ribW, top, zB);
+    bandLine(bandN, -ribW, top + 0.006, zF, -ribW, top + 0.006, zB);
+    bandLine(bandN, ribW, top + 0.006, zF, ribW, top + 0.006, zB);
+    // 가로 띠: 앞·뒤·옆면을 한 바퀴
+    var hy = cy - 0.01;
+    var rb = 0.034;
+    bandLine(bandN, -hw, hy + rb, zF, hw, hy + rb, zF);
+    bandLine(bandN, -hw, hy - rb, zF, hw, hy - rb, zF);
+    bandLine(bandN, -hw, hy + rb, zB, hw, hy + rb, zB);
+    bandLine(bandN, -hw, hy - rb, zB, hw, hy - rb, zB);
+    bandLine(Math.round(bandN * 0.5), hw + 0.006, hy + rb, zF, hw + 0.006, hy + rb, zB);
+    bandLine(Math.round(bandN * 0.5), hw + 0.006, hy - rb, zF, hw + 0.006, hy - rb, zB);
+    bandLine(Math.round(bandN * 0.5), -hw - 0.006, hy + rb, zF, -hw - 0.006, hy + rb, zB);
+    bandLine(Math.round(bandN * 0.5), -hw - 0.006, hy - rb, zF, -hw - 0.006, hy - rb, zB);
+    // 앞면 띠는 살짝 채워 리본이 면으로 보이게
+    for (i = 0; i < Math.round(n * 0.022); i++) {
+      pts.push({ x: rand(-ribW, ribW), y: rand(bottom, top), z: zF, color: RIB, size: rand(1.3, 1.9) });
     }
-    var hy = cy - 0.015;
-    var hN = Math.round(n * 0.05);
-    for (i = 0; i < hN; i++) {
-      var side2 = Math.random() < 0.5 ? 1 : -1;
-      pts.push({ x: rand(-hw, hw), y: hy + rand(-0.032, 0.032), z: side2 * (hd + 0.007), color: RIB, size: rand(1.5, 2.2) });
-    }
-    for (i = 0; i < Math.round(n * 0.02); i++) {
-      var side3 = Math.random() < 0.5 ? 1 : -1;
-      pts.push({ x: side3 * (hw + 0.007), y: hy + rand(-0.032, 0.032), z: rand(-hd, hd), color: RIB, size: rand(1.4, 2.0) });
+    for (i = 0; i < Math.round(n * 0.012); i++) {
+      pts.push({ x: rand(-hw, hw), y: hy + rand(-rb, rb), z: zF, color: RIB, size: rand(1.3, 1.9) });
     }
 
     // 상단 리본 매듭 고리 두 개 + 가운데 매듭
@@ -806,48 +803,76 @@
   function clover(target) {
     var n = target || 1500;
     var pts = [];
-    var i, k;
-    // 하트잎 윤곽: 꼭짓점이 원점, +Y로 자라며 위가 오목한 하트
-    var poly = [];
-    var N = 180;
-    var hs = 0.52 / 30;
-    for (k = 0; k < N; k++) {
-      var t = (k / N) * TAU;
-      poly.push({
-        x: 16 * Math.pow(Math.sin(t), 3) * hs,
-        y: (13 * Math.cos(t) - 5 * Math.cos(2 * t) - 2 * Math.cos(3 * t) - Math.cos(4 * t) + 17) * hs
-      });
+    var i, k, j;
+    var R = 0.29;              // 잎 반지름 (잎 길이 = 2R)
+    var nDepth = 0.15, wTop = 0.085;   // 끝의 V자 홈
+
+    // 잎 내부: 끝이 원점, +Y로 자란 둥근 잎 − 끝의 V홈
+    function leafFill(count) {
+      var out = [], guard = count * 30;
+      while (out.length < count && guard-- > 0) {
+        var lx = rand(-R, R), ly = rand(0, 2 * R);
+        var dx = lx, dy = ly - R;
+        if (dx * dx + dy * dy > R * R) continue;
+        if (ly > 2 * R - nDepth) {
+          var w = ((ly - (2 * R - nDepth)) / nDepth) * wTop;
+          if (Math.abs(lx) < w) continue;
+        }
+        out.push({ x: lx, y: ly });
+      }
+      return out;
     }
-    var perLeaf = Math.round(n * 0.185);
+
+    // 잎 테두리: 원호 + V홈 두 변
+    function leafEdge(count) {
+      var out = [];
+      var phi0 = Math.asin(Math.min(1, wTop / R));
+      var arcN = Math.round(count * 0.72);
+      for (var m = 0; m < arcN; m++) {
+        var phi = phi0 + (TAU - 2 * phi0) * (m / Math.max(1, arcN - 1));
+        out.push({ x: R * Math.sin(phi), y: R + R * Math.cos(phi) });
+      }
+      var yEdge = R + R * Math.cos(phi0);
+      var vn = Math.max(2, Math.round((count - arcN) / 2));
+      for (m = 0; m < vn; m++) {
+        var u = m / (vn - 1);
+        out.push({ x: lerp(wTop, 0, u), y: lerp(yEdge, 2 * R - nDepth, u) });
+        out.push({ x: lerp(0, -wTop, u), y: lerp(2 * R - nDepth, yEdge, u) });
+      }
+      return out;
+    }
+
     for (k = 0; k < 4; k++) {
       var phi = Math.PI / 4 + k * Math.PI / 2;
       var cf = Math.cos(phi), sf = Math.sin(phi);
-      var ax = 0.035 * cf, ay = 0.035 * sf;   // 잎 끝을 중심에서 살짝 띄운다
-      var leaf = fillPoly(poly, perLeaf);
+      var ax = 0.012 * cf, ay = 0.012 * sf;
+      var leaf = leafFill(Math.round(n * 0.155)).concat(leafEdge(Math.round(n * 0.045)));
       for (i = 0; i < leaf.length; i++) {
         var lx = leaf[i].x, ly = leaf[i].y;
+        // 잎맥 쪽이 도톰하게 솟는 3D 결
+        var ridge = (1 - Math.min(1, Math.abs(lx) / R)) * 0.08 * (0.30 + 0.70 * (ly / (2 * R)));
         pts.push({
           x: lx * sf + ly * cf + ax,
           y: -lx * cf + ly * sf + ay,
-          z: (1 - Math.min(1, Math.abs(lx) / 0.28)) * 0.075 * (0.35 + 0.65 * (ly / 0.5))
+          z: ridge
         });
       }
     }
     // 중심 매듭
     for (i = 0; i < Math.round(n * 0.02); i++) {
-      var ca2 = rand(0, TAU), cr2 = rand(0, 0.045);
+      var ca2 = rand(0, TAU), cr2 = rand(0, 0.05);
       pts.push({ x: Math.cos(ca2) * cr2, y: Math.sin(ca2) * cr2, z: rand(-0.02, 0.02) });
     }
-    // 줄기
-    var stemN = Math.round(n * 0.055);
+    // 줄기 — 잎 아래로 뚜렷하게 내려간다
+    var stemN = Math.round(n * 0.06);
     for (i = 0; i < stemN; i++) {
       var u = i / stemN;
-      var sx = -0.015 - 0.075 * u * u - 0.015 * Math.sin(u * 2.4);
-      var sy = -0.03 - u * 0.44;
+      var sx = -0.01 - 0.10 * u * u - 0.02 * Math.sin(u * 2.4);
+      var sy = -0.02 - u * 0.54;
       pts.push({
-        x: sx + rand(-0.009, 0.009),
+        x: sx + rand(-0.010, 0.010),
         y: sy + rand(-0.006, 0.006),
-        z: rand(-0.009, 0.009)
+        z: rand(-0.010, 0.010)
       });
     }
     return pts;
