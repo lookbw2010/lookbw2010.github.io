@@ -87,9 +87,9 @@ body {
 
 .chip {
   appearance: none;
-  border: 1px solid var(--line);
-  background: rgba(255, 255, 255, 0.06);
-  color: rgba(244, 240, 255, 0.86);
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  background: rgba(255, 255, 255, 0.13);
+  color: #F8F5FF;
   font: 600 13px/1 var(--font);
   padding: 9px 13px;
   border-radius: 999px;
@@ -98,7 +98,7 @@ body {
   cursor: pointer;
   transition: background 0.18s, border-color 0.18s, transform 0.12s;
 }
-.chip:hover { background: rgba(255, 255, 255, 0.12); }
+.chip:hover { background: rgba(255, 255, 255, 0.22); }
 .chip:active { transform: scale(0.96); }
 
 .icon-btn {
@@ -107,9 +107,9 @@ body {
   display: grid;
   place-items: center;
   border-radius: 50%;
-  border: 1px solid var(--line);
-  background: rgba(255, 255, 255, 0.05);
-  color: rgba(244, 240, 255, 0.82);
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  background: rgba(255, 255, 255, 0.13);
+  color: #F8F5FF;
   cursor: pointer;
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
@@ -153,7 +153,7 @@ body {
   position: fixed;
   left: 0; right: 0;
   bottom: 0;
-  padding: 0 22px calc(24px + env(safe-area-inset-bottom));
+  padding: 0 22px calc(28px + env(safe-area-inset-bottom));
   z-index: 18;
   display: flex;
   flex-direction: column;
@@ -221,7 +221,7 @@ body {
   position: fixed;
   left: 0; right: 0;
   bottom: 0;
-  padding: 0 24px calc(22px + env(safe-area-inset-bottom));
+  padding: 0 24px calc(28px + env(safe-area-inset-bottom));
   z-index: 19;
   display: flex;
   flex-direction: column;
@@ -247,7 +247,7 @@ body {
   margin: 0;
   max-width: 21em;
   text-align: center;
-  font-size: clamp(17px, 4.9vw, 21px);
+  font-size: clamp(23px, 6.2vw, 28px);
   line-height: 1.5;
   font-weight: 600;
   letter-spacing: -0.01em;
@@ -483,7 +483,7 @@ body {
   .dock { padding-bottom: calc(38px + env(safe-area-inset-bottom)); }
   .gauge-wrap { width: 340px; }
   .letter { padding-bottom: calc(34px + env(safe-area-inset-bottom)); }
-  .letter-body { font-size: 22px; }
+  .letter-body { font-size: 30px; }
   .letter-actions { max-width: 460px; }
   .sheet {
     left: 50%;
