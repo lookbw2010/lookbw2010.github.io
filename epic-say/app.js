@@ -308,12 +308,16 @@ function render(themeId, msg){
 
 /* ───────── 사운드 (Web Audio 합성) ───────── */
 let gestureSeen = false;
-['pointerdown','keydown','touchstart'].forEach(ev =>
-  window.addEventListener(ev, () => { gestureSeen = true; }, { once:true, capture:true, passive:true }));
+['pointerdown','keydown','touchstart','click'].forEach(ev =>
+  window.addEventListener(ev, () => {
+    gestureSeen = true;
+    try { if (Sound.on) Sound.ensure(); } catch(e){}
+  }, { once:true, capture:true, passive:true }));
 
 const Sound = {
   ctx:null, master:null, out:null, on:true,
   ensure(){
+    try { if (navigator.audioSession && navigator.audioSession.type !== 'playback') navigator.audioSession.type = 'playback'; } catch(e){}
     if (!this.ctx){
       const AC = window.AudioContext || window.webkitAudioContext;
       if (!AC) return null;
@@ -370,7 +374,14 @@ const Sound = {
   play(theme){
     if (!this.on) return false;
     const c = this.ensure(); if (!c) return false;
-    if (c.state !== 'running') return false;
+    if (c.state !== 'running'){
+      c.resume().then(() => { if (this.on && c.state === 'running') this._schedule(theme); }).catch(() => {});
+      return false;
+    }
+    return this._schedule(theme);
+  },
+  _schedule(theme){
+    const c = this.ctx; if (!c || !this.on) return false;
     if (this.out){ try { this.out.gain.cancelScheduledValues(c.currentTime); this.out.gain.setValueAtTime(this.out.gain.value, c.currentTime); this.out.gain.exponentialRampToValueAtTime(0.0001, c.currentTime + .08); } catch(e){} }
     this.out = c.createGain();
     this.out.gain.value = 1;
