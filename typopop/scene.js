@@ -1536,7 +1536,7 @@
         var hop = c.sin(c.c01(p) * Math.PI) * CH * 0.14;
         var float = (t >= 0.88 ? 1 : 0) * 1.5 * c.sin(ms / 980 + i * 0.55);
         var sc = 0.82 + 0.18 * e;                  /* barely any scale change: heavy, settled */
-        node.setAttribute('opacity', c.c01(p * 8).toFixed(3));
+        node.setAttribute('opacity', c.c01(p * 3.2).toFixed(3));   /* fades up as it rises, not a flash */
         c.setT(node, L.base, {
           dy: (1 - e) * CH * 0.32 - hop * 0.4 + float,
           r: (i < mid ? -1 : 1) * (1 - c.c01(e)) * 10,
