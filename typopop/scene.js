@@ -305,6 +305,7 @@
     christmas: { maxFont: 116, maxFontKo: 102, maxW: 312, baseY: 352 },
     newyear: { maxFont: 124, maxFontKo: 106, maxW: 304, baseY: 330 },
     thanks: { maxFont: 132, maxFontKo: 118, maxW: 308, baseY: 334 },
+    congrats: { maxFont: 128, maxFontKo: 114, maxW: 306, baseY: 336 },
     pop: { maxFont: 150, maxFontKo: 132, maxW: 340, baseY: 326 }
   };
 
@@ -1368,6 +1369,175 @@
           dy: 7 * bow - 10 * up * (1 - settle) + float,
           r: 7.5 * bow - 2.2 * up * (1 - settle),
           sx: 1 - 0.02 * bow, sy: 1 - 0.05 * bow,
+          oy: 0
+        });
+      });
+    });
+  };
+
+  /* ============================================================
+     14. congrats — the word springs up, two cannons fire confetti
+     (every prop stays below TOP_SAFE so the caption is never touched)
+     ============================================================ */
+  function bez2(a, b, d, t) {
+    var u = 1 - t;
+    return u * u * a + 2 * u * t * b + t * t * d;
+  }
+  /* lowest point of a quadratic bezier (SVG y grows downward) */
+  function bezTop(a, b, d) {
+    var den = a - 2 * b + d;
+    if (den <= 1e-6) return Math.min(a, d);
+    var q = (a - b) / den;
+    if (q <= 0 || q >= 1) return Math.min(a, d);
+    return bez2(a, b, d, q);
+  }
+
+  SCENES.congrats = function (c) {
+    var info = c.info, CH = info.CH, W = info.W;
+    var rand = rng(41);
+    var TOP_LOCAL = c.TOP - c.BASE_Y;          /* stage y=96 in word-local coords */
+    var emitterY = 150;                         /* stage ~486, bottom edge */
+
+    /* ---- two cannons: left throws up-right, right throws up-left ---- */
+    var bits = [];
+    for (var side = 0; side < 2; side++) {
+      var dir = side === 0 ? 1 : -1;
+      var ox = dir * 170;
+      for (var i = 0; i < 12; i++) {
+        var kind = i % 4;
+        var cls = (i % 3 === 0) ? 's-acc' : (i % 3 === 1 ? 's-ink' : 's-mute');
+        var g = el('g', {}, (kind === 3 ? c.front : c.back));
+        if (kind === 0) el('rect', { x: -1.9, y: -7.5, width: 3.8, height: 15, rx: 1.9, class: cls }, g);
+        else if (kind === 1) el('rect', { x: -3.3, y: -3.3, width: 6.6, height: 6.6, rx: 2.4, class: cls }, g);
+        else if (kind === 2) el('path', { d: 'M0 -5.2 L4.6 3.4 L-4.6 3.4 Z', class: cls }, g);
+        else el('path', { d: starPath(5.8, 1.5), class: cls }, g);
+        hide(g);
+        var lane = i / 11;
+        var b = {
+          g: g,
+          ox: ox, oy: emitterY + rand() * 8,
+          cx: dir * (30 + lane * 132 + rand() * 14),
+          cy: -430 - rand() * 88,
+          ex: dir * (146 - lane * 212),
+          ey: 96 + rand() * 96,
+          s: 0.78 + rand() * 0.5,
+          spin: dir * (180 + rand() * 560),
+          delay: 0.09 + i * 0.013 + rand() * 0.05,
+          dur: 0.46 + rand() * 0.16,
+          wob: rand() * 6.28
+        };
+        /* lift the arc's peak if it would reach up into the caption */
+        for (var guard = 0; guard < 4 && bezTop(b.oy, b.cy, b.ey) < TOP_LOCAL + 10; guard++) {
+          b.cy += (TOP_LOCAL + 10 - bezTop(b.oy, b.cy, b.ey)) * 2;
+        }
+        bits.push(b);
+      }
+    }
+
+    c.part(c.back, function (n, t) {
+      for (var k = 0; k < bits.length; k++) {
+        var b = bits[k];
+        var q = (t - b.delay) / b.dur;
+        if (q <= 0 || q >= 1) { b.g.setAttribute('opacity', '0'); continue; }
+        var e = q * q * 0.18 + q * 0.82;                        /* quick launch, then coast */
+        var x = bez2(b.ox, b.cx, b.ex, e) + c.sin(e * 9 + b.wob) * 4 * e;
+        var y = bez2(b.oy, b.cy, b.ey, e);
+        var op = q < 0.1 ? q / 0.1 : (q > 0.74 ? (1 - q) / 0.26 : 1);
+        b.g.setAttribute('opacity', (op * 0.96).toFixed(3));
+        b.g.setAttribute('transform', 'translate(' + x.toFixed(1) + ' ' + y.toFixed(1) + ')' +
+          ' rotate(' + (b.spin * e).toFixed(0) + ') scale(' + b.s.toFixed(2) + ')');
+      }
+    });
+
+    /* ---- muzzle flash + ring at each cannon mouth ---- */
+    [1, -1].forEach(function (dir) {
+      var flash = el('g', {}, c.front);
+      el('path', { d: starPath(15, 4.2), class: 's-acc' }, flash);
+      hide(flash);
+      c.part(flash, function (n, t) {
+        var p = c.seg(t, 0.06, 0.3);
+        n.setAttribute('opacity', p > 0 && p < 1 ? (Math.sin(p * Math.PI) * 0.95).toFixed(3) : '0');
+        n.setAttribute('transform', 'translate(' + (dir * 170) + ' ' + emitterY + ')' +
+          ' rotate(' + (p * 90).toFixed(1) + ') scale(' + (0.35 + p * 1.45).toFixed(2) + ')');
+      });
+
+      var ring = el('circle', { cx: dir * 170, cy: emitterY, r: 5, fill: 'none', 'stroke-width': 2, class: 'k-acc' }, c.front);
+      c.part(ring, function (n, t) {
+        var p = c.E.outCubic(c.seg(t, 0.08, 0.42));
+        n.setAttribute('opacity', (p > 0 && p < 1 ? (1 - p) * 0.55 : 0).toFixed(3));
+        n.setAttribute('r', (5 + p * 26).toFixed(1));
+      });
+    });
+
+    /* ---- a short accent line snaps in under the word ---- */
+    var baseW = Math.min(W * 0.62, 186);
+    var line = el('path', {
+      d: 'M' + (-baseW / 2).toFixed(1) + ' 26 L' + (baseW / 2).toFixed(1) + ' 26',
+      'stroke-width': 3, class: 'k-acc rnd', pathLength: 1,
+      'stroke-dasharray': '1', 'stroke-dashoffset': '1', opacity: 0
+    }, c.front);
+    c.part(line, function (n, t) {
+      var p = c.E.outCubic(c.seg(t, 0.3, 0.72));
+      n.setAttribute('stroke-dashoffset', (1 - p).toFixed(4));
+      n.setAttribute('opacity', p > 0.01 ? 0.9 : 0);
+    });
+
+    /* ---- star glints around the word ---- */
+    var sparks = [
+      { x: -Math.min(W / 2 + 22, 176), y: -CH - 18, r: 9, ph: 0 },
+      { x: Math.min(W / 2 + 18, 174), y: -CH * 0.8, r: 7.2, ph: 0.31 },
+      { x: -Math.min(W * 0.42, 152), y: -CH * 0.08, r: 5.4, ph: 0.62 },
+      { x: Math.min(W * 0.3, 118), y: -CH - 36, r: 5, ph: 0.45 }
+    ];
+    sparks.forEach(function (sp) {
+      var g = el('path', { d: starPath(sp.r, sp.r * 0.26), class: 's-acc' }, c.front);
+      hide(g);
+      c.part(g, function (n, t, ms) {
+        var on = c.seg(t, 0.5, 0.68);
+        var tw = 0.55 + 0.45 * c.sin(ms / 460 + sp.ph * 9);
+        n.setAttribute('opacity', (on * tw * 0.95).toFixed(3));
+        var sc = (0.4 + 0.6 * c.c01(on)) * (0.78 + 0.34 * tw);
+        n.setAttribute('transform', 'translate(' + sp.x.toFixed(1) + ' ' + sp.y.toFixed(1) + ')' +
+          ' scale(' + sc.toFixed(3) + ') rotate(' + (((ms / 30) + sp.ph * 360) % 360).toFixed(0) + ')');
+      });
+    });
+
+    /* ---- a few ribbons keep drifting down while the card holds ---- */
+    var drift = [];
+    for (var d = 0; d < 4; d++) {
+      var gd = el('g', {}, c.back);
+      el('rect', { x: -2, y: -6, width: 4, height: 12, rx: 2, class: (d % 2 ? 's-acc' : 's-mute') }, gd);
+      drift.push({ g: gd, x: -126 + d * 84, ph: d * 0.27 });
+      hide(gd);
+    }
+    c.part(c.back, function (n, t, ms) {
+      var on = c.seg(t, 0.94, 1);
+      drift.forEach(function (dr, i) {
+        var p = ((ms / 3200) + dr.ph) % 1;
+        dr.g.setAttribute('opacity', (on * Math.sin(p * Math.PI) * 0.7).toFixed(3));
+        dr.g.setAttribute('transform', 'translate(' + (dr.x + c.sin(p * 6 + i) * 10).toFixed(1) + ' ' +
+          (TOP_LOCAL + 10 + p * 290).toFixed(1) + ') rotate(' + (p * 260).toFixed(0) + ')');
+      });
+    });
+
+    /* ---- the word springs up from the middle out, then floats ---- */
+    var n = info.letters.length;
+    var mid = (n - 1) / 2;
+    info.letters.forEach(function (L, i) {
+      var dist = Math.abs(i - mid) / Math.max(1, mid);
+      c.part(L.g, function (node, t, ms) {
+        var at = 0.02 + dist * 0.14;
+        var p = c.seg(t, at, at + 0.44);
+        var el2 = c.E.outElastic(p);
+        var rise = c.c01(el2);
+        var hop = c.sin(c.c01(p) * Math.PI) * CH * 0.16;
+        var float = (t >= 0.9 ? 1 : 0) * 1.5 * c.sin(ms / 980 + i * 0.55);
+        var sc = 0.36 + 0.64 * rise;
+        node.setAttribute('opacity', c.c01(p * 2.4).toFixed(3));
+        c.setT(node, L.base, {
+          dy: (1 - rise) * CH * 0.9 - hop + float,
+          r: (i < mid ? -1 : 1) * (1 - rise) * 9,
+          sx: sc, sy: sc,
           oy: 0
         });
       });

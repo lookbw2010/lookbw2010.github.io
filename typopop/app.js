@@ -18,7 +18,12 @@
       ko: ['감사', '고마워', '고맙', '덕분'],
       ph: ['thank you so much', 'thank you very much', 'thank you', '감사합니다', '감사해요', '감사드립니다', '감사드려요', '고맙습니다', '고마워요', '덕분에']
     },
-    { key: 'cheers', en: ['cheers', 'cheer', 'congrats', 'congratulation', 'congratulations', 'hooray', 'birthday', 'party'], ko: ['축하', '생일', '파티', '만세'] },
+    { key: 'cheers', en: ['cheers', 'cheer', 'hooray', 'hbd', 'birthday', 'party'], ko: ['생일', '파티', '만세'] },
+    {
+      key: 'congrats',
+      en: ['congrats', 'congratulation', 'congratulations', 'congratulate', 'celebrate', 'celebration', 'bravo', 'kudos'],
+      ko: ['축하', '축하해', '축하해요', '축하합니다', '축하드려요', '축하드립니다', '경축', '합격', '승진', '당선']
+    },
     { key: 'sleep', en: ['sleep', 'sleepy', 'goodnight', 'rest', 'dream'], ko: ['잘자', '휴식', '굿나잇', '꿈'] },
     { key: 'rocket', en: ['rocket', 'launch', 'fight', 'fighting', 'challenge'], ko: ['도전', '화이팅', '파이팅', '로켓', '출발'] },
     {
@@ -43,6 +48,9 @@
     var body = String(p).split(/\s+/).map(escapeRe).join('[\\s,\\.]+');
     return new RegExp('(^|[^\\uAC00-\\uD7A3A-Za-z0-9])(' + body + ')($|[^\\uAC00-\\uD7A3A-Za-z0-9])', 'i');
   }
+
+  /* 생일 계열이 함께 나오면("생일 축하해") 기존 생일 모션(cheers)을 그대로 쓴다 */
+  var BIRTHDAY = /(생일|birthday|hbd)/i;
 
   function detect(text) {
     var best = null;
@@ -98,7 +106,13 @@
       }
     });
 
-    if (best) return { key: best.key, word: best.word, idx: best.idx };
+    if (best) {
+      if (best.key === 'congrats') {
+        var bd = BIRTHDAY.exec(text);
+        if (bd) return { key: 'cheers', word: bd[0], idx: bd.index };
+      }
+      return { key: best.key, word: best.word, idx: best.idx };
+    }
 
     // fallback: longest word in the line becomes the hero
     var words = text.match(/[^\s,.;:!?"'()\[\]]+/g) || [text];
@@ -136,6 +150,7 @@
         { w: '크리스마스', text: '크리스마스 잘 보내세요' },
         { w: '새해', text: '새해 복 많이 받으세요' },
         { w: '감사', text: '정말 감사합니다' },
+        { w: '축하', text: '진심으로 축하합니다' },
         { w: '우산', text: '오늘 비 오는데, 우산 챙겨' },
         { w: '계단', text: '한 칸씩 계단을 올라가자' },
         { w: '퇴근', text: '오늘은 여기서 퇴근!' },
@@ -171,6 +186,7 @@
         { w: 'christmas', text: 'Merry Christmas, everyone' },
         { w: 'newyear', text: 'Happy New Year, 2027' },
         { w: 'Thanks', text: 'Thank you so much' },
+        { w: 'Congrats', text: 'Congratulations!' },
         { w: 'umbrella', text: 'Don\u2019t forget your umbrella' },
         { w: 'STEPS', text: 'STEPS to the top, one at a time' },
         { w: 'KICK', text: 'Weekend starts now, KICK it off' },
