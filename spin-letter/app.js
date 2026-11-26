@@ -345,6 +345,7 @@
 
   function closeSheet() {
     if (sheet.hidden) return;
+    stopVoice();
     sheet.classList.remove('show');
     backdrop.classList.remove('show');
     document.body.dataset.sheet = '0';
@@ -371,6 +372,85 @@
     draft.message = '';
     input.focus();
     SL.Audio.ui();
+  });
+
+  /* ---------------- voice input (말로 입력) ---------------- */
+  var voiceBtn = $('#voiceBtn');
+  var SpeechRec = window.SpeechRecognition || window.webkitSpeechRecognition;
+  var recog = null, listening = false, voiceBase = '', voiceNotice = false;
+
+  function setListening(on) {
+    listening = on;
+    voiceBtn.classList.toggle('listening', on);
+    voiceBtn.setAttribute('aria-pressed', on ? 'true' : 'false');
+    voiceBtn.setAttribute('aria-label', on ? '말로 입력 중지' : '말로 입력');
+  }
+
+  function stopVoice() {
+    if (recog && listening) { try { recog.stop(); } catch (e) { } }
+    setListening(false);
+  }
+
+  function commitVoice(text) {
+    var merged = (voiceBase ? voiceBase + ' ' : '') + text;
+    merged = merged.replace(/\s+/g, ' ').trim().slice(0, 60);
+    input.value = merged;
+    draft.message = merged;
+    return merged;
+  }
+
+  function startVoice() {
+    if (!SpeechRec) {
+      toast('이 브라우저는 말로 입력을 지원하지 않아요. 직접 적어주세요');
+      try { input.focus({ preventScroll: true }); } catch (e) { }
+      return;
+    }
+    voiceBase = input.value.replace(/\s+/g, ' ').trim();
+    voiceNotice = false;
+    try {
+      recog = new SpeechRec();
+      recog.lang = 'ko-KR';
+      recog.interimResults = true;
+      recog.continuous = false;
+      recog.maxAlternatives = 1;
+      recog.onstart = function () { setListening(true); };
+      recog.onresult = function (e) {
+        var txt = '';
+        for (var i = 0; i < e.results.length; i++) txt += e.results[i][0].transcript;
+        if (!txt.trim()) return;
+        if (commitVoice(txt).length >= 60) { try { recog.stop(); } catch (err) { } }
+      };
+      recog.onerror = function (e) {
+        var code = (e && e.error) || '';
+        if (code === 'aborted') return;
+        voiceNotice = true;
+        if (code === 'not-allowed' || code === 'service-not-allowed') {
+          toast('마이크 사용을 허용해 주세요');
+        } else if (code === 'audio-capture') {
+          toast('마이크를 찾을 수 없어요. 직접 적어주세요');
+        } else if (code === 'no-speech') {
+          toast('잘 안 들렸어요. 다시 눌러 말해주세요');
+        } else {
+          toast('음성 인식이 안 됐어요. 직접 적어주세요');
+        }
+      };
+      recog.onend = function () {
+        setListening(false);
+        if (!voiceNotice && !input.value.trim()) toast('잘 안 들렸어요. 다시 눌러 말해주세요');
+      };
+      recog.start();
+      setListening(true);
+      SL.Audio.ui();
+    } catch (err) {
+      setListening(false);
+      toast('말로 입력을 시작하지 못했어요. 직접 적어주세요');
+    }
+  }
+
+  voiceBtn.addEventListener('click', function () {
+    SL.Audio.unlock();
+    if (listening) { stopVoice(); SL.Audio.ui(); return; }
+    startVoice();
   });
 
   function applyDraft(preview) {

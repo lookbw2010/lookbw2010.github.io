@@ -14,7 +14,7 @@
 <meta property="og:image" content="https://lookbw2010.github.io/spin-letter/assets/og.png">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23000'/%3E%3Cg fill='%23FFC96B'%3E%3Ccircle cx='32' cy='20' r='3'/%3E%3Ccircle cx='44' cy='32' r='3' fill='%236FE3FF'/%3E%3Ccircle cx='32' cy='44' r='3' fill='%23FF7FA8'/%3E%3Ccircle cx='20' cy='32' r='3' fill='%23B78CFF'/%3E%3C/g%3E%3C/svg%3E">
-<link rel="stylesheet" href="./styles.css?v=2">
+<link rel="stylesheet" href="./styles.css?v=3">
 </head>
 <body>
 
@@ -83,6 +83,13 @@
     <p class="field-label">비밀 메시지</p>
     <div class="input-wrap">
       <input id="msgInput" type="text" maxlength="60" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="받는 사람에게 남길 한마디">
+      <button type="button" id="voiceBtn" class="mic-btn" aria-pressed="false" aria-label="말로 입력" title="말로 입력">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <rect x="9" y="2.6" width="6" height="11" rx="3"/>
+          <path d="M5.5 11a6.5 6.5 0 0 0 13 0"/>
+          <path d="M12 17.6V21"/><path d="M8.7 21h6.6"/>
+        </svg>
+      </button>
       <button type="button" id="msgClear" class="clear" aria-label="메시지 지우기">×</button>
     </div>
     <div class="chips" id="chips"></div>
@@ -98,6 +105,6 @@
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
 <script src="./engine.js?v=1"></script>
-<script src="./app.js?v=3"></script>
+<script src="./app.js?v=4"></script>
 </body>
 </html>
