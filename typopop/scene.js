@@ -1267,18 +1267,20 @@
     });
 
     /* one soft ring that rises out of the word as it straightens up */
-    var ringR = Math.max(W * 0.3, 54);
-    var ring = el('circle', { cx: 0, cy: -CH * 0.46, r: ringR, fill: 'none', 'stroke-width': 1.8, class: 'k-acc' }, c.back);
+    var ringR = Math.max(W * 0.34, 62);
+    var ringRY = Math.max(CH * 0.72, 40);
+    var ring = el('ellipse', { cx: 0, cy: -CH * 0.46, rx: ringR, ry: ringRY, fill: 'none', 'stroke-width': 1.5, class: 'k-acc' }, c.back);
     c.part(ring, function (n, t) {
       var p = c.E.outQuart(c.seg(t, 0.46, 0.94));
-      n.setAttribute('opacity', (Math.sin(p * Math.PI) * 0.32).toFixed(3));
-      n.setAttribute('r', (ringR + p * 44).toFixed(2));
+      n.setAttribute('opacity', (Math.sin(p * Math.PI) * 0.22).toFixed(3));
+      n.setAttribute('rx', (ringR + p * 34).toFixed(2));
+      n.setAttribute('ry', (ringRY + p * 26).toFixed(2));
       n.setAttribute('cy', (-CH * 0.46).toFixed(2));
     });
 
     /* a modest bow line curves in under the word */
     var halfW = Math.min(W / 2 + 14, 150);
-    var arcY = 30;
+    var arcY = 34;
     var arc = el('path', {
       d: 'M' + (-halfW).toFixed(1) + ' ' + arcY + ' Q0 ' + (arcY + 30) + ' ' + halfW.toFixed(1) + ' ' + arcY,
       'stroke-width': 3, class: 'k-acc rnd', pathLength: 1,
@@ -1294,15 +1296,15 @@
 
     /* sparkles around the word */
     var sparks = [
-      { x: -Math.min(halfW + 22, 174), y: -CH - 16, r: 8.4, ph: 0, at: 0.5 },
-      { x: Math.min(halfW + 18, 172), y: -CH * 0.72, r: 6.6, ph: 0.33, at: 0.56 },
-      { x: -Math.min(halfW + 14, 170), y: -CH * 0.06, r: 5.2, ph: 0.61, at: 0.62 },
-      { x: Math.min(W * 0.34, 122), y: -CH - 34, r: 5, ph: 0.18, at: 0.68 },
-      { x: -Math.min(W * 0.3, 108), y: -CH - 40, r: 4.2, ph: 0.78, at: 0.74 },
-      { x: Math.min(halfW * 0.72, 112), y: arcY + 46, r: 4.6, ph: 0.45, at: 0.8 }
+      { x: -Math.min(halfW + 22, 174), y: -CH - 16, r: 9.2, ph: 0, at: 0.5 },
+      { x: Math.min(halfW + 18, 172), y: -CH * 0.72, r: 7.2, ph: 0.33, at: 0.56 },
+      { x: -Math.min(halfW + 14, 170), y: -CH * 0.06, r: 5.6, ph: 0.61, at: 0.62 },
+      { x: Math.min(W * 0.34, 122), y: -CH - 34, r: 5.4, ph: 0.18, at: 0.68 },
+      { x: -Math.min(W * 0.3, 108), y: -CH - 40, r: 4.6, ph: 0.78, at: 0.74 },
+      { x: Math.min(halfW * 0.72, 112), y: arcY + 46, r: 5, ph: 0.45, at: 0.8 }
     ];
     sparks.forEach(function (sp) {
-      var g = el('path', { d: starPath(sp.r, sp.r * 0.22), class: 's-acc' }, c.front);
+      var g = el('path', { d: starPath(sp.r, sp.r * 0.3), class: 's-acc' }, c.front);
       hide(g);
       c.part(g, function (n, t, ms) {
         var on = c.seg(t, sp.at, sp.at + 0.16);
