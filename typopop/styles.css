@@ -84,11 +84,29 @@ main{flex:1;display:flex;flex-direction:column;gap:9px;min-height:0}
 #input::placeholder{color:#9BA0A8;font-weight:400}
 #input:focus{border-color:#0F0F12;box-shadow:0 0 0 3px rgba(15,15,18,.07)}
 html[lang="en"] #input{padding-right:84px}
+.field.has-text #input{padding-right:148px}
+html[lang="en"] .field.has-text #input{padding-right:116px}
+
+/* ---------- field tools (clear + mic) ---------- */
+.field-tools{
+  position:absolute;right:6px;top:50%;transform:translateY(-50%);
+  display:flex;align-items:center;gap:5px;
+}
+.clear{
+  display:none;align-items:center;justify-content:center;flex:none;
+  width:28px;height:28px;margin:0;padding:0 0 1px;border:0;border-radius:50%;
+  background:transparent;cursor:pointer;color:#A2A6AD;
+  font-family:var(--textf);font-weight:500;font-size:17px;line-height:1;
+  transition:background .14s,color .14s;
+}
+.clear.on{display:inline-flex}
+.clear:hover{color:#3C3F46;background:#EDEFF2}
+.clear:active{background:#E4E7EB;color:#0F0F12}
+.clear:focus-visible{outline:2px solid #0F0F12;outline-offset:1px}
 
 /* ---------- voice mic (inside the field) ---------- */
 .mic{
-  position:absolute;right:6px;top:50%;transform:translateY(-50%);
-  display:inline-flex;align-items:center;gap:5px;
+  display:inline-flex;align-items:center;gap:5px;flex:none;
   height:36px;padding:0 10px 0 9px;border-radius:999px;
   border:1px solid #E1E4E9;background:#F7F8FA;cursor:pointer;
   font-family:var(--textf);font-weight:600;font-size:11.5px;line-height:1;letter-spacing:.005em;color:#3C3F46;
@@ -97,7 +115,7 @@ html[lang="en"] #input{padding-right:84px}
 }
 .mic svg{width:14px;height:14px;display:block;flex:none}
 .mic:focus-visible{outline:2px solid #0F0F12;outline-offset:2px}
-.mic:active{transform:translateY(-50%) scale(.97)}
+.mic:active{transform:scale(.97)}
 .mic.on{background:var(--acc);border-color:var(--acc);color:#fff;box-shadow:0 0 0 4px rgba(255,59,29,.15)}
 .mic.on svg{animation:micpulse 1.05s ease-in-out infinite}
 @keyframes micpulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.45;transform:scale(.9)}}

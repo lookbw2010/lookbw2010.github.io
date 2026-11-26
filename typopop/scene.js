@@ -304,6 +304,7 @@
     rocket: { maxFont: 134, maxFontKo: 116, maxW: 306, baseY: 336 },
     christmas: { maxFont: 116, maxFontKo: 102, maxW: 312, baseY: 352 },
     newyear: { maxFont: 124, maxFontKo: 106, maxW: 304, baseY: 330 },
+    thanks: { maxFont: 132, maxFontKo: 118, maxW: 308, baseY: 334 },
     pop: { maxFont: 150, maxFontKo: 132, maxW: 340, baseY: 326 }
   };
 
@@ -1242,6 +1243,131 @@
         s2.n.setAttribute('opacity', (on * edge * 0.95).toFixed(3));
         s2.n.setAttribute('transform', 'translate(' + (s2.x + c.sin(p * 6 + i) * 6).toFixed(1) + ' ' +
           (hy + 4 - p * 86).toFixed(1) + ') scale(' + (0.7 + 0.5 * p).toFixed(2) + ')');
+      });
+    });
+  };
+
+  /* ============================================================
+     13. thanks — the word bows politely, then blooms with warm sparks
+     ============================================================ */
+  SCENES.thanks = function (c) {
+    var info = c.info, CH = info.CH, W = info.W;
+
+    /* warm glow behind the word */
+    var grad = el('radialGradient', { id: c.uid + 'ty' }, c.defs);
+    el('stop', { offset: '0', style: 'stop-color:var(--acc);stop-opacity:.22' }, grad);
+    el('stop', { offset: '1', style: 'stop-color:var(--acc);stop-opacity:0' }, grad);
+    var glow = el('ellipse', {
+      cx: 0, cy: -CH * 0.42, rx: Math.max(W * 0.58, 132), ry: CH * 1.26,
+      fill: 'url(#' + c.uid + 'ty)'
+    }, c.back);
+    c.part(glow, function (n, t, ms) {
+      var on = c.seg(t, 0.14, 0.6);
+      n.setAttribute('opacity', (on * (0.72 + 0.28 * c.sin(ms / 1600))).toFixed(3));
+    });
+
+    /* one soft ring that rises out of the word as it straightens up */
+    var ringR = Math.max(W * 0.3, 54);
+    var ring = el('circle', { cx: 0, cy: -CH * 0.46, r: ringR, fill: 'none', 'stroke-width': 1.8, class: 'k-acc' }, c.back);
+    c.part(ring, function (n, t) {
+      var p = c.E.outQuart(c.seg(t, 0.46, 0.94));
+      n.setAttribute('opacity', (Math.sin(p * Math.PI) * 0.32).toFixed(3));
+      n.setAttribute('r', (ringR + p * 44).toFixed(2));
+      n.setAttribute('cy', (-CH * 0.46).toFixed(2));
+    });
+
+    /* a modest bow line curves in under the word */
+    var halfW = Math.min(W / 2 + 14, 150);
+    var arcY = 30;
+    var arc = el('path', {
+      d: 'M' + (-halfW).toFixed(1) + ' ' + arcY + ' Q0 ' + (arcY + 30) + ' ' + halfW.toFixed(1) + ' ' + arcY,
+      'stroke-width': 3, class: 'k-acc rnd', pathLength: 1,
+      'stroke-dasharray': '1', 'stroke-dashoffset': '1', opacity: 0
+    }, c.front);
+    c.part(arc, function (n, t, ms) {
+      var p = c.E.outCubic(c.seg(t, 0.28, 0.84));
+      n.setAttribute('stroke-dashoffset', (1 - p).toFixed(4));
+      n.setAttribute('opacity', (p > 0.001 ? 0.85 : 0).toFixed(2));
+      var bob = (t >= 0.99 ? 1 : 0) * 1.1 * c.sin(ms / 1150);
+      n.setAttribute('transform', 'translate(0 ' + bob.toFixed(2) + ')');
+    });
+
+    /* sparkles around the word */
+    var sparks = [
+      { x: -Math.min(halfW + 22, 174), y: -CH - 16, r: 8.4, ph: 0, at: 0.5 },
+      { x: Math.min(halfW + 18, 172), y: -CH * 0.72, r: 6.6, ph: 0.33, at: 0.56 },
+      { x: -Math.min(halfW + 14, 170), y: -CH * 0.06, r: 5.2, ph: 0.61, at: 0.62 },
+      { x: Math.min(W * 0.34, 122), y: -CH - 34, r: 5, ph: 0.18, at: 0.68 },
+      { x: -Math.min(W * 0.3, 108), y: -CH - 40, r: 4.2, ph: 0.78, at: 0.74 },
+      { x: Math.min(halfW * 0.72, 112), y: arcY + 46, r: 4.6, ph: 0.45, at: 0.8 }
+    ];
+    sparks.forEach(function (sp) {
+      var g = el('path', { d: starPath(sp.r, sp.r * 0.22), class: 's-acc' }, c.front);
+      hide(g);
+      c.part(g, function (n, t, ms) {
+        var on = c.seg(t, sp.at, sp.at + 0.16);
+        var tw = 0.55 + 0.45 * c.sin(ms / 480 + sp.ph * 9);
+        n.setAttribute('opacity', (on * tw * 0.95).toFixed(3));
+        var sc = (0.35 + 0.65 * c.c01(on)) * (0.78 + 0.34 * tw);
+        n.setAttribute('transform', 'translate(' + sp.x.toFixed(1) + ' ' + sp.y.toFixed(1) + ')' +
+          ' scale(' + sc.toFixed(3) + ') rotate(' + (((ms / 34) + sp.ph * 360) % 360).toFixed(0) + ')');
+      });
+    });
+
+    /* little hearts float up out of the word */
+    var hearts = [];
+    [[-0.26, 0], [0.04, 0.26], [0.3, 0.52]].forEach(function (hp, i) {
+      var g = el('g', {}, c.front);
+      var sz = Math.min(CH * 0.3, 30) * (i === 1 ? 1.12 : 0.86);
+      el('path', { d: HEART_D, class: 's-acc', transform: 'scale(' + (sz / 100).toFixed(4) + ')' }, g);
+      hearts.push({ g: g, x: clamp(hp[0] * W, -150, 150), ph: hp[1] });
+      hide(g);
+    });
+    c.part(c.front, function (n, t, ms) {
+      var on = c.seg(t, 0.52, 0.72);
+      hearts.forEach(function (h) {
+        var p = ((ms / 2600) + h.ph) % 1;
+        var edge = Math.min(1, p < 0.16 ? p / 0.16 : (p > 0.64 ? (1 - p) / 0.36 : 1));
+        h.g.setAttribute('opacity', (on * edge * 0.95).toFixed(3));
+        var sc = 0.7 + 0.4 * p;
+        c.setT(h.g, { x: h.x + c.sin(p * 6.4 + h.ph * 7) * 6, y: -CH - 8 - p * 74, ox: 0, oy: 0 },
+          { sx: sc, sy: sc, r: -6 * c.sin(p * 5 + h.ph * 6) });
+      });
+    });
+
+    /* celebratory light droplets drift up behind the word */
+    var drops = [];
+    for (var i = 0; i < 5; i++) {
+      var dr = 2.2 + (i % 3) * 0.8;
+      var dn = el('circle', { cx: 0, cy: 0, r: dr, class: (i % 2 ? 's-acc' : 's-mute') }, c.back);
+      drops.push({ n: dn, x: -Math.min(W * 0.42, 150) + i * Math.min(W * 0.21, 74), ph: i * 0.19 });
+      hide(dn);
+    }
+    c.part(c.back, function (n, t, ms) {
+      var on = c.seg(t, 0.42, 0.66);
+      drops.forEach(function (d, i) {
+        var p = ((ms / 2900) + d.ph) % 1;
+        var edge = Math.min(1, p < 0.14 ? p / 0.14 : (p > 0.7 ? (1 - p) / 0.3 : 1));
+        d.n.setAttribute('opacity', (on * edge * 0.7).toFixed(3));
+        c.setT(d.n, { x: d.x + c.sin(p * 5.6 + i) * 7, y: 6 - p * (CH + 96), ox: 0, oy: 0 }, { sx: 1, sy: 1 });
+      });
+    });
+
+    /* the word bows politely, then straightens up and floats */
+    info.letters.forEach(function (L, i) {
+      c.part(L.g, function (n, t, ms) {
+        var at = 0.04 + i * 0.026;
+        var down = c.E.outCubic(c.seg(t, at, at + 0.3));
+        var up = c.E.outBack(c.seg(t, at + 0.42, at + 0.7), 1.35);
+        var settle = c.E.outCubic(c.seg(t, at + 0.7, at + 0.96));
+        var bow = down * (1 - c.c01(up));
+        var float = (t >= 0.96 ? 1 : 0) * 1.4 * c.sin(ms / 1080 + i * 0.55);
+        c.setT(n, L.base, {
+          dy: 7 * bow - 10 * up * (1 - settle) + float,
+          r: 7.5 * bow - 2.2 * up * (1 - settle),
+          sx: 1 - 0.02 * bow, sy: 1 - 0.05 * bow,
+          oy: 0
+        });
       });
     });
   };

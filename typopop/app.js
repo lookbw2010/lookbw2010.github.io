@@ -12,7 +12,12 @@
     { key: 'help', en: ['help', 'sos'], ko: ['도움', '살려줘', '도와줘', '헬프'] },
     { key: 'foot', en: ['foot', 'feet', 'walk', 'walking', 'stroll'], ko: ['산책', '걷기', '걸어'] },
     { key: 'coffee', en: ['coffee', 'latte', 'espresso', 'americano'], ko: ['커피', '라떼', '아메리카노'] },
-    { key: 'love', en: ['love', 'heart', 'thanks', 'thank'], ko: ['사랑', '고마워', '고맙', '하트'] },
+    { key: 'love', en: ['love', 'heart'], ko: ['사랑', '하트'] },
+    {
+      key: 'thanks', en: ['thank', 'thanks', 'thankyou', 'thankful', 'grateful', 'gratitude', 'appreciate'],
+      ko: ['감사', '고마워', '고맙', '덕분'],
+      ph: ['thank you so much', 'thank you very much', 'thank you', '감사합니다', '감사해요', '감사드립니다', '감사드려요', '고맙습니다', '고마워요', '덕분에']
+    },
     { key: 'cheers', en: ['cheers', 'cheer', 'congrats', 'congratulation', 'congratulations', 'hooray', 'birthday', 'party'], ko: ['축하', '생일', '파티', '만세'] },
     { key: 'sleep', en: ['sleep', 'sleepy', 'goodnight', 'rest', 'dream'], ko: ['잘자', '휴식', '굿나잇', '꿈'] },
     { key: 'rocket', en: ['rocket', 'launch', 'fight', 'fighting', 'challenge'], ko: ['도전', '화이팅', '파이팅', '로켓', '출발'] },
@@ -115,6 +120,7 @@
       stage: '무대',
       copy: '링크 복사',
       copied: '복사했어요',
+      clear: '지우기',
       preview: '받는 사람 화면',
       cta: '나도 만들어 보기',
       mic: '말로 만들기',
@@ -129,6 +135,7 @@
       presets: [
         { w: '크리스마스', text: '크리스마스 잘 보내세요' },
         { w: '새해', text: '새해 복 많이 받으세요' },
+        { w: '감사', text: '정말 감사합니다' },
         { w: '우산', text: '오늘 비 오는데, 우산 챙겨' },
         { w: '계단', text: '한 칸씩 계단을 올라가자' },
         { w: '퇴근', text: '오늘은 여기서 퇴근!' },
@@ -148,6 +155,7 @@
       stage: 'stage',
       copy: 'Copy link',
       copied: 'Link copied',
+      clear: 'Clear',
       preview: 'Recipient view',
       cta: 'Make your own',
       mic: 'Voice',
@@ -162,6 +170,7 @@
       presets: [
         { w: 'christmas', text: 'Merry Christmas, everyone' },
         { w: 'newyear', text: 'Happy New Year, 2027' },
+        { w: 'Thanks', text: 'Thank you so much' },
         { w: 'umbrella', text: 'Don\u2019t forget your umbrella' },
         { w: 'STEPS', text: 'STEPS to the top, one at a time' },
         { w: 'KICK', text: 'Weekend starts now, KICK it off' },
@@ -199,6 +208,7 @@
   var presetsEl = $('#presets'), swatchesEl = $('#swatches'), toastEl = $('#toast');
   var copyBtn = $('#copy'), copyText = $('#copy-text'), previewBtn = $('#preview');
   var micBtn = $('#mic'), micText = $('#mic-text');
+  var fieldEl = $('#field'), clearBtn = $('#clear');
 
   var scene = null;
   var current = { key: null, word: null, caption: null };
@@ -224,7 +234,7 @@
     var text = (state.text || '').trim();
     var d = detect(text);
 
-    var word = d.word || T[state.lang].presets[0].w;
+    var word = d.word || 'TypoPop';
     var caption = text ? captionSegments(text, d.word, d.idx) : [];
     // the caption keeps the whole line; the hero word is the living word
     var sig = d.key + '|' + word + '|' + text;
@@ -235,8 +245,10 @@
       } catch (e) {
         scene = TypoPop.render(svg, { word: word, caption: [], motion: 'pop' });
       }
-      document.title = 'TypoPop — ' + word;
+      document.title = text ? ('TypoPop — ' + word) : 'TypoPop — 살아 움직이는 1초 카드';
     }
+
+    syncClear();
 
     // hint
     detectEl.classList.toggle('idle', !text);
@@ -256,6 +268,16 @@
 
   function esc(s) {
     return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; });
+  }
+
+  /* clear (×) button shows only while there is something to clear */
+  function syncClear() {
+    if (!clearBtn) return;
+    var has = !!(input.value && input.value.length);
+    fieldEl.classList.toggle('has-text', has);
+    clearBtn.classList.toggle('on', has);
+    clearBtn.setAttribute('aria-label', T[state.lang].clear);
+    clearBtn.setAttribute('title', T[state.lang].clear);
   }
 
   function replay() {
@@ -352,6 +374,7 @@
     });
     buildPresets();
     buildSwatches();
+    syncClear();
   }
 
   /* ---------- share ---------- */
@@ -427,6 +450,7 @@
   input.addEventListener('input', function () {
     state.text = input.value;
     state.touched = true;
+    syncClear();
     clearTimeout(typingTimer);
     typingTimer = setTimeout(function () { apply(); }, 260);
   });
@@ -441,6 +465,20 @@
   });
 
   $('#replay').addEventListener('click', function () { replay(); });
+
+  if (clearBtn) {
+    clearBtn.addEventListener('click', function (e) {
+      e.preventDefault();
+      e.stopPropagation();
+      clearTimeout(typingTimer);
+      input.value = '';
+      state.text = '';
+      state.touched = true;
+      syncClear();
+      apply();
+      try { input.focus({ preventScroll: true }); } catch (err) { try { input.focus(); } catch (e2) { } }
+    });
+  }
 
   Array.prototype.forEach.call(document.querySelectorAll('#lang button'), function (b) {
     b.addEventListener('click', function () {

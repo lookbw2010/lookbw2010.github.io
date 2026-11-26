@@ -4,17 +4,17 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>TypoPop — 살아 움직이는 1초 카드</title>
-<meta name="description" content="문장 하나를 넣으면 핵심 단어가 살아 움직입니다. 우산·계단·크리스마스 트리·새해 해돋이까지 12가지 1초 모션 타이포 카드를 만들고 링크로 보내세요. 말로 입력해도 됩니다.">
+<meta name="description" content="문장 하나를 넣으면 핵심 단어가 살아 움직입니다. 우산·계단·크리스마스 트리·새해 해돋이·감사 인사까지 13가지 1초 모션 타이포 카드를 만들고 링크로 보내세요. 말로 입력해도 됩니다.">
 <meta name="theme-color" content="#F2F3F5">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="format-detection" content="telephone=no">
 <meta property="og:title" content="TypoPop — 살아 움직이는 1초 카드">
-<meta property="og:description" content="글자가 크리스마스 트리가 되고, 새해 해돋이가 됩니다. 문장 하나 혹은 한마디 말로 만드는 1초 모션 타이포 카드, 12가지.">
+<meta property="og:description" content="글자가 크리스마스 트리가 되고, 새해 해돋이가 되고, 고맙다는 인사가 됩니다. 문장 하나 혹은 한마디 말로 만드는 1초 모션 타이포 카드, 13가지.">
 <meta property="og:image" content="https://lookbw2010.github.io/typopop/assets/og.png">
 <meta property="og:type" content="website">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="./assets/favicon.svg" type="image/svg+xml">
-<link rel="stylesheet" href="./styles.css?v=14">
+<link rel="stylesheet" href="./styles.css?v=15">
 </head>
 <body>
 
@@ -28,14 +28,17 @@
   </header>
 
   <main>
-    <div class="field">
+    <div class="field" id="field">
       <input id="input" type="text" maxlength="90" autocomplete="off" autocapitalize="none" spellcheck="false"
              aria-label="문장 입력">
-      <button type="button" id="mic" class="mic" aria-label="말로 만들기" aria-pressed="false" title="말로 만들기">
-        <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.1"
-             stroke-linecap="round" stroke-linejoin="round"><path d="M12 4.4a3 3 0 0 0-3 3v4.1a3 3 0 0 0 6 0V7.4a3 3 0 0 0-3-3Z"></path><path d="M6.6 11.4a5.4 5.4 0 0 0 10.8 0"></path><path d="M12 16.8v3"></path></svg>
-        <span id="mic-text">말로 만들기</span>
-      </button>
+      <div class="field-tools">
+        <button type="button" id="clear" class="clear" aria-label="지우기" title="지우기">×</button>
+        <button type="button" id="mic" class="mic" aria-label="말로 만들기" aria-pressed="false" title="말로 만들기">
+          <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.1"
+               stroke-linecap="round" stroke-linejoin="round"><path d="M12 4.4a3 3 0 0 0-3 3v4.1a3 3 0 0 0 6 0V7.4a3 3 0 0 0-3-3Z"></path><path d="M6.6 11.4a5.4 5.4 0 0 0 10.8 0"></path><path d="M12 16.8v3"></path></svg>
+          <span id="mic-text">말로 만들기</span>
+        </button>
+      </div>
     </div>
 
     <div class="hintrow">
@@ -74,7 +77,7 @@
 
 <div id="toast" class="toast" hidden></div>
 
-<script src="./scene.js?v=14"></script>
-<script src="./app.js?v=14"></script>
+<script src="./scene.js?v=15"></script>
+<script src="./app.js?v=15"></script>
 </body>
 </html>
