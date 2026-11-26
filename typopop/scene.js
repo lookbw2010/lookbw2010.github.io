@@ -1417,13 +1417,13 @@
           g: g,
           ox: ox, oy: mouthY + 6 + rand() * 10,
           cx: dir * (26 + lane * 140 + rand() * 12),
-          cy: -432 - rand() * 88,
+          cy: -392 - rand() * 80,
           ex: dir * (150 - lane * 222 + rand() * 10),
-          ey: 86 + rand() * 108,
+          ey: 104 + rand() * 108,
           s: 0.9 + rand() * 0.45,
           spin: dir * (200 + rand() * 600),
-          delay: 0.12 + (i % 7) * 0.012 + rand() * 0.028,
-          dur: 0.5 + rand() * 0.12,
+          delay: 0.1 + lane * 0.16 + rand() * 0.03,
+          dur: 0.42 + rand() * 0.2,
           wob: rand() * 6.28
         };
         /* lift the arc's peak if it would reach up into the caption */
@@ -1495,21 +1495,25 @@
       });
     });
 
-    /* ---- a few ribbons keep drifting down while the card holds ---- */
+    /* ---- ribbons keep drifting down, so the frame stays alive ---- */
     var drift = [];
-    for (var d = 0; d < 5; d++) {
+    for (var d = 0; d < 6; d++) {
       var gd = el('g', {}, c.back);
-      el('rect', { x: -2, y: -6, width: 4, height: 12, rx: 2, class: (d % 2 ? 's-acc' : 's-mute') }, gd);
-      drift.push({ g: gd, x: -140 + d * 70, ph: d * 0.21 });
+      el('rect', {
+        x: -2, y: -6, width: 4, height: 12, rx: 2,
+        class: (d % 3 === 0 ? 's-acc' : (d % 3 === 1 ? 's-ink' : 's-mute'))
+      }, gd);
+      drift.push({ g: gd, x: -150 + d * 60, ph: d * 0.17, sp: 2600 + (d % 3) * 500 });
       hide(gd);
     }
     c.part(c.back, function (n, t, ms) {
-      var on = c.seg(t, 0.94, 1);
+      var on = c.seg(t, 0.5, 0.66);
       drift.forEach(function (dr, i) {
-        var p = ((ms / 3200) + dr.ph) % 1;
-        dr.g.setAttribute('opacity', (on * Math.sin(p * Math.PI) * 0.7).toFixed(3));
+        var p = ((ms / dr.sp) + dr.ph) % 1;
+        var edge = Math.min(1, p < 0.1 ? p / 0.1 : (p > 0.86 ? (1 - p) / 0.14 : 1));
+        dr.g.setAttribute('opacity', (on * edge * 0.5).toFixed(3));
         dr.g.setAttribute('transform', 'translate(' + (dr.x + c.sin(p * 6 + i) * 10).toFixed(1) + ' ' +
-          (TOP_LOCAL + 10 + p * 290).toFixed(1) + ') rotate(' + (p * 260).toFixed(0) + ')');
+          (TOP_LOCAL + 12 + p * 300).toFixed(1) + ') rotate(' + (p * 260).toFixed(0) + ')');
       });
     });
 
