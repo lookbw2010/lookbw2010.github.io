@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>1줄 거창하게 말하기 — 평범한 말을 거창하게</title>
+<meta name="description" content="한 줄만 쓰면 끝. 긴급속보·영화 예고편·대통령 긴급담화·우주선 교신, 4가지 블록버스터 무대로 평범한 말이 거창해집니다. 링크로 보내면 바로 그 장면이 열립니다.">
+<meta name="theme-color" content="#0A0B0E">
+<meta name="format-detection" content="telephone=no">
+<meta property="og:title" content="1줄 거창하게 말하기">
+<meta property="og:description" content="평범한 말을 거창하게 만들어드립니다 — 긴급속보·영화 예고편·대통령 긴급담화·우주선 교신.">
+<meta property="og:image" content="https://lookbw2010.github.io/epic-say/assets/og.png">
+<meta property="og:url" content="https://lookbw2010.github.io/epic-say/">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="./assets/favicon.svg" type="image/svg+xml">
+<link rel="preload" href="./assets/Anton-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="./styles.css?v=1">
+</head>
+<body>
+
+<!-- ══════════ 입력 화면 ══════════ -->
+<div id="studio" class="view studio">
+  <div class="studio-bg" aria-hidden="true"></div>
+  <div class="studio-inner">
+
+    <header class="brand">
+      <h1><em>1줄</em> 거창하게 말하기</h1>
+      <span class="brand-rule" aria-hidden="true"></span>
+      <p class="tagline">평범한 말을 거창하게 만들어드립니다</p>
+    </header>
+
+    <div class="field-wrap">
+      <label class="flabel" for="msg">원래 하고 싶은 말</label>
+      <div class="field" id="field">
+        <textarea id="msg" rows="2" maxlength="40" placeholder="예: 올 때 메로나 사와"
+                  autocomplete="off" autocapitalize="none" spellcheck="false"
+                  aria-describedby="counter"></textarea>
+        <div class="field-foot">
+          <span class="counter" id="counter">0/40</span>
+          <div class="ftools">
+            <button type="button" id="mic" class="mic" aria-pressed="false" aria-label="말로 입력하기" title="말로 입력하기">
+              <svg class="mic-ico" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M12 4.2a2.9 2.9 0 0 0-2.9 2.9v4a2.9 2.9 0 0 0 5.8 0v-4A2.9 2.9 0 0 0 12 4.2Z"/>
+                <path d="M6.6 11.3a5.4 5.4 0 0 0 10.8 0"/><path d="M12 16.7v2.9"/>
+              </svg>
+              <span id="micLabel">말로 하기</span>
+            </button>
+            <button type="button" id="clear" class="clear" aria-label="입력한 말 한 번에 지우기" title="한 번에 지우기">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="chips" id="chips" role="group" aria-label="빠른 체험 예시"></div>
+    </div>
+
+    <section class="themes" aria-labelledby="themes-title">
+      <h2 class="flabel" id="themes-title">테마 선택</h2>
+      <div class="grid" id="grid" role="radiogroup" aria-label="블록버스터 테마"></div>
+    </section>
+
+    <div class="launch-wrap">
+      <button type="button" id="launch" class="launch">
+        <svg class="rocket" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M13.6 3.2c2.9-.8 5.6-.6 5.6-.6s.2 2.7-.6 5.6c-.7 2.6-2.2 4.7-4 6.5l-3.4 3.4-6.3-6.3 3.4-3.4c1.8-1.8 3.9-3.3 6.5-4Z"/>
+          <circle cx="15.1" cy="7.8" r="1.9"/>
+          <path d="M5.2 14.3c-1.2.5-2.4 2.6-2.4 4.6 0 .8.2 1.3.2 1.3s.5.2 1.3.2c2 0 4.1-1.2 4.6-2.4"/>
+        </svg>
+        <span>블록버스터로 발사하기</span>
+      </button>
+      <p class="fineprint">100% 무료 · 설치 없음 · 링크 하나로 끝
+        <button type="button" id="aboutBtn" class="linkish">패러디 안내</button>
+      </p>
+    </div>
+
+  </div>
+</div>
+
+<!-- ══════════ 연출 화면 ══════════ -->
+<div id="stage" class="view stage" data-theme="news" hidden>
+  <div class="scene" id="scene" role="img" aria-label="블록버스터 연출"></div>
+
+  <div class="stage-chrome" id="chrome">
+    <button type="button" id="soundBtn" class="pill" aria-pressed="true" title="소리 켜기/끄기">
+      <svg class="ico-on" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9.5h3.2L12 5.6v12.8L7.2 14.5H4z"/><path d="M15.6 9.2a4 4 0 0 1 0 5.6"/><path d="M18 6.8a7.4 7.4 0 0 1 0 10.4"/></svg>
+      <svg class="ico-off" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9.5h3.2L12 5.6v12.8L7.2 14.5H4z"/><path d="M16 9.5l5 5M21 9.5l-5 5"/></svg>
+      <span id="soundLabel">소리 켜짐</span>
+    </button>
+    <button type="button" id="exitBtn" class="pill" title="입력 화면으로">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+      <span>나가기</span>
+    </button>
+  </div>
+
+  <div class="stage-actions" id="actions">
+    <div class="action-row">
+      <button type="button" id="replyBtn" class="act act-ghost">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 3 10.5 13.5"/><path d="M21 3l-6.8 18-3.7-7.5L3 9.8z"/></svg>
+        <span>답장 속보 보내기</span>
+      </button>
+      <button type="button" id="makeBtn" class="act act-solid">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9z"/><path d="M18.5 15.5l.8 2.2 2.2.8-2.2.8-.8 2.2-.8-2.2-2.2-.8 2.2-.8z"/></svg>
+        <span>나도 만들어 보내기</span>
+      </button>
+    </div>
+    <div class="action-mini">
+      <button type="button" id="copyBtn" class="mini">공유 링크 복사</button>
+      <i class="dot"></i>
+      <button type="button" id="capBtn" class="mini">화면 캡처</button>
+      <i class="dot"></i>
+      <button type="button" id="replayBtn" class="mini">다시 재생</button>
+    </div>
+  </div>
+</div>
+
+<div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+<div id="modal" class="modal" hidden>
+  <div class="modal-box" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <h3 id="modalTitle">화면 그대로 간직하기</h3>
+    <div id="modalBody"></div>
+    <div class="modal-actions">
+      <button type="button" class="act act-ghost" id="modalClose">닫기</button>
+      <button type="button" class="act act-solid" id="modalDo">버튼 숨기고 캡처</button>
+    </div>
+  </div>
+</div>
+
+<noscript><p style="color:#fff;padding:24px;font-family:sans-serif">이 페이지는 자바스크립트가 필요합니다.</p></noscript>
+<script src="./app.js?v=1"></script>
+</body>
+</html>
