@@ -804,8 +804,8 @@
     var n = target || 1500;
     var pts = [];
     var i, k, j;
-    var R = 0.29;              // 잎 반지름 (잎 길이 = 2R)
-    var nDepth = 0.15, wTop = 0.085;   // 끝의 V자 홈
+    var R = 0.30;              // 잎 반지름 (잎 길이 = 2R)
+    var nDepth = 0.20, wTop = 0.072;   // 끝의 V자 홈(깊고 좁게)
 
     // 잎 내부: 끝이 원점, +Y로 자란 둥근 잎 − 끝의 V홈
     function leafFill(count) {
@@ -864,15 +864,15 @@
       pts.push({ x: Math.cos(ca2) * cr2, y: Math.sin(ca2) * cr2, z: rand(-0.02, 0.02) });
     }
     // 줄기 — 잎 아래로 뚜렷하게 내려간다
-    var stemN = Math.round(n * 0.06);
+    var stemN = Math.round(n * 0.07);
     for (i = 0; i < stemN; i++) {
       var u = i / stemN;
-      var sx = -0.01 - 0.10 * u * u - 0.02 * Math.sin(u * 2.4);
-      var sy = -0.02 - u * 0.54;
+      var sx = -0.01 - 0.11 * u * u - 0.022 * Math.sin(u * 2.4);
+      var sy = -0.02 - u * 0.56;
       pts.push({
-        x: sx + rand(-0.010, 0.010),
-        y: sy + rand(-0.006, 0.006),
-        z: rand(-0.010, 0.010)
+        x: sx + rand(-0.012, 0.012),
+        y: sy + rand(-0.007, 0.007),
+        z: rand(-0.012, 0.012)
       });
     }
     return pts;
