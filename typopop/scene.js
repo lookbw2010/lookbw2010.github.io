@@ -1414,6 +1414,9 @@
         hide(g);
         var lane = i / 15;
         var cross = (i % 3 === 2);                 /* every third piece flies over the word */
+        var delay = 0.08 + lane * 0.14 + rand() * 0.03;
+        /* long, unhurried flight so the confetti glides out instead of snapping past */
+        var dur = Math.min(0.78 + rand() * 0.22, 0.98 - delay);
         var b = {
           g: g,
           ox: ox, oy: mouthY + 6 + rand() * 10,
@@ -1423,8 +1426,8 @@
           ey: 96 + rand() * 104,
           s: 0.9 + rand() * 0.45,
           spin: dir * (200 + rand() * 600),
-          delay: 0.1 + lane * 0.17 + rand() * 0.03,
-          dur: 0.42 + rand() * 0.2,
+          delay: delay,
+          dur: dur,
           wob: rand() * 6.28
         };
         /* lift the arc's peak if it would reach up into the caption */
@@ -1440,10 +1443,10 @@
         var b = bits[k];
         var q = (t - b.delay) / b.dur;
         if (q <= 0 || q >= 1) { b.g.setAttribute('opacity', '0'); continue; }
-        var e = q * q * 0.16 + q * 0.84;                        /* quick launch, then coast */
+        var e = 1 - Math.pow(1 - q, 1.8);                       /* eased launch, long soft glide out */
         var x = bez2(b.ox, b.cx, b.ex, e) + c.sin(e * 9 + b.wob) * 4 * e;
         var y = bez2(b.oy, b.cy, b.ey, e);
-        var op = q < 0.08 ? q / 0.08 : (q > 0.76 ? (1 - q) / 0.24 : 1);
+        var op = q < 0.07 ? q / 0.07 : (q > 0.72 ? (1 - q) / 0.28 : 1);
         b.g.setAttribute('opacity', (op * 0.96).toFixed(3));
         b.g.setAttribute('transform', 'translate(' + x.toFixed(1) + ' ' + y.toFixed(1) + ')' +
           ' rotate(' + (b.spin * e).toFixed(0) + ') scale(' + b.s.toFixed(2) + ')');
@@ -1456,7 +1459,7 @@
       el('path', { d: starPath(8, 2.6), class: 's-acc' }, flash);
       hide(flash);
       c.part(flash, function (n, t) {
-        var p = c.seg(t, 0.08, 0.22);
+        var p = c.seg(t, 0.06, 0.32);
         var on = p > 0 && p < 1 ? c.sin(p * Math.PI) : 0;
         n.setAttribute('opacity', (on * 0.8).toFixed(3));
         n.setAttribute('transform', 'translate(' + (dir * 162) + ' ' + mouthY + ')' +
@@ -1471,7 +1474,7 @@
       'stroke-width': 3, class: 'k-acc rnd'
     }, c.front);
     c.part(line, function (n, t) {
-      var p = c.E.outCubic(c.seg(t, 0.28, 0.62));
+      var p = c.E.outCubic(c.seg(t, 0.34, 0.76));
       n.setAttribute('opacity', p > 0.001 ? 0.9 : 0);
       n.setAttribute('transform', 'translate(0 26) scale(' + (0.18 + 0.82 * p).toFixed(3) + ' 1)');
     });
@@ -1487,12 +1490,13 @@
       var g = el('path', { d: starPath(sp.r, sp.r * 0.26), class: 's-acc' }, c.front);
       hide(g);
       c.part(g, function (n, t, ms) {
-        var on = c.seg(t, 0.46, 0.64);
-        var tw = 0.55 + 0.45 * c.sin(ms / 460 + sp.ph * 9);
-        n.setAttribute('opacity', (on * tw * 0.95).toFixed(3));
-        var sc = (0.4 + 0.6 * c.c01(on)) * (0.78 + 0.34 * tw);
+        var on = c.seg(t, 0.44, 0.66);
+        var tp = ((ms / 1800) + sp.ph) % 1;                 /* one slow swell every 1.8s */
+        var tw = Math.sin(tp * Math.PI);
+        n.setAttribute('opacity', (on * (0.45 + 0.55 * tw) * 0.95).toFixed(3));
+        var sc = (0.4 + 0.6 * c.c01(on)) * (0.74 + 0.38 * tw);
         n.setAttribute('transform', 'translate(' + sp.x.toFixed(1) + ' ' + sp.y.toFixed(1) + ')' +
-          ' scale(' + sc.toFixed(3) + ') rotate(' + (((ms / 30) + sp.ph * 360) % 360).toFixed(0) + ')');
+          ' scale(' + sc.toFixed(3) + ') rotate(' + (((ms / 180) + sp.ph * 360) % 360).toFixed(0) + ')');
       });
     });
 
@@ -1504,11 +1508,11 @@
         x: -2, y: -6, width: 4, height: 12, rx: 2,
         class: (d % 3 === 0 ? 's-acc' : (d % 3 === 1 ? 's-ink' : 's-mute'))
       }, gd);
-      drift.push({ g: gd, x: -150 + d * 60, ph: d * 0.17, sp: 2600 + (d % 3) * 500 });
+      drift.push({ g: gd, x: -150 + d * 60, ph: d * 0.17, sp: 3400 + (d % 3) * 600 });
       hide(gd);
     }
     c.part(c.back, function (n, t, ms) {
-      var on = c.seg(t, 0.5, 0.66);
+      var on = c.seg(t, 0.52, 0.7);
       drift.forEach(function (dr, i) {
         var p = ((ms / dr.sp) + dr.ph) % 1;
         var edge = Math.min(1, p < 0.1 ? p / 0.1 : (p > 0.86 ? (1 - p) / 0.14 : 1));
@@ -1524,13 +1528,13 @@
     info.letters.forEach(function (L, i) {
       var dist = Math.abs(i - mid) / Math.max(1, mid);
       c.part(L.g, function (node, t, ms) {
-        var at = 0.02 + dist * 0.06;
-        var p = c.seg(t, at, at + 0.4);
+        var at = 0.04 + dist * 0.08;
+        var p = c.seg(t, at, at + 0.72);
         var e = c.E.outElastic(p);                 /* overshoots past 1 as it lands */
         var hop = c.sin(c.c01(p) * Math.PI) * CH * 0.14;
-        var float = (t >= 0.88 ? 1 : 0) * 1.5 * c.sin(ms / 980 + i * 0.55);
+        var float = (t >= 0.86 ? 1 : 0) * 1.5 * c.sin(ms / 980 + i * 0.55);
         var sc = 0.55 + 0.45 * e;
-        node.setAttribute('opacity', c.c01(p * 12).toFixed(3));
+        node.setAttribute('opacity', c.c01(p * 8).toFixed(3));
         c.setT(node, L.base, {
           dy: (1 - e) * CH * 0.95 - hop + float,
           r: (i < mid ? -1 : 1) * (1 - c.c01(e)) * 10,
