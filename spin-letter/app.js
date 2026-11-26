@@ -50,7 +50,7 @@
 
     if (state.shape === 'text') {
       var r = SL.sampleText(state.message || '별빛 편지', { count: nText, maxLines: 3, boxW: 880, weight: 600 });
-      var k = Math.min(0.96 / Math.max(r.w, 0.01), 0.90 / r.h);
+      var k = Math.min(0.88 / Math.max(r.w, 0.01), 0.90 / r.h);
       for (i = 0; i < r.pts.length; i++) {
         pts.push({ x: r.pts[i].x * k, y: r.pts[i].y * k, z: SL.rand(-0.02, 0.02) });
       }
