@@ -95,8 +95,8 @@ html[lang="en"] .field.has-text #input{padding-right:116px}
 .clear{
   display:none;align-items:center;justify-content:center;flex:none;
   width:28px;height:28px;margin:0;padding:0 0 1px;border:0;border-radius:50%;
-  background:transparent;cursor:pointer;color:#A2A6AD;
-  font-family:var(--textf);font-weight:500;font-size:17px;line-height:1;
+  background:transparent;cursor:pointer;color:#858A92;
+  font-family:var(--textf);font-weight:500;font-size:18px;line-height:1;
   transition:background .14s,color .14s;
 }
 .clear.on{display:inline-flex}
