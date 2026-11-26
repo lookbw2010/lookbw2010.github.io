@@ -1530,7 +1530,7 @@
       c.part(L.g, function (node, t, ms) {
         var at = 0.04 + dist * 0.08;
         var p = c.seg(t, at, at + 0.72);
-        var e = c.E.outElastic(p);                 /* overshoots past 1 as it lands */
+        var e = c.E.outBack(p, 1.3);               /* one soft overshoot as it lands, no wobble */
         var hop = c.sin(c.c01(p) * Math.PI) * CH * 0.14;
         var float = (t >= 0.86 ? 1 : 0) * 1.5 * c.sin(ms / 980 + i * 0.55);
         var sc = 0.55 + 0.45 * e;
