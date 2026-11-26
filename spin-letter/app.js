@@ -10,7 +10,7 @@
 
   var DEFAULT_MSG = '오늘 밤, 한잔 어때요?';
   var EXAMPLES = ['오늘 밤, 한잔 어때요?', '사실 네가 좋아', '올해도 고마웠어', '미리 메리 크리스마스'];
-  var SHAPES = ['wine', 'heart', 'tree', 'text'];
+  var SHAPES = ['wine', 'heart', 'tree', 'cake', 'coffee', 'gift', 'clover', 'moon', 'text'];
 
   var params = new URLSearchParams(location.search);
   var fromLink = params.has('m') || params.has('s');
@@ -73,7 +73,13 @@
     var cxx = (minX + maxX) / 2, cyy = (minY + maxY) / 2;
     var sc = Math.min(0.86 / Math.max(0.01, maxX - minX), 0.94 / Math.max(0.01, maxY - minY));
     for (i = 0; i < raw.length; i++) {
-      pts.push({ x: (raw[i].x - cxx) * sc, y: (raw[i].y - cyy) * sc, z: (raw[i].z || 0) * sc });
+      pts.push({
+        x: (raw[i].x - cxx) * sc,
+        y: (raw[i].y - cyy) * sc,
+        z: (raw[i].z || 0) * sc,
+        color: raw[i].color,
+        size: raw[i].size ? raw[i].size * dz : undefined
+      });
     }
     var shapePts = SL.colourise(pts, { white: 0.12, sizeMin: 0.95 * dz, sizeMax: 1.65 * dz });
     field = new SL.Field(shapePts, { spread: 0.54 });
@@ -309,9 +315,23 @@
 
   function paintSheet() {
     Array.prototype.forEach.call(document.querySelectorAll('.shape'), function (b) {
-      b.classList.toggle('active', b.dataset.shape === draft.shape);
+      var on = b.dataset.shape === draft.shape;
+      b.classList.toggle('active', on);
     });
     if (input.value !== draft.message) input.value = draft.message;
+  }
+
+  // 선택된 모양 버튼이 가로 스크롤 밖에 있으면 보이게 당겨온다
+  function revealActiveShape() {
+    var on = document.querySelector('.shape.active');
+    var row = document.getElementById('shapeRow');
+    if (!on || !row) return;
+    var target = on.offsetLeft - (row.clientWidth - on.offsetWidth) / 2;
+    target = Math.max(0, Math.min(target, row.scrollWidth - row.clientWidth));
+    if (Math.abs(row.scrollLeft - target) > 4) {
+      if (row.scrollTo) row.scrollTo({ left: target, behavior: 'smooth' });
+      else row.scrollLeft = target;
+    }
   }
 
   function buildChips() {
@@ -339,6 +359,7 @@
     requestAnimationFrame(function () {
       sheet.classList.add('show');
       backdrop.classList.add('show');
+      revealActiveShape();
     });
     setTimeout(function () { try { input.focus({ preventScroll: true }); } catch (e) { } }, 380);
   }
@@ -356,6 +377,7 @@
     b.addEventListener('click', function () {
       draft.shape = b.dataset.shape;
       paintSheet();
+      revealActiveShape();
       SL.Audio.ui();
       applyDraft(true);
     });

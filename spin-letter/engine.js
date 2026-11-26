@@ -471,6 +471,427 @@
     return pts;
   }
 
+  /* ---------------- v2 shapes: cake / coffee / gift / clover / moon ---------------- */
+  // 곡선·원통이 정면(정확 각도)에서도 입체로 보이도록 살짝 기울여 굽는다
+  function tiltX(pts, ang) {
+    var c = Math.cos(ang), s = Math.sin(ang);
+    for (var i = 0; i < pts.length; i++) {
+      var y = pts[i].y * c - (pts[i].z || 0) * s;
+      var z = pts[i].y * s + (pts[i].z || 0) * c;
+      pts[i].y = y; pts[i].z = z;
+    }
+    return pts;
+  }
+
+  function inPoly(poly, x, y) {
+    var inside = false;
+    for (var i = 0, j = poly.length - 1; i < poly.length; j = i++) {
+      var xi = poly[i].x, yi = poly[i].y, xj = poly[j].x, yj = poly[j].y;
+      if (((yi > y) !== (yj > y)) && (x < (xj - xi) * (y - yi) / (yj - yi) + xi)) inside = !inside;
+    }
+    return inside;
+  }
+
+  // 폴리곤 내부를 고르게 채운다 (하트 잎처럼 오목한 실루엣도 그대로)
+  function fillPoly(poly, count) {
+    var minX = 1e9, maxX = -1e9, minY = 1e9, maxY = -1e9;
+    for (var i = 0; i < poly.length; i++) {
+      if (poly[i].x < minX) minX = poly[i].x;
+      if (poly[i].x > maxX) maxX = poly[i].x;
+      if (poly[i].y < minY) minY = poly[i].y;
+      if (poly[i].y > maxY) maxY = poly[i].y;
+    }
+    var out = [], guard = count * 40 + 200;
+    while (out.length < count && guard-- > 0) {
+      var px = rand(minX, maxX), py = rand(minY, maxY);
+      if (inPoly(poly, px, py)) out.push({ x: px, y: py });
+    }
+    return out;
+  }
+
+  // 별 테두리를 같은 간격으로 걷는다 (작은 반짝이용)
+  function starOutline(cx, cy, r, count) {
+    var verts = [], i;
+    for (i = 0; i < 10; i++) {
+      var ang = -Math.PI / 2 + i * TAU / 10;
+      var rad = (i % 2 === 0) ? r : r * 0.44;
+      verts.push({ x: cx + Math.cos(ang) * rad, y: cy + Math.sin(ang) * rad });
+    }
+    var segs = [], per = 0;
+    for (i = 0; i < 10; i++) {
+      var A = verts[i], B = verts[(i + 1) % 10];
+      var len = Math.hypot(B.x - A.x, B.y - A.y);
+      segs.push({ A: A, B: B, len: len, s: per });
+      per += len;
+    }
+    var out = [];
+    for (i = 0; i < count; i++) {
+      var d = (i / count) * per;
+      for (var k = 0; k < segs.length; k++) {
+        if (d <= segs[k].s + segs[k].len) {
+          var u = (d - segs[k].s) / segs[k].len;
+          out.push({
+            x: lerp(segs[k].A.x, segs[k].B.x, u),
+            y: lerp(segs[k].A.y, segs[k].B.y, u)
+          });
+          break;
+        }
+      }
+    }
+    return out;
+  }
+
+  /* 🎂 2단 케이크 — 원통 두 층 + 크림 물결 + 촛불 3개 */
+  function cake(target) {
+    var n = target || 1500;
+    var pts = [];
+    var yBot = -0.36, yMid = -0.08, yTop = 0.14;
+    var R1 = 0.32, R2 = 0.21;
+    var i, a, r;
+
+    // 아래층 원통
+    var w1 = Math.round(n * 0.18);
+    for (i = 0; i < w1; i++) {
+      a = rand(0, TAU);
+      r = R1 * rand(0.975, 1);
+      pts.push({ x: Math.cos(a) * r, y: rand(yBot + 0.02, yMid), z: Math.sin(a) * r });
+    }
+    // 위층 원통
+    var w2 = Math.round(n * 0.12);
+    for (i = 0; i < w2; i++) {
+      a = rand(0, TAU);
+      r = R2 * rand(0.97, 1);
+      pts.push({ x: Math.cos(a) * r, y: rand(yMid + 0.01, yTop), z: Math.sin(a) * r });
+    }
+    // 받침 접시
+    ring(yBot, R1, Math.round(n * 0.07), 0.005, pts, 1);
+    ring(yBot + 0.014, R1 * 0.86, Math.round(n * 0.03), 0.006, pts, 1);
+
+    // 크림 물결 + 흘러내리는 크림
+    function cream(yy, R, cnt, dripCnt) {
+      for (var j = 0; j < cnt; j++) {
+        var ca = (j / cnt) * TAU;
+        var rr = R + Math.sin(ca * 7) * 0.013;
+        pts.push({
+          x: Math.cos(ca) * rr,
+          y: yy + Math.cos(ca * 7) * 0.010,
+          z: Math.sin(ca) * rr
+        });
+      }
+      for (j = 0; j < dripCnt; j++) {
+        var da = rand(0, TAU);
+        var crest = (Math.sin(da * 7) + 1) * 0.5;
+        var L = 0.018 + 0.055 * crest;
+        var u = Math.random();
+        var dr = R - 0.003;
+        pts.push({
+          x: Math.cos(da) * dr,
+          y: yy - 0.008 - L * u,
+          z: Math.sin(da) * dr
+        });
+        if (u > 0.86) pts.push({ x: Math.cos(da) * dr * 0.98, y: yy - 0.010 - L, z: Math.sin(da) * dr * 0.98 });
+      }
+    }
+    cream(yMid, R1, Math.round(n * 0.09), Math.round(n * 0.035));
+    cream(yTop, R2, Math.round(n * 0.06), Math.round(n * 0.022));
+
+    // 위층 윗면
+    var tf = Math.round(n * 0.055);
+    for (i = 0; i < tf; i++) {
+      a = rand(0, TAU);
+      r = R2 * 0.97 * Math.sqrt(Math.random());
+      pts.push({ x: Math.cos(a) * r, y: yTop + rand(-0.003, 0.003), z: Math.sin(a) * r });
+    }
+    // 아래층 노출된 윗면(링 모양)
+    var an = Math.round(n * 0.05);
+    for (i = 0; i < an; i++) {
+      a = rand(0, TAU);
+      r = Math.sqrt(lerp(R2 * R2, R1 * R1, Math.random()));
+      pts.push({ x: Math.cos(a) * r, y: yMid + rand(-0.008, 0.004), z: Math.sin(a) * r });
+    }
+
+    // 촛불 3개
+    var candX = [-0.115, 0, 0.115];
+    for (var ci = 0; ci < candX.length; ci++) {
+      var cx = candX[ci];
+      var cTop = yTop + 0.135;
+      var body = Math.round(n * 0.022);
+      for (i = 0; i < body; i++) {
+        a = rand(0, TAU);
+        pts.push({ x: cx + Math.cos(a) * 0.011, y: rand(yTop + 0.006, cTop), z: Math.sin(a) * 0.011 });
+      }
+      // 불꽃(밝은 물방울)
+      var fl = Math.round(n * 0.017);
+      for (i = 0; i < fl; i++) {
+        var fu = Math.random();
+        var fw = 0.013 * Math.sin(Math.PI * (0.18 + 0.82 * fu)) * (1 - fu * 0.45);
+        a = rand(0, TAU);
+        var fr = fw * Math.sqrt(Math.random());
+        pts.push({
+          x: cx + Math.cos(a) * fr,
+          y: cTop + 0.008 + fu * 0.05,
+          z: Math.sin(a) * fr,
+          color: i % 4 === 0 ? '#FFFFFF' : '#FFD98A',
+          size: rand(1.7, 2.5)
+        });
+      }
+    }
+
+    tiltX(pts, 0.16);
+    return pts;
+  }
+
+  /* ☕ 커피잔 — 머그 본체 + D자 손잡이 + 김 3줄기 */
+  function coffee(target) {
+    var n = target || 1500;
+    var pts = [];
+    var topY = 0.16, botY = -0.22;
+    var rTop = 0.225, rBot = 0.172;
+    var i, a, r;
+
+    // 본체 벽(위가 살짝 넓은 원통)
+    var w = Math.round(n * 0.30);
+    for (i = 0; i < w; i++) {
+      var t = Math.random();
+      a = rand(0, TAU);
+      r = lerp(rTop, rBot, t) * rand(0.985, 1);
+      pts.push({ x: Math.cos(a) * r, y: lerp(topY, botY, t), z: Math.sin(a) * r });
+    }
+    // 컵 아가리(두 겹 링으로 두께)
+    ring(topY, rTop, Math.round(n * 0.13), 0.003, pts, 1);
+    ring(topY - 0.013, rTop * 0.89, Math.round(n * 0.07), 0.003, pts, 1);
+    // 컵 안 커피 표면
+    var sN = Math.round(n * 0.05);
+    for (i = 0; i < sN; i++) {
+      a = rand(0, TAU);
+      r = rTop * 0.86 * Math.sqrt(Math.random());
+      pts.push({ x: Math.cos(a) * r, y: topY - 0.020, z: Math.sin(a) * r });
+    }
+    // 바닥
+    ring(botY, rBot, Math.round(n * 0.08), 0.004, pts, 1);
+
+    // 오른쪽 D자 손잡이
+    var hcx = 0.155, hcy = -0.02, hR = 0.158;
+    var hN = Math.round(n * 0.15);
+    for (i = 0; i < hN; i++) {
+      var ang = -1.22 + (i / hN) * 2.44;
+      var bx = hcx + Math.cos(ang) * hR;
+      var by = hcy + Math.sin(ang) * hR;
+      // 손잡이 두께
+      var th = rand(0, TAU), tr = 0.017;
+      pts.push({
+        x: bx + Math.cos(th) * tr * Math.cos(ang),
+        y: by + Math.cos(th) * tr * Math.sin(ang),
+        z: Math.sin(th) * tr
+      });
+    }
+
+    // 피어오르는 김 3줄기
+    var stN = Math.round(n * 0.13);
+    for (var s2 = 0; s2 < 3; s2++) {
+      var cnt = Math.round(stN / 3);
+      var baseX = (s2 - 1) * 0.095;
+      for (i = 0; i < cnt; i++) {
+        var u = i / cnt;
+        var yy = 0.215 + u * 0.245;
+        var xx = baseX + Math.sin(u * Math.PI * 1.8 + s2 * 1.15) * 0.05 * (0.3 + u);
+        pts.push({
+          x: xx + rand(-0.006, 0.006),
+          y: yy + rand(-0.004, 0.004),
+          z: rand(-0.035, 0.035) * (0.4 + u)
+        });
+      }
+    }
+
+    tiltX(pts, 0.14);
+    return pts;
+  }
+
+  /* 🎁 선물상자 — 각진 정육면체 + 십자 리본 + 매듭 고리 */
+  function gift(target) {
+    var n = target || 1500;
+    var pts = [];
+    var hw = 0.265, hh = 0.225, hd = 0.205;
+    var cy = -0.12;
+    var bottom = cy - hh, top = cy + hh;
+    var i, j;
+
+    // 앞·뒤 면
+    var fN = Math.round(n * 0.09);
+    for (i = 0; i < fN; i++) pts.push({ x: rand(-hw, hw), y: rand(bottom, top), z: hd + rand(-0.005, 0.005) });
+    var bN = Math.round(n * 0.04);
+    for (i = 0; i < bN; i++) pts.push({ x: rand(-hw, hw), y: rand(bottom, top), z: -hd + rand(-0.005, 0.005) });
+    // 옆면
+    var sN = Math.round(n * 0.05);
+    for (i = 0; i < sN; i++) pts.push({ x: hw + rand(-0.005, 0.005), y: rand(bottom, top), z: rand(-hd, hd) });
+    for (i = 0; i < Math.round(n * 0.03); i++) pts.push({ x: -hw + rand(-0.005, 0.005), y: rand(bottom, top), z: rand(-hd, hd) });
+    // 윗면
+    var tN = Math.round(n * 0.08);
+    for (i = 0; i < tN; i++) pts.push({ x: rand(-hw, hw), y: top + rand(-0.005, 0.005), z: rand(-hd, hd) });
+
+    // 모서리 12개 (각진 상자로 또렷하게)
+    var edge = Math.round(n * 0.016);
+    for (var sx = 0; sx < 2; sx++) for (var sz = 0; sz < 2; sz++) {
+      var ex = sx ? hw : -hw, ez = sz ? hd : -hd;
+      for (i = 0; i < edge; i++) pts.push({ x: ex + rand(-0.003, 0.003), y: lerp(bottom, top, i / (edge - 1)), z: ez + rand(-0.003, 0.003) });
+    }
+    for (sz = 0; sz < 2; sz++) for (var sy = 0; sy < 2; sy++) {
+      var ez2 = sz ? hd : -hd, ey = sy ? top : bottom;
+      for (i = 0; i < edge; i++) pts.push({ x: lerp(-hw, hw, i / (edge - 1)), y: ey + rand(-0.003, 0.003), z: ez2 + rand(-0.003, 0.003) });
+    }
+    for (sx = 0; sx < 2; sx++) for (sy = 0; sy < 2; sy++) {
+      var ex2 = sx ? hw : -hw, ey2 = sy ? top : bottom;
+      for (i = 0; i < edge; i++) pts.push({ x: ex2 + rand(-0.003, 0.003), y: ey2 + rand(-0.003, 0.003), z: lerp(-hd, hd, i / (edge - 1)) });
+    }
+
+    // 리본(세로·가로 십자) — 상자 위를 감아 돈다
+    var RIB = '#FFB3CB';
+    var ribW = 0.052;
+    var rN = Math.round(n * 0.075);
+    for (i = 0; i < rN; i++) {
+      var side = Math.random() < 0.5 ? 1 : -1;
+      pts.push({ x: rand(-ribW, ribW), y: rand(bottom, top), z: side * (hd + 0.007), color: RIB, size: rand(1.5, 2.2) });
+    }
+    for (i = 0; i < Math.round(n * 0.03); i++) {
+      pts.push({ x: rand(-ribW, ribW), y: top + 0.007, z: rand(-hd, hd), color: RIB, size: rand(1.5, 2.2) });
+    }
+    var hy = cy - 0.015;
+    var hN = Math.round(n * 0.05);
+    for (i = 0; i < hN; i++) {
+      var side2 = Math.random() < 0.5 ? 1 : -1;
+      pts.push({ x: rand(-hw, hw), y: hy + rand(-0.032, 0.032), z: side2 * (hd + 0.007), color: RIB, size: rand(1.5, 2.2) });
+    }
+    for (i = 0; i < Math.round(n * 0.02); i++) {
+      var side3 = Math.random() < 0.5 ? 1 : -1;
+      pts.push({ x: side3 * (hw + 0.007), y: hy + rand(-0.032, 0.032), z: rand(-hd, hd), color: RIB, size: rand(1.4, 2.0) });
+    }
+
+    // 상단 리본 매듭 고리 두 개 + 가운데 매듭
+    var BOW = '#FFE0EC';
+    var bowY = top + 0.082;
+    for (var bs = -1; bs <= 1; bs += 2) {
+      var loopN = Math.round(n * 0.045);
+      for (i = 0; i < loopN; i++) {
+        var u2 = (i / loopN) * TAU;
+        pts.push({
+          x: bs * (0.072 + Math.cos(u2) * 0.072),
+          y: bowY + Math.sin(u2) * 0.052 + 0.010,
+          z: rand(-0.028, 0.028),
+          color: BOW, size: rand(1.5, 2.2)
+        });
+      }
+      for (i = 0; i < Math.round(n * 0.012); i++) {
+        var lu = rand(0, TAU), lr = Math.sqrt(Math.random()) * 0.062;
+        pts.push({
+          x: bs * (0.072 + Math.cos(lu) * lr * 0.9),
+          y: bowY + 0.010 + Math.sin(lu) * lr * 0.7,
+          z: rand(-0.02, 0.02),
+          color: BOW, size: rand(1.4, 2.0)
+        });
+      }
+    }
+    for (i = 0; i < Math.round(n * 0.022); i++) {
+      var ka = rand(0, TAU), kr = rand(0, 0.026);
+      pts.push({
+        x: Math.cos(ka) * kr,
+        y: bowY + 0.008 + Math.sin(ka) * kr,
+        z: rand(-0.024, 0.024),
+        color: '#FFF2F7', size: rand(1.6, 2.3)
+      });
+    }
+    return pts;
+  }
+
+  /* 🍀 네잎클로버 — 하트잎 4장 대칭 + 아래로 휜 줄기 */
+  function clover(target) {
+    var n = target || 1500;
+    var pts = [];
+    var i, k;
+    // 하트잎 윤곽: 꼭짓점이 원점, +Y로 자라며 위가 오목한 하트
+    var poly = [];
+    var N = 180;
+    var hs = 0.52 / 30;
+    for (k = 0; k < N; k++) {
+      var t = (k / N) * TAU;
+      poly.push({
+        x: 16 * Math.pow(Math.sin(t), 3) * hs,
+        y: (13 * Math.cos(t) - 5 * Math.cos(2 * t) - 2 * Math.cos(3 * t) - Math.cos(4 * t) + 17) * hs
+      });
+    }
+    var perLeaf = Math.round(n * 0.185);
+    for (k = 0; k < 4; k++) {
+      var phi = Math.PI / 4 + k * Math.PI / 2;
+      var cf = Math.cos(phi), sf = Math.sin(phi);
+      var ax = 0.035 * cf, ay = 0.035 * sf;   // 잎 끝을 중심에서 살짝 띄운다
+      var leaf = fillPoly(poly, perLeaf);
+      for (i = 0; i < leaf.length; i++) {
+        var lx = leaf[i].x, ly = leaf[i].y;
+        pts.push({
+          x: lx * sf + ly * cf + ax,
+          y: -lx * cf + ly * sf + ay,
+          z: (1 - Math.min(1, Math.abs(lx) / 0.28)) * 0.075 * (0.35 + 0.65 * (ly / 0.5))
+        });
+      }
+    }
+    // 중심 매듭
+    for (i = 0; i < Math.round(n * 0.02); i++) {
+      var ca2 = rand(0, TAU), cr2 = rand(0, 0.045);
+      pts.push({ x: Math.cos(ca2) * cr2, y: Math.sin(ca2) * cr2, z: rand(-0.02, 0.02) });
+    }
+    // 줄기
+    var stemN = Math.round(n * 0.055);
+    for (i = 0; i < stemN; i++) {
+      var u = i / stemN;
+      var sx = -0.015 - 0.075 * u * u - 0.015 * Math.sin(u * 2.4);
+      var sy = -0.03 - u * 0.44;
+      pts.push({
+        x: sx + rand(-0.009, 0.009),
+        y: sy + rand(-0.006, 0.006),
+        z: rand(-0.009, 0.009)
+      });
+    }
+    return pts;
+  }
+
+  /* 🌙 초승달 — 도톰한 달 본체 + 곁의 작은 별 3개 */
+  function moon(target) {
+    var n = target || 1500;
+    var pts = [];
+    var R = 0.42, icx = 0.185, icy = 0.10, IR = 0.345;
+    var want = Math.round(n * 0.76);
+    var guard = want * 60 + 400;
+    while (pts.length < want && guard-- > 0) {
+      var x = rand(-R, R), y = rand(-R, R);
+      var dOut = Math.hypot(x, y);
+      if (dOut > R) continue;
+      var dIn = Math.hypot(x - icx, y - icy);
+      if (dIn < IR) continue;
+      var edge = Math.min(R - dOut, dIn - IR);
+      var bulge = Math.sqrt(clamp(edge / 0.17, 0, 1)) * 0.075;
+      pts.push({ x: x, y: y, z: (Math.random() < 0.5 ? -1 : 1) * bulge * rand(0.5, 1) });
+    }
+    // 곁의 반짝이는 별
+    var stars = [
+      { x: 0.255, y: 0.275, r: 0.058 },
+      { x: 0.395, y: 0.005, r: 0.045 },
+      { x: 0.145, y: 0.425, r: 0.038 }
+    ];
+    for (var s = 0; s < stars.length; s++) {
+      var st = stars[s];
+      var line = starOutline(st.x, st.y, st.r, Math.round(n * 0.014));
+      for (var i = 0; i < line.length; i++) {
+        pts.push({ x: line[i].x, y: line[i].y, z: 0, color: '#FFF4D2', size: rand(1.4, 2.0) });
+      }
+      // 별 중심 반짝임
+      pts.push({ x: st.x, y: st.y, z: 0, color: '#FFFFFF', size: 2.6 });
+      for (i = 0; i < 4; i++) {
+        var ga = rand(0, TAU), gr = rand(0, st.r * 0.5);
+        pts.push({ x: st.x + Math.cos(ga) * gr, y: st.y + Math.sin(ga) * gr, z: 0, color: '#FFF4D2', size: rand(1.2, 1.8) });
+      }
+    }
+    return pts;
+  }
+
   /* ---------------- colourise ---------------- */
   function colourise(pts, opt) {
     opt = opt || {};
@@ -480,13 +901,13 @@
     var sizeMax = opt.sizeMax == null ? 2.9 : opt.sizeMax;
     var out = new Array(pts.length);
     for (var i = 0; i < pts.length; i++) {
-      var c = base[(Math.random() * base.length) | 0];
-      if (Math.random() < white) c = '#FFF6E2';
+      var c = pts[i].color || base[(Math.random() * base.length) | 0];
+      if (!pts[i].color && Math.random() < white) c = '#FFF6E2';
       out[i] = {
         x: pts[i].x, y: pts[i].y, z: pts[i].z || 0,
         color: c,
         sharp: !!opt.sharp,
-        size: rand(sizeMin, sizeMax) * (opt.sizeScale || 1)
+        size: (pts[i].size != null ? pts[i].size : rand(sizeMin, sizeMax)) * (opt.sizeScale || 1)
       };
     }
     return out;
@@ -661,7 +1082,11 @@
     TAU: TAU, D2R: D2R,
     clamp: clamp, lerp: lerp, smooth: smooth, rand: rand, gauss: gauss, wrapDeg: wrapDeg,
     PALETTE: PALETTE, Field: Field, updateField: updateField, drawField: drawField,
-    project: project, sampleText: sampleText, shapes: { wine: wine, heart: heart, tree: tree },
+    project: project, sampleText: sampleText,
+    shapes: {
+      wine: wine, heart: heart, tree: tree,
+      cake: cake, coffee: coffee, gift: gift, clover: clover, moon: moon
+    },
     colourise: colourise, pairSides: pairSides, Audio: Audio, fitCanvas: fitCanvas, FONT: FONT
   };
 })(window);
