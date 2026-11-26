@@ -1396,14 +1396,16 @@
     var info = c.info, CH = info.CH, W = info.W;
     var rand = rng(41);
     var TOP_LOCAL = c.TOP - c.BASE_Y;          /* stage y=96 in word-local coords */
-    var mouthY = 126;                           /* stage ~462, above the bottom chrome */
+    var mouthY = 82;                            /* stage ~418, tucked close under the word */
 
-    /* ---- two cannons: lower left throws up-right, lower right up-left ---- */
+    /* ---- two cannons: lower left throws up-right, lower right up-left ----
+       nine pieces a side, short unhurried arc: the same calm tempo as
+       thanks / cheers, not a fast wide spray */
     var bits = [];
     for (var side = 0; side < 2; side++) {
       var dir = side === 0 ? 1 : -1;
-      var ox = dir * 162;
-      for (var i = 0; i < 16; i++) {
+      var ox = dir * 128;
+      for (var i = 0; i < 9; i++) {
         var kind = i % 4;
         var cls = (i % 3 === 0) ? 's-acc' : (i % 3 === 1 ? 's-ink' : 's-mute');
         var g = el('g', {}, (kind === 3 ? c.front : c.back));
@@ -1412,20 +1414,20 @@
         else if (kind === 2) el('path', { d: 'M0 -5.6 L5 3.6 L-5 3.6 Z', class: cls }, g);
         else el('path', { d: starPath(6.4, 1.7), class: cls }, g);
         hide(g);
-        var lane = i / 15;
+        var lane = i / 8;
         var cross = (i % 3 === 2);                 /* every third piece flies over the word */
-        var delay = 0.08 + lane * 0.14 + rand() * 0.03;
+        var delay = 0.06 + lane * 0.16;
         /* long, unhurried flight so the confetti glides out instead of snapping past */
-        var dur = Math.min(0.78 + rand() * 0.22, 0.98 - delay);
+        var dur = Math.min(0.80 + rand() * 0.14, 0.98 - delay);
         var b = {
           g: g,
-          ox: ox, oy: mouthY + 6 + rand() * 10,
+          ox: ox, oy: mouthY + rand() * 10,
           cx: cross ? dir * (6 + rand() * 34) : dir * (70 + rand() * 100),
-          cy: -392 - rand() * 80,
-          ex: cross ? -dir * (54 + rand() * 92) : dir * (118 + lane * 46 + rand() * 14),
-          ey: 96 + rand() * 104,
+          cy: -180 - rand() * 55,
+          ex: cross ? -dir * (46 + rand() * 74) : dir * (96 + lane * 40 + rand() * 12),
+          ey: 20 + rand() * 55,
           s: 0.9 + rand() * 0.45,
-          spin: dir * (200 + rand() * 600),
+          spin: dir * (80 + rand() * 160),
           delay: delay,
           dur: dur,
           wob: rand() * 6.28
@@ -1443,8 +1445,8 @@
         var b = bits[k];
         var q = (t - b.delay) / b.dur;
         if (q <= 0 || q >= 1) { b.g.setAttribute('opacity', '0'); continue; }
-        var e = 1 - Math.pow(1 - q, 1.8);                       /* eased launch, long soft glide out */
-        var x = bez2(b.ox, b.cx, b.ex, e) + c.sin(e * 9 + b.wob) * 4 * e;
+        var e = 1 - Math.pow(1 - q, 1.5);                       /* eased launch, long soft glide out */
+        var x = bez2(b.ox, b.cx, b.ex, e) + c.sin(e * 9 + b.wob) * 3 * e;
         var y = bez2(b.oy, b.cy, b.ey, e);
         var op = q < 0.07 ? q / 0.07 : (q > 0.72 ? (1 - q) / 0.28 : 1);
         b.g.setAttribute('opacity', (op * 0.96).toFixed(3));
@@ -1462,7 +1464,7 @@
         var p = c.seg(t, 0.06, 0.32);
         var on = p > 0 && p < 1 ? c.sin(p * Math.PI) : 0;
         n.setAttribute('opacity', (on * 0.8).toFixed(3));
-        n.setAttribute('transform', 'translate(' + (dir * 162) + ' ' + mouthY + ')' +
+        n.setAttribute('transform', 'translate(' + (dir * 128) + ' ' + mouthY + ')' +
           ' rotate(' + (p * 50).toFixed(1) + ') scale(' + (0.6 + p * 0.6).toFixed(2) + ')');
       });
     });
@@ -1496,19 +1498,19 @@
         n.setAttribute('opacity', (on * (0.45 + 0.55 * tw) * 0.95).toFixed(3));
         var sc = (0.4 + 0.6 * c.c01(on)) * (0.74 + 0.38 * tw);
         n.setAttribute('transform', 'translate(' + sp.x.toFixed(1) + ' ' + sp.y.toFixed(1) + ')' +
-          ' scale(' + sc.toFixed(3) + ') rotate(' + (((ms / 180) + sp.ph * 360) % 360).toFixed(0) + ')');
+          ' scale(' + sc.toFixed(3) + ') rotate(' + (((ms / 450) + sp.ph * 360) % 360).toFixed(0) + ')');
       });
     });
 
     /* ---- ribbons keep drifting down, so the frame stays alive ---- */
     var drift = [];
-    for (var d = 0; d < 6; d++) {
+    for (var d = 0; d < 4; d++) {
       var gd = el('g', {}, c.back);
       el('rect', {
         x: -2, y: -6, width: 4, height: 12, rx: 2,
         class: (d % 3 === 0 ? 's-acc' : (d % 3 === 1 ? 's-ink' : 's-mute'))
       }, gd);
-      drift.push({ g: gd, x: -150 + d * 60, ph: d * 0.17, sp: 3400 + (d % 3) * 600 });
+      drift.push({ g: gd, x: -135 + d * 90, ph: d * 0.19, sp: 4200 + (d % 3) * 600 });
       hide(gd);
     }
     c.part(c.back, function (n, t, ms) {
@@ -1518,7 +1520,7 @@
         var edge = Math.min(1, p < 0.1 ? p / 0.1 : (p > 0.86 ? (1 - p) / 0.14 : 1));
         dr.g.setAttribute('opacity', (on * edge * 0.5).toFixed(3));
         dr.g.setAttribute('transform', 'translate(' + (dr.x + c.sin(p * 6 + i) * 10).toFixed(1) + ' ' +
-          (TOP_LOCAL + 12 + p * 300).toFixed(1) + ') rotate(' + (p * 260).toFixed(0) + ')');
+          (TOP_LOCAL + 12 + p * 300).toFixed(1) + ') rotate(' + (p * 200).toFixed(0) + ')');
       });
     });
 
@@ -1528,15 +1530,15 @@
     info.letters.forEach(function (L, i) {
       var dist = Math.abs(i - mid) / Math.max(1, mid);
       c.part(L.g, function (node, t, ms) {
-        var at = 0.04 + dist * 0.08;
-        var p = c.seg(t, at, at + 0.72);
+        var at = 0.04 + dist * 0.06;
+        var p = c.seg(t, at, at + 0.76);
         var e = c.E.outBack(p, 1.3);               /* one soft overshoot as it lands, no wobble */
         var hop = c.sin(c.c01(p) * Math.PI) * CH * 0.14;
-        var float = (t >= 0.86 ? 1 : 0) * 1.5 * c.sin(ms / 980 + i * 0.55);
-        var sc = 0.55 + 0.45 * e;
+        var float = (t >= 0.88 ? 1 : 0) * 1.5 * c.sin(ms / 980 + i * 0.55);
+        var sc = 0.82 + 0.18 * e;                  /* barely any scale change: heavy, settled */
         node.setAttribute('opacity', c.c01(p * 8).toFixed(3));
         c.setT(node, L.base, {
-          dy: (1 - e) * CH * 0.95 - hop + float,
+          dy: (1 - e) * CH * 0.32 - hop * 0.4 + float,
           r: (i < mid ? -1 : 1) * (1 - c.c01(e)) * 10,
           sx: sc, sy: sc,
           oy: 0
