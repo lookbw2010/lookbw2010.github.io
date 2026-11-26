@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>겉과 속 — 90도 돌리면 속마음이 나오는 3D 착시</title>
+<meta name="description" content="정면에서는 멀쩡한 와인잔(또는 겉모습 문구)인데, 손가락으로 90도 돌리는 순간 똑같은 점들이 속마음으로 바뀝니다. 겉과 속, 두 얼굴을 담은 3D 별빛 착시.">
+<meta name="theme-color" content="#000000">
+<meta name="color-scheme" content="dark">
+<meta name="format-detection" content="telephone=no">
+<meta property="og:title" content="겉과 속 — 90도 돌리면 속마음이 나오는 3D 착시">
+<meta property="og:description" content="정면은 겉모습, 90도 돌리면 속마음. 같은 점들이 두 얼굴로 바뀝니다.">
+<meta property="og:type" content="website">
+<meta property="og:image" content="https://lookbw2010.github.io/spin-flip/assets/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23000'/%3E%3Cpath d='M32 14a11 11 0 0 1 11 11c0 7-11 17-11 17S21 32 21 25a11 11 0 0 1 11-11z' fill='none' stroke='%23FF8FB6' stroke-width='3'/%3E%3Cpath d='M14 46h36' stroke='%238CF7C7' stroke-width='3' stroke-linecap='round'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="./styles.css?v=1">
+</head>
+<body>
+
+<canvas id="scene" aria-label="겉과 속 3D 파티클"></canvas>
+<div class="vignette" aria-hidden="true"></div>
+
+<header class="top">
+  <div class="brand"><span class="brand-star" aria-hidden="true">◐</span><span>겉과 속</span></div>
+  <div class="top-actions">
+    <button type="button" id="createBtn" class="chip">만들기</button>
+    <button type="button" id="muteBtn" class="icon-btn" aria-pressed="false" aria-label="소리 끄기">
+      <svg class="ico-on" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M4 9.5h3.2L12 5.6v12.8L7.2 14.5H4z"/><path d="M16.2 8.6a4.4 4.4 0 0 1 0 6.8"/><path d="M18.8 6.2a7.9 7.9 0 0 1 0 11.6"/>
+      </svg>
+      <svg class="ico-off" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M4 9.5h3.2L12 5.6v12.8L7.2 14.5H4z"/><path d="M16.6 9.4l4.6 5.2"/><path d="M21.2 9.4l-4.6 5.2"/>
+      </svg>
+    </button>
+  </div>
+</header>
+
+<div class="face-badge" id="faceBadge"><span class="fb-dot" id="fbDot"></span><span id="fbText">겉모습</span></div>
+
+<footer class="dock" id="dock">
+  <div class="dial">
+    <div class="dial-head">
+      <span id="dialText">정면을 보고 있어요</span>
+      <span id="dialAngle" class="dial-angle">0°</span>
+    </div>
+    <div class="track"><i id="trackFill"></i><b id="trackKnob"></b></div>
+  </div>
+
+  <p class="hint-line" id="hintLine"><span class="swipe-ico" aria-hidden="true">↔</span> 좌우로 돌려 90° — 속마음이 나옵니다</p>
+
+  <div class="dock-actions" id="dockActions">
+    <button type="button" id="flipBtn" class="ghost-btn">뒤집기</button>
+    <button type="button" id="makeBtn2" class="primary-btn">나도 만들기</button>
+  </div>
+
+  <div class="presets" id="presets" role="group" aria-label="예시"></div>
+</footer>
+
+<div class="backdrop" id="backdrop" hidden></div>
+
+<section class="sheet" id="sheet" role="dialog" aria-modal="true" aria-labelledby="sheetTitle" hidden>
+  <div class="sheet-head">
+    <h2 id="sheetTitle">나만의 겉과 속</h2>
+    <button type="button" id="sheetClose" class="icon-btn close" aria-label="닫기">✕</button>
+  </div>
+
+  <div class="sheet-body">
+    <p class="field-label">앞면 (정면에서 보이는 것)</p>
+    <div class="shape-row" id="shapeRow">
+      <button type="button" class="shape" data-shape="text"><span class="emo">✍️</span><span>문구</span></button>
+      <button type="button" class="shape" data-shape="wine"><span class="emo">🍷</span><span>와인잔</span></button>
+      <button type="button" class="shape" data-shape="heart"><span class="emo">❤️</span><span>하트</span></button>
+    </div>
+
+    <div class="input-wrap" id="frontWrap">
+      <input id="frontInput" type="text" maxlength="40" autocomplete="off" spellcheck="false" placeholder="겉: 괜찮아">
+      <button type="button" id="frontClear" class="clear" aria-label="앞면 문구 지우기">×</button>
+    </div>
+
+    <p class="field-label">반전 속마음 (90° 돌리면 나오는 것)</p>
+    <div class="input-wrap">
+      <input id="backInput" type="text" maxlength="40" autocomplete="off" spellcheck="false" placeholder="속: 사실 보고 싶어">
+      <button type="button" id="backClear" class="clear" aria-label="속마음 문구 지우기">×</button>
+    </div>
+    <div class="chips" id="chips"></div>
+    <p class="field-note">보낸 링크는 <b>정면(겉모습)</b>으로 열려, 받는 사람이 직접 90° 돌려야 속마음이 나옵니다.</p>
+  </div>
+
+  <div class="sheet-foot">
+    <button type="button" id="previewBtn" class="ghost-btn">미리보기</button>
+    <button type="button" id="shareBtn" class="primary-btn">비밀 링크 복사</button>
+  </div>
+</section>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script src="./engine.js?v=1"></script>
+<script src="./app.js?v=1"></script>
+</body>
+</html>
