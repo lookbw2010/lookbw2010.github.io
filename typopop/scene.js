@@ -1396,34 +1396,34 @@
     var info = c.info, CH = info.CH, W = info.W;
     var rand = rng(41);
     var TOP_LOCAL = c.TOP - c.BASE_Y;          /* stage y=96 in word-local coords */
-    var emitterY = 150;                         /* stage ~486, bottom edge */
+    var mouthY = 126;                           /* stage ~462, above the bottom chrome */
 
-    /* ---- two cannons: left throws up-right, right throws up-left ---- */
+    /* ---- two cannons: lower left throws up-right, lower right up-left ---- */
     var bits = [];
     for (var side = 0; side < 2; side++) {
       var dir = side === 0 ? 1 : -1;
-      var ox = dir * 170;
-      for (var i = 0; i < 12; i++) {
+      var ox = dir * 162;
+      for (var i = 0; i < 14; i++) {
         var kind = i % 4;
         var cls = (i % 3 === 0) ? 's-acc' : (i % 3 === 1 ? 's-ink' : 's-mute');
         var g = el('g', {}, (kind === 3 ? c.front : c.back));
-        if (kind === 0) el('rect', { x: -1.9, y: -7.5, width: 3.8, height: 15, rx: 1.9, class: cls }, g);
-        else if (kind === 1) el('rect', { x: -3.3, y: -3.3, width: 6.6, height: 6.6, rx: 2.4, class: cls }, g);
-        else if (kind === 2) el('path', { d: 'M0 -5.2 L4.6 3.4 L-4.6 3.4 Z', class: cls }, g);
-        else el('path', { d: starPath(5.8, 1.5), class: cls }, g);
+        if (kind === 0) el('rect', { x: -2.1, y: -8.4, width: 4.2, height: 16.8, rx: 2.1, class: cls }, g);
+        else if (kind === 1) el('rect', { x: -3.6, y: -3.6, width: 7.2, height: 7.2, rx: 2.5, class: cls }, g);
+        else if (kind === 2) el('path', { d: 'M0 -5.6 L5 3.6 L-5 3.6 Z', class: cls }, g);
+        else el('path', { d: starPath(6.4, 1.7), class: cls }, g);
         hide(g);
-        var lane = i / 11;
+        var lane = i / 13;
         var b = {
           g: g,
-          ox: ox, oy: emitterY + rand() * 8,
-          cx: dir * (30 + lane * 132 + rand() * 14),
-          cy: -430 - rand() * 88,
-          ex: dir * (146 - lane * 212),
-          ey: 96 + rand() * 96,
-          s: 0.78 + rand() * 0.5,
-          spin: dir * (180 + rand() * 560),
-          delay: 0.09 + i * 0.013 + rand() * 0.05,
-          dur: 0.46 + rand() * 0.16,
+          ox: ox, oy: mouthY + 6 + rand() * 10,
+          cx: dir * (26 + lane * 140 + rand() * 12),
+          cy: -432 - rand() * 88,
+          ex: dir * (150 - lane * 222 + rand() * 10),
+          ey: 86 + rand() * 108,
+          s: 0.9 + rand() * 0.45,
+          spin: dir * (200 + rand() * 600),
+          delay: 0.12 + (i % 7) * 0.012 + rand() * 0.028,
+          dur: 0.5 + rand() * 0.12,
           wob: rand() * 6.28
         };
         /* lift the arc's peak if it would reach up into the caption */
@@ -1439,34 +1439,48 @@
         var b = bits[k];
         var q = (t - b.delay) / b.dur;
         if (q <= 0 || q >= 1) { b.g.setAttribute('opacity', '0'); continue; }
-        var e = q * q * 0.18 + q * 0.82;                        /* quick launch, then coast */
+        var e = q * q * 0.16 + q * 0.84;                        /* quick launch, then coast */
         var x = bez2(b.ox, b.cx, b.ex, e) + c.sin(e * 9 + b.wob) * 4 * e;
         var y = bez2(b.oy, b.cy, b.ey, e);
-        var op = q < 0.1 ? q / 0.1 : (q > 0.74 ? (1 - q) / 0.26 : 1);
+        var op = q < 0.08 ? q / 0.08 : (q > 0.76 ? (1 - q) / 0.24 : 1);
         b.g.setAttribute('opacity', (op * 0.96).toFixed(3));
         b.g.setAttribute('transform', 'translate(' + x.toFixed(1) + ' ' + y.toFixed(1) + ')' +
           ' rotate(' + (b.spin * e).toFixed(0) + ') scale(' + b.s.toFixed(2) + ')');
       }
     });
 
-    /* ---- muzzle flash + ring at each cannon mouth ---- */
+    /* ---- a small flash and a ring at each cannon mouth ---- */
     [1, -1].forEach(function (dir) {
       var flash = el('g', {}, c.front);
-      el('path', { d: starPath(15, 4.2), class: 's-acc' }, flash);
+      el('path', { d: starPath(11, 3.4), class: 's-acc' }, flash);
       hide(flash);
       c.part(flash, function (n, t) {
-        var p = c.seg(t, 0.06, 0.3);
-        n.setAttribute('opacity', p > 0 && p < 1 ? (Math.sin(p * Math.PI) * 0.95).toFixed(3) : '0');
-        n.setAttribute('transform', 'translate(' + (dir * 170) + ' ' + emitterY + ')' +
-          ' rotate(' + (p * 90).toFixed(1) + ') scale(' + (0.35 + p * 1.45).toFixed(2) + ')');
+        var p = c.seg(t, 0.09, 0.31);
+        var on = p > 0 && p < 1 ? c.sin(p * Math.PI) : 0;
+        n.setAttribute('opacity', (on * 0.85).toFixed(3));
+        n.setAttribute('transform', 'translate(' + (dir * 162) + ' ' + mouthY + ')' +
+          ' rotate(' + (p * 60).toFixed(1) + ') scale(' + (0.55 + p * 0.8).toFixed(2) + ')');
       });
 
-      var ring = el('circle', { cx: dir * 170, cy: emitterY, r: 5, fill: 'none', 'stroke-width': 2, class: 'k-acc' }, c.front);
+      var ring = el('circle', { cx: dir * 162, cy: mouthY, r: 4, fill: 'none', 'stroke-width': 1.8, class: 'k-acc' }, c.front);
       c.part(ring, function (n, t) {
-        var p = c.E.outCubic(c.seg(t, 0.08, 0.42));
-        n.setAttribute('opacity', (p > 0 && p < 1 ? (1 - p) * 0.55 : 0).toFixed(3));
-        n.setAttribute('r', (5 + p * 26).toFixed(1));
+        var p = c.E.outCubic(c.seg(t, 0.1, 0.42));
+        n.setAttribute('opacity', (p > 0 && p < 1 ? (1 - p) * 0.5 : 0).toFixed(3));
+        n.setAttribute('r', (4 + p * 21).toFixed(1));
       });
+    });
+
+    /* ---- soft shock ring as the word lands ---- */
+    var ringW = Math.max(W / 2 + 16, 94);
+    var shock = el('ellipse', {
+      cx: 0, cy: -CH * 0.45, rx: ringW, ry: CH * 0.9,
+      fill: 'none', 'stroke-width': 1.6, class: 'k-acc'
+    }, c.back);
+    c.part(shock, function (n, t) {
+      var p = c.E.outCubic(c.seg(t, 0.24, 0.6));
+      n.setAttribute('opacity', (p > 0 && p < 1 ? (1 - p) * 0.26 : 0).toFixed(3));
+      n.setAttribute('rx', (ringW * (0.72 + 0.5 * p)).toFixed(1));
+      n.setAttribute('ry', (CH * 0.9 * (0.72 + 0.5 * p)).toFixed(1));
     });
 
     /* ---- a short accent line snaps in under the word ---- */
@@ -1477,7 +1491,7 @@
       'stroke-dasharray': '1', 'stroke-dashoffset': '1', opacity: 0
     }, c.front);
     c.part(line, function (n, t) {
-      var p = c.E.outCubic(c.seg(t, 0.3, 0.72));
+      var p = c.E.outCubic(c.seg(t, 0.28, 0.7));
       n.setAttribute('stroke-dashoffset', (1 - p).toFixed(4));
       n.setAttribute('opacity', p > 0.01 ? 0.9 : 0);
     });
@@ -1493,7 +1507,7 @@
       var g = el('path', { d: starPath(sp.r, sp.r * 0.26), class: 's-acc' }, c.front);
       hide(g);
       c.part(g, function (n, t, ms) {
-        var on = c.seg(t, 0.5, 0.68);
+        var on = c.seg(t, 0.46, 0.64);
         var tw = 0.55 + 0.45 * c.sin(ms / 460 + sp.ph * 9);
         n.setAttribute('opacity', (on * tw * 0.95).toFixed(3));
         var sc = (0.4 + 0.6 * c.c01(on)) * (0.78 + 0.34 * tw);
@@ -1504,10 +1518,10 @@
 
     /* ---- a few ribbons keep drifting down while the card holds ---- */
     var drift = [];
-    for (var d = 0; d < 4; d++) {
+    for (var d = 0; d < 5; d++) {
       var gd = el('g', {}, c.back);
       el('rect', { x: -2, y: -6, width: 4, height: 12, rx: 2, class: (d % 2 ? 's-acc' : 's-mute') }, gd);
-      drift.push({ g: gd, x: -126 + d * 84, ph: d * 0.27 });
+      drift.push({ g: gd, x: -140 + d * 70, ph: d * 0.21 });
       hide(gd);
     }
     c.part(c.back, function (n, t, ms) {
@@ -1526,17 +1540,16 @@
     info.letters.forEach(function (L, i) {
       var dist = Math.abs(i - mid) / Math.max(1, mid);
       c.part(L.g, function (node, t, ms) {
-        var at = 0.02 + dist * 0.14;
-        var p = c.seg(t, at, at + 0.44);
-        var el2 = c.E.outElastic(p);
-        var rise = c.c01(el2);
-        var hop = c.sin(c.c01(p) * Math.PI) * CH * 0.16;
-        var float = (t >= 0.9 ? 1 : 0) * 1.5 * c.sin(ms / 980 + i * 0.55);
-        var sc = 0.36 + 0.64 * rise;
-        node.setAttribute('opacity', c.c01(p * 2.4).toFixed(3));
+        var at = 0.03 + dist * 0.1;
+        var p = c.seg(t, at, at + 0.4);
+        var e = c.E.outElastic(p);                 /* overshoots past 1 as it lands */
+        var hop = c.sin(c.c01(p) * Math.PI) * CH * 0.18;
+        var float = (t >= 0.88 ? 1 : 0) * 1.5 * c.sin(ms / 980 + i * 0.55);
+        var sc = 0.55 + 0.45 * e;
+        node.setAttribute('opacity', c.c01(p * 6).toFixed(3));
         c.setT(node, L.base, {
-          dy: (1 - rise) * CH * 0.9 - hop + float,
-          r: (i < mid ? -1 : 1) * (1 - rise) * 9,
+          dy: (1 - e) * CH * 0.95 - hop + float,
+          r: (i < mid ? -1 : 1) * (1 - c.c01(e)) * 10,
           sx: sc, sy: sc,
           oy: 0
         });
