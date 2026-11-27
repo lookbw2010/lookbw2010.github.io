@@ -166,6 +166,7 @@ body {
     0 16px 30px -22px rgba(120, 82, 30, 0.5);
   overflow: hidden;
   -webkit-tap-highlight-color: transparent;
+  transition: height 0.52s cubic-bezier(0.22, 1, 0.36, 1);
 }
 .stage::before {
   /* 은은한 타일 그림자 바닥 */
@@ -182,6 +183,8 @@ body {
   position: absolute;
   inset: 0;
   z-index: 1;
+  transform-origin: 50% 8px;
+  transition: transform 0.52s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 /* 타일 */
@@ -320,13 +323,15 @@ body {
   color: #9A8668;
 }
 
-/* 밀고 난 뒤 */
+/* 밀고 난 뒤 — 무대가 한 걸음 물러나 편지가 앞으로 나온다 */
 #receiveView.pushed .push-btn,
 #receiveView.pushed .hint {
   opacity: 0;
   pointer-events: none;
   transition: opacity 0.25s ease;
 }
+#receiveView.pushed #rcvStage { height: clamp(238px, 30vh, 292px); }
+#receiveView.pushed #rcvBoard { transform: scale(0.72); }
 
 /* ─────────── 편지 카드 ─────────── */
 .letter {
@@ -375,17 +380,16 @@ body {
 .letter-sign[hidden] { display: none; }
 .letter-actions {
   display: flex;
-  align-items: stretch;
+  flex-direction: column;
   gap: 8px;
   margin-top: 15px;
   padding-top: 14px;
   border-top: 1px dashed #EEDFC4;
 }
-.letter-actions .btn { font-size: 17px; padding: 0 11px; letter-spacing: -0.02em; }
-.letter-actions .btn.ghost { flex: 0 1 auto; }
-.letter-actions .btn.primary { flex: 1 1 auto; }
+.letter-actions .btn { width: 100%; }
 @media (min-width: 430px) {
-  .letter-actions .btn { font-size: 18px; padding: 0 14px; }
+  .letter-actions { flex-direction: row; }
+  .letter-actions .btn { flex: 1 1 auto; width: auto; }
 }
 
 /* ─────────── 버튼 공통 ─────────── */
