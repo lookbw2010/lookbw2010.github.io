@@ -363,7 +363,7 @@
     var rows = sizes.length;
 
     /* 3) 블록 크기 */
-    var sV = (H * this.vFit) / (1 + (rows - 1) * 0.90);
+    var sV = (H * this.vFit) / (1 + (rows - 1) * 0.97);
     var sW = W * 0.315;
     var S = Math.round(Math.max(30, Math.min(96, Math.min(sV, sW))));
     var k = rl.s / S;
@@ -371,7 +371,7 @@
     this.S = S; this.fs = fs;
 
     /* 4) 위치 */
-    var pitch = S * 0.90;
+    var pitch = S * 0.97;
     var totalH = S + (rows - 1) * pitch;
     var yTop = -totalH / 2 + S / 2;
     var yOffset = H * 0.02;                 /* 탑의 중심을 무대 가운데보다 살짝 아래로 */
@@ -393,7 +393,7 @@
           x: (i - (cnt - 1) / 2) * step + rowLean + alt + (Math.random() - 0.5) * S * 0.10,
           y: y + (Math.random() - 0.5) * S * 0.05,
           z: (Math.random() - 0.5) * 8,
-          rx: -8 - Math.random() * 7,
+          rx: -6 - Math.random() * 5,
           ry: -5 - Math.random() * 11,
           rz: (Math.random() - 0.5) * 10 + (r % 2 ? 1.4 : -1.4),
           k: 1
