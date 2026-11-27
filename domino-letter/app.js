@@ -512,7 +512,7 @@
     document.title = '도미노 글자 편지 — 톡 밀면 열리는 편지';
     mkField.setModel(draft, false);
     mkField.reset(false);
-    previewNote.textContent = '받는 사람에게 보이는 그대로예요';
+    previewNote.textContent = '받는 사람 화면 그대로';
     previewBtn.querySelector('.push-ico').textContent = '👆';
     previewBtn.lastChild.textContent = ' 미리 밀어보기';
     if (location.protocol !== 'file:') {
@@ -644,7 +644,7 @@
         body: draft.body, theme: draft.theme
       }, false);
       mkField.reset(false);
-      previewNote.textContent = '받는 사람에게 보이는 그대로예요';
+      previewNote.textContent = '받는 사람 화면 그대로';
       previewBtn.querySelector('.push-ico').textContent = '👆';
       previewBtn.lastChild.textContent = ' 미리 밀어보기';
     }, reset ? 0 : 140);
