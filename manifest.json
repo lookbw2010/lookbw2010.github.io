@@ -1,16 +1,16 @@
 {
-  "name": "품스 생활 도구",
-  "short_name": "품스 도구",
-  "description": "1분이면 끝나는 생활 도구 모음. 연말정산 테스트와 두뇌 건강 게임 3종을 앱처럼 바로 열어 보세요.",
+  "name": "산출물 허브",
+  "short_name": "산출물 허브",
+  "description": "회사·제안 자료부터 웹앱·신사업 시제품, 두뇌 게임과 고객사 적용 중인 연말정산 테스트까지. GitHub에 올린 산출물 21개를 한 곳에서 열어 봅니다.",
   "lang": "ko",
   "dir": "ltr",
   "id": "/",
   "start_url": "/",
   "scope": "/",
   "display": "standalone",
-  "background_color": "#FBFAF6",
-  "theme_color": "#F8FAFC",
-  "categories": ["lifestyle", "education", "health"],
+  "background_color": "#FBFAF7",
+  "theme_color": "#FBFAF7",
+  "categories": ["business", "productivity", "education"],
   "icons": [
     {
       "src": "/icons/icon-192.png",
