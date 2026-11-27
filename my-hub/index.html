@@ -2,7 +2,7 @@
 <html lang="ko">
 <head>
 <meta charset="utf-8">
-<script>try{if(sessionStorage.getItem('lookbw-lock')==='e02a4e07d19509bcfcb3a847fc5c511b752200b3298a765a28af963a9aeb121e'){document.documentElement.classList.remove('locked')}else{document.documentElement.classList.add('locked')}}catch(e){document.documentElement.classList.add('locked')}</script>
+<script>try{if(localStorage.getItem('lookbw-lock')==='e02a4e07d19509bcfcb3a847fc5c511b752200b3298a765a28af963a9aeb121e'){document.documentElement.classList.remove('locked')}else{document.documentElement.classList.add('locked')}}catch(e){document.documentElement.classList.add('locked')}</script>
 
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="color-scheme" content="light">
@@ -528,6 +528,11 @@
   }
   .lockbtn:active{transform:scale(.98)}
   .lockbtn:focus-visible{outline:3px solid #E6C583;outline-offset:2px}
+
+  /* ── 상단 바(뒤로가기 · 잠금) ── */
+  .topbar{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:0 0 16px}
+  .topbar .back{margin-bottom:0}
+  .topbar .brand{margin-bottom:0}
 </style>
 </head>
 <body>
@@ -542,14 +547,14 @@
            placeholder="간편 비밀번호" aria-label="간편 비밀번호">
     <p class="err" id="gateErr" role="alert" aria-live="polite"></p>
     <button type="submit" class="go">열기</button>
-    <p class="tip">열면 이 브라우저 탭이 닫힐 때까지 유지되고, 아래 ‘다시 잠그기’로 바로 잠글 수 있어요.</p>
+    <p class="tip">이 기기에서는 한 번 열면 다음에 다시 열어도 그대로 열려요. 다른 기기에서는 다시 물어봅니다.</p>
   </form>
 </div>
 
   <div class="wrap">
 
     <header>
-      <div class="brand"><span class="dot"></span>Lookbw · My Hub · 작업용</div>
+      <div class="topbar"><div class="brand"><span class="dot"></span>Lookbw · My Hub · 작업용</div><button type="button" class="lockbtn" data-lock>🔒 잠금</button></div>
       <h1>산출물 <em>한눈에</em></h1>
       <p class="lead">회사 제안·전략 자료와 고객사에 붙인 연말정산 테스트, 웹앱·신사업 시제품, 두뇌 게임까지. GitHub에 올린 페이지 22개를 <b>카테고리</b>(무엇인지)와 <b>진행 단계</b>(어디까지 했는지) 두 줄로 나눠 모았습니다. 카드를 누르면 바로 열리고, 원하는 항목만 체크해 공유하거나 엑셀로 저장할 수 있습니다.</p>
       <div class="stats">
@@ -842,7 +847,6 @@
       <a class="btn" href="https://www.pumss.co.kr/SP/10.do">품스로 이동 →</a>
     </div>
 
-    <div class="lockrow"><button type="button" class="lockbtn" data-lock>🔒 다시 잠그기</button></div>
     <p class="copyline">총 22개 페이지 · 카테고리 회사·제안 10 / 웹앱·신사업 8 / 게임·테스트 4 · 진행 중 2건 · 최종 정리 2026.11.27<br>© NCL PEOPLES · GitHub @lookbw2010</p>
   </div>
 
@@ -1417,7 +1421,7 @@
   var root = document.documentElement;
 
   function remember(on) {
-    try { on ? sessionStorage.setItem(KEY, HASH) : sessionStorage.removeItem(KEY); } catch (e) {}
+    try { on ? localStorage.setItem(KEY, HASH) : localStorage.removeItem(KEY); } catch (e) {}
   }
   function digest(s) {
     if (window.crypto && crypto.subtle && crypto.subtle.digest) {

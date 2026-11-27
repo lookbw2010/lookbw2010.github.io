@@ -2,7 +2,7 @@
 <html lang="ko">
 <head>
 <meta charset="utf-8">
-<script>try{if(sessionStorage.getItem('lookbw-lock')==='e02a4e07d19509bcfcb3a847fc5c511b752200b3298a765a28af963a9aeb121e'){document.documentElement.classList.remove('locked')}else{document.documentElement.classList.add('locked')}}catch(e){document.documentElement.classList.add('locked')}</script>
+<script>try{if(localStorage.getItem('lookbw-lock')==='e02a4e07d19509bcfcb3a847fc5c511b752200b3298a765a28af963a9aeb121e'){document.documentElement.classList.remove('locked')}else{document.documentElement.classList.add('locked')}}catch(e){document.documentElement.classList.add('locked')}</script>
 
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="color-scheme" content="light">
@@ -310,6 +310,11 @@
   }
   .lockbtn:active{transform:scale(.98)}
   .lockbtn:focus-visible{outline:3px solid #E6C583;outline-offset:2px}
+
+  /* ── 상단 바(뒤로가기 · 잠금) ── */
+  .topbar{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:0 0 16px}
+  .topbar .back{margin-bottom:0}
+  .topbar .brand{margin-bottom:0}
 </style>
 </head>
 <body>
@@ -324,13 +329,13 @@
            placeholder="간편 비밀번호" aria-label="간편 비밀번호">
     <p class="err" id="gateErr" role="alert" aria-live="polite"></p>
     <button type="submit" class="go">열기</button>
-    <p class="tip">열면 이 브라우저 탭이 닫힐 때까지 유지되고, 아래 ‘다시 잠그기’로 바로 잠글 수 있어요.</p>
+    <p class="tip">이 기기에서는 한 번 열면 다음에 다시 열어도 그대로 열려요. 다른 기기에서는 다시 물어봅니다.</p>
   </form>
 </div>
 
 <div class="wrap">
 
-  <a class="back" href="../my-hub/"><span class="arw" aria-hidden="true">←</span> 산출물 허브로</a>
+  <div class="topbar"><a class="back" href="../my-hub/"><span class="arw" aria-hidden="true">←</span> 산출물 허브로</a><button type="button" class="lockbtn" data-lock>🔒 잠금</button></div>
 
   <header>
     <p class="kicker">Idea Gallery · 2026.11.27</p>
@@ -564,7 +569,6 @@
 
   <footer>
     <p class="foot-note">생일·숫자 7 · 모래 나선 2 · 인사·안부 3 · 식사·기프티쇼 3 · 총 15장 · 제작 2026.11.27<br>© NCL PEOPLES · GitHub @lookbw2010</p>
-    <div class="lockrow"><button type="button" class="lockbtn" data-lock>🔒 다시 잠그기</button></div>
     <a class="foot-link" href="../my-hub/"><span aria-hidden="true">←</span> 산출물 허브로 돌아가기</a>
   </footer>
 </div>
@@ -777,7 +781,7 @@
   var root = document.documentElement;
 
   function remember(on) {
-    try { on ? sessionStorage.setItem(KEY, HASH) : sessionStorage.removeItem(KEY); } catch (e) {}
+    try { on ? localStorage.setItem(KEY, HASH) : localStorage.removeItem(KEY); } catch (e) {}
   }
   function digest(s) {
     if (window.crypto && crypto.subtle && crypto.subtle.digest) {
