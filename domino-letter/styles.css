@@ -165,7 +165,8 @@ body {
   transform: translate(-50%, -50%) scale(0.55);
   background:
     radial-gradient(ellipse 22% 26% at 50% 50%, rgba(255, 253, 245, 1) 0%, rgba(255, 232, 172, 0.86) 12%, rgba(255, 190, 86, 0.46) 28%, rgba(255, 158, 48, 0.14) 50%, rgba(255, 150, 40, 0) 68%),
-    radial-gradient(ellipse 50% 30% at 50% 54%, rgba(255, 198, 108, 0.26) 0%, rgba(255, 170, 60, 0.09) 42%, rgba(255, 150, 40, 0) 72%);
+    radial-gradient(ellipse 52% 44% at 50% 50%, rgba(255, 186, 88, 0.30) 0%, rgba(255, 168, 62, 0.12) 42%, rgba(255, 150, 40, 0) 72%),
+    radial-gradient(ellipse 78% 96% at 50% 52%, rgba(255, 158, 66, 0.16) 0%, rgba(255, 140, 40, 0.05) 46%, rgba(255, 140, 40, 0) 76%);
   opacity: 0;
   transition: opacity 0.6s ease, transform 1s cubic-bezier(.2, .9, .3, 1);
   pointer-events: none;
