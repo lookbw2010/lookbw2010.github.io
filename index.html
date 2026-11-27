@@ -342,9 +342,103 @@
   .pwa-tip{margin:12px 2px 0;text-align:center;font-size:13.5px;line-height:1.55;color:#64748B}
   .pwa-tip[hidden]{display:none}
 
+  /* ── 선택 · 공유 · 엑셀 도구 ── */
+  .tools{display:flex;flex-direction:column;gap:8px;margin-top:9px}
+  .tool-row{display:flex;align-items:center;justify-content:space-between;gap:8px;min-height:40px}
+  .sel-count{font-size:14.5px;font-weight:800;color:var(--muted);letter-spacing:-.01em;line-height:1.4}
+  .sel-count b{color:var(--blue);font-size:16.5px;font-weight:800}
+  .sel-hint{font-weight:700;color:#8A98AC;font-size:13.5px}
+  .tool-links{display:flex;gap:6px;flex:0 0 auto}
+  .tool-links button{
+    min-height:40px;padding:6px 11px;border-radius:10px;cursor:pointer;
+    border:1.5px solid #DCE4EF;background:#fff;color:var(--body);
+    font-family:inherit;font-size:13.5px;font-weight:800;letter-spacing:-.01em;
+    white-space:nowrap;transition:background .15s ease,border-color .15s ease;
+  }
+  .tool-links button:hover{border-color:#BFD2E8;background:#F8FBFF}
+  .tool-links button:active{transform:scale(.97)}
+  .tool-links button:disabled{opacity:.42;cursor:default;background:#fff;border-color:#E3E9F1}
+  .tool-links button:focus-visible,.export-row button:focus-visible{outline:3px solid #93C5FD;outline-offset:2px}
+  .export-row{display:grid;grid-template-columns:1.05fr 1fr;gap:8px}
+  .export-row button{
+    display:inline-flex;align-items:center;justify-content:center;gap:5px;
+    min-height:46px;padding:0 8px;border-radius:12px;cursor:pointer;
+    font-family:inherit;font-size:13.5px;font-weight:800;letter-spacing:-.015em;
+    white-space:nowrap;transition:transform .12s ease,box-shadow .15s ease,background .15s ease;
+  }
+  .export-row button:active{transform:scale(.98)}
+  .export-row .primary{
+    border:1.5px solid transparent;color:#fff;
+    background:linear-gradient(135deg,#2563EB 0%,#1D4ED8 100%);
+    box-shadow:0 6px 14px rgba(29,78,216,.20);
+  }
+  .export-row .csv{
+    border:1.5px solid #B9E3CB;color:#046C4E;background:#F1FBF6;
+  }
+  .export-row .csv:hover{background:#E7F8EE}
+
+  /* 카드 선택 체크 */
+  .badges{padding-right:46px}
+  .pick{
+    position:absolute;top:8px;right:8px;z-index:4;
+    width:44px;height:44px;padding:0;border:0;background:transparent;
+    display:flex;align-items:center;justify-content:center;cursor:pointer;
+    -webkit-tap-highlight-color:transparent;
+  }
+  .pick .box{
+    width:24px;height:24px;border-radius:8px;border:2px solid #C6D2E1;background:#fff;
+    display:flex;align-items:center;justify-content:center;
+    font-size:14px;font-weight:900;line-height:1;color:#fff;
+    box-shadow:0 1px 3px rgba(22,32,46,.06);
+    transition:background .15s ease,border-color .15s ease,transform .12s ease;
+  }
+  .pick[aria-checked="true"] .box{background:var(--blue);border-color:var(--blue)}
+  .pick[aria-checked="true"] .box::before{content:"\2713"}
+  .pick:active .box{transform:scale(.88)}
+  .pick:focus-visible{outline:3px solid #93C5FD;outline-offset:-2px;border-radius:12px}
+  .card.picked{border-color:#7FB2F5;box-shadow:0 0 0 3px rgba(147,197,253,.35),0 10px 24px rgba(29,78,216,.10)}
+  .card[data-status="active"].picked{border-color:#E9A63E;box-shadow:0 0 0 3px rgba(250,204,128,.38),0 12px 26px rgba(180,83,9,.16)}
+
+  /* 토스트 */
+  .toast{
+    position:fixed;left:50%;bottom:calc(22px + env(safe-area-inset-bottom));z-index:1200;
+    transform:translate(-50%,14px);opacity:0;pointer-events:none;
+    max-width:min(92vw,430px);padding:13px 18px;border-radius:14px;
+    background:rgba(22,32,46,.95);color:#fff;
+    font-size:15px;font-weight:700;line-height:1.45;text-align:center;letter-spacing:-.01em;
+    box-shadow:0 12px 30px rgba(15,23,42,.30);
+    transition:opacity .2s ease,transform .2s ease;
+  }
+  .toast.show{opacity:1;transform:translate(-50%,0)}
+
+  /* 복사 실패 시 수동 복사 시트 */
+  .copy-panel{
+    position:fixed;inset:0;z-index:1150;display:flex;align-items:flex-end;justify-content:center;
+    padding:16px 16px calc(16px + env(safe-area-inset-bottom));
+    background:rgba(15,23,42,.45);
+  }
+  .copy-panel[hidden]{display:none}
+  .copy-panel-card{
+    width:100%;max-width:430px;background:#fff;border-radius:20px;padding:22px 18px 18px;
+    box-shadow:0 -8px 40px rgba(15,23,42,.24);
+  }
+  .copy-panel-title{margin:0 0 4px;font-size:18px;font-weight:800;color:var(--ink);letter-spacing:-.01em}
+  .copy-panel-desc{margin:0 0 12px;font-size:14.5px;color:var(--body)}
+  .copy-panel-card textarea{
+    width:100%;height:190px;padding:12px;border-radius:12px;border:1.5px solid #DCE4EF;
+    background:#F8FAFC;color:var(--ink);font-family:inherit;font-size:14px;line-height:1.6;
+    resize:vertical;
+  }
+  .copy-panel-close{
+    width:100%;margin-top:12px;min-height:48px;border:0;border-radius:13px;cursor:pointer;
+    background:linear-gradient(135deg,#2563EB 0%,#1D4ED8 100%);color:#fff;
+    font-family:inherit;font-size:16px;font-weight:800;
+  }
+
   @media (prefers-reduced-motion:reduce){
     html{scroll-behavior:auto}
-    .card,.card:hover,.open .arrow{transition:none;transform:none}
+    .card,.card:hover,.open .arrow,.toast{transition:none;transform:none}
+    .toast{transform:translate(-50%,0)}
   }
 </style>
 </head>
@@ -354,7 +448,7 @@
     <header>
       <div class="brand"><span class="dot"></span>Lookbw · GitHub Hub</div>
       <h1>산출물 <em>한눈에</em></h1>
-      <p class="lead">회사 제안·전략 자료부터 웹앱·신사업 시제품, 두뇌 게임과 고객사 적용 중인 연말정산 테스트까지. 지금까지 올린 GitHub 페이지 21개를 상태 배지와 함께 한 곳에 모았습니다. 카드를 누르면 바로 열립니다.</p>
+      <p class="lead">회사 제안·전략 자료부터 웹앱·신사업 시제품, 두뇌 게임과 고객사 적용 중인 연말정산 테스트까지. 지금까지 올린 GitHub 페이지 21개를 상태 배지와 함께 한 곳에 모았습니다. 카드를 누르면 바로 열리고, 원하는 항목만 체크해 공유하거나 엑셀로 저장할 수 있습니다.</p>
       <div class="stats">
         <span class="stat"><b>21</b> 페이지</span>
         <button type="button" class="stat live" data-filter="active" aria-label="진행 중인 항목만 보기"><b>2</b>건 진행 중<span class="pip" aria-hidden="true"></span></button>
@@ -383,6 +477,19 @@
       <div class="search">
         <span class="ico" aria-hidden="true">🔍</span>
         <input type="search" id="q" placeholder="이름·설명으로 찾기 (예: 연말정산, 킨로)" aria-label="산출물 검색" autocomplete="off">
+      </div>
+      <div class="tools" role="group" aria-label="선택 도구">
+        <div class="tool-row">
+          <span class="sel-count" id="selCount" aria-live="polite"><b>0</b>개 선택됨 <span class="sel-hint" id="selHint">· 선택 없으면 보이는 21개 전체</span></span>
+          <span class="tool-links">
+            <button type="button" id="selAll">전체 선택</button>
+            <button type="button" id="selNone" disabled>선택 해제</button>
+          </span>
+        </div>
+        <div class="export-row">
+          <button type="button" id="copySelected" class="primary"><span aria-hidden="true">📤</span> 선택 항목 공유 복사</button>
+          <button type="button" id="csvSelected" class="csv"><span aria-hidden="true">⬇</span> 엑셀(CSV) 다운로드</button>
+        </div>
       </div>
     </div>
 
@@ -627,6 +734,17 @@
     <p class="copyline">총 21개 페이지 · 진행 중 2건 · 최종 정리 2026.11.27<br>© NCL PEOPLES · GitHub @lookbw2010</p>
   </div>
 
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <div class="copy-panel" id="copyPanel" hidden>
+    <div class="copy-panel-card" role="dialog" aria-modal="true" aria-labelledby="copyPanelTitle">
+      <p class="copy-panel-title" id="copyPanelTitle">자동 복사가 막혀 있어요</p>
+      <p class="copy-panel-desc">아래 내용을 길게 눌러 전체 선택한 뒤 복사해 주세요.</p>
+      <textarea id="copyPanelText" readonly spellcheck="false"></textarea>
+      <button type="button" class="copy-panel-close" id="copyPanelClose">닫기</button>
+    </div>
+  </div>
+
   <div class="pwa-sheet" id="pwaSheet" hidden>
     <div class="pwa-sheet-card" role="dialog" aria-modal="true" aria-labelledby="pwaSheetTitle" aria-describedby="pwaSheetDesc">
       <button type="button" class="pwa-close" id="pwaSheetClose" aria-label="닫기">✕</button>
@@ -682,6 +800,7 @@
       });
       empty.classList.toggle('show', shown === 0);
       result.innerHTML = CAT_NAME[activeFilter] + ' <b>' + shown + '</b>개';
+      refreshSelection();
     }
 
     function setFilter(value) {
@@ -745,6 +864,209 @@
         });
       });
     });
+
+    /* ── 선택 · 공유 · 엑셀(CSV) ── */
+    var ORIGIN = 'https://lookbw2010.github.io';
+    var HUB_URL = ORIGIN + '/';
+    var CAT_LABEL = { company: '회사·제안', app: '웹앱·신사업', game: '게임·테스트' };
+    /* 카드에 표시되지 않는 '대상/구분'은 경로별로 한곳에서 관리 */
+    var TARGETS = {
+      'ncl-renewal/': '보험사 고객사',
+      'ncl-strategy/': 'NCL 경영·실무',
+      'insure-daily/': '보험 업계 종사자',
+      'waffle-meeting/': '와플 매장 점주',
+      'word-logos/': '브랜드·인쇄물',
+      'pumss/': '내 개인품(본인)',
+      'bignumber-world-v2/': '숫자·상식 게임 이용자',
+      'bignumber-world/': '숫자 게임 이용자',
+      'kinlo/': '5060 SNS 이용자',
+      'typopop/': '축하·안부 카드 이용자',
+      'spin-letter/': '개인 편지·이벤트',
+      'spin-flip/': '개인 카드·이벤트',
+      'smart-wedding-card/': '예비 신부·신랑',
+      'big-number/': '두뇌 게임 이용자',
+      'same-picture/': '기억력 게임 이용자',
+      'spot-difference/': '관찰력 게임 이용자',
+      'year-end-tax/': '직장인·일반 방문자'
+    };
+
+    function pathOf(card) {
+      var a = card.querySelector('.open');
+      var p = a ? (a.getAttribute('data-url') || a.getAttribute('href') || '') : '';
+      return p.replace(/^\.\//, '').replace(/\/?$/, '/');
+    }
+    function titleOf(card) { var h = card.querySelector('h2'); return h ? h.textContent.trim() : ''; }
+    function descOf(card) { var p = card.querySelector('p'); return p ? p.textContent.trim() : ''; }
+    function statusOf(card) {
+      var b = card.querySelector('.badge.s-active,.badge.s-ok,.badge.s-demo,.badge.s-proto,.badge.s-muted,.badge.s-arch');
+      return b ? b.textContent.trim() : '';
+    }
+    function catOf(card) { return CAT_LABEL[card.getAttribute('data-cat')] || ''; }
+    function targetOf(card) {
+      var c = card.querySelector('.badge.client');
+      if (c && c.textContent.trim()) return c.textContent.trim();
+      return TARGETS[pathOf(card)] || catOf(card);
+    }
+    function urlOf(card) { return ORIGIN + '/' + pathOf(card); }
+    function pickedCards() { return cards.filter(function (c) { return c.classList.contains('picked'); }); }
+    function visibleCards() { return cards.filter(function (c) { return !c.hidden; }); }
+
+    function togglePick(card, on) {
+      card.classList.toggle('picked', on);
+      var p = card.querySelector('.pick');
+      if (p) p.setAttribute('aria-checked', String(on));
+    }
+
+    function refreshSelection() {
+      var sc = document.getElementById('selCount');
+      if (!sc) return;
+      var n = pickedCards().length;
+      var vis = visibleCards();
+      var visPicked = vis.filter(function (c) { return c.classList.contains('picked'); }).length;
+      var hint = n
+        ? (n > visPicked ? '· 선택한 ' + n + '개 (화면 밖 ' + (n - visPicked) + '개 포함)' : '· 선택한 ' + n + '개')
+        : '· 선택 없으면 보이는 ' + vis.length + '개 전체';
+      sc.innerHTML = '<b>' + n + '</b>개 선택됨 <span class="sel-hint" id="selHint">' + hint + '</span>';
+      var all = document.getElementById('selAll');
+      var none = document.getElementById('selNone');
+      if (all) {
+        all.textContent = (vis.length < cards.length) ? '보이는 ' + vis.length + '개 선택' : '전체 선택';
+        all.disabled = vis.length === 0;
+      }
+      if (none) none.disabled = n === 0;
+    }
+
+    /* 카드마다 우측 상단에 44px 선택 버튼 주입 */
+    cards.forEach(function (card) {
+      var btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'pick';
+      btn.setAttribute('role', 'checkbox');
+      btn.setAttribute('aria-checked', 'false');
+      btn.setAttribute('aria-label', titleOf(card) + ' 선택');
+      btn.innerHTML = '<span class="box" aria-hidden="true"></span>';
+      btn.addEventListener('click', function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+        togglePick(card, !card.classList.contains('picked'));
+        refreshSelection();
+      });
+      card.appendChild(btn);
+    });
+
+    /* 토스트 */
+    var toastEl = document.getElementById('toast');
+    var toastTimer = null;
+    function toast(msg) {
+      if (!toastEl) return;
+      toastEl.textContent = msg;
+      toastEl.classList.add('show');
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(function () { toastEl.classList.remove('show'); }, 2800);
+    }
+
+    /* 복사 실패 시 수동 복사 시트 */
+    var copyPanel = document.getElementById('copyPanel');
+    var copyPanelText = document.getElementById('copyPanelText');
+    var copyPanelClose = document.getElementById('copyPanelClose');
+    function showCopyFallback(text) {
+      if (!copyPanel || !copyPanelText) { toast('복사가 안 됐어요. 주소를 길게 눌러 복사해 주세요.'); return; }
+      copyPanelText.value = text;
+      copyPanel.hidden = false;
+      document.body.style.overflow = 'hidden';
+      setTimeout(function () {
+        try { copyPanelText.focus(); copyPanelText.setSelectionRange(0, text.length); } catch (err) {}
+      }, 60);
+    }
+    function hideCopyFallback() {
+      if (!copyPanel) return;
+      copyPanel.hidden = true;
+      document.body.style.overflow = '';
+    }
+    if (copyPanelClose) copyPanelClose.addEventListener('click', hideCopyFallback);
+    if (copyPanel) copyPanel.addEventListener('click', function (e) { if (e.target === copyPanel) hideCopyFallback(); });
+
+    function todayStamp() {
+      var d = new Date();
+      function p(x) { return (x < 10 ? '0' : '') + x; }
+      return { dot: d.getFullYear() + '.' + p(d.getMonth() + 1) + '.' + p(d.getDate()), compact: '' + d.getFullYear() + p(d.getMonth() + 1) + p(d.getDate()) };
+    }
+
+    function buildShareText(list) {
+      var head = '📎 GitHub 산출물 ' + list.length + '개 · ' + todayStamp().dot + '\n' + HUB_URL + '\n';
+      var body = list.map(function (c) {
+        return '[' + statusOf(c) + '] ' + titleOf(c) + ' - ' + descOf(c) + '\n' + urlOf(c);
+      }).join('\n\n');
+      return head + '\n' + body;
+    }
+
+    function csvCell(v) {
+      var s = String(v == null ? '' : v);
+      if (/^[=+\-@\t\r]/.test(s)) s = "'" + s;   // 수식 주입 방지
+      return '"' + s.replace(/"/g, '""') + '"';
+    }
+    function buildCsv(list) {
+      var rows = [['번호', '카테고리', '상태', '서비스명', '대상/구분', '설명', 'URL']];
+      list.forEach(function (c, i) {
+        rows.push([i + 1, catOf(c), statusOf(c), titleOf(c), targetOf(c), descOf(c), urlOf(c)]);
+      });
+      var text = rows.map(function (r) { return r.map(csvCell).join(','); }).join('\r\n');
+      return '\uFEFF' + text + '\r\n';
+    }
+
+    function currentList() {
+      var picked = pickedCards();
+      return picked.length ? { list: picked, fallback: false } : { list: visibleCards(), fallback: true };
+    }
+
+    var selAllBtn = document.getElementById('selAll');
+    var selNoneBtn = document.getElementById('selNone');
+    var copySelBtn = document.getElementById('copySelected');
+    var csvBtn = document.getElementById('csvSelected');
+
+    if (selAllBtn) selAllBtn.addEventListener('click', function () {
+      var vis = visibleCards();
+      if (!vis.length) return;
+      vis.forEach(function (c) { togglePick(c, true); });
+      refreshSelection();
+      toast(vis.length + '개를 선택했어요');
+    });
+
+    if (selNoneBtn) selNoneBtn.addEventListener('click', function () {
+      pickedCards().forEach(function (c) { togglePick(c, false); });
+      refreshSelection();
+      toast('선택을 모두 해제했어요');
+    });
+
+    if (copySelBtn) copySelBtn.addEventListener('click', function () {
+      var cur = currentList();
+      if (!cur.list.length) { toast('복사할 항목이 없어요'); return; }
+      copyText(buildShareText(cur.list), function (ok) {
+        if (!ok) { showCopyFallback(buildShareText(cur.list)); return; }
+        toast(cur.fallback
+          ? '선택이 없어 보이는 ' + cur.list.length + '개 전체를 복사했어요 ✓'
+          : '선택한 ' + cur.list.length + '개를 복사했어요 ✓');
+      });
+    });
+
+    if (csvBtn) csvBtn.addEventListener('click', function () {
+      var cur = currentList();
+      if (!cur.list.length) { toast('저장할 항목이 없어요'); return; }
+      var name = 'lookbw-산출물목록-' + todayStamp().compact + '.csv';
+      var blob = new Blob([buildCsv(cur.list)], { type: 'text/csv;charset=utf-8' });
+      var url = URL.createObjectURL(blob);
+      var a = document.createElement('a');
+      a.href = url;
+      a.download = name;
+      a.rel = 'noopener';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      setTimeout(function () { URL.revokeObjectURL(url); }, 5000);
+      toast((cur.fallback ? '보이는 ' + cur.list.length + '개 전체를 ' : '선택한 ' + cur.list.length + '개를 ') + 'CSV로 저장했어요 ✓');
+    });
+
+    refreshSelection();
 
     /* ── PWA 설치 안내 ── */
     var bar = document.getElementById('pwaInstall');
@@ -907,6 +1229,16 @@
       close: closeSheet,
       platform: function (uaString) { return detectPlatform(uaString || ua); },
       version: '2.0.0'
+    };
+    window.HubSelect = {
+      count: function () { return pickedCards().length; },
+      visible: function () { return visibleCards().length; },
+      pickVisible: function (n) { visibleCards().slice(0, n == null ? 63 : n).forEach(function (c) { togglePick(c, true); }); refreshSelection(); return pickedCards().length; },
+      clear: function () { pickedCards().forEach(function (c) { togglePick(c, false); }); refreshSelection(); return pickedCards().length; },
+      statusOf: function (el) { return statusOf(el); },
+      shareText: function () { var cur = currentList(); return buildShareText(cur.list); },
+      csv: function () { var cur = currentList(); return buildCsv(cur.list); },
+      csvName: function () { return 'lookbw-산출물목록-' + todayStamp().compact + '.csv'; }
     };
     window.HubFilter = {
       set: setFilter,
