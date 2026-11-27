@@ -2,6 +2,8 @@
 <html lang="ko">
 <head>
 <meta charset="utf-8">
+<script>try{if(sessionStorage.getItem('lookbw-lock')==='e02a4e07d19509bcfcb3a847fc5c511b752200b3298a765a28af963a9aeb121e'){document.documentElement.classList.remove('locked')}else{document.documentElement.classList.add('locked')}}catch(e){document.documentElement.classList.add('locked')}</script>
+
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="color-scheme" content="light">
 <meta name="theme-color" content="#FCFAF6">
@@ -253,9 +255,79 @@
     html{scroll-behavior:auto}
     .shot:active,.back:active{transform:none}
   }
+
+  /* ── 간편 비밀번호 잠금 ── */
+  html.locked .wrap,html.locked .lb,html.locked .pwa-sheet,html.locked .copy-panel{display:none !important}
+  .gate{
+    position:fixed;inset:0;z-index:3000;
+    display:flex;align-items:center;justify-content:center;
+    padding:22px 20px calc(22px + env(safe-area-inset-bottom));
+    background:
+      radial-gradient(120% 46% at 50% -12%, #FFFFFF 0%, rgba(255,255,255,0) 62%),
+      #FCFAF6;
+  }
+  .gate[hidden]{display:none}
+  .gate-card{
+    width:100%;max-width:400px;background:#fff;
+    border:1px solid #E6E1D8;border-radius:20px;
+    padding:30px 22px 24px;text-align:center;
+    box-shadow:0 14px 40px rgba(23,26,31,.10);
+  }
+  .gate-card.err{animation:gateShake .3s ease}
+  @keyframes gateShake{0%,100%{transform:translateX(0)}25%{transform:translateX(-7px)}75%{transform:translateX(7px)}}
+  @media (prefers-reduced-motion:reduce){.gate-card.err{animation:none}}
+  .gate-ico{
+    width:54px;height:54px;margin:0 auto 14px;border-radius:16px;
+    display:flex;align-items:center;justify-content:center;
+    background:#F7EFDD;border:1px solid #EBDCBB;font-size:25px;
+  }
+  .gate h2{margin:0 0 6px;font-size:23px;line-height:1.35;font-weight:800;letter-spacing:-.02em;color:#171A1F}
+  .gate .sub{margin:0 0 18px;font-size:15.5px;line-height:1.6;color:#4A5262}
+  .gate input{
+    display:block;width:100%;min-height:58px;padding:12px 14px;
+    border:1.5px solid #DCD4C6;border-radius:13px;background:#FDFCF9;
+    font-family:inherit;font-size:21px;font-weight:700;letter-spacing:.06em;
+    color:#171A1F;text-align:center;
+  }
+  .gate input::placeholder{font-size:16px;font-weight:600;letter-spacing:0;color:#A9A292}
+  .gate input:focus{outline:none;border-color:#B45309;background:#fff;box-shadow:0 0 0 4px rgba(227,197,131,.30)}
+  .gate .err{
+    min-height:22px;margin:9px 0 4px;font-size:14.5px;font-weight:800;color:#B42318;
+  }
+  .gate button.go{
+    width:100%;min-height:56px;border:0;border-radius:14px;cursor:pointer;
+    background:#171A1F;color:#fff;font-family:inherit;font-size:18px;font-weight:800;letter-spacing:-.01em;
+    box-shadow:0 8px 18px rgba(23,26,31,.18);
+  }
+  .gate button.go:active{transform:scale(.985)}
+  .gate button.go:focus-visible{outline:3px solid #E6C583;outline-offset:2px}
+  .gate .tip{margin:14px 0 0;font-size:13px;line-height:1.6;color:#9AA2AE}
+  .lockrow{margin:16px 0 0;text-align:center}
+  .lockbtn{
+    display:inline-flex;align-items:center;gap:6px;min-height:44px;padding:9px 15px;
+    border:1px solid #E1DBD0;border-radius:999px;background:#fff;cursor:pointer;
+    font-family:inherit;font-size:14.5px;font-weight:800;color:#6B7280;
+  }
+  .lockbtn:active{transform:scale(.98)}
+  .lockbtn:focus-visible{outline:3px solid #E6C583;outline-offset:2px}
 </style>
 </head>
 <body>
+
+<div class="gate" id="gate" hidden>
+  <form class="gate-card" id="gateForm" autocomplete="off">
+    <div class="gate-ico" aria-hidden="true">🔒</div>
+    <h2>잠긴 페이지</h2>
+    <p class="sub">간편 비밀번호를 입력하면 열립니다.</p>
+    <input id="gateInput" type="password" inputmode="text" autocomplete="off"
+           autocapitalize="off" autocorrect="off" spellcheck="false"
+           placeholder="간편 비밀번호" aria-label="간편 비밀번호">
+    <p class="err" id="gateErr" role="alert" aria-live="polite"></p>
+    <button type="submit" class="go">열기</button>
+    <p class="tip">열면 이 브라우저 탭이 닫힐 때까지 유지되고, 아래 ‘다시 잠그기’로 바로 잠글 수 있어요.</p>
+  </form>
+</div>
+
 <div class="wrap">
 
   <a class="back" href="../my-hub/"><span class="arw" aria-hidden="true">←</span> 산출물 허브로</a>
@@ -492,6 +564,7 @@
 
   <footer>
     <p class="foot-note">생일·숫자 7 · 모래 나선 2 · 인사·안부 3 · 식사·기프티쇼 3 · 총 15장 · 제작 2026.11.27<br>© NCL PEOPLES · GitHub @lookbw2010</p>
+    <div class="lockrow"><button type="button" class="lockbtn" data-lock>🔒 다시 잠그기</button></div>
     <a class="foot-link" href="../my-hub/"><span aria-hidden="true">←</span> 산출물 허브로 돌아가기</a>
   </footer>
 </div>
@@ -690,6 +763,78 @@
       return { index: idx + 1, length: list.length, title: lbTitle.textContent, src: lbImg.getAttribute('src') };
     },
     close: close
+  };
+})();
+</script>
+
+<script>
+(function () {
+  var HASH = '%s', B64 = '%s', KEY = '%s';
+  var gate = document.getElementById('gate');
+  var form = document.getElementById('gateForm');
+  var input = document.getElementById('gateInput');
+  var err = document.getElementById('gateErr');
+  var root = document.documentElement;
+
+  function remember(on) {
+    try { on ? sessionStorage.setItem(KEY, HASH) : sessionStorage.removeItem(KEY); } catch (e) {}
+  }
+  function digest(s) {
+    if (window.crypto && crypto.subtle && crypto.subtle.digest) {
+      return crypto.subtle.digest('SHA-256', new TextEncoder().encode(s)).then(function (buf) {
+        return Array.prototype.map.call(new Uint8Array(buf), function (b) {
+          return ('00' + b.toString(16)).slice(-2);
+        }).join('');
+      });
+    }
+    /* 보안 컨텍스트가 아닌 환경의 예비 비교 */
+    return Promise.resolve(btoa(s) === B64 ? HASH : '');
+  }
+  function unlock() {
+    root.classList.remove('locked');
+    gate.hidden = true;
+    err.textContent = '';
+    input.value = '';
+  }
+  function lock() {
+    remember(false);
+    root.classList.add('locked');
+    gate.hidden = false;
+    input.value = '';
+    err.textContent = '';
+    setTimeout(function () { try { input.focus(); } catch (e) {} }, 30);
+  }
+
+  if (root.classList.contains('locked')) {
+    gate.hidden = false;
+  } else {
+    gate.hidden = true;
+  }
+
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    var v = input.value.trim();
+    if (!v) { err.textContent = '비밀번호를 입력해 주세요.'; input.focus(); return; }
+    digest(v).then(function (h) {
+      if (h && h === HASH) {
+        remember(true);
+        unlock();
+      } else {
+        err.textContent = '비밀번호가 맞지 않습니다.';
+        form.classList.add('err');
+        setTimeout(function () { form.classList.remove('err'); }, 340);
+        input.select();
+      }
+    });
+  });
+  Array.prototype.forEach.call(document.querySelectorAll('[data-lock]'), function (b) {
+    b.addEventListener('click', lock);
+  });
+
+  window.PageLock = {
+    lock: lock,
+    unlocked: function () { return !root.classList.contains('locked'); },
+    submit: function (v) { input.value = v; form.dispatchEvent(new Event('submit', {cancelable: true})); }
   };
 })();
 </script>
