@@ -339,13 +339,23 @@
   Field.prototype.reset = function (hard) {
     this.clearTimers();
     this.running = false;
+    var wasDown = this.done;
     this.done = false;
     var self = this;
-    this.tiles.forEach(function (t) {
+    this.tiles.forEach(function (t, i) {
       if (t.node.getAnimations) {
         t.node.getAnimations().forEach(function (a) { a.cancel(); });
       }
-      t.node.style.transform = 'rotate(' + t.tilt.toFixed(2) + 'deg)';
+      t.node.classList.remove('down');
+      if (wasDown && !reduceMotion && t.node.animate) {
+        t.node.animate([
+          { transform: 'rotate(' + (t.dir * 73 + t.tilt * 0.4).toFixed(2) + 'deg)' },
+          { transform: 'rotate(' + (t.tilt - 2.4).toFixed(2) + 'deg)' },
+          { transform: 'rotate(' + t.tilt.toFixed(2) + 'deg)' }
+        ], { duration: 430, delay: i * 24, easing: 'cubic-bezier(.2,1.1,.35,1)', fill: 'forwards' });
+      } else {
+        t.node.style.transform = 'rotate(' + t.tilt.toFixed(2) + 'deg)';
+      }
     });
     if (hard) this.build(false);
     if (this.opts.onReset) this.opts.onReset();
