@@ -257,6 +257,15 @@ body {
 }
 .tile.finale .glyph { font-size: calc(var(--th) * 0.42); }
 
+/* 넘어진 타일은 두께감을 줄여 '누워 있는' 느낌으로 */
+.tile.down {
+  box-shadow:
+    1.5px 1.5px 0 var(--edge),
+    0 6px 12px -7px rgba(96, 62, 24, 0.32),
+    inset 0 1px 0 var(--shine);
+}
+.tile.down .glyph { opacity: 0.94; }
+
 /* 테마 */
 .stage[data-theme="wood"] {
   --face1: #F2C894; --face2: #D89A5C; --edge: #A9703A; --tile-ink: #5A3312;
