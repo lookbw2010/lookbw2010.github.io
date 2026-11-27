@@ -316,7 +316,7 @@
       var rowW = (cnt - 1) * spacing;
       var pad = (span - rowW) / 2;
       for (var i = 0; i < cnt; i++) {
-        var off = dir > 0 ? (pad + i * spacing) : (g.W - g.margin - pad - i * spacing);
+        var off = dir > 0 ? (xL + pad + i * spacing) : (xR - pad - i * spacing);
         out.push({ x: off, y: y, row: r, dir: dir });
       }
     }
