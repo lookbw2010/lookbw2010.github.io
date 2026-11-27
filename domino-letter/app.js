@@ -294,7 +294,7 @@
     return best;
   };
 
-  /* 줄마다 타일을 같은 간격으로 세우고, 줄이 바뀌면 방향을 뒤집는다(릴레이) */
+  /* 줄마다 타일을 같은 간격으로 세우고, 줄이 바뀌면 다음 줄 왼쪽부터 이어진다(릴레이) */
   Field.prototype.pathPoints = function (g, n) {
     var rows = g.rows, pitch = g.rowPitch, tileH = g.tileH;
     var blockH = tileH + (rows - 1) * pitch;
@@ -312,12 +312,11 @@
       left -= cnt;
       if (cnt <= 0) continue;
       var y = startY + tileH + r * pitch;
-      var dir = r % 2 === 0 ? 1 : -1;
       var rowW = (cnt - 1) * spacing;
       var pad = (span - rowW) / 2;
       for (var i = 0; i < cnt; i++) {
-        var off = dir > 0 ? (xL + pad + i * spacing) : (xR - pad - i * spacing);
-        out.push({ x: off, y: y, row: r, dir: dir });
+        /* 줄마다 왼쪽에서 오른쪽으로 — 글자가 읽히는 순서를 지키고, 다음 줄은 왼쪽에서 이어진다 */
+        out.push({ x: xL + pad + i * spacing, y: y, row: r, dir: 1 });
       }
     }
     return out;
