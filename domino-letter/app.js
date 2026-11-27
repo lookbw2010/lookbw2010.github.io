@@ -219,7 +219,7 @@
 
     pts.forEach(function (pt, idx) {
       var item = list[idx];
-      var dir = Math.floor(pt.row + 0.001) % 2 === 0 ? 1 : -1;
+      var dir = pt.dir;
       var wrap = document.createElement('div');
       wrap.className = 'wrap';
       wrap.style.left = pt.x.toFixed(1) + 'px';
@@ -271,68 +271,65 @@
     var best = null;
     for (; tileH >= 44; tileH -= 2) {
       var tileW = Math.round(tileH * 0.62);
-      var rowPitch = Math.round(tileH * 1.5);
-      var bulge = Math.min(rowPitch * 0.36, Math.max(14, tileW * 0.62));
-      var margin = Math.ceil(tileW * 0.6 + bulge + 4);
+      var pitch = Math.round(tileH * 1.45);
+      var margin = Math.ceil(tileW * 0.6 + 6);
       var L = W - margin * 2;
-      if (L < 80) continue;
-      var needH = (rows - 1) * rowPitch + tileH * 1.1 + 10;
+      if (L < 90) continue;
+      var needH = tileH + (rows - 1) * pitch + 14;
       if (needH > H) continue;
-      var arc = 2 * Math.hypot(rowPitch / 2, bulge);
-      var total = rows * L + (rows - 1) * arc;
+      var total = L + (rows - 1) * (L + 0.4142 * pitch);
       var spacing = total / Math.max(1, n - 1);
       var cand = {
-        tileW: tileW, tileH: tileH, rows: rows, rowPitch: rowPitch,
-        bulge: bulge, margin: margin, spacing: spacing, W: W, H: H, n: n
+        tileW: tileW, tileH: tileH, rows: rows, rowPitch: pitch,
+        margin: margin, spacing: spacing, W: W, H: H, n: n
       };
       if (!best) best = cand;
       if (spacing >= tileH * 0.72 && spacing <= tileH * 0.98) { best = cand; break; }
     }
     if (!best) {
-      var th = 46;
+      var th = 46, tw = Math.round(th * 0.62);
       best = {
-        tileW: Math.round(th * 0.62), tileH: th, rows: 3, rowPitch: Math.round(th * 1.5),
-        bulge: 14, margin: Math.ceil(th * 0.62 * 0.6 + 18), spacing: th * 0.8, W: W, H: H, n: n
+        tileW: tw, tileH: th, rows: 3, rowPitch: Math.round(th * 1.45),
+        margin: Math.ceil(tw * 0.6 + 6), spacing: th * 0.8, W: W, H: H, n: n
       };
     }
     return best;
   };
 
-  /* S자(뱀) 줄을 따라 같은 간격으로 타일을 앉힌다 */
+  /* 줄 → 45도 내리막 → 다음 줄(지그재그)로 이어지는 길을 따라 같은 간격으로 타일을 앉힌다 */
   Field.prototype.pathPoints = function (g, n) {
-    var rows = g.rows, rowPitch = g.rowPitch, tileH = g.tileH;
-    var blockH = tileH + (rows - 1) * rowPitch;
-    var startY = Math.max(6, (g.H - blockH) / 2);
+    var rows = g.rows, pitch = g.rowPitch, tileH = g.tileH;
+    var blockH = tileH + (rows - 1) * pitch;
+    var startY = Math.max(8, (g.H - blockH) / 2);
     var xL = g.margin;
     var xR = g.W - g.margin;
-    var bulge = g.bulge;
 
     var poly = [];
-    function push(x, y, row) { poly.push({ x: x, y: y, row: row }); }
-
-    for (var r = 0; r < rows; r++) {
-      var y = startY + tileH + r * rowPitch;
-      var right = r % 2 === 0;
-      var x0 = right ? xL : xR;
-      var x1 = right ? xR : xL;
-      var steps = Math.max(2, Math.round(Math.abs(x1 - x0) / 12));
-      for (var s = 0; s <= steps; s++) push(x0 + (x1 - x0) * s / steps, y, r);
-      if (r < rows - 1) {
-        var cx = x1 + (right ? bulge : -bulge);
-        var cy = y + rowPitch / 2;
-        var arc = 16;
-        for (var a = 1; a <= arc; a++) {
-          var t = a / arc, mt = 1 - t;
-          push(
-            mt * mt * x1 + 2 * mt * t * cx + t * t * x1,
-            mt * mt * y + 2 * mt * t * cy + t * t * (y + rowPitch),
-            r + t
-          );
-        }
+    function line(x0, y0, x1, y1, row) {
+      var len = Math.hypot(x1 - x0, y1 - y0);
+      var steps = Math.max(2, Math.round(len / 10));
+      for (var i = 0; i <= steps; i++) {
+        var x = x0 + (x1 - x0) * i / steps;
+        var y = y0 + (y1 - y0) * i / steps;
+        var last = poly[poly.length - 1];
+        if (last && Math.abs(last.x - x) < 0.01 && Math.abs(last.y - y) < 0.01) continue;
+        poly.push({ x: x, y: y, row: row });
       }
     }
 
-    /* 길이 기준으로 균등 재배열 */
+    var x = xL, y = startY + tileH;
+    for (var r = 0; r < rows; r++) {
+      var right = r % 2 === 0;
+      var xEnd = right ? xR : xL;
+      line(x, y, xEnd, y, r);
+      if (r < rows - 1) {
+        var nx = right ? xR - pitch : xL + pitch;
+        line(xEnd, y, nx, y + pitch, r + 0.5);
+        x = nx; y = y + pitch;
+      }
+    }
+
+    /* 길이 기준으로 균등 재배열 + 진행 방향으로 넘어질 방향 결정 */
     var cum = [0];
     for (var i = 1; i < poly.length; i++) {
       cum.push(cum[i - 1] + Math.hypot(poly[i].x - poly[i - 1].x, poly[i].y - poly[i - 1].y));
@@ -346,10 +343,12 @@
       var seg = (cum[j + 1] - cum[j]) || 1;
       var tt = Math.min(1, Math.max(0, (target - cum[j]) / seg));
       var p0 = poly[j], p1 = poly[j + 1] || poly[j];
+      var dx = p1.x - p0.x;
       out.push({
         x: p0.x + (p1.x - p0.x) * tt,
         y: p0.y + (p1.y - p0.y) * tt,
-        row: p0.row + (p1.row - p0.row) * tt
+        row: p0.row + (p1.row - p0.row) * tt,
+        dir: dx >= 0 ? 1 : -1
       });
     }
     return out;
