@@ -361,7 +361,6 @@
       backdrop.classList.add('show');
       revealActiveShape();
     });
-    setTimeout(function () { try { input.focus({ preventScroll: true }); } catch (e) { } }, 380);
   }
 
   function closeSheet() {
