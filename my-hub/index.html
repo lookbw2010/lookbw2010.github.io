@@ -1,0 +1,1337 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="light">
+<meta name="theme-color" content="#FBFAF7">
+<link rel="manifest" href="/manifest.json">
+<link rel="icon" type="image/png" sizes="192x192" href="/icons/icon-192.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/icons/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="산출물 허브">
+<title>산출물 허브 · 내 작업용 | GitHub 산출물 22개 한눈에</title>
+<meta name="description" content="회사 제안·전략 자료와 고객사 적용 중인 연말정산 테스트, 웹앱·신사업 시제품, 두뇌 게임까지. GitHub Pages에 올린 페이지 22개를 카테고리와 진행 단계 두 축으로 나눠 바로 열어보는 통합 목차.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="산출물 허브(내 작업용) — GitHub 산출물 22개 한눈에">
+<meta property="og:description" content="카테고리 회사·제안 10 · 웹앱·신사업 8 · 게임·테스트 4 / 진행 단계 진행 중 2 · 운영 5 · 제안·데모 2 · 시안·프로토타입 9 · 자료·아카이브 4. 카드를 누르면 바로 열립니다.">
+<meta name="twitter:card" content="summary_large_image">
+<style>
+  :root{
+    color-scheme:light;
+    --bg:#FBFAF7;
+    --ink:#16202E;
+    --body:#45536B;
+    --muted:#6B7A91;
+    --line:#E3E9F1;
+    --card:#FFFFFF;
+    --blue:#1D4ED8;
+    --blue-soft:#E8F1FE;
+    --violet:#6D28D9;
+    --violet-soft:#F1EBFE;
+    --green:#047857;
+    --green-soft:#E3FAF0;
+    --amber:#B45309;
+    --amber-soft:#FFF3E1;
+    --slate:#475569;
+    --slate-soft:#EEF2F7;
+    --radius:18px;
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  html{background:var(--bg);scroll-behavior:smooth}
+  html,body{margin:0;padding:0}
+  body{
+    background:
+      radial-gradient(100% 46% at 50% -10%, #E7F1FE 0%, rgba(231,241,254,0) 66%),
+      radial-gradient(70% 38% at 104% 1%, #FFF2DC 0%, rgba(255,242,220,0) 62%),
+      radial-gradient(64% 34% at -8% 12%, #E9FBF4 0%, rgba(233,251,244,0) 62%),
+      linear-gradient(180deg, #FBFAF7 0%, #F8FAFD 52%, #F5F9FC 100%);
+    background-color:var(--bg);
+    background-attachment:fixed;
+    min-height:100vh;
+    color:var(--body);
+    font-family:-apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Malgun Gothic", "Noto Sans KR", "Noto Sans CJK KR", "NanumGothic", "Segoe UI", sans-serif;
+    -webkit-text-size-adjust:100%;
+    word-break:keep-all;
+    line-height:1.6;
+  }
+  .wrap{max-width:840px;margin:0 auto;padding:34px 18px calc(38px + env(safe-area-inset-bottom))}
+
+  /* ── 헤더 ── */
+  .brand{
+    display:inline-flex;align-items:center;gap:8px;
+    font-size:13px;font-weight:800;letter-spacing:.14em;
+    color:var(--blue);text-transform:uppercase;margin-bottom:14px;
+  }
+  .brand .dot{width:7px;height:7px;border-radius:50%;background:var(--blue);display:inline-block}
+  h1{
+    font-size:30px;line-height:1.34;letter-spacing:-.025em;
+    margin:0 0 10px;font-weight:800;color:var(--ink);
+  }
+  h1 em{font-style:normal;color:var(--blue)}
+  .lead{margin:0 0 18px;font-size:16px;color:var(--body);line-height:1.65}
+  .lead b{color:var(--ink);font-weight:800}
+  .stats{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 24px}
+  .stat{
+    display:inline-flex;align-items:baseline;gap:5px;
+    padding:8px 13px;border-radius:12px;
+    background:#fff;border:1.5px solid var(--line);
+    font-family:inherit;font-size:14px;font-weight:700;color:var(--muted);
+    box-shadow:0 2px 8px rgba(22,32,46,.04);
+  }
+  .stat b{font-size:17px;font-weight:800;color:var(--ink);letter-spacing:-.01em}
+  button.stat{cursor:pointer}
+  button.stat.live{
+    background:#FFF7E8;border-color:#F5CE8C;color:#92400E;
+    box-shadow:0 3px 10px rgba(180,83,9,.10);
+  }
+  button.stat.live b{color:#B45309}
+  button.stat.live .pip{
+    width:8px;height:8px;border-radius:50%;background:#D97706;
+    align-self:center;margin-left:2px;animation:pulse 1.9s ease-in-out infinite;
+  }
+  button.stat:focus-visible{outline:3px solid #93C5FD;outline-offset:2px}
+  @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.45;transform:scale(.82)}}
+  @media (prefers-reduced-motion:reduce){button.stat.live .pip{animation:none}}
+
+  /* ── PWA 설치 배너 ── */
+  .pwa-install{
+    margin:0 0 22px;padding:10px;border-radius:16px;
+    background:linear-gradient(135deg,#EFF6FF 0%,#F7FBFF 58%,#FFF8EE 100%);
+    border:1.5px solid #C7DDFB;
+    box-shadow:0 6px 18px rgba(29,78,216,.08);
+  }
+  .pwa-install[hidden]{display:none}
+  .pwa-install button{
+    display:flex;align-items:center;gap:12px;width:100%;
+    border:0;border-radius:12px;padding:13px 15px;cursor:pointer;
+    background:linear-gradient(135deg,#2563EB 0%,#1D4ED8 100%);
+    color:#fff;font-family:inherit;text-align:left;
+    box-shadow:0 6px 14px rgba(29,78,216,.20);
+    transition:transform .12s ease;
+  }
+  .pwa-install button:active{transform:scale(.985)}
+  .pwa-ico{font-size:21px;line-height:1;flex:0 0 auto}
+  .pwa-txt{display:flex;flex-direction:column;gap:1px}
+  .pwa-txt strong{font-size:16px;font-weight:800;letter-spacing:-.01em}
+  .pwa-txt small{font-size:13.5px;font-weight:600;color:#DBEAFE}
+
+  /* ── 필터 · 검색 ── */
+  .sticky{
+    position:sticky;top:0;z-index:30;
+    margin:0 -18px 16px;padding:8px 18px 10px;
+    background:rgba(251,250,247,.94);
+    -webkit-backdrop-filter:saturate(180%) blur(12px);
+    backdrop-filter:saturate(180%) blur(12px);
+    border-bottom:1px solid rgba(227,233,241,.9);
+  }
+  /* 필터는 '카테고리'와 '진행 단계' 두 축으로 분리 — 라벨로 어느 축인지 늘 보이게 */
+  .filter-rows{display:flex;flex-direction:column}
+  .filter-row{display:flex;flex-direction:column;gap:3px;padding:3px 0 2px}
+  .filter-row + .filter-row{border-top:1px dashed #DFE7F1;margin-top:2px;padding-top:6px}
+  .filter-label{
+    display:flex;align-items:center;gap:6px;
+    font-size:12px;font-weight:800;letter-spacing:.02em;color:#6F8099;
+    line-height:1.3;
+  }
+  .filter-label i{width:6px;height:6px;border-radius:2px;background:#8FA6C4;flex:0 0 auto}
+  .filter-label.stage i{background:#D9A256}
+  .filter-label .sub{font-size:11.5px;font-weight:700;color:#A9B6C7;letter-spacing:0}
+  .filter-scroll{position:relative}
+  .filter-scroll::after{
+    content:"";position:absolute;top:0;right:0;width:22px;height:100%;
+    pointer-events:none;
+    background:linear-gradient(90deg, rgba(251,250,247,0), rgba(251,250,247,.95));
+  }
+  .filters{display:flex;gap:8px;overflow-x:auto;padding:0 0 2px;scrollbar-width:none}
+  .filters::-webkit-scrollbar{display:none}
+  .filters button{
+    flex:0 0 auto;display:inline-flex;align-items:center;gap:6px;
+    min-height:44px;padding:9px 15px;border-radius:999px;cursor:pointer;
+    border:1.5px solid #DCE4EF;background:#fff;color:var(--body);
+    font-family:inherit;font-size:15px;font-weight:700;letter-spacing:-.01em;
+    white-space:nowrap;transition:background .15s ease,color .15s ease,border-color .15s ease;
+  }
+  .filters button .n{
+    font-size:13px;font-weight:800;padding:1px 7px;border-radius:999px;
+    background:var(--slate-soft);color:var(--muted);
+  }
+  .filters button .dotc{width:7px;height:7px;border-radius:50%;flex:0 0 auto;background:#8FA6C4}
+  .filters button[data-value="company"] .dotc{background:#3B82F6}
+  .filters button[data-value="app"] .dotc{background:#8B5CF6}
+  .filters button[data-value="game"] .dotc{background:#10B981}
+  .filters button .pip-s{
+    width:7px;height:7px;border-radius:50%;background:#C2740A;flex:0 0 auto;
+    animation:pulse 1.9s ease-in-out infinite;
+  }
+  @media (prefers-reduced-motion:reduce){.filters button .pip-s{animation:none}}
+  .filters button[data-value="active"]{border-color:#F5CE8C;background:#FFFBF2;color:#92400E}
+  .filters button[data-value="active"] .n{background:#FDE9C2;color:#92400E}
+  .filters button[aria-pressed="true"]{
+    background:var(--ink);border-color:var(--ink);color:#fff;
+    box-shadow:0 4px 12px rgba(22,32,46,.18);
+  }
+  .filters button[aria-pressed="true"] .n{background:rgba(255,255,255,.18);color:#fff}
+  .filters button[data-value="active"][aria-pressed="true"]{
+    background:#B45309;border-color:#B45309;box-shadow:0 4px 14px rgba(180,83,9,.28);
+  }
+  .filters button[data-value="active"][aria-pressed="true"] .pip-s{background:#FBD38D}
+  .filters button:focus-visible{outline:3px solid #93C5FD;outline-offset:2px}
+
+  .search{position:relative;margin-top:6px}
+  .search input{
+    width:100%;min-height:46px;padding:11px 14px 11px 40px;
+    border-radius:14px;border:1.5px solid #DCE4EF;background:#fff;
+    font-family:inherit;font-size:16px;color:var(--ink);
+    box-shadow:0 2px 8px rgba(22,32,46,.04);
+  }
+  .search input::placeholder{color:#93A2B7}
+  .search input:focus{outline:none;border-color:#93C5FD;box-shadow:0 0 0 4px rgba(147,197,253,.28)}
+  .search .ico{
+    position:absolute;left:13px;top:50%;transform:translateY(-50%);
+    font-size:16px;color:#93A2B7;line-height:1;pointer-events:none;
+  }
+
+  .result{
+    display:block;
+    margin:0 0 12px;font-size:14.5px;font-weight:700;color:var(--muted);
+  }
+  .result b{color:var(--ink);font-weight:800}
+
+  /* ── 카드 그리드 ── */
+  .grid{display:grid;grid-template-columns:1fr;gap:14px}
+  @media (min-width:680px){.grid{grid-template-columns:1fr 1fr;gap:16px}}
+
+  .card{
+    position:relative;display:flex;flex-direction:column;overflow:hidden;
+    background:var(--card);border:1.5px solid var(--line);
+    border-radius:var(--radius);padding:21px 18px 15px;
+    box-shadow:0 6px 18px rgba(22,32,46,.05);
+    transition:transform .14s ease, box-shadow .14s ease, border-color .14s ease;
+  }
+  .card[hidden]{display:none}
+  .card::before{
+    content:"";position:absolute;left:0;right:0;top:0;height:4px;
+    background:var(--bar,transparent);
+  }
+  .card:hover{transform:translateY(-2px);box-shadow:0 12px 26px rgba(22,32,46,.09);border-color:#D3DEEB}
+  .card:focus-within{border-color:#93C5FD;box-shadow:0 0 0 4px rgba(147,197,253,.22),0 8px 22px rgba(22,32,46,.08)}
+  .card[data-cat="company"]{--bar:linear-gradient(90deg,#60A5FA,#BFDBFE);--accent:#1D4ED8}
+  .card[data-cat="app"]{--bar:linear-gradient(90deg,#A78BFA,#DDD6FE);--accent:#6D28D9}
+  .card[data-cat="game"]{--bar:linear-gradient(90deg,#34D399,#A7F3D0);--accent:#047857}
+  /* 진행 중 카드: 눈에 띄게 */
+  .card[data-status="active"]{
+    --bar:linear-gradient(90deg,#EA8C0B,#FBD38D);
+    --accent:#B45309;
+    background:linear-gradient(180deg,#FFFDF7 0%,#FFFFFF 46%);
+    border-color:#F5CE8C;
+    box-shadow:0 10px 26px rgba(180,83,9,.13), 0 0 0 1px rgba(245,206,140,.35);
+  }
+  .card[data-status="active"]:hover{border-color:#E9B45C;box-shadow:0 14px 32px rgba(180,83,9,.18)}
+
+  .badges{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:11px}
+  .badge{
+    display:inline-flex;align-items:center;
+    font-size:13px;font-weight:800;letter-spacing:.01em;
+    padding:4px 10px;border-radius:999px;line-height:1.5;
+  }
+  .b-company{background:var(--blue-soft);color:var(--blue)}
+  .b-app{background:var(--violet-soft);color:var(--violet)}
+  .b-game{background:var(--green-soft);color:var(--green)}
+  .s-active{
+    background:#FDEBC8;color:#8A4B06;font-size:13.5px;
+    box-shadow:0 0 0 1.5px #F0C078 inset;
+  }
+  .s-active .pip{
+    width:7px;height:7px;border-radius:50%;background:#C2740A;
+    margin-right:6px;animation:pulse 1.9s ease-in-out infinite;
+  }
+  .s-ok{background:#E7F8EE;color:#047857}
+  .s-demo{background:#E8F1FE;color:#1D4ED8}
+  .s-proto{background:#F1EBFE;color:#6D28D9}
+  .s-muted{background:var(--slate-soft);color:#475569}
+  .s-arch{background:#F2F4F7;color:#7A8798}
+  .client{background:#F7FAFD;color:#4B6B8F;border:1px solid #DDE7F2}
+  @media (prefers-reduced-motion:reduce){.s-active .pip{animation:none}}
+
+  .card h2{
+    font-size:19px;line-height:1.4;margin:0 0 7px;font-weight:800;
+    letter-spacing:-.015em;color:var(--ink);
+  }
+  .card p{margin:0 0 14px;font-size:15.5px;line-height:1.62;color:var(--body)}
+  .live-note{
+    display:flex;align-items:flex-start;gap:7px;
+    margin:-4px 0 14px !important;padding:9px 11px;border-radius:11px;
+    background:#FFF6E3;border:1px solid #F6D9A6;
+    font-size:14.5px !important;font-weight:800;color:#8A4B06;line-height:1.5 !important;
+  }
+
+  .foot-row{
+    margin-top:auto;display:flex;align-items:center;justify-content:space-between;
+    gap:10px;padding-top:12px;border-top:1px solid #F0F4F9;
+  }
+  .open{
+    position:relative;display:inline-flex;align-items:center;gap:6px;
+    font-size:16px;font-weight:800;letter-spacing:-.01em;
+    color:var(--accent,var(--blue));text-decoration:none;
+    padding:6px 0;min-height:40px;
+  }
+  .open::before{content:"";position:absolute;inset:-9999px;border-radius:var(--radius)}
+  .open .arrow{display:inline-block;transition:transform .14s ease}
+  .card:hover .open .arrow{transform:translateX(3px)}
+  .open:focus-visible{outline:3px solid #93C5FD;outline-offset:3px;border-radius:8px}
+  .copy{
+    position:relative;z-index:2;flex:0 0 auto;cursor:pointer;
+    display:inline-flex;align-items:center;gap:5px;
+    min-height:40px;padding:8px 12px;border-radius:11px;
+    border:1.5px solid #DCE4EF;background:#fff;
+    font-family:inherit;font-size:14px;font-weight:700;color:var(--muted);
+    transition:background .15s ease,color .15s ease,border-color .15s ease;
+  }
+  .copy:active{transform:scale(.97)}
+  .copy.done{background:#E7F8EE;border-color:#A7E3C4;color:#047857}
+  .copy:focus-visible{outline:3px solid #93C5FD;outline-offset:2px}
+
+  .empty{
+    display:none;margin:26px 0;padding:26px 18px;text-align:center;
+    border-radius:16px;border:1.5px dashed #D8E0EB;background:#fff;
+    font-size:15.5px;font-weight:700;color:var(--muted);
+  }
+  .empty.show{display:block}
+  .empty p{margin:0 0 14px}
+  .empty button{
+    min-height:44px;padding:10px 16px;border-radius:12px;cursor:pointer;
+    border:1.5px solid #BFD2E8;background:#F8FBFF;color:var(--blue);
+    font-family:inherit;font-size:14.5px;font-weight:800;
+  }
+  .empty button:active{transform:scale(.98)}
+
+  .foot-card{
+    margin-top:28px;padding:22px 18px;border-radius:18px;
+    background:#fff;border:1.5px solid var(--line);
+    text-align:center;box-shadow:0 6px 18px rgba(22,32,46,.05);
+  }
+  .foot-card .label{margin:0 0 5px;font-size:15px;font-weight:800;color:var(--ink)}
+  .foot-card .sub{margin:0 0 15px;font-size:14.5px;color:var(--muted)}
+  .foot-card a.btn{
+    display:inline-flex;align-items:center;justify-content:center;gap:6px;
+    min-height:48px;padding:13px 22px;border-radius:13px;text-decoration:none;
+    background:linear-gradient(135deg,#2563EB 0%,#1D4ED8 100%);
+    color:#fff;font-size:16px;font-weight:800;
+    box-shadow:0 8px 18px rgba(29,78,216,.20);
+  }
+  .copyline{margin:20px 0 0;text-align:center;font-size:13px;color:#94A3B8;line-height:1.7}
+
+  /* ── 설치 안내 시트 ── */
+  .pwa-sheet{
+    position:fixed;inset:0;z-index:1000;
+    display:flex;align-items:flex-end;justify-content:center;
+    padding:16px 16px calc(16px + env(safe-area-inset-bottom));
+    background:rgba(15,23,42,.45);
+    -webkit-backdrop-filter:blur(2px);backdrop-filter:blur(2px);
+  }
+  .pwa-sheet[hidden]{display:none}
+  .pwa-sheet-card{
+    position:relative;width:100%;max-width:430px;max-height:88vh;overflow:auto;
+    background:#FFFFFF;border-radius:22px;padding:26px 20px 20px;
+    box-shadow:0 -8px 40px rgba(15,23,42,.24);
+    animation:pwaUp .22s ease-out;
+  }
+  @keyframes pwaUp{from{transform:translateY(18px);opacity:.55}to{transform:none;opacity:1}}
+  @media (prefers-reduced-motion:reduce){.pwa-sheet-card{animation:none}}
+  .pwa-close{
+    position:absolute;top:10px;right:10px;width:40px;height:40px;
+    border:0;border-radius:50%;background:#F1F5F9;color:#475569;
+    font-size:17px;line-height:1;cursor:pointer;font-family:inherit;
+  }
+  .pwa-kicker{margin:0 0 6px;font-size:13px;font-weight:800;letter-spacing:.08em;color:var(--blue);text-transform:uppercase}
+  .pwa-title{margin:0 0 6px;font-size:21px;line-height:1.4;font-weight:800;letter-spacing:-.01em;color:var(--ink)}
+  .pwa-desc{margin:0 0 16px;font-size:15px;line-height:1.62;color:var(--body)}
+  .pwa-steps{list-style:none;margin:0 0 16px;padding:0;display:flex;flex-direction:column;gap:10px}
+  .pwa-steps li{display:flex;align-items:flex-start;gap:12px;background:#F8FAFC;border:1.5px solid var(--line);border-radius:14px;padding:12px 14px}
+  .pwa-num{
+    flex:0 0 24px;height:24px;margin-top:1px;border-radius:50%;background:var(--blue);color:#fff;
+    font-size:13px;font-weight:800;display:flex;align-items:center;justify-content:center;
+  }
+  .pwa-step-body{font-size:15.5px;line-height:1.55;color:var(--ink);font-weight:600}
+  .pwa-step-body em{font-style:normal;color:var(--blue);font-weight:800}
+  .pwa-glyph{
+    display:inline-block;padding:0 7px;border-radius:8px;
+    background:#EFF6FF;border:1.5px solid #BFDBFE;color:#1D4ED8;
+    font-size:15px;font-weight:800;line-height:1.5;
+  }
+  .pwa-copy{
+    width:100%;border:0;border-radius:14px;padding:15px;cursor:pointer;
+    background:linear-gradient(135deg,#2563EB 0%,#1D4ED8 100%);
+    color:#fff;font-family:inherit;font-size:16.5px;font-weight:800;
+    box-shadow:0 8px 18px rgba(29,78,216,.20);
+  }
+  .pwa-copy[hidden]{display:none}
+  .pwa-copy.done{background:linear-gradient(135deg,#059669 0%,#047857 100%)}
+  .pwa-tip{margin:12px 2px 0;text-align:center;font-size:13.5px;line-height:1.55;color:#64748B}
+  .pwa-tip[hidden]{display:none}
+
+  /* ── 선택 · 공유 · 엑셀 도구 ── */
+  .tools{display:flex;flex-direction:column;gap:8px;margin-top:9px}
+  .tool-row{display:flex;align-items:center;justify-content:space-between;gap:8px;min-height:40px}
+  .sel-count{font-size:14.5px;font-weight:800;color:var(--muted);letter-spacing:-.01em;line-height:1.4}
+  .sel-count b{color:var(--blue);font-size:16.5px;font-weight:800}
+  .sel-hint{font-weight:700;color:#8A98AC;font-size:13.5px}
+  .tool-links{display:flex;gap:6px;flex:0 0 auto}
+  .tool-links button{
+    min-height:40px;padding:6px 11px;border-radius:10px;cursor:pointer;
+    border:1.5px solid #DCE4EF;background:#fff;color:var(--body);
+    font-family:inherit;font-size:13.5px;font-weight:800;letter-spacing:-.01em;
+    white-space:nowrap;transition:background .15s ease,border-color .15s ease;
+  }
+  .tool-links button:hover{border-color:#BFD2E8;background:#F8FBFF}
+  .tool-links button:active{transform:scale(.97)}
+  .tool-links button:disabled{opacity:.42;cursor:default;background:#fff;border-color:#E3E9F1}
+  .tool-links button:focus-visible,.export-row button:focus-visible{outline:3px solid #93C5FD;outline-offset:2px}
+  .export-row{display:grid;grid-template-columns:1.05fr 1fr;gap:8px}
+  .export-row button{
+    display:inline-flex;align-items:center;justify-content:center;gap:5px;
+    min-height:46px;padding:0 8px;border-radius:12px;cursor:pointer;
+    font-family:inherit;font-size:13.5px;font-weight:800;letter-spacing:-.015em;
+    white-space:nowrap;transition:transform .12s ease,box-shadow .15s ease,background .15s ease;
+  }
+  .export-row button:active{transform:scale(.98)}
+  .export-row .primary{
+    border:1.5px solid transparent;color:#fff;
+    background:linear-gradient(135deg,#2563EB 0%,#1D4ED8 100%);
+    box-shadow:0 6px 14px rgba(29,78,216,.20);
+  }
+  .export-row .csv{
+    border:1.5px solid #B9E3CB;color:#046C4E;background:#F1FBF6;
+  }
+  .export-row .csv:hover{background:#E7F8EE}
+
+  /* 카드 선택 체크 */
+  .badges{padding-right:46px}
+  .pick{
+    position:absolute;top:8px;right:8px;z-index:4;
+    width:44px;height:44px;padding:0;border:0;background:transparent;
+    display:flex;align-items:center;justify-content:center;cursor:pointer;
+    -webkit-tap-highlight-color:transparent;
+  }
+  .pick .box{
+    width:24px;height:24px;border-radius:8px;border:2px solid #C6D2E1;background:#fff;
+    display:flex;align-items:center;justify-content:center;
+    font-size:14px;font-weight:900;line-height:1;color:#fff;
+    box-shadow:0 1px 3px rgba(22,32,46,.06);
+    transition:background .15s ease,border-color .15s ease,transform .12s ease;
+  }
+  .pick[aria-checked="true"] .box{background:var(--blue);border-color:var(--blue)}
+  .pick[aria-checked="true"] .box::before{content:"\2713"}
+  .pick:active .box{transform:scale(.88)}
+  .pick:focus-visible{outline:3px solid #93C5FD;outline-offset:-2px;border-radius:12px}
+  .card.picked{border-color:#7FB2F5;box-shadow:0 0 0 3px rgba(147,197,253,.35),0 10px 24px rgba(29,78,216,.10)}
+  .card[data-status="active"].picked{border-color:#E9A63E;box-shadow:0 0 0 3px rgba(250,204,128,.38),0 12px 26px rgba(180,83,9,.16)}
+
+  /* 토스트 */
+  .toast{
+    position:fixed;left:50%;bottom:calc(22px + env(safe-area-inset-bottom));z-index:1200;
+    transform:translate(-50%,14px);opacity:0;pointer-events:none;
+    max-width:min(92vw,430px);padding:13px 18px;border-radius:14px;
+    background:rgba(22,32,46,.95);color:#fff;
+    font-size:15px;font-weight:700;line-height:1.45;text-align:center;letter-spacing:-.01em;
+    box-shadow:0 12px 30px rgba(15,23,42,.30);
+    transition:opacity .2s ease,transform .2s ease;
+  }
+  .toast.show{opacity:1;transform:translate(-50%,0)}
+
+  /* 복사 실패 시 수동 복사 시트 */
+  .copy-panel{
+    position:fixed;inset:0;z-index:1150;display:flex;align-items:flex-end;justify-content:center;
+    padding:16px 16px calc(16px + env(safe-area-inset-bottom));
+    background:rgba(15,23,42,.45);
+  }
+  .copy-panel[hidden]{display:none}
+  .copy-panel-card{
+    width:100%;max-width:430px;background:#fff;border-radius:20px;padding:22px 18px 18px;
+    box-shadow:0 -8px 40px rgba(15,23,42,.24);
+  }
+  .copy-panel-title{margin:0 0 4px;font-size:18px;font-weight:800;color:var(--ink);letter-spacing:-.01em}
+  .copy-panel-desc{margin:0 0 12px;font-size:14.5px;color:var(--body)}
+  .copy-panel-card textarea{
+    width:100%;height:190px;padding:12px;border-radius:12px;border:1.5px solid #DCE4EF;
+    background:#F8FAFC;color:var(--ink);font-family:inherit;font-size:14px;line-height:1.6;
+    resize:vertical;
+  }
+  .copy-panel-close{
+    width:100%;margin-top:12px;min-height:48px;border:0;border-radius:13px;cursor:pointer;
+    background:linear-gradient(135deg,#2563EB 0%,#1D4ED8 100%);color:#fff;
+    font-family:inherit;font-size:16px;font-weight:800;
+  }
+
+  @media (prefers-reduced-motion:reduce){
+    html{scroll-behavior:auto}
+    .card,.card:hover,.open .arrow,.toast{transition:none;transform:none}
+    .toast{transform:translate(-50%,0)}
+  }
+</style>
+</head>
+<body>
+  <div class="wrap">
+
+    <header>
+      <div class="brand"><span class="dot"></span>Lookbw · My Hub · 작업용</div>
+      <h1>산출물 <em>한눈에</em></h1>
+      <p class="lead">회사 제안·전략 자료와 고객사에 붙인 연말정산 테스트, 웹앱·신사업 시제품, 두뇌 게임까지. GitHub에 올린 페이지 22개를 <b>카테고리</b>(무엇인지)와 <b>진행 단계</b>(어디까지 했는지) 두 줄로 나눠 모았습니다. 카드를 누르면 바로 열리고, 원하는 항목만 체크해 공유하거나 엑셀로 저장할 수 있습니다.</p>
+      <div class="stats">
+        <span class="stat"><b>22</b> 페이지</span>
+        <button type="button" class="stat live" data-dim="stage" data-value="active" aria-label="진행 중인 항목만 보기"><b>2</b>건 진행 중<span class="pip" aria-hidden="true"></span></button>
+        <span class="stat"><b>3</b> 카테고리</span>
+      </div>
+
+      <div class="pwa-install" id="pwaInstall">
+        <button type="button" id="pwaInstallBtn">
+          <span class="pwa-ico" aria-hidden="true">📲</span>
+          <span class="pwa-txt">
+            <strong>바탕화면에 앱으로 설치하기</strong>
+            <small>한 번 설치하면 앱처럼 바로 열려요</small>
+          </span>
+        </button>
+      </div>
+    </header>
+
+    <div class="sticky">
+      <div class="filter-rows">
+        <div class="filter-row">
+          <span class="filter-label" id="lblCat"><i aria-hidden="true"></i>카테고리<span class="sub">무엇인지</span></span>
+          <div class="filter-scroll">
+            <div class="filters" role="group" aria-labelledby="lblCat">
+              <button type="button" data-dim="cat" data-value="all" aria-pressed="true">전체 <span class="n">22</span></button>
+              <button type="button" data-dim="cat" data-value="company" aria-pressed="false"><i class="dotc" aria-hidden="true"></i>회사·제안 <span class="n">10</span></button>
+              <button type="button" data-dim="cat" data-value="app" aria-pressed="false"><i class="dotc" aria-hidden="true"></i>웹앱·신사업 <span class="n">8</span></button>
+              <button type="button" data-dim="cat" data-value="game" aria-pressed="false"><i class="dotc" aria-hidden="true"></i>게임·테스트 <span class="n">4</span></button>
+            </div>
+          </div>
+        </div>
+        <div class="filter-row">
+          <span class="filter-label stage" id="lblStage"><i aria-hidden="true"></i>진행 단계<span class="sub">어디까지</span></span>
+          <div class="filter-scroll">
+            <div class="filters" role="group" aria-labelledby="lblStage">
+              <button type="button" data-dim="stage" data-value="all" aria-pressed="true">전체 <span class="n">22</span></button>
+              <button type="button" data-dim="stage" data-value="active" aria-pressed="false"><span class="pip-s" aria-hidden="true"></span>진행 중 <span class="n">2</span></button>
+              <button type="button" data-dim="stage" data-value="ok" aria-pressed="false">운영 <span class="n">5</span></button>
+              <button type="button" data-dim="stage" data-value="demo" aria-pressed="false">제안·데모 <span class="n">2</span></button>
+              <button type="button" data-dim="stage" data-value="proto" aria-pressed="false">시안·프로토타입 <span class="n">9</span></button>
+              <button type="button" data-dim="stage" data-value="archive" aria-pressed="false">자료·아카이브 <span class="n">4</span></button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="search">
+        <span class="ico" aria-hidden="true">🔍</span>
+        <input type="search" id="q" placeholder="이름·설명으로 찾기 (예: 연말정산, 킨로)" aria-label="산출물 검색" autocomplete="off">
+      </div>
+      <div class="tools" role="group" aria-label="선택 도구">
+        <div class="tool-row">
+          <span class="sel-count" id="selCount" aria-live="polite"><b>0</b>개 선택됨 <span class="sel-hint" id="selHint">· 선택 없으면 보이는 22개 전체</span></span>
+          <span class="tool-links">
+            <button type="button" id="selAll">전체 선택</button>
+            <button type="button" id="selNone" disabled>선택 해제</button>
+          </span>
+        </div>
+        <div class="export-row">
+          <button type="button" id="copySelected" class="primary"><span aria-hidden="true">📤</span> 선택 항목 공유 복사</button>
+          <button type="button" id="csvSelected" class="csv"><span aria-hidden="true">⬇</span> 엑셀(CSV) 다운로드</button>
+        </div>
+      </div>
+    </div>
+
+    <p class="result" id="result" aria-live="polite">전체 <b>22</b>개</p>
+
+    <main class="grid" id="grid">
+
+      <!-- ═══ 회사·제안 (진행 중 2건 포함) ═══ -->
+      <article class="card" data-cat="company" data-status="active">
+        <div class="badges">
+          <span class="badge s-active"><span class="pip" aria-hidden="true"></span>진행 중</span>
+          <span class="badge b-company">회사·제안</span>
+          <span class="badge client">DB생명</span>
+        </div>
+        <h2>DB생명 전용 연말정산 테스트</h2>
+        <p>DB생명 고객에게 바로 보내는 1분 연말정산 감각 테스트. 7문항 선택만으로 고객이 놓친 환급금과 지금 챙길 절세 포인트를 확인합니다.</p>
+        <p class="live-note"><span aria-hidden="true">⚑</span>사내·고객 적용 진행 중 · 최신 수정 반영</p>
+        <div class="foot-row">
+          <a class="open" href="../dblife-year-end-tax/" data-url="../dblife-year-end-tax/">테스트 열기 <span class="arrow">→</span></a>
+          <button type="button" class="copy" aria-label="주소 복사">주소 복사</button>
+        </div>
+      </article>
+      <article class="card" data-cat="company" data-status="active">
+        <div class="badges">
+          <span class="badge s-active"><span class="pip" aria-hidden="true"></span>진행 중</span>
+          <span class="badge b-company">회사·제안</span>
+          <span class="badge client">품스 개인품</span>
+        </div>
+        <h2>품스 개인품 전용 연말정산 테스트</h2>
+        <p>설계사 개인품에 붙여 고객에게 바로 보낼 수 있는 연말정산 감각 테스트. 개인품별 연결과 배포 방식을 맞추는 작업을 진행하고 있습니다.</p>
+        <p class="live-note"><span aria-hidden="true">⚑</span>개인품 적용 진행 중 · 최신 수정 반영</p>
+        <div class="foot-row">
+          <a class="open" href="../pumss-year-end-tax/" data-url="../pumss-year-end-tax/">테스트 열기 <span class="arrow">→</span></a>
+          <button type="button" class="copy" aria-label="주소 복사">주소 복사</button>
+        </div>
+      </article>
+      <article class="card" data-cat="company" data-status="proto">
+        <div class="badges"><span class="badge b-company">회사·제안</span><span class="badge s-proto">시안·프로토타입</span></div>
+        <h2>NCL PEOPLES 홈페이지 리뉴얼</h2>
+        <p>1996년부터 이어온 보험·금융 마케팅 회사의 새 홈페이지. PUMSS·쇼핑몰·기프티쇼·리크루팅까지 세일즈 마케팅 전체를 한 화면에 담았습니다.</p>
+        <div class="foot-row">
+          <a class="open" href="../ncl-renewal/" data-url="../ncl-renewal/">열어보기 <span class="arrow">→</span></a>
+          <button type="button" class="copy" aria-label="주소 복사">주소 복사</button>
+        </div>
+      </article>
+      <article class="card" data-cat="company" data-status="archive">
+        <div class="badges"><span class="badge b-company">회사·제안</span><span class="badge s-muted">자료·아카이브</span></div>
+        <h2>NCL 단기 수익화 실행 전략 v2</h2>
+        <p>제작 대행에서 영업 배포·전환 플랫폼으로 넘어가는 90일 체질 전환안. 라스트마일 배포, 리드가 남는 캠페인, 개인품 B2B2C 구독까지 정리했습니다.</p>
+        <div class="foot-row">
+          <a class="open" href="../ncl-strategy/" data-url="../ncl-strategy/">열어보기 <span class="arrow">→</span></a>
+          <button type="button" class="copy" aria-label="주소 복사">주소 복사</button>
+        </div>
+      </article>
+      <article class="card" data-cat="company" data-status="proto">
+        <div class="badges"><span class="badge b-company">회사·제안</span><span class="badge s-proto">시안·프로토타입</span></div>
+        <h2>인슈어데일리 — 보험 전문 일간지</h2>
+        <p>생명·손해보험, GA·영업, 정책·규제, 신상품, 인슈어테크와 글로벌 보험시장을 다루는 보험 전문 일간지 시안. 매일 아침 판단에 필요한 뉴스와 데이터.</p>
+        <div class="foot-row">
+          <a class="open" href="../insure-daily/" data-url="../insure-daily/">열어보기 <span class="arrow">→</span></a>
+          <button type="button" class="copy" aria-label="주소 복사">주소 복사</button>
+        </div>
+      </article>
+      <article class="card" data-cat="company" data-status="demo">
+        <div class="badges"><span class="badge b-company">회사·제안</span><span class="badge s-demo">제안·데모</span></div>
+        <h2>DB생명 백년친구 리뉴얼 데모</h2>
+        <p>본사 자료를 전 직원·FP 개인 채널에 자동 탑재해 활용률·고객 클릭·상담 DB로 회수하는 라스트마일 배포 엔진. 눌러보는 인터랙티브 데모입니다.</p>
+        <div class="foot-row">
+          <a class="open" href="../db-life-demo/" data-url="../db-life-demo/">열어보기 <span class="arrow">→</span></a>
+          <button type="button" class="copy" aria-label="주소 복사">주소 복사</button>
+        </div>
+      </article>
+      <article class="card" data-cat="company" data-status="demo">
+        <div class="badges"><span class="badge b-company">회사·제안</span><span class="badge s-demo">제안·데모</span></div>
+        <h2>DB생명 백년프로필 개인품 목업</h2>
+        <p>본사 추천 콘텐츠·뉴스·배너는 자동 공급·심의 고정, 프로필·전자명함·유튜브·배너·링크는 설계사가 직접 세팅하는 개인품 시안.</p>
+        <div class="foot-row">
+          <a class="open" href="../db-personal-pum/" data-url="../db-personal-pum/">열어보기 <span class="arrow">→</span></a>
+          <button type="button" class="copy" aria-label="주소 복사">주소 복사</button>
+        </div>
+      </article>
+      <article class="card" data-cat="company" data-status="archive">
+        <div class="badges"><span class="badge b-company">회사·제안</span><span class="badge s-muted">자료·아카이브</span></div>
+        <h2>와플 가게 마케팅 브리프</h2>
+        <p>매장 QR 허브와 점주별 개인품 확장 모델, 링크인바이오 대비 차별점, 실전 마케팅 4가지, AI 콘텐츠 운영 레퍼런스. 11/24 미팅 참고 자료.</p>
+        <div class="foot-row">
+          <a class="open" href="../waffle-meeting/" data-url="../waffle-meeting/">열어보기 <span class="arrow">→</span></a>
+          <button type="button" class="copy" aria-label="주소 복사">주소 복사</button>
+        </div>
+      </article>
+      <article class="card" data-cat="company" data-status="archive">
+        <div class="badges"><span class="badge b-company">회사·제안</span><span class="badge s-muted">자료·아카이브</span></div>
+        <h2>WORDMARK 20 — 영단어 벡터 로고</h2>
+        <p>보험·안심·동행을 뜻하는 영단어 20종을 글자와 심볼이 한 몸이 되게 설계한 SVG 로고 컬렉션. 색상 변경과 에코백·텀블러 인쇄 미리보기, SVG·PNG 내려받기.</p>
+        <div class="foot-row">
+          <a class="open" href="../word-logos/" data-url="../word-logos/">열어보기 <span class="arrow">→</span></a>
+          <button type="button" class="copy" aria-label="주소 복사">주소 복사</button>
+        </div>
+      </article>
+      <article class="card" data-cat="company" data-status="ok">
+        <div class="badges"><span class="badge b-company">회사·제안</span><span class="badge s-ok">운영</span></div>
+        <h2>내 개인품 바로 열기</h2>
+        <p>품스 개인품을 앱처럼 바로 여는 전용 화면. 새 개인품 만들기·로그인·품스 앱 연동이 필요할 때 공식 창으로 연결합니다.</p>
+        <div class="foot-row">
+          <a class="open" href="../pumss/" data-url="../pumss/">열어보기 <span class="arrow">→</span></a>
+          <button type="button" class="copy" aria-label="주소 복사">주소 복사</button>
+        </div>
+      </article>
+      <article class="card" data-cat="app" data-status="proto">
+        <div class="badges"><span class="badge b-app">웹앱·신사업</span><span class="badge s-proto">시안·프로토타입</span></div>
+        <h2>빅넘버월드 V2 — 크로스오버 아레나</h2>
+        <p>마라톤·광속·로또·에베레스트를 한 판에. 오늘의 크로스오버, 덕후 월드 8팩, 3장 줄세우기, 하트 3개 연승전에 숫자 직관 유형 카드와 B2B 제휴관까지.</p>
+        <div class="foot-row">
+          <a class="open" href="../bignumber-world-v2/" data-url="../bignumber-world-v2/">열어보기 <span class="arrow">→</span></a>
+          <button type="button" class="copy" aria-label="주소 복사">주소 복사</button>
+        </div>
+      </article>
+      <article class="card" data-cat="app" data-status="archive">
+        <div class="badges"><span class="badge b-app">웹앱·신사업</span><span class="badge s-arch">자료·아카이브</span></div>
+        <h2>빅넘버월드 V1 — 숫자 오타쿠 배틀</h2>
+        <p>사칙연산·이차방정식·역사 연도·영화 기록·브랜드 수치를 한 판에 섞어 가장 큰 값을 고르는 첫 버전. V2로 이어지기 전 기록으로 남겨 둡니다.</p>
+        <div class="foot-row">
+          <a class="open" href="../bignumber-world/" data-url="../bignumber-world/">열어보기 <span class="arrow">→</span></a>
+          <button type="button" class="copy" aria-label="주소 복사">주소 복사</button>
+        </div>
+      </article>
+      <article class="card" data-cat="app" data-status="proto">
+        <div class="badges"><span class="badge b-app">웹앱·신사업</span><span class="badge s-proto">시안·프로토타입</span></div>
+        <h2>킨로 Kinlo — 오늘의 사진과 글</h2>
+        <p>매일 사진 한 장과 정직한 한 줄을 남기는 5060 클린 SNS. 걷기·요리·가꾸기·쓰기 네 가지 주제로 조용히 기록합니다.</p>
+        <div class="foot-row">
+          <a class="open" href="../kinlo/" data-url="../kinlo/">열어보기 <span class="arrow">→</span></a>
+          <button type="button" class="copy" aria-label="주소 복사">주소 복사</button>
+        </div>
+      </article>
+      <article class="card" data-cat="app" data-status="proto">
+        <div class="badges"><span class="badge b-app">웹앱·신사업</span><span class="badge s-proto">시안·프로토타입</span></div>
+        <h2>TypoPop — 살아 움직이는 1초 카드</h2>
+        <p>문장 하나를 넣으면 핵심 단어가 살아 움직이는 1초 모션 타이포 카드. 우산·크리스마스·해돋이·축하 팡파레 등 14가지, 말로 입력하고 링크로 보냅니다.</p>
+        <div class="foot-row">
+          <a class="open" href="../typopop/" data-url="../typopop/">열어보기 <span class="arrow">→</span></a>
+          <button type="button" class="copy" aria-label="주소 복사">주소 복사</button>
+        </div>
+      </article>
+      <article class="card" data-cat="app" data-status="proto">
+        <div class="badges"><span class="badge b-app">웹앱·신사업</span><span class="badge s-proto">시안·프로토타입</span></div>
+        <h2>별빛 편지 — 돌려야 열리는 3D 편지</h2>
+        <p>화면을 손가락으로 돌려 각도를 맞추면 흩어진 별빛 점들이 모여 숨겨진 3D 형상과 비밀 메시지가 찰칵 열립니다. 나만의 편지를 만들어 링크로 보내세요.</p>
+        <div class="foot-row">
+          <a class="open" href="../spin-letter/" data-url="../spin-letter/">열어보기 <span class="arrow">→</span></a>
+          <button type="button" class="copy" aria-label="주소 복사">주소 복사</button>
+        </div>
+      </article>
+      <article class="card" data-cat="app" data-status="proto">
+        <div class="badges"><span class="badge b-app">웹앱·신사업</span><span class="badge s-proto">시안·프로토타입</span></div>
+        <h2>겉과 속 — 90도 착시 카드</h2>
+        <p>정면에서는 멀쩡한 와인잔이, 90도 돌리는 순간 똑같은 점들이 속마음 문구로 바뀌는 3D 별빛 착시. 두 얼굴을 담은 카드입니다.</p>
+        <div class="foot-row">
+          <a class="open" href="../spin-flip/" data-url="../spin-flip/">열어보기 <span class="arrow">→</span></a>
+          <button type="button" class="copy" aria-label="주소 복사">주소 복사</button>
+        </div>
+      </article>
+      <article class="card" data-cat="app" data-status="proto">
+        <div class="badges"><span class="badge b-app">웹앱·신사업</span><span class="badge s-proto">시안·프로토타입</span></div>
+        <h2>이도현 ♥ 한서윤 모바일 청첩장</h2>
+        <p>12월 12일 토요일 낮 12시, 더 채플 앳 청담 3층 커티지홀. 참석 여부·계좌·지도까지 담은 혁신형 모바일 청첩장 샘플입니다.</p>
+        <div class="foot-row">
+          <a class="open" href="../smart-wedding-card/" data-url="../smart-wedding-card/">열어보기 <span class="arrow">→</span></a>
+          <button type="button" class="copy" aria-label="주소 복사">주소 복사</button>
+        </div>
+      </article>
+      <article class="card" data-cat="app" data-status="proto">
+        <div class="badges"><span class="badge b-app">웹앱·신사업</span><span class="badge s-proto">시안·프로토타입</span></div>
+        <h2>아이디어 시안 갤러리</h2>
+        <p>2026년 11월 27일 하루 동안 이미지 컷으로만 뽑아 둔 아이디어 15장. 생일·숫자 브레이크, 모래 나선, 인사·안부, 식사·기프티쇼 네 시리즈를 눌러 크게 봅니다.</p>
+        <div class="foot-row">
+          <a class="open" href="../idea-gallery/" data-url="../idea-gallery/">열어보기 <span class="arrow">→</span></a>
+          <button type="button" class="copy" aria-label="주소 복사">주소 복사</button>
+        </div>
+      </article>
+      <article class="card" data-cat="game" data-status="ok">
+        <div class="badges"><span class="badge b-game">게임·테스트</span><span class="badge s-ok">운영</span></div>
+        <h2>오늘의 큰 수 찾기</h2>
+        <p>화면에 흩어진 숫자 중 가장 큰 수를 찾는 10문제. 하루 1분, 가볍게 머리를 깨우는 두뇌 게임입니다.</p>
+        <div class="foot-row">
+          <a class="open" href="../big-number/" data-url="../big-number/">게임 시작 <span class="arrow">→</span></a>
+          <button type="button" class="copy" aria-label="주소 복사">주소 복사</button>
+        </div>
+      </article>
+      <article class="card" data-cat="game" data-status="ok">
+        <div class="badges"><span class="badge b-game">게임·테스트</span><span class="badge s-ok">운영</span></div>
+        <h2>오늘의 같은 그림 찾기</h2>
+        <p>같은 그림 두 장을 차례로 눌러 짝을 맞히는 5단계 기억력 게임. 계산 없이 누구나 할 수 있고 2~3분이면 끝납니다.</p>
+        <div class="foot-row">
+          <a class="open" href="../same-picture/" data-url="../same-picture/">게임 시작 <span class="arrow">→</span></a>
+          <button type="button" class="copy" aria-label="주소 복사">주소 복사</button>
+        </div>
+      </article>
+      <article class="card" data-cat="game" data-status="ok">
+        <div class="badges"><span class="badge b-game">게임·테스트</span><span class="badge s-ok">운영</span></div>
+        <h2>오늘의 틀린 그림 찾기</h2>
+        <p>위아래 두 그림에서 다른 곳을 찾는 5단계 게임. 봄날 거실부터 한강 소풍, 한옥 찻상, 전통시장, 바닷가 등대까지 18군데를 손끝으로 누르며 5분.</p>
+        <div class="foot-row">
+          <a class="open" href="../spot-difference/" data-url="../spot-difference/">게임 시작 <span class="arrow">→</span></a>
+          <button type="button" class="copy" aria-label="주소 복사">주소 복사</button>
+        </div>
+      </article>
+      <article class="card" data-cat="game" data-status="ok">
+        <div class="badges"><span class="badge b-game">게임·테스트</span><span class="badge s-ok">운영</span></div>
+        <h2>13월의 월급, 1분 연말정산 테스트</h2>
+        <p>기본 버전. 7문항 선택만 하면 끝. 올해 내가 놓치고 있는 환급금과 지금 더 챙길 수 있는 절세 포인트를 알려줍니다.</p>
+        <div class="foot-row">
+          <a class="open" href="../year-end-tax/" data-url="../year-end-tax/">테스트 시작 <span class="arrow">→</span></a>
+          <button type="button" class="copy" aria-label="주소 복사">주소 복사</button>
+        </div>
+      </article>
+
+    </main>
+
+    <div class="empty" id="empty">
+      <p>조건에 맞는 산출물이 없습니다.</p>
+      <button type="button" id="resetFilters">필터 초기화하고 22개 모두 보기</button>
+    </div>
+
+    <div class="foot-card">
+      <p class="label">더 많은 생활·경제 정보와 상담이 필요하신가요?</p>
+      <p class="sub">품스 개인품에서 이어서 볼 수 있습니다.</p>
+      <a class="btn" href="https://www.pumss.co.kr/SP/10.do">품스로 이동 →</a>
+    </div>
+
+    <p class="copyline">총 22개 페이지 · 카테고리 회사·제안 10 / 웹앱·신사업 8 / 게임·테스트 4 · 진행 중 2건 · 최종 정리 2026.11.27<br>© NCL PEOPLES · GitHub @lookbw2010</p>
+  </div>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <div class="copy-panel" id="copyPanel" hidden>
+    <div class="copy-panel-card" role="dialog" aria-modal="true" aria-labelledby="copyPanelTitle">
+      <p class="copy-panel-title" id="copyPanelTitle">자동 복사가 막혀 있어요</p>
+      <p class="copy-panel-desc">아래 내용을 길게 눌러 전체 선택한 뒤 복사해 주세요.</p>
+      <textarea id="copyPanelText" readonly spellcheck="false"></textarea>
+      <button type="button" class="copy-panel-close" id="copyPanelClose">닫기</button>
+    </div>
+  </div>
+
+  <div class="pwa-sheet" id="pwaSheet" hidden>
+    <div class="pwa-sheet-card" role="dialog" aria-modal="true" aria-labelledby="pwaSheetTitle" aria-describedby="pwaSheetDesc">
+      <button type="button" class="pwa-close" id="pwaSheetClose" aria-label="닫기">✕</button>
+      <p class="pwa-kicker">홈 화면에 추가</p>
+      <h2 class="pwa-title" id="pwaSheetTitle">바탕화면에 앱으로 설치하기</h2>
+      <p class="pwa-desc" id="pwaSheetDesc"></p>
+      <ol class="pwa-steps" id="pwaSteps"></ol>
+      <button type="button" class="pwa-copy" id="pwaCopy" hidden>주소 복사하기</button>
+      <p class="pwa-tip" id="pwaTip">설치하면 주소를 찾지 않아도 바탕화면 아이콘으로 바로 열 수 있어요.</p>
+    </div>
+  </div>
+
+  <script>
+  (function () {
+    /* ── 필터(카테고리 × 진행 단계 교차) · 검색 ── */
+    var grid = document.getElementById('grid');
+    var cards = Array.prototype.slice.call(grid.querySelectorAll('.card'));
+    var filterBtns = Array.prototype.slice.call(document.querySelectorAll('.filters button[data-dim]'));
+    var statBtn = document.querySelector('button.stat[data-dim]');
+    var input = document.getElementById('q');
+    var result = document.getElementById('result');
+    var empty = document.getElementById('empty');
+    var CAT_NAME = { all: '전체', company: '회사·제안', app: '웹앱·신사업', game: '게임·테스트' };
+    var STAGE_NAME = { all: '전체', active: '진행 중', ok: '운영', demo: '제안·데모', proto: '시안·프로토타입', archive: '자료·아카이브' };
+    var state = { cat: 'all', stage: 'all' };
+
+    // 실제 카드 수로 칩 숫자를 그린다 — 두 축 각각의 합계는 항상 전체(22)와 같다.
+    var counts = {
+      cat: { all: cards.length, company: 0, app: 0, game: 0 },
+      stage: { all: cards.length, active: 0, ok: 0, demo: 0, proto: 0, archive: 0 }
+    };
+    cards.forEach(function (c) {
+      var cat = c.getAttribute('data-cat'), st = c.getAttribute('data-status');
+      if (counts.cat[cat] != null) counts.cat[cat] += 1;
+      if (counts.stage[st] != null) counts.stage[st] += 1;
+    });
+    filterBtns.forEach(function (b) {
+      var n = b.querySelector('.n');
+      if (n) n.textContent = counts[b.getAttribute('data-dim')][b.getAttribute('data-value')];
+    });
+    if (statBtn) {
+      var sb = statBtn.querySelector('b');
+      if (sb) sb.textContent = counts.stage.active;
+    }
+
+    function norm(s) { return (s || '').toLowerCase().replace(/\s+/g, ''); }
+
+    function matches(card) {
+      if (state.cat !== 'all' && card.getAttribute('data-cat') !== state.cat) return false;
+      if (state.stage !== 'all' && card.getAttribute('data-status') !== state.stage) return false;
+      return true;
+    }
+
+    function filterLabel() {
+      var parts = [];
+      if (state.cat !== 'all') parts.push(CAT_NAME[state.cat]);
+      if (state.stage !== 'all') parts.push(STAGE_NAME[state.stage]);
+      return parts.length ? parts.join(' · ') : '전체';
+    }
+
+    function apply() {
+      var q = norm(input.value);
+      var shown = 0;
+      cards.forEach(function (card) {
+        var show = matches(card) && (!q || norm(card.textContent).indexOf(q) !== -1);
+        card.hidden = !show;
+        if (show) shown += 1;
+      });
+      empty.classList.toggle('show', shown === 0);
+      result.innerHTML = filterLabel() + ' <b>' + shown + '</b>개';
+      refreshSelection();
+    }
+
+    function setFilter(dim, value) {
+      state[dim] = value;
+      filterBtns.forEach(function (x) {
+        if (x.getAttribute('data-dim') === dim) {
+          x.setAttribute('aria-pressed', String(x.getAttribute('data-value') === value));
+        }
+      });
+      apply();
+      // 필터를 바꾸면 목록 처음으로
+      var top = document.querySelector('.sticky');
+      if (top && window.scrollY > top.offsetTop) {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+    }
+
+    function resetFilters() {
+      state.cat = 'all';
+      state.stage = 'all';
+      filterBtns.forEach(function (x) {
+        x.setAttribute('aria-pressed', String(x.getAttribute('data-value') === 'all'));
+      });
+      apply();
+    }
+
+    document.addEventListener('click', function (e) {
+      var el = e.target.closest('[data-dim]');
+      if (!el) return;
+      setFilter(el.getAttribute('data-dim'), el.getAttribute('data-value'));
+    });
+    var resetBtn = document.getElementById('resetFilters');
+    if (resetBtn) resetBtn.addEventListener('click', function () {
+      input.value = '';
+      resetFilters();
+      input.focus({ preventScroll: true });
+    });
+    input.addEventListener('input', apply);
+    input.addEventListener('search', apply);
+    apply();
+
+    /* ── 주소 복사 ── */
+    function fallbackCopy(text) {
+      var ta = document.createElement('textarea');
+      ta.value = text;
+      ta.setAttribute('readonly', '');
+      ta.style.position = 'fixed';
+      ta.style.top = '-1000px';
+      document.body.appendChild(ta);
+      ta.select();
+      var ok = false;
+      try { ok = document.execCommand('copy'); } catch (err) { ok = false; }
+      document.body.removeChild(ta);
+      return ok;
+    }
+
+    function copyText(text, done) {
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(function () { done(true); }, function () { done(fallbackCopy(text)); });
+      } else {
+        done(fallbackCopy(text));
+      }
+    }
+
+    Array.prototype.forEach.call(document.querySelectorAll('.copy'), function (btn) {
+      btn.addEventListener('click', function () {
+        var card = btn.closest('.card');
+        var link = card.querySelector('.open');
+        var path = link.getAttribute('data-url') || link.getAttribute('href');
+        var url = location.origin + '/' + path.replace(/^\.\//, '').replace(/^\.\.\//, '').replace(/\/?$/, '/');
+        copyText(url, function (ok) {
+          btn.textContent = ok ? '복사됨 ✓' : url;
+          btn.classList.toggle('done', ok);
+          setTimeout(function () {
+            btn.textContent = '주소 복사';
+            btn.classList.remove('done');
+          }, 2000);
+        });
+      });
+    });
+
+    /* ── 선택 · 공유 · 엑셀(CSV) ── */
+    var ORIGIN = 'https://lookbw2010.github.io';
+    var HUB_URL = ORIGIN + '/my-hub/';
+    var CAT_LABEL = { company: '회사·제안', app: '웹앱·신사업', game: '게임·테스트' };
+    /* 카드에 표시되지 않는 '대상/구분'은 경로별로 한곳에서 관리 */
+    var TARGETS = {
+      'ncl-renewal/': '보험사 고객사',
+      'ncl-strategy/': 'NCL 경영·실무',
+      'insure-daily/': '보험 업계 종사자',
+      'db-life-demo/': 'DB생명',
+      'db-personal-pum/': 'DB생명 설계사',
+      'waffle-meeting/': '와플 매장 점주',
+      'word-logos/': '브랜드·인쇄물',
+      'pumss/': '내 개인품(본인)',
+      'bignumber-world-v2/': '숫자·상식 게임 이용자',
+      'bignumber-world/': '숫자 게임 이용자',
+      'kinlo/': '5060 SNS 이용자',
+      'typopop/': '축하·안부 카드 이용자',
+      'spin-letter/': '개인 편지·이벤트',
+      'spin-flip/': '개인 카드·이벤트',
+      'smart-wedding-card/': '예비 신부·신랑',
+      'idea-gallery/': '신사업·아이디어 시안',
+      'big-number/': '두뇌 게임 이용자',
+      'same-picture/': '기억력 게임 이용자',
+      'spot-difference/': '관찰력 게임 이용자',
+      'year-end-tax/': '직장인·일반 방문자'
+    };
+
+    function pathOf(card) {
+      var a = card.querySelector('.open');
+      var p = a ? (a.getAttribute('data-url') || a.getAttribute('href') || '') : '';
+      return p.replace(/^\.\//, '').replace(/^\.\.\//, '').replace(/\/?$/, '/');
+    }
+    function titleOf(card) { var h = card.querySelector('h2'); return h ? h.textContent.trim() : ''; }
+    function descOf(card) { var p = card.querySelector('p'); return p ? p.textContent.trim() : ''; }
+    function statusOf(card) {
+      var b = card.querySelector('.badge.s-active,.badge.s-ok,.badge.s-demo,.badge.s-proto,.badge.s-muted,.badge.s-arch');
+      return b ? b.textContent.trim() : '';
+    }
+    function catOf(card) { return CAT_LABEL[card.getAttribute('data-cat')] || ''; }
+    function targetOf(card) {
+      var c = card.querySelector('.badge.client');
+      if (c && c.textContent.trim()) return c.textContent.trim();
+      return TARGETS[pathOf(card)] || catOf(card);
+    }
+    function urlOf(card) { return ORIGIN + '/' + pathOf(card); }
+    function pickedCards() { return cards.filter(function (c) { return c.classList.contains('picked'); }); }
+    function visibleCards() { return cards.filter(function (c) { return !c.hidden; }); }
+
+    function togglePick(card, on) {
+      card.classList.toggle('picked', on);
+      var p = card.querySelector('.pick');
+      if (p) p.setAttribute('aria-checked', String(on));
+    }
+
+    function refreshSelection() {
+      var sc = document.getElementById('selCount');
+      if (!sc) return;
+      var n = pickedCards().length;
+      var vis = visibleCards();
+      var visPicked = vis.filter(function (c) { return c.classList.contains('picked'); }).length;
+      var hint = n
+        ? (n > visPicked ? '· 선택한 ' + n + '개 (화면 밖 ' + (n - visPicked) + '개 포함)' : '· 선택한 ' + n + '개')
+        : '· 선택 없으면 보이는 ' + vis.length + '개 전체';
+      sc.innerHTML = '<b>' + n + '</b>개 선택됨 <span class="sel-hint" id="selHint">' + hint + '</span>';
+      var all = document.getElementById('selAll');
+      var none = document.getElementById('selNone');
+      if (all) {
+        all.textContent = (vis.length < cards.length) ? '보이는 ' + vis.length + '개 선택' : '전체 선택';
+        all.disabled = vis.length === 0;
+      }
+      if (none) none.disabled = n === 0;
+    }
+
+    /* 카드마다 우측 상단에 44px 선택 버튼 주입 */
+    cards.forEach(function (card) {
+      var btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'pick';
+      btn.setAttribute('role', 'checkbox');
+      btn.setAttribute('aria-checked', 'false');
+      btn.setAttribute('aria-label', titleOf(card) + ' 선택');
+      btn.innerHTML = '<span class="box" aria-hidden="true"></span>';
+      btn.addEventListener('click', function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+        togglePick(card, !card.classList.contains('picked'));
+        refreshSelection();
+      });
+      card.appendChild(btn);
+    });
+
+    /* 토스트 */
+    var toastEl = document.getElementById('toast');
+    var toastTimer = null;
+    function toast(msg) {
+      if (!toastEl) return;
+      toastEl.textContent = msg;
+      toastEl.classList.add('show');
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(function () { toastEl.classList.remove('show'); }, 2800);
+    }
+
+    /* 복사 실패 시 수동 복사 시트 */
+    var copyPanel = document.getElementById('copyPanel');
+    var copyPanelText = document.getElementById('copyPanelText');
+    var copyPanelClose = document.getElementById('copyPanelClose');
+    function showCopyFallback(text) {
+      if (!copyPanel || !copyPanelText) { toast('복사가 안 됐어요. 주소를 길게 눌러 복사해 주세요.'); return; }
+      copyPanelText.value = text;
+      copyPanel.hidden = false;
+      document.body.style.overflow = 'hidden';
+      setTimeout(function () {
+        try { copyPanelText.focus(); copyPanelText.setSelectionRange(0, text.length); } catch (err) {}
+      }, 60);
+    }
+    function hideCopyFallback() {
+      if (!copyPanel) return;
+      copyPanel.hidden = true;
+      document.body.style.overflow = '';
+    }
+    if (copyPanelClose) copyPanelClose.addEventListener('click', hideCopyFallback);
+    if (copyPanel) copyPanel.addEventListener('click', function (e) { if (e.target === copyPanel) hideCopyFallback(); });
+
+    function todayStamp() {
+      var d = new Date();
+      function p(x) { return (x < 10 ? '0' : '') + x; }
+      return { dot: d.getFullYear() + '.' + p(d.getMonth() + 1) + '.' + p(d.getDate()), compact: '' + d.getFullYear() + p(d.getMonth() + 1) + p(d.getDate()) };
+    }
+
+    function buildShareText(list) {
+      var head = '📎 GitHub 산출물 ' + list.length + '개 · ' + todayStamp().dot + '\n' + HUB_URL + '\n';
+      var body = list.map(function (c) {
+        return '[' + statusOf(c) + '] ' + titleOf(c) + ' - ' + descOf(c) + '\n' + urlOf(c);
+      }).join('\n\n');
+      return head + '\n' + body;
+    }
+
+    function csvCell(v) {
+      var s = String(v == null ? '' : v);
+      if (/^[=+\-@\t\r]/.test(s)) s = "'" + s;   // 수식 주입 방지
+      return '"' + s.replace(/"/g, '""') + '"';
+    }
+    function buildCsv(list) {
+      var rows = [['번호', '카테고리', '상태', '서비스명', '대상/구분', '설명', 'URL']];
+      list.forEach(function (c, i) {
+        rows.push([i + 1, catOf(c), statusOf(c), titleOf(c), targetOf(c), descOf(c), urlOf(c)]);
+      });
+      var text = rows.map(function (r) { return r.map(csvCell).join(','); }).join('\r\n');
+      return '\uFEFF' + text + '\r\n';
+    }
+
+    function currentList() {
+      var picked = pickedCards();
+      return picked.length ? { list: picked, fallback: false } : { list: visibleCards(), fallback: true };
+    }
+
+    var selAllBtn = document.getElementById('selAll');
+    var selNoneBtn = document.getElementById('selNone');
+    var copySelBtn = document.getElementById('copySelected');
+    var csvBtn = document.getElementById('csvSelected');
+
+    if (selAllBtn) selAllBtn.addEventListener('click', function () {
+      var vis = visibleCards();
+      if (!vis.length) return;
+      vis.forEach(function (c) { togglePick(c, true); });
+      refreshSelection();
+      toast(vis.length + '개를 선택했어요');
+    });
+
+    if (selNoneBtn) selNoneBtn.addEventListener('click', function () {
+      pickedCards().forEach(function (c) { togglePick(c, false); });
+      refreshSelection();
+      toast('선택을 모두 해제했어요');
+    });
+
+    if (copySelBtn) copySelBtn.addEventListener('click', function () {
+      var cur = currentList();
+      if (!cur.list.length) { toast('복사할 항목이 없어요'); return; }
+      copyText(buildShareText(cur.list), function (ok) {
+        if (!ok) { showCopyFallback(buildShareText(cur.list)); return; }
+        toast(cur.fallback
+          ? '선택이 없어 보이는 ' + cur.list.length + '개 전체를 복사했어요 ✓'
+          : '선택한 ' + cur.list.length + '개를 복사했어요 ✓');
+      });
+    });
+
+    if (csvBtn) csvBtn.addEventListener('click', function () {
+      var cur = currentList();
+      if (!cur.list.length) { toast('저장할 항목이 없어요'); return; }
+      var name = 'lookbw-산출물목록-' + todayStamp().compact + '.csv';
+      var blob = new Blob([buildCsv(cur.list)], { type: 'text/csv;charset=utf-8' });
+      var url = URL.createObjectURL(blob);
+      var a = document.createElement('a');
+      a.href = url;
+      a.download = name;
+      a.rel = 'noopener';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      setTimeout(function () { URL.revokeObjectURL(url); }, 5000);
+      toast((cur.fallback ? '보이는 ' + cur.list.length + '개 전체를 ' : '선택한 ' + cur.list.length + '개를 ') + 'CSV로 저장했어요 ✓');
+    });
+
+    refreshSelection();
+
+    /* ── PWA 설치 안내 ── */
+    var bar = document.getElementById('pwaInstall');
+    var pwaBtn = document.getElementById('pwaInstallBtn');
+    var sheet = document.getElementById('pwaSheet');
+    var sheetClose = document.getElementById('pwaSheetClose');
+    var elTitle = document.getElementById('pwaSheetTitle');
+    var elDesc = document.getElementById('pwaSheetDesc');
+    var elSteps = document.getElementById('pwaSteps');
+    var elCopy = document.getElementById('pwaCopy');
+    var elTip = document.getElementById('pwaTip');
+    var deferredPrompt = null;
+    var promptDismissed = false;
+    var lastFocus = null;
+
+    function isStandalone() {
+      return (window.matchMedia && window.matchMedia('(display-mode: standalone)').matches) ||
+             (window.matchMedia && window.matchMedia('(display-mode: fullscreen)').matches) ||
+             window.navigator.standalone === true;
+    }
+    function hideBar() { if (bar) bar.hidden = true; }
+    if (isStandalone()) hideBar();
+
+    window.addEventListener('beforeinstallprompt', function (e) {
+      e.preventDefault();
+      if (!promptDismissed) deferredPrompt = e;
+    });
+    window.addEventListener('appinstalled', function () {
+      deferredPrompt = null;
+      hideBar();
+    });
+    document.addEventListener('visibilitychange', function () {
+      if (document.visibilityState === 'visible' && isStandalone()) hideBar();
+    });
+
+    var ua = navigator.userAgent || '';
+    function detectPlatform(uaString) {
+      var s = uaString || '';
+      if (/KAKAOTALK|NAVER\(inapp|Instagram|FBAN|FBAV|FB_IAB|Line\/|DaumApps|everytimeApp|Snapchat|Twitter/i.test(s)) return 'inapp';
+      if (/iPad|iPhone|iPod/.test(s) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1)) return 'ios';
+      if (/Android/.test(s)) return 'android';
+      return 'desktop';
+    }
+
+    function steps(list) {
+      elSteps.innerHTML = '';
+      list.forEach(function (html, i) {
+        var li = document.createElement('li');
+        var num = document.createElement('span');
+        num.className = 'pwa-num';
+        num.textContent = String(i + 1);
+        var body = document.createElement('span');
+        body.className = 'pwa-step-body';
+        body.innerHTML = html;
+        li.appendChild(num);
+        li.appendChild(body);
+        elSteps.appendChild(li);
+      });
+    }
+
+    function guide(mode) {
+      elCopy.hidden = true;
+      elTip.hidden = false;
+      if (mode === 'inapp') {
+        elTitle.textContent = '브라우저로 열고 설치하기';
+        elDesc.textContent = '지금은 카카오톡·네이버 같은 앱 안에서 열려 있어요. Safari나 Chrome으로 열어야 바탕화면에 설치할 수 있어요.';
+        steps([
+          '오른쪽 위 <em>⋯</em> 또는 <em>⌄</em>를 누르고 <em>‘다른 브라우저로 열기’</em>를 골라 주세요.',
+          '아래 <em>‘주소 복사하기’</em>를 눌러 Safari나 Chrome 주소창에 붙여넣어도 됩니다.'
+        ]);
+        elCopy.hidden = false;
+        elTip.hidden = true;
+        return;
+      }
+      if (mode === 'ios') {
+        elTitle.textContent = '아이폰에 설치하기';
+        elDesc.textContent = '사파리에서 아래 세 가지만 따라 하면 돼요.';
+        steps([
+          '화면 <em>아래쪽 가운데</em>의 공유 버튼 <span class="pwa-glyph">□↑</span>을 눌러요.',
+          '나온 메뉴를 조금 내려 <em>‘홈 화면에 추가’</em>를 눌러요.',
+          '오른쪽 위 <em>‘추가’</em>를 누르면 끝!'
+        ]);
+        elTip.textContent = '카카오톡·네이버 앱 안에서 열었다면, 먼저 Safari로 열어 주세요.';
+        return;
+      }
+      if (mode === 'android') {
+        elTitle.textContent = '안드로이드에 설치하기';
+        elDesc.textContent = '크롬에서 아래 세 가지만 따라 하면 돼요.';
+        steps([
+          '오른쪽 위 <span class="pwa-glyph">⋮</span> 메뉴를 눌러요.',
+          '<em>‘앱 설치’</em>(또는 ‘홈 화면에 추가’)를 눌러요.',
+          '<em>‘설치’</em>를 누르면 끝!'
+        ]);
+        return;
+      }
+      elTitle.textContent = '컴퓨터에 설치하기';
+      elDesc.textContent = '크롬·엣지에서 주소창의 설치 아이콘으로 바로 설치할 수 있어요.';
+      steps([
+        '주소창 오른쪽의 설치 아이콘 <span class="pwa-glyph">⊕</span>을 눌러요.',
+        '<em>‘설치’</em>를 누르면 끝!',
+        '아이콘이 안 보이면 오른쪽 위 <span class="pwa-glyph">⋮</span> → <em>‘저장 및 공유’</em> → <em>‘앱 설치’</em>를 눌러요.'
+      ]);
+    }
+
+    function openSheet(mode) {
+      guide(mode || detectPlatform(ua));
+      lastFocus = document.activeElement;
+      sheet.hidden = false;
+      document.body.style.overflow = 'hidden';
+      sheetClose.focus({ preventScroll: true });
+    }
+    function closeSheet() {
+      sheet.hidden = true;
+      document.body.style.overflow = '';
+      if (lastFocus && lastFocus.focus) lastFocus.focus({ preventScroll: true });
+    }
+
+    pwaBtn.addEventListener('click', function () {
+      if (deferredPrompt && !promptDismissed) {
+        var p = deferredPrompt;
+        deferredPrompt = null;
+        p.prompt();
+        if (p.userChoice && p.userChoice.then) {
+          p.userChoice.then(function (choice) {
+            if (choice && choice.outcome === 'accepted') hideBar();
+            else promptDismissed = true;
+          }).catch(function () {});
+        }
+        return;
+      }
+      openSheet();
+    });
+
+    sheetClose.addEventListener('click', closeSheet);
+    sheet.addEventListener('click', function (e) { if (e.target === sheet) closeSheet(); });
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && !sheet.hidden) closeSheet();
+    });
+
+    elCopy.addEventListener('click', function () {
+      var url = location.origin + location.pathname;
+      copyText(url, function (ok) {
+        elCopy.textContent = ok ? '주소를 복사했어요 ✓' : '주소: ' + url;
+        elCopy.classList.toggle('done', ok);
+        setTimeout(function () {
+          elCopy.textContent = '주소 복사하기';
+          elCopy.classList.remove('done');
+        }, 2400);
+      });
+    });
+
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', function () {
+        navigator.serviceWorker.register('/sw.js').catch(function () {});
+      });
+    }
+
+    window.PwaInstall = {
+      open: openSheet,
+      close: closeSheet,
+      platform: function (uaString) { return detectPlatform(uaString || ua); },
+      version: '2.0.0'
+    };
+    window.HubSelect = {
+      count: function () { return pickedCards().length; },
+      visible: function () { return visibleCards().length; },
+      pickVisible: function (n) { visibleCards().slice(0, n == null ? 63 : n).forEach(function (c) { togglePick(c, true); }); refreshSelection(); return pickedCards().length; },
+      clear: function () { pickedCards().forEach(function (c) { togglePick(c, false); }); refreshSelection(); return pickedCards().length; },
+      statusOf: function (el) { return statusOf(el); },
+      shareText: function () { var cur = currentList(); return buildShareText(cur.list); },
+      csv: function () { var cur = currentList(); return buildCsv(cur.list); },
+      csvName: function () { return 'lookbw-산출물목록-' + todayStamp().compact + '.csv'; }
+    };
+    window.HubFilter = {
+      set: function (dim, value) { setFilter(dim, value); },
+      reset: resetFilters,
+      current: function () { return { cat: state.cat, stage: state.stage }; },
+      label: filterLabel,
+      visible: function () { return document.querySelectorAll('.card:not([hidden])').length; },
+      total: cards.length,
+      counts: counts,
+      combos: function () {
+        var out = {};
+        cards.forEach(function (c) {
+          var k = c.getAttribute('data-cat') + '/' + c.getAttribute('data-status');
+          out[k] = (out[k] || 0) + 1;
+        });
+        return out;
+      }
+    };
+  })();
+  </script>
+</body>
+</html>
