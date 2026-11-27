@@ -232,8 +232,8 @@ body {
 .letter.show { opacity: 1; transform: none; }
 .lTo {
   margin: 0 0 5px;
-  font-size: 16px;
-  font-weight: 600;
+  font-size: 17px;
+  font-weight: 500;
   color: #A7BADB;
   letter-spacing: -0.2px;
 }
