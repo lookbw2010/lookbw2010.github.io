@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="light">
+<meta name="theme-color" content="#FCFAF6">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23171A1F'/%3E%3Crect x='7' y='9' width='18' height='14' rx='2' fill='none' stroke='%23E8C583' stroke-width='2'/%3E%3Ccircle cx='13' cy='15' r='2' fill='%23E8C583'/%3E%3Cpath d='M8 22l6-5 4 3 6-6' stroke='%23E8C583' stroke-width='2' fill='none'/%3E%3C/svg%3E">
+<title>아이디어 시안 갤러리 | 2026.11.27 시안 15장</title>
+<meta name="description" content="2026년 11월 27일 이미지 시안으로만 뽑아 둔 게임·웹앱·서비스 아이디어 컷 15장. 생일·숫자 브레이크 7장, 모래 나선 2장, 인사·안부 3장, 식사·기프티쇼 3장을 눌러 크게 봅니다.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="아이디어 시안 갤러리 — 2026.11.27 시안 15장">
+<meta property="og:description" content="생일·숫자 7 · 모래 나선 2 · 인사·안부 3 · 식사·기프티쇼 3. 카드를 누르면 원본 크기로 열립니다.">
+<meta name="twitter:card" content="summary_large_image">
+<style>
+  :root{
+    color-scheme:light;
+    --paper:#FCFAF6;
+    --card:#FFFFFF;
+    --ink:#171A1F;
+    --body:#4A5262;
+    --muted:#7B8494;
+    --line:#E6E1D8;
+    --hair:#EFEBE3;
+    --gold:#B45309;
+    --bday:#B45309;
+    --spiral:#1D4ED8;
+    --hello:#6D28D9;
+    --meal:#B42318;
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  html{background:var(--paper);scroll-behavior:smooth}
+  html,body{margin:0;padding:0}
+  body{
+    background:
+      radial-gradient(120% 44% at 50% -12%, #FFFFFF 0%, rgba(255,255,255,0) 62%),
+      linear-gradient(180deg,#FCFAF6 0%,#FAF8F3 60%,#F7F5EF 100%);
+    background-color:var(--paper);
+    min-height:100vh;
+    color:var(--body);
+    font-family:-apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Malgun Gothic", "Noto Sans KR", "Noto Sans CJK KR", "NanumGothic", "Segoe UI", sans-serif;
+    -webkit-text-size-adjust:100%;
+    word-break:keep-all;
+    line-height:1.62;
+  }
+  .wrap{max-width:1040px;margin:0 auto;padding:26px 18px calc(40px + env(safe-area-inset-bottom))}
+
+  /* ── 허브로 돌아가기 ── */
+  .back{
+    display:inline-flex;align-items:center;gap:7px;
+    min-height:44px;padding:9px 15px 9px 13px;margin-bottom:20px;
+    border:1px solid var(--line);border-radius:999px;background:#fff;
+    color:#5A6272;font-size:15px;font-weight:700;letter-spacing:-.01em;
+    text-decoration:none;box-shadow:0 1px 2px rgba(23,26,31,.04);
+  }
+  .back .arw{font-size:16px;line-height:1;color:var(--gold)}
+  .back:active{transform:scale(.985)}
+  .back:focus-visible{outline:3px solid #E6C583;outline-offset:2px}
+
+  /* ── 헤더 ── */
+  .kicker{
+    margin:0 0 10px;font-size:12.5px;font-weight:800;letter-spacing:.2em;
+    text-transform:uppercase;color:#A08A63;
+  }
+  h1{
+    margin:0 0 12px;font-size:31px;line-height:1.3;font-weight:800;
+    letter-spacing:-.032em;color:var(--ink);
+  }
+  h1 em{font-style:normal;position:relative;white-space:nowrap}
+  h1 em::after{
+    content:"";position:absolute;left:-2px;right:-2px;bottom:4px;height:9px;z-index:-1;
+    background:linear-gradient(90deg,#F6E3BA,#F3D9A4);border-radius:2px;
+  }
+  .lead{margin:0 0 16px;font-size:16px;line-height:1.68;color:var(--body)}
+  .lead b{color:var(--ink);font-weight:800}
+  .facts{
+    display:flex;flex-wrap:wrap;gap:6px 16px;margin:0 0 4px;
+    font-size:14.5px;font-weight:700;color:var(--muted);
+  }
+  .facts span{display:inline-flex;align-items:center;gap:6px}
+  .facts i{width:6px;height:6px;border-radius:1px;background:#D8CFBF;display:inline-block}
+  .facts b{color:var(--ink);font-weight:800}
+
+  /* ── 시리즈 필터 ── */
+  .rail{
+    position:sticky;top:0;z-index:30;
+    margin:14px -18px 18px;padding:10px 18px;
+    background:rgba(252,250,246,.94);
+    -webkit-backdrop-filter:saturate(180%) blur(10px);
+    backdrop-filter:saturate(180%) blur(10px);
+    border-top:1px solid var(--hair);border-bottom:1px solid var(--hair);
+  }
+  .chips{display:flex;gap:8px;overflow-x:auto;padding:1px 1px 3px;scrollbar-width:none}
+  .chips::-webkit-scrollbar{display:none}
+  .chips button{
+    flex:0 0 auto;display:inline-flex;align-items:center;gap:7px;
+    min-height:44px;padding:9px 15px;border-radius:10px;cursor:pointer;
+    border:1px solid var(--line);background:#fff;color:#4A5262;
+    font-family:inherit;font-size:15px;font-weight:700;letter-spacing:-.01em;
+    white-space:nowrap;transition:background .14s ease,color .14s ease,border-color .14s ease;
+  }
+  .chips button .cp{width:8px;height:8px;border-radius:2px;flex:0 0 auto;background:#CFC6B6}
+  .chips button .n{font-size:13px;font-weight:800;color:#98A2B0}
+  .chips button[data-value="bday"] .cp{background:var(--bday)}
+  .chips button[data-value="spiral"] .cp{background:var(--spiral)}
+  .chips button[data-value="hello"] .cp{background:var(--hello)}
+  .chips button[data-value="meal"] .cp{background:var(--meal)}
+  .chips button[aria-pressed="true"]{
+    background:var(--ink);border-color:var(--ink);color:#fff;
+    box-shadow:0 3px 10px rgba(23,26,31,.16);
+  }
+  .chips button[aria-pressed="true"] .n{color:#E4D9C4}
+  .chips button:focus-visible{outline:3px solid #E6C583;outline-offset:2px}
+
+  .result{margin:0 0 14px;font-size:14.5px;font-weight:700;color:var(--muted)}
+  .result b{color:var(--ink);font-weight:800}
+  .result .hint{font-weight:600;color:#9AA3B0}
+
+  /* ── 카드 (모바일 1열 · 넓으면 2열 메이슨리) ── */
+  .grid{display:flex;flex-direction:column;gap:16px}
+  @media (min-width:820px){
+    .grid{display:block;columns:2;column-gap:20px}
+    .grid > .card{margin:0 0 20px;break-inside:avoid;-webkit-column-break-inside:avoid;page-break-inside:avoid}
+  }
+  .card{
+    background:var(--card);border:1px solid var(--line);border-radius:14px;overflow:hidden;
+    box-shadow:0 1px 3px rgba(23,26,31,.05);
+  }
+  .card[hidden]{display:none !important}
+  .shot{
+    position:relative;display:block;width:100%;padding:0;border:0;margin:0;
+    background:#F2EFE8;cursor:zoom-in;line-height:0;
+  }
+  .shot img{display:block;width:100%;height:auto;border-bottom:1px solid var(--hair)}
+  .shot .zoom{
+    position:absolute;right:10px;bottom:10px;
+    display:inline-flex;align-items:center;gap:5px;
+    padding:7px 11px;border-radius:999px;
+    background:rgba(255,255,255,.93);border:1px solid #E3DDD1;
+    color:#3A4150;font-size:13px;font-weight:800;letter-spacing:-.01em;line-height:1.3;
+    box-shadow:0 2px 8px rgba(23,26,31,.10);
+  }
+  .shot:focus-visible{outline:3px solid #E6C583;outline-offset:-3px}
+
+  .body{padding:14px 16px 15px}
+  .meta{display:flex;align-items:center;gap:8px;margin:0 0 3px}
+  .meta .no{
+    font-family:Georgia,"Times New Roman",serif;font-size:14px;font-weight:700;
+    color:#B39A6C;letter-spacing:.04em;font-variant-numeric:tabular-nums;
+  }
+  .meta .sg{width:7px;height:7px;border-radius:2px;background:#CFC6B6}
+  .meta .sg.bday{background:var(--bday)}
+  .meta .sg.spiral{background:var(--spiral)}
+  .meta .sg.hello{background:var(--hello)}
+  .meta .sg.meal{background:var(--meal)}
+  .meta .cat{font-size:12.5px;font-weight:800;letter-spacing:.05em;color:#8B8577}
+  .card h2{
+    margin:0 0 5px;font-size:19px;line-height:1.42;font-weight:800;
+    letter-spacing:-.022em;color:var(--ink);
+  }
+  .card p{margin:0;font-size:15.5px;line-height:1.63;color:var(--body)}
+  .stamp{
+    margin-top:11px;padding-top:10px;border-top:1px solid var(--hair);
+    display:flex;align-items:center;justify-content:space-between;gap:10px;
+    font-size:13.5px;font-weight:700;color:#9AA2AE;letter-spacing:-.01em;
+  }
+  .stamp .big{
+    cursor:zoom-in;color:var(--gold);font-weight:800;font-size:14px;
+    min-height:34px;display:inline-flex;align-items:center;gap:4px;
+    border:0;background:none;font-family:inherit;padding:0;
+  }
+  .stamp .big:focus-visible{outline:3px solid #E6C583;outline-offset:2px;border-radius:6px}
+
+  .empty{
+    display:none;margin:24px 0;padding:26px 18px;text-align:center;
+    border:1px dashed #DCD4C6;border-radius:14px;background:#fff;
+    font-size:15.5px;font-weight:700;color:var(--muted);
+  }
+  .empty.show{display:block}
+
+  footer{margin-top:30px;padding-top:18px;border-top:1px solid var(--line)}
+  .foot-note{margin:0 0 6px;font-size:13.5px;line-height:1.7;color:#98A0AC}
+  .foot-link{
+    display:inline-flex;align-items:center;gap:6px;min-height:44px;
+    font-size:15px;font-weight:800;color:var(--gold);text-decoration:none;
+  }
+  .foot-link:focus-visible{outline:3px solid #E6C583;outline-offset:2px;border-radius:8px}
+
+  /* ── 라이트박스 ── */
+  .lb{
+    position:fixed;inset:0;z-index:1000;
+    display:flex;flex-direction:column;
+    background:rgba(14,16,20,.95);
+    -webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);
+    padding:env(safe-area-inset-top) 0 env(safe-area-inset-bottom);
+  }
+  .lb[hidden]{display:none}
+  .lb-bar{
+    flex:0 0 auto;display:flex;align-items:center;justify-content:space-between;
+    gap:12px;padding:12px 14px;
+  }
+  .lb-count{font-size:14px;font-weight:800;color:#CFC7B7;font-variant-numeric:tabular-nums;letter-spacing:.04em}
+  .lb-x{
+    min-height:44px;padding:9px 16px;border-radius:999px;cursor:pointer;
+    border:1px solid rgba(255,255,255,.22);background:rgba(255,255,255,.08);
+    color:#F4F1EA;font-family:inherit;font-size:15px;font-weight:800;
+  }
+  .lb-x:active{transform:scale(.97)}
+  .lb-stage{position:relative;flex:1 1 auto;display:flex;align-items:center;justify-content:center;min-height:0;padding:0 6px}
+  .lb-stage img{
+    display:block;max-width:100%;max-height:100%;width:auto;height:auto;
+    object-fit:contain;border-radius:6px;background:#fff;
+    box-shadow:0 18px 50px rgba(0,0,0,.45);
+  }
+  .lb-nav{
+    position:absolute;top:50%;transform:translateY(-50%);z-index:2;
+    width:46px;height:46px;border-radius:50%;cursor:pointer;
+    border:1px solid rgba(255,255,255,.22);background:rgba(20,23,28,.62);
+    color:#fff;font-size:20px;line-height:1;font-family:inherit;
+    display:flex;align-items:center;justify-content:center;
+    -webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px);
+  }
+  .lb-nav.prev{left:8px}
+  .lb-nav.next{right:8px}
+  .lb-nav:disabled{opacity:.28;cursor:default}
+  .lb-nav:focus-visible,.lb-x:focus-visible{outline:3px solid #E6C583;outline-offset:2px}
+  .lb-cap{
+    flex:0 0 auto;padding:14px 18px calc(18px + env(safe-area-inset-bottom));
+    text-align:center;
+  }
+  .lb-cap .cno{
+    margin:0 0 4px;font-size:12.5px;font-weight:800;letter-spacing:.12em;
+    color:#B9A57F;text-transform:uppercase;
+  }
+  .lb-cap h3{margin:0 0 5px;font-size:20px;line-height:1.4;font-weight:800;color:#FFFDF8;letter-spacing:-.02em}
+  .lb-cap p.d{margin:0 auto;max-width:560px;font-size:15px;line-height:1.6;color:#C3C7CF}
+
+  @media (prefers-reduced-motion:reduce){
+    html{scroll-behavior:auto}
+    .shot:active,.back:active{transform:none}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <a class="back" href="../"><span class="arw" aria-hidden="true">←</span> 산출물 허브로</a>
+
+  <header>
+    <p class="kicker">Idea Gallery · 2026.11.27</p>
+    <h1>아이디어 <em>시안 갤러리</em></h1>
+    <p class="lead">2026년 11월 27일 하루 동안 <b>이미지 컷으로만</b> 뽑아 둔 게임·웹앱·서비스 아이디어 15장입니다. 만든 것과 접은 것을 함께 두었고, 카드나 이미지를 누르면 원본 크기로 열립니다.</p>
+    <div class="facts">
+      <span><i aria-hidden="true"></i>시안 <b>15</b>장</span>
+      <span><i aria-hidden="true"></i>시리즈 <b>4</b>개</span>
+      <span><i aria-hidden="true"></i>제작 <b>2026.11.27</b></span>
+    </div>
+  </header>
+
+  <nav class="rail" aria-label="시리즈 필터">
+    <div class="chips" role="group" aria-label="시리즈">
+      <button type="button" data-series="all" aria-pressed="true">전체 <span class="n">15</span></button>
+      <button type="button" data-series="bday" aria-pressed="false"><i class="cp" aria-hidden="true"></i>생일·숫자 <span class="n">7</span></button>
+      <button type="button" data-series="spiral" aria-pressed="false"><i class="cp" aria-hidden="true"></i>모래 나선 <span class="n">2</span></button>
+      <button type="button" data-series="hello" aria-pressed="false"><i class="cp" aria-hidden="true"></i>인사·안부 <span class="n">3</span></button>
+      <button type="button" data-series="meal" aria-pressed="false"><i class="cp" aria-hidden="true"></i>식사·기프티쇼 <span class="n">3</span></button>
+    </div>
+  </nav>
+
+  <p class="result" id="result" aria-live="polite">전체 <b>15</b>장 <span class="hint">· 이미지를 누르면 크게 볼 수 있어요</span></p>
+
+  <main class="grid" id="grid">
+
+    <!-- ═══ 생일·숫자 7 ═══ -->
+    <article class="card" data-series="bday">
+      <button type="button" class="shot" data-full="assets/view/bday-1-1-reverse-break.jpg" data-title="역전 브레이크" data-desc="흩어진 당구공이 1973.11.06 자리로 모이며 이름과 축하 인사를 띄우는 생일 카드." data-alt="역전 브레이크 시안">
+        <img src="assets/thumb/bday-1-1-reverse-break.jpg" alt="당구대에 흩어진 공이 1973.11.06으로 모이고 김보원님 생일 축하 문구가 뜨는 화면" width="720" height="480" loading="lazy" decoding="async">
+        <span class="zoom" aria-hidden="true">🔍 크게 보기</span>
+      </button>
+      <div class="body">
+        <div class="meta"><span class="no">01</span><i class="sg bday" aria-hidden="true"></i><span class="cat">생일·숫자</span></div>
+        <h2>역전 브레이크</h2>
+        <p>흩어진 당구공이 1973.11.06 자리로 모이며 이름과 축하 인사를 띄우는 생일 카드.</p>
+        <div class="stamp"><span>2026.11.27 · 시안</span><button type="button" class="big" data-full="assets/view/bday-1-1-reverse-break.jpg" data-title="역전 브레이크" data-desc="흩어진 당구공이 1973.11.06 자리로 모이며 이름과 축하 인사를 띄우는 생일 카드." data-alt="역전 브레이크 시안">크게 보기 →</button></div>
+      </div>
+    </article>
+
+    <article class="card" data-series="bday">
+      <button type="button" class="shot" data-full="assets/view/bday-1-2-lucky-break.jpg" data-title="럭키 포켓 브레이크" data-desc="11·06 공을 포켓에 넣는 한 방으로 '오늘의 생일 행운 카드'가 열리는 미니 게임." data-alt="럭키 포켓 브레이크 시안">
+        <img src="assets/thumb/bday-1-2-lucky-break.jpg" alt="당구대에서 11번·06번 공을 포켓에 넣으면 오늘의 생일 행운 카드가 도착하는 화면" width="720" height="480" loading="lazy" decoding="async">
+        <span class="zoom" aria-hidden="true">🔍 크게 보기</span>
+      </button>
+      <div class="body">
+        <div class="meta"><span class="no">02</span><i class="sg bday" aria-hidden="true"></i><span class="cat">생일·숫자</span></div>
+        <h2>럭키 포켓 브레이크</h2>
+        <p>11·06 공을 포켓에 넣는 한 방으로 '오늘의 생일 행운 카드'가 열리는 미니 게임.</p>
+        <div class="stamp"><span>2026.11.27 · 시안</span><button type="button" class="big" data-full="assets/view/bday-1-2-lucky-break.jpg" data-title="럭키 포켓 브레이크" data-desc="11·06 공을 포켓에 넣는 한 방으로 '오늘의 생일 행운 카드'가 열리는 미니 게임." data-alt="럭키 포켓 브레이크 시안">크게 보기 →</button></div>
+      </div>
+    </article>
+
+    <article class="card" data-series="bday">
+      <button type="button" class="shot" data-full="assets/view/bday-1-3-timemachine-break.jpg" data-title="연도 타임머신 브레이크" data-desc="1973 공을 깨면 태어난 해로 들어가, 그 해의 기록이 열리는 타임머신 브레이크." data-alt="연도 타임머신 브레이크 시안">
+        <img src="assets/thumb/bday-1-3-timemachine-break.jpg" alt="연도 타임머신 브레이크 — 1973 공을 깨면 1973년으로 들어가는 화면" width="720" height="480" loading="lazy" decoding="async">
+        <span class="zoom" aria-hidden="true">🔍 크게 보기</span>
+      </button>
+      <div class="body">
+        <div class="meta"><span class="no">03</span><i class="sg bday" aria-hidden="true"></i><span class="cat">생일·숫자</span></div>
+        <h2>연도 타임머신 브레이크</h2>
+        <p>1973 공을 깨면 태어난 해로 들어가, 그 해의 기록이 열리는 타임머신 브레이크.</p>
+        <div class="stamp"><span>2026.11.27 · 시안</span><button type="button" class="big" data-full="assets/view/bday-1-3-timemachine-break.jpg" data-title="연도 타임머신 브레이크" data-desc="1973 공을 깨면 태어난 해로 들어가, 그 해의 기록이 열리는 타임머신 브레이크." data-alt="연도 타임머신 브레이크 시안">크게 보기 →</button></div>
+      </div>
+    </article>
+
+    <article class="card" data-series="bday">
+      <button type="button" class="shot" data-full="assets/view/bday-1-3-timemachine-ymd.jpg" data-title="생일 타임머신 · 연월일판" data-desc="1973년 11월 6일 화요일 신문 지면. 그날의 사건과 노래로 채운 '오늘의 탄생에게'." data-alt="생일 타임머신 연월일판 시안">
+        <img src="assets/thumb/bday-1-3-timemachine-ymd.jpg" alt="1973년 11월 6일 화요일 신문 지면 형태로 그날의 기록을 보여주는 화면" width="720" height="480" loading="lazy" decoding="async">
+        <span class="zoom" aria-hidden="true">🔍 크게 보기</span>
+      </button>
+      <div class="body">
+        <div class="meta"><span class="no">04</span><i class="sg bday" aria-hidden="true"></i><span class="cat">생일·숫자</span></div>
+        <h2>생일 타임머신 · 연월일판</h2>
+        <p>1973년 11월 6일 화요일 신문 지면. 그날의 사건과 노래로 채운 '오늘의 탄생에게'.</p>
+        <div class="stamp"><span>2026.11.27 · 시안</span><button type="button" class="big" data-full="assets/view/bday-1-3-timemachine-ymd.jpg" data-title="생일 타임머신 · 연월일판" data-desc="1973년 11월 6일 화요일 신문 지면. 그날의 사건과 노래로 채운 '오늘의 탄생에게'." data-alt="생일 타임머신 연월일판 시안">크게 보기 →</button></div>
+      </div>
+    </article>
+
+    <article class="card" data-series="bday">
+      <button type="button" class="shot" data-full="assets/view/bday-2-1-domino-chain.jpg" data-title="생일 도미노" data-desc="1973.11.06 도미노를 손끝으로 밀면 마지막 장이 '당신의 모든 날을 응원해요'로 넘어집니다." data-alt="생일 도미노 시안">
+        <img src="assets/thumb/bday-2-1-domino-chain.jpg" alt="1973.11.06 도미노를 쓰러뜨리면 당신의 모든 날을 응원해요 카드가 열리는 화면" width="720" height="480" loading="lazy" decoding="async">
+        <span class="zoom" aria-hidden="true">🔍 크게 보기</span>
+      </button>
+      <div class="body">
+        <div class="meta"><span class="no">05</span><i class="sg bday" aria-hidden="true"></i><span class="cat">생일·숫자</span></div>
+        <h2>생일 도미노</h2>
+        <p>1973.11.06 도미노를 손끝으로 밀면 마지막 장이 '당신의 모든 날을 응원해요'로 넘어집니다.</p>
+        <div class="stamp"><span>2026.11.27 · 시안</span><button type="button" class="big" data-full="assets/view/bday-2-1-domino-chain.jpg" data-title="생일 도미노" data-desc="1973.11.06 도미노를 손끝으로 밀면 마지막 장이 '당신의 모든 날을 응원해요'로 넘어집니다." data-alt="생일 도미노 시안">크게 보기 →</button></div>
+      </div>
+    </article>
+
+    <article class="card" data-series="bday">
+      <button type="button" class="shot" data-full="assets/view/bday-2-2-firework-reassemble.jpg" data-title="숫자 불꽃놀이" data-desc="숫자가 폭죽처럼 흩어졌다가 다시 모여 '생일 축하해요!'가 되는 재조립 모션." data-alt="숫자 불꽃놀이 시안">
+        <img src="assets/thumb/bday-2-2-firework-reassemble.jpg" alt="1973.11.06 숫자가 폭죽처럼 흩어졌다가 생일 축하해요 글자로 다시 모이는 화면" width="720" height="480" loading="lazy" decoding="async">
+        <span class="zoom" aria-hidden="true">🔍 크게 보기</span>
+      </button>
+      <div class="body">
+        <div class="meta"><span class="no">06</span><i class="sg bday" aria-hidden="true"></i><span class="cat">생일·숫자</span></div>
+        <h2>숫자 불꽃놀이</h2>
+        <p>숫자가 폭죽처럼 흩어졌다가 다시 모여 '생일 축하해요!'가 되는 재조립 모션.</p>
+        <div class="stamp"><span>2026.11.27 · 시안</span><button type="button" class="big" data-full="assets/view/bday-2-2-firework-reassemble.jpg" data-title="숫자 불꽃놀이" data-desc="숫자가 폭죽처럼 흩어졌다가 다시 모여 '생일 축하해요!'가 되는 재조립 모션." data-alt="숫자 불꽃놀이 시안">크게 보기 →</button></div>
+      </div>
+    </article>
+
+    <article class="card" data-series="bday">
+      <button type="button" class="shot" data-full="assets/view/bday-2-3-sand-pinart.jpg" data-title="샌드 &amp; 핀아트 넘버보드" data-desc="핀아트 판을 쓸어 올리면 모래가 1973.11.06을 새기고, 이어 태어난 지 19,379일째를 세어 줍니다." data-alt="샌드 앤 핀아트 넘버보드 시안">
+        <img src="assets/thumb/bday-2-3-sand-pinart.jpg" alt="핀아트 판을 쓸어 올리면 모래로 1973.11.06이 찍히고 태어난 지 19,379일째가 나오는 화면" width="720" height="583" loading="lazy" decoding="async">
+        <span class="zoom" aria-hidden="true">🔍 크게 보기</span>
+      </button>
+      <div class="body">
+        <div class="meta"><span class="no">07</span><i class="sg bday" aria-hidden="true"></i><span class="cat">생일·숫자</span></div>
+        <h2>샌드 &amp; 핀아트 넘버보드</h2>
+        <p>핀아트 판을 쓸어 올리면 모래가 1973.11.06을 새기고, 이어 태어난 지 19,379일째를 세어 줍니다.</p>
+        <div class="stamp"><span>2026.11.27 · 시안</span><button type="button" class="big" data-full="assets/view/bday-2-3-sand-pinart.jpg" data-title="샌드 &amp; 핀아트 넘버보드" data-desc="핀아트 판을 쓸어 올리면 모래가 1973.11.06을 새기고, 이어 태어난 지 19,379일째를 세어 줍니다." data-alt="샌드 앤 핀아트 넘버보드 시안">크게 보기 →</button></div>
+      </div>
+    </article>
+
+    <!-- ═══ 모래 나선 2 ═══ -->
+    <article class="card" data-series="spiral">
+      <button type="button" class="shot" data-full="assets/view/spiral-trash-bright-1.jpg" data-title="고민 블랙홀 · 날려버리기" data-desc="오늘의 실수와 후회를 적어 금빛 나선으로 빨아들이는 '날려버리기' 화면." data-alt="고민 블랙홀 날려버리기 시안">
+        <img src="assets/thumb/spiral-trash-bright-1.jpg" alt="오늘 실수한 거 다 잊고 싶다 문구와 금빛 나선, 날려버리기·황금 각인 버튼이 있는 화면" width="720" height="1279" loading="lazy" decoding="async">
+        <span class="zoom" aria-hidden="true">🔍 크게 보기</span>
+      </button>
+      <div class="body">
+        <div class="meta"><span class="no">08</span><i class="sg spiral" aria-hidden="true"></i><span class="cat">모래 나선</span></div>
+        <h2>고민 블랙홀 · 날려버리기</h2>
+        <p>오늘의 실수와 후회를 적어 금빛 나선으로 빨아들이는 '날려버리기' 화면.</p>
+        <div class="stamp"><span>2026.11.27 · 시안</span><button type="button" class="big" data-full="assets/view/spiral-trash-bright-1.jpg" data-title="고민 블랙홀 · 날려버리기" data-desc="오늘의 실수와 후회를 적어 금빛 나선으로 빨아들이는 '날려버리기' 화면." data-alt="고민 블랙홀 날려버리기 시안">크게 보기 →</button></div>
+      </div>
+    </article>
+
+    <article class="card" data-series="spiral">
+      <button type="button" class="shot" data-full="assets/view/spiral-keep-bright-2.jpg" data-title="황금 각인 · 보관함" data-desc="같은 입력을 반대로 돌려 '오늘 가족이랑 웃었던 점심 시간'을 황금 카드로 새기고, 이미지·링크·보관함에 남깁니다." data-alt="황금 각인 보관함 시안">
+        <img src="assets/thumb/spiral-keep-bright-2.jpg" alt="오늘 가족이랑 웃었던 점심 시간이 황금 카드로 각인되고 이미지 저장·링크 복사·보관함이 있는 화면" width="720" height="1279" loading="lazy" decoding="async">
+        <span class="zoom" aria-hidden="true">🔍 크게 보기</span>
+      </button>
+      <div class="body">
+        <div class="meta"><span class="no">09</span><i class="sg spiral" aria-hidden="true"></i><span class="cat">모래 나선</span></div>
+        <h2>황금 각인 · 보관함</h2>
+        <p>같은 입력을 반대로 돌려 '오늘 가족이랑 웃었던 점심 시간'을 황금 카드로 새기고, 이미지·링크·보관함에 남깁니다.</p>
+        <div class="stamp"><span>2026.11.27 · 시안</span><button type="button" class="big" data-full="assets/view/spiral-keep-bright-2.jpg" data-title="황금 각인 · 보관함" data-desc="같은 입력을 반대로 돌려 '오늘 가족이랑 웃었던 점심 시간'을 황금 카드로 새기고, 이미지·링크·보관함에 남깁니다." data-alt="황금 각인 보관함 시안">크게 보기 →</button></div>
+      </div>
+    </article>
+
+    <!-- ═══ 인사·안부 3 ═══ -->
+    <article class="card" data-series="hello">
+      <button type="button" class="shot" data-full="assets/view/idea-1-domino.jpg" data-title="도미노 글자 편지" data-desc="흩어진 글자 블록을 톡 밀면 쓰러지며 'HAPPY DAY' 한 줄 인사로 맞춰지는 편지." data-alt="도미노 글자 편지 시안">
+        <img src="assets/thumb/idea-1-domino.jpg" alt="글자 블록을 밀면 도미노처럼 쓰러지며 HAPPY DAY 문구가 완성되는 화면" width="720" height="480" loading="lazy" decoding="async">
+        <span class="zoom" aria-hidden="true">🔍 크게 보기</span>
+      </button>
+      <div class="body">
+        <div class="meta"><span class="no">10</span><i class="sg hello" aria-hidden="true"></i><span class="cat">인사·안부</span></div>
+        <h2>도미노 글자 편지</h2>
+        <p>흩어진 글자 블록을 톡 밀면 쓰러지며 'HAPPY DAY' 한 줄 인사로 맞춰지는 편지.</p>
+        <div class="stamp"><span>2026.11.27 · 시안</span><button type="button" class="big" data-full="assets/view/idea-1-domino.jpg" data-title="도미노 글자 편지" data-desc="흩어진 글자 블록을 톡 밀면 쓰러지며 'HAPPY DAY' 한 줄 인사로 맞춰지는 편지." data-alt="도미노 글자 편지 시안">크게 보기 →</button></div>
+      </div>
+    </article>
+
+    <article class="card" data-series="hello">
+      <button type="button" class="shot" data-full="assets/view/idea-2-zoom.jpg" data-title="무한 줌인 편지" data-desc="검은 화면의 점 하나를 끝없이 확대하다 보면 등불 정원 한가운데 'FOR YOU' 카드가 나옵니다." data-alt="무한 줌인 편지 시안">
+        <img src="assets/thumb/idea-2-zoom.jpg" alt="검은 화면의 점 하나를 확대하면 등불 정원의 FOR YOU 카드가 나오는 화면" width="720" height="576" loading="lazy" decoding="async">
+        <span class="zoom" aria-hidden="true">🔍 크게 보기</span>
+      </button>
+      <div class="body">
+        <div class="meta"><span class="no">11</span><i class="sg hello" aria-hidden="true"></i><span class="cat">인사·안부</span></div>
+        <h2>무한 줌인 편지</h2>
+        <p>검은 화면의 점 하나를 끝없이 확대하다 보면 등불 정원 한가운데 'FOR YOU' 카드가 나옵니다.</p>
+        <div class="stamp"><span>2026.11.27 · 시안</span><button type="button" class="big" data-full="assets/view/idea-2-zoom.jpg" data-title="무한 줌인 편지" data-desc="검은 화면의 점 하나를 끝없이 확대하다 보면 등불 정원 한가운데 'FOR YOU' 카드가 나옵니다." data-alt="무한 줌인 편지 시안">크게 보기 →</button></div>
+      </div>
+    </article>
+
+    <article class="card" data-series="hello">
+      <button type="button" class="shot" data-full="assets/view/idea-3-anamorph.jpg" data-title="눕혀야 읽히는 착시 편지" data-desc="세로 줄무늬만 보이다가 폰을 뒤로 눕히면 'MISS YOU'가 떠오르는 착시 안부 카드." data-alt="눕혀야 읽히는 착시 편지 시안">
+        <img src="assets/thumb/idea-3-anamorph.jpg" alt="세로 줄무늬 화면을 폰을 눕혀 보면 MISS YOU 글자가 나타나는 착시 카드" width="720" height="622" loading="lazy" decoding="async">
+        <span class="zoom" aria-hidden="true">🔍 크게 보기</span>
+      </button>
+      <div class="body">
+        <div class="meta"><span class="no">12</span><i class="sg hello" aria-hidden="true"></i><span class="cat">인사·안부</span></div>
+        <h2>눕혀야 읽히는 착시 편지</h2>
+        <p>세로 줄무늬만 보이다가 폰을 뒤로 눕히면 'MISS YOU'가 떠오르는 착시 안부 카드.</p>
+        <div class="stamp"><span>2026.11.27 · 시안</span><button type="button" class="big" data-full="assets/view/idea-3-anamorph.jpg" data-title="눕혀야 읽히는 착시 편지" data-desc="세로 줄무늬만 보이다가 폰을 뒤로 눕히면 'MISS YOU'가 떠오르는 착시 안부 카드." data-alt="눕혀야 읽히는 착시 편지 시안">크게 보기 →</button></div>
+      </div>
+    </article>
+
+    <!-- ═══ 식사·기프티쇼 3 ═══ -->
+    <article class="card" data-series="meal">
+      <button type="button" class="shot" data-full="assets/view/interactive-meal-invite-ui.jpg" data-title="직접 끓여 여는 체험형 식사 초대장" data-desc="불판 위 고기를 세 번 뒤집어야 약속 장소가 열리는 초대장. 다 익히면 '노릇하게 익혀서 약속 열기'." data-alt="체험형 식사 초대장 시안">
+        <img src="assets/thumb/interactive-meal-invite-ui.jpg" alt="불판 위 고기를 뒤집는 동작으로 약속 장소가 열리는 김보원 님의 식사 초대장 화면" width="720" height="1279" loading="lazy" decoding="async">
+        <span class="zoom" aria-hidden="true">🔍 크게 보기</span>
+      </button>
+      <div class="body">
+        <div class="meta"><span class="no">13</span><i class="sg meal" aria-hidden="true"></i><span class="cat">식사·기프티쇼</span></div>
+        <h2>직접 끓여 여는 체험형 식사 초대장</h2>
+        <p>불판 위 고기를 세 번 뒤집어야 약속 장소가 열리는 초대장. 다 익히면 '노릇하게 익혀서 약속 열기'.</p>
+        <div class="stamp"><span>2026.11.27 · 시안</span><button type="button" class="big" data-full="assets/view/interactive-meal-invite-ui.jpg" data-title="직접 끓여 여는 체험형 식사 초대장" data-desc="불판 위 고기를 세 번 뒤집어야 약속 장소가 열리는 초대장. 다 익히면 '노릇하게 익혀서 약속 열기'." data-alt="체험형 식사 초대장 시안">크게 보기 →</button></div>
+      </div>
+    </article>
+
+    <article class="card" data-series="meal">
+      <button type="button" class="shot" data-full="assets/view/meal-invite-map-compare.jpg" data-title="초대장 지도 연동 2안 비교" data-desc="지도 앱으로 넘기는 1안과 화면 안 미니 지도로 끝내는 2안을 나란히 놓고 비교한 컷." data-alt="초대장 지도 연동 2안 비교 시안">
+        <img src="assets/thumb/meal-invite-map-compare.jpg" alt="지도 앱 바로 열기 1안과 화면 내 미니 지도 삽입 2안을 나란히 비교한 화면" width="720" height="405" loading="lazy" decoding="async">
+        <span class="zoom" aria-hidden="true">🔍 크게 보기</span>
+      </button>
+      <div class="body">
+        <div class="meta"><span class="no">14</span><i class="sg meal" aria-hidden="true"></i><span class="cat">식사·기프티쇼</span></div>
+        <h2>초대장 지도 연동 2안 비교</h2>
+        <p>지도 앱으로 넘기는 1안과 화면 안 미니 지도로 끝내는 2안을 나란히 놓고 비교한 컷.</p>
+        <div class="stamp"><span>2026.11.27 · 시안</span><button type="button" class="big" data-full="assets/view/meal-invite-map-compare.jpg" data-title="초대장 지도 연동 2안 비교" data-desc="지도 앱으로 넘기는 1안과 화면 안 미니 지도로 끝내는 2안을 나란히 놓고 비교한 컷." data-alt="초대장 지도 연동 2안 비교 시안">크게 보기 →</button></div>
+      </div>
+    </article>
+
+    <article class="card" data-series="meal">
+      <button type="button" class="shot" data-full="assets/view/giftishow-flow-overview.jpg" data-title="기프티쇼 API 연계 체험형 쿠폰" data-desc="알림톡 → 3단계 체험 → KT알파 기프티쇼 MMS 쿠폰 발송까지, 품스 결제 구조에 얹는 흐름도." data-alt="기프티쇼 API 연계 체험형 쿠폰 흐름도">
+        <img src="assets/thumb/giftishow-flow-overview.jpg" alt="카카오톡 알림톡 수신, 3단계 체험, KT알파 기프티쇼 API로 MMS 쿠폰 발송까지의 3단계 흐름도" width="720" height="395" loading="lazy" decoding="async">
+        <span class="zoom" aria-hidden="true">🔍 크게 보기</span>
+      </button>
+      <div class="body">
+        <div class="meta"><span class="no">15</span><i class="sg meal" aria-hidden="true"></i><span class="cat">식사·기프티쇼</span></div>
+        <h2>기프티쇼 API 연계 체험형 쿠폰</h2>
+        <p>알림톡 → 3단계 체험 → KT알파 기프티쇼 MMS 쿠폰 발송까지, 품스 결제 구조에 얹는 흐름도.</p>
+        <div class="stamp"><span>2026.11.27 · 시안</span><button type="button" class="big" data-full="assets/view/giftishow-flow-overview.jpg" data-title="기프티쇼 API 연계 체험형 쿠폰" data-desc="알림톡 → 3단계 체험 → KT알파 기프티쇼 MMS 쿠폰 발송까지, 품스 결제 구조에 얹는 흐름도." data-alt="기프티쇼 API 연계 체험형 쿠폰 흐름도">크게 보기 →</button></div>
+      </div>
+    </article>
+
+  </main>
+
+  <div class="empty" id="empty">
+    <p>이 시리즈에 담긴 시안이 없습니다.</p>
+  </div>
+
+  <footer>
+    <p class="foot-note">생일·숫자 7 · 모래 나선 2 · 인사·안부 3 · 식사·기프티쇼 3 · 총 15장 · 제작 2026.11.27<br>© NCL PEOPLES · GitHub @lookbw2010</p>
+    <a class="foot-link" href="../"><span aria-hidden="true">←</span> 산출물 허브로 돌아가기</a>
+  </footer>
+</div>
+
+<div class="lb" id="lb" hidden role="dialog" aria-modal="true" aria-label="시안 크게 보기">
+  <div class="lb-bar">
+    <span class="lb-count" id="lbCount">1 / 15</span>
+    <button type="button" class="lb-x" id="lbClose" aria-label="크게 보기 닫기">✕ 닫기</button>
+  </div>
+  <div class="lb-stage" id="lbStage">
+    <button type="button" class="lb-nav prev" id="lbPrev" aria-label="이전 시안">‹</button>
+    <img id="lbImg" src="" alt="">
+    <button type="button" class="lb-nav next" id="lbNext" aria-label="다음 시안">›</button>
+  </div>
+  <div class="lb-cap">
+    <p class="cno" id="lbNo">01 · 생일·숫자</p>
+    <h3 id="lbTitle"></h3>
+    <p class="d" id="lbDesc"></p>
+  </div>
+</div>
+
+<script>
+(function () {
+  var grid = document.getElementById('grid');
+  var cards = Array.prototype.slice.call(grid.querySelectorAll('.card'));
+  var chips = Array.prototype.slice.call(document.querySelectorAll('.chips button'));
+  var result = document.getElementById('result');
+  var empty = document.getElementById('empty');
+  var CAT = { bday: '생일·숫자', spiral: '모래 나선', hello: '인사·안부', meal: '식사·기프티쇼' };
+  var state = { series: 'all' };
+
+  /* 칩 숫자는 실제 카드 수로 다시 계산해 화면과 데이터가 어긋나지 않게 한다 */
+  var counts = { all: cards.length, bday: 0, spiral: 0, hello: 0, meal: 0 };
+  cards.forEach(function (c) {
+    var s = c.getAttribute('data-series');
+    if (counts[s] != null) counts[s] += 1;
+  });
+  chips.forEach(function (b) {
+    var n = b.querySelector('.n');
+    if (n) n.textContent = counts[b.getAttribute('data-series')];
+  });
+
+  function visible() { return cards.filter(function (c) { return !c.hidden; }); }
+
+  function apply() {
+    cards.forEach(function (c) {
+      c.hidden = !(state.series === 'all' || c.getAttribute('data-series') === state.series);
+    });
+    var n = visible().length;
+    result.innerHTML = (state.series === 'all' ? '전체' : CAT[state.series]) +
+      ' <b>' + n + '</b>장 <span class="hint">· 이미지를 누르면 크게 볼 수 있어요</span>';
+    empty.classList.toggle('show', n === 0);
+  }
+
+  chips.forEach(function (b) {
+    b.addEventListener('click', function () {
+      state.series = b.getAttribute('data-series');
+      chips.forEach(function (x) {
+        x.setAttribute('aria-pressed', String(x === b));
+      });
+      apply();
+      var rail = document.querySelector('.rail');
+      if (rail && window.scrollY > rail.offsetTop + rail.offsetHeight) {
+        window.scrollTo({ top: rail.offsetTop - 2, behavior: 'smooth' });
+      }
+    });
+  });
+  apply();
+
+  /* ── 라이트박스 ── */
+  var lb = document.getElementById('lb');
+  var lbImg = document.getElementById('lbImg');
+  var lbCount = document.getElementById('lbCount');
+  var lbNo = document.getElementById('lbNo');
+  var lbTitle = document.getElementById('lbTitle');
+  var lbDesc = document.getElementById('lbDesc');
+  var lbPrev = document.getElementById('lbPrev');
+  var lbNext = document.getElementById('lbNext');
+  var lbClose = document.getElementById('lbClose');
+  var list = [];
+  var idx = 0;
+  var lastFocus = null;
+
+  function pad(n) { return (n < 10 ? '0' : '') + n; }
+
+  function paint() {
+    var c = list[idx];
+    var btn = c.querySelector('.shot');
+    var card = c;
+    var no = card.querySelector('.meta .no').textContent.trim();
+    lbImg.src = btn.getAttribute('data-full');
+    lbImg.alt = btn.getAttribute('data-alt') || '';
+    lbNo.textContent = no + ' · ' + CAT[card.getAttribute('data-series')];
+    lbTitle.textContent = btn.getAttribute('data-title') || '';
+    lbDesc.textContent = btn.getAttribute('data-desc') || '';
+    lbCount.textContent = (idx + 1) + ' / ' + list.length;
+    lbPrev.disabled = list.length < 2;
+    lbNext.disabled = list.length < 2;
+    /* 이웃 이미지를 미리 받아 두어 넘길 때 비지 않게 한다 */
+    [idx - 1, idx + 1].forEach(function (i) {
+      if (i < 0 || i >= list.length) return;
+      var next = list[i].querySelector('.shot').getAttribute('data-full');
+      if (next) { var im = new Image(); im.src = next; }
+    });
+  }
+
+  function open(card) {
+    list = visible();
+    idx = Math.max(0, list.indexOf(card));
+    lastFocus = document.activeElement;
+    lb.hidden = false;
+    document.body.style.overflow = 'hidden';
+    paint();
+    lbClose.focus({ preventScroll: true });
+  }
+  function close() {
+    lb.hidden = true;
+    lbImg.src = '';
+    document.body.style.overflow = '';
+    if (lastFocus && lastFocus.focus) lastFocus.focus({ preventScroll: true });
+  }
+  function step(d) {
+    if (list.length < 2) return;
+    idx = (idx + d + list.length) % list.length;
+    paint();
+  }
+
+  Array.prototype.forEach.call(document.querySelectorAll('[data-full]'), function (el) {
+    el.addEventListener('click', function (e) {
+      e.preventDefault();
+      var card = el.closest('.card');
+      if (card) open(card);
+    });
+  });
+
+  lbClose.addEventListener('click', close);
+  lbPrev.addEventListener('click', function () { step(-1); });
+  lbNext.addEventListener('click', function () { step(1); });
+  lb.addEventListener('click', function (e) {
+    if (e.target === lb || e.target.id === 'lbStage') close();
+  });
+  document.addEventListener('keydown', function (e) {
+    if (lb.hidden) return;
+    if (e.key === 'Escape') { close(); }
+    else if (e.key === 'ArrowLeft') { step(-1); }
+    else if (e.key === 'ArrowRight') { step(1); }
+  });
+
+  /* 좌우 스와이프 */
+  var sx = 0, sy = 0, moved = false;
+  lb.addEventListener('touchstart', function (e) {
+    if (e.touches.length !== 1) return;
+    sx = e.touches[0].clientX; sy = e.touches[0].clientY; moved = false;
+  }, { passive: true });
+  lb.addEventListener('touchmove', function (e) {
+    if (e.touches.length !== 1) return;
+    var dx = e.touches[0].clientX - sx, dy = e.touches[0].clientY - sy;
+    if (Math.abs(dx) > 12 && Math.abs(dx) > Math.abs(dy)) moved = true;
+  }, { passive: true });
+  lb.addEventListener('touchend', function (e) {
+    if (!moved) return;
+    var t = e.changedTouches[0];
+    var dx = t.clientX - sx;
+    if (Math.abs(dx) > 50) step(dx < 0 ? 1 : -1);
+    moved = false;
+  }, { passive: true });
+
+  window.IdeaGallery = {
+    total: function () { return cards.length; },
+    visible: function () { return visible().length; },
+    counts: counts,
+    set: function (s) {
+      var b = chips.filter(function (x) { return x.getAttribute('data-series') === s; })[0];
+      if (b) b.click();
+      return state.series;
+    },
+    open: function (i) { open(cards[i == null ? 0 : i]); },
+    step: step,
+    current: function () {
+      return { index: idx + 1, length: list.length, title: lbTitle.textContent, src: lbImg.getAttribute('src') };
+    },
+    close: close
+  };
+})();
+</script>
+</body>
+</html>
