@@ -559,7 +559,8 @@
     Sfx.ensure(); Sfx.ui();
     openMake();
   });
-  $('#brandHome').addEventListener('click', function (e) {
+  var brandHome = $('#brandHome');
+  if (brandHome) brandHome.addEventListener('click', function (e) {
     if (!receiveView.hidden) { e.preventDefault(); openMake(); }
   });
 
