@@ -266,34 +266,46 @@
 
   /* 무대 크기와 타일 수로 타일 크기·줄 수를 정한다 */
   Field.prototype.measure = function (W, H, n) {
-    var tileH = Math.min(96, Math.max(48, Math.round(H * 0.31)));
-    var tileW, spacing, rowPitch, rows, margin, usableW, needH;
-    for (; ;) {
-      tileW = Math.round(tileH * 0.62);
-      spacing = tileH * 0.8;
-      margin = Math.max(tileW * 0.8, 14);
-      usableW = W - margin * 2;
-      rowPitch = tileH * 1.46;
-      var pathLen = (n - 1) * spacing;
-      rows = Math.max(1, Math.ceil(pathLen / Math.max(40, usableW)));
-      needH = (rows - 1) * rowPitch + tileH * 1.08 + 12;
-      if ((rows <= 4 && needH <= H) || tileH <= 46) break;
-      tileH -= 2;
+    var rows = n <= 11 ? 2 : 3;
+    var tileH = Math.min(96, Math.round(H * 0.46));
+    var best = null;
+    for (; tileH >= 44; tileH -= 2) {
+      var tileW = Math.round(tileH * 0.62);
+      var rowPitch = Math.round(tileH * 1.5);
+      var bulge = Math.min(rowPitch * 0.36, Math.max(14, tileW * 0.62));
+      var margin = Math.ceil(tileW * 0.6 + bulge + 4);
+      var L = W - margin * 2;
+      if (L < 80) continue;
+      var needH = (rows - 1) * rowPitch + tileH * 1.1 + 10;
+      if (needH > H) continue;
+      var arc = 2 * Math.hypot(rowPitch / 2, bulge);
+      var total = rows * L + (rows - 1) * arc;
+      var spacing = total / Math.max(1, n - 1);
+      var cand = {
+        tileW: tileW, tileH: tileH, rows: rows, rowPitch: rowPitch,
+        bulge: bulge, margin: margin, spacing: spacing, W: W, H: H, n: n
+      };
+      if (!best) best = cand;
+      if (spacing >= tileH * 0.72 && spacing <= tileH * 0.98) { best = cand; break; }
     }
-    return {
-      tileW: tileW, tileH: tileH, spacing: spacing, rows: rows,
-      rowPitch: rowPitch, margin: margin, W: W, H: H, n: n
-    };
+    if (!best) {
+      var th = 46;
+      best = {
+        tileW: Math.round(th * 0.62), tileH: th, rows: 3, rowPitch: Math.round(th * 1.5),
+        bulge: 14, margin: Math.ceil(th * 0.62 * 0.6 + 18), spacing: th * 0.8, W: W, H: H, n: n
+      };
+    }
+    return best;
   };
 
   /* S자(뱀) 줄을 따라 같은 간격으로 타일을 앉힌다 */
   Field.prototype.pathPoints = function (g, n) {
-    var rows = g.rows, rowPitch = g.rowPitch, tileH = g.tileH, tileW = g.tileW;
+    var rows = g.rows, rowPitch = g.rowPitch, tileH = g.tileH;
     var blockH = tileH + (rows - 1) * rowPitch;
     var startY = Math.max(6, (g.H - blockH) / 2);
-    var xL = tileW * 0.55 + Math.max(10, tileW * 0.14);
-    var xR = g.W - xL;
-    var bulge = Math.min(rowPitch * 0.5, Math.max(12, tileW * 0.85));
+    var xL = g.margin;
+    var xR = g.W - g.margin;
+    var bulge = g.bulge;
 
     var poly = [];
     function push(x, y, row) { poly.push({ x: x, y: y, row: row }); }
