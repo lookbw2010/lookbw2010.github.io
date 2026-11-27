@@ -375,16 +375,17 @@ body {
 .letter-sign[hidden] { display: none; }
 .letter-actions {
   display: flex;
-  flex-direction: column;
+  align-items: stretch;
   gap: 8px;
   margin-top: 15px;
   padding-top: 14px;
   border-top: 1px dashed #EEDFC4;
 }
-.letter-actions .btn { width: 100%; }
+.letter-actions .btn { font-size: 17px; padding: 0 11px; letter-spacing: -0.02em; }
+.letter-actions .btn.ghost { flex: 0 1 auto; }
+.letter-actions .btn.primary { flex: 1 1 auto; }
 @media (min-width: 430px) {
-  .letter-actions { flex-direction: row; }
-  .letter-actions .btn { flex: 1 1 auto; width: auto; }
+  .letter-actions .btn { font-size: 18px; padding: 0 14px; }
 }
 
 /* ─────────── 버튼 공통 ─────────── */
