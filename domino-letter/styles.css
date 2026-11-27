@@ -153,7 +153,7 @@ body {
 /* ─────────── 도미노 무대 ─────────── */
 .stage {
   position: relative;
-  height: clamp(300px, 41vh, 372px);
+  height: clamp(280px, 37vh, 344px);
   margin: 0 0 14px;
   border-radius: 26px;
   border: 1px solid #EFDFC3;
