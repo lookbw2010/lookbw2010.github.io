@@ -274,7 +274,7 @@
       var pitch = Math.round(tileH * 1.36);
       var margin = Math.ceil(tileW * 0.62 + 6);
       /* 마지막 타일이 오른쪽으로 넘어질 자리(무대 밖으로 잘리지 않게) */
-      var marginR = margin + Math.round(tileH * 0.5);
+      var marginR = Math.round(tileH * 1.18) + 4;
       var L = W - margin - marginR;
       if (L < 90) continue;
       if (tileH + (rows - 1) * pitch + 12 > H) continue;
@@ -290,7 +290,7 @@
       var th = 46, tw = Math.round(th * 0.62);
       best = {
         tileW: tw, tileH: th, rows: 3, rowPitch: Math.round(th * 1.36), per: Math.ceil(n / 3),
-        margin: Math.ceil(tw * 0.62 + 6), marginR: Math.ceil(tw * 0.62 + 6 + th * 0.5),
+        margin: Math.ceil(tw * 0.62 + 6), marginR: Math.round(th * 1.18) + 4,
         spacing: th * 0.8, W: W, H: H, n: n
       };
     }
@@ -479,7 +479,6 @@
     requestAnimationFrame(function () {
       requestAnimationFrame(function () { letterCard.classList.add('show'); });
     });
-    try { letterCard.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'nearest' }); } catch (e) { }
   }
 
   function openReceive(m) {
@@ -535,7 +534,6 @@
     letterCard.classList.remove('show');
     setTimeout(function () { letterCard.hidden = true; }, 220);
     rcvField.reset(false);
-    try { rcvStage.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'center' }); } catch (e) { }
   });
   $('#makeBtn').addEventListener('click', function () {
     Sfx.ensure(); Sfx.ui();
