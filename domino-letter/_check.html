@@ -9,10 +9,27 @@
   .frame { position: absolute; top: 0; width: 390px; height: 844px; border: 0; background: #fff; }
   #a { left: 0; }
   #b { left: 400px; }
+  #c { left: 800px; }
 </style>
 </head>
 <body>
-<iframe id="a" class="frame" title="만들기 화면" src="./?v=m1"></iframe>
+<iframe id="a" class="frame" title="만들기 화면" src="./?v=m2"></iframe>
 <iframe id="b" class="frame" title="받는 사람 화면" src="./?t=eyJ2IjoxLCJ0Ijoi7KeA7JqwIiwiZiI6IuuztOybkCIsInAiOiLsg53snbwg7LaV7ZWY7ZW0IiwiYiI6IuyYpOuKmCDtlZjro6jrj4Qg64SkIOuNleu2hOyXkCDsm4Psl4jslrQuXG7rgrTsnbzsnYAg642UIOyii-ydgCDsnbzrp4wg6rCA65Od7ZWY6ri4IOuwlOuehOqyjC4g64qYIOqzoOunmeqzoCwg66eO7J20IOyCrOueke2VtC4iLCJjIjoid29vZCJ9"></iframe>
+<iframe id="c" class="frame" title="긴 문구 받는 사람 화면" src="./?t=eyJ2IjoxLCJ0Ijoi7ISc7JewIiwiZiI6IuuztOybkCIsInAiOiLsmrDrpqwg7ISc7JewIOyDneydvCDstpXtlZjtlbQiLCJiIjoi7J207KCcIOuLpOyEryDsgrQuIOyYpOuKmOunjO2BvOydgCDrhKTqsIAg7KCc7J28IOuwmOynneydtOq4uC4iLCJjIjoibm9pciJ9"></iframe>
+<script>
+var errs = [];
+window.__errs = errs;
+['a','b','c'].forEach(function (id) {
+  var f = document.getElementById(id);
+  f.addEventListener('load', function () {
+    try {
+      var w = f.contentWindow;
+      w.addEventListener('error', function (e) { errs.push(id + ':' + e.message); });
+      var ce = w.console.error;
+      w.console.error = function () { errs.push(id + ':console ' + Array.prototype.join.call(arguments, ' ')); ce.apply(w.console, arguments); };
+    } catch (e) { errs.push(id + ':hook ' + e.message); }
+  });
+});
+</script>
 </body>
 </html>
