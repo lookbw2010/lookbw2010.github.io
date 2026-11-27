@@ -881,7 +881,7 @@
     b.refl.quaternion.copy(m.quaternion);
     b.refl.scale.set(m.scale.x, m.scale.y * 1.45, m.scale.z);
     b.refl.visible = m.visible && b.alpha > 0.02 && this.state === 'done';
-    b.refl.material.opacity = 0.085 * b.alpha;
+    b.refl.material.opacity = 0.062 * b.alpha;
     b.shadow.position.set(m.position.x, -0.03, m.position.z);
     var sz = Math.max(b.dims.w, b.dims.d) * m.scale.x * 1.5;
     b.shadow.scale.set(sz, sz, 1);
