@@ -331,7 +331,7 @@ body {
   transition: opacity 0.25s ease;
 }
 #receiveView.pushed #rcvStage { height: clamp(238px, 30vh, 292px); }
-#receiveView.pushed #rcvBoard { transform: scale(0.72); }
+#receiveView.pushed #rcvBoard { transform: scale(0.72) translateY(6%); }
 
 /* ─────────── 편지 카드 ─────────── */
 .letter {

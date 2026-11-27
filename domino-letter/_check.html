@@ -10,16 +10,22 @@
   #a { left: 0; }
   #b { left: 400px; }
   #c { left: 800px; }
+  #d { left: 1200px; }
 </style>
 </head>
 <body>
-<iframe id="a" class="frame" title="만들기 화면" src="./?v=m2"></iframe>
+<iframe id="a" class="frame" title="만들기 화면" src="./?v=m4"></iframe>
 <iframe id="b" class="frame" title="받는 사람 화면" src="./?t=eyJ2IjoxLCJ0Ijoi7KeA7JqwIiwiZiI6IuuztOybkCIsInAiOiLsg53snbwg7LaV7ZWY7ZW0IiwiYiI6IuyYpOuKmCDtlZjro6jrj4Qg64SkIOuNleu2hOyXkCDsm4Psl4jslrQuXG7rgrTsnbzsnYAg642UIOyii-ydgCDsnbzrp4wg6rCA65Od7ZWY6ri4IOuwlOuehOqyjC4g64qYIOqzoOunmeqzoCwg66eO7J20IOyCrOueke2VtC4iLCJjIjoid29vZCJ9"></iframe>
-<iframe id="c" class="frame" title="긴 문구 받는 사람 화면" src="./?t=eyJ2IjoxLCJ0Ijoi7ISc7JewIiwiZiI6IuuztOybkCIsInAiOiLsmrDrpqwg7ISc7JewIOyDneydvCDstpXtlZjtlbQiLCJiIjoi7J207KCcIOuLpOyEryDsgrQuIOyYpOuKmOunjO2BvOydgCDrhKTqsIAg7KCc7J28IOuwmOynneydtOq4uC4iLCJjIjoibm9pciJ9"></iframe>
+<iframe id="c" class="frame" title="산출물 허브" src="../my-hub/"></iframe>
+<iframe id="d" class="frame" title="시안 갤러리" src="../idea-gallery/"></iframe>
 <script>
+/* 허브·갤러리 간편 잠금 해제 상태를 미리 심어 둔다(같은 오리진) */
+try {
+  localStorage.setItem('lookbw-lock', 'e02a4e07d19509bcfcb3a847fc5c511b752200b3298a765a28af963a9aeb121e');
+} catch (e) {}
 var errs = [];
 window.__errs = errs;
-['a','b','c'].forEach(function (id) {
+['a','b','c','d'].forEach(function (id) {
   var f = document.getElementById(id);
   f.addEventListener('load', function () {
     try {
