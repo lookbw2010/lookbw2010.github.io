@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>도미노 글자 편지 — 톡 밀면 열리는 편지</title>
+<meta name="description" content="입체 도미노를 손끝으로 톡 밀면 글자 타일이 착착착 쓰러지며 숨어 있던 편지가 열립니다. 짧은 문구와 속마음을 담아 링크 하나로 보내보세요.">
+<meta name="theme-color" content="#FDF6E9">
+<meta name="color-scheme" content="light">
+<meta name="format-detection" content="telephone=no">
+<meta property="og:title" content="도미노 글자 편지 — 톡 밀면 열리는 편지">
+<meta property="og:description" content="도미노를 밀면 글자가 쓰러지며 편지가 열려요. 링크 하나로 마음을 보내세요.">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23FDF6E9'/%3E%3Crect x='20' y='12' width='14' height='40' rx='4' fill='%23E7A366'/%3E%3Crect x='37' y='12' width='9' height='40' rx='3' fill='%23C98448' transform='rotate(14 41 32)'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="./styles.css?v=1">
+</head>
+<body>
+
+<div class="page">
+
+  <header class="top">
+    <a class="brand" href="./" aria-label="도미노 글자 편지 처음으로">
+      <span class="brand-ico" aria-hidden="true">🁢</span>
+      <span class="brand-txt">도미노 글자 편지</span>
+    </a>
+    <div class="top-actions">
+      <button type="button" class="chip" id="toMakeBtn" hidden>만들기</button>
+      <button type="button" class="icon-btn" id="muteBtn" aria-pressed="false" aria-label="소리 끄기">
+        <svg class="ico-on" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M4 9.4h3.3L12 5.4v13.2L7.3 14.6H4z"/><path d="M16.1 8.7a4.5 4.5 0 0 1 0 6.6"/><path d="M18.7 6.3a8 8 0 0 1 0 11.4"/>
+        </svg>
+        <svg class="ico-off" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M4 9.4h3.3L12 5.4v13.2L7.3 14.6H4z"/><path d="M16.4 9.5l4.4 5"/><path d="M20.8 9.5l-4.4 5"/>
+        </svg>
+      </button>
+    </div>
+  </header>
+
+  <main>
+
+    <!-- ══════════ 받는 사람 화면 ══════════ -->
+    <section class="view" id="receiveView" hidden>
+      <p class="kicker" id="rcvKicker">도미노 편지가 도착했어요</p>
+      <h1 class="rcv-title" id="rcvTitle">첫 도미노를 톡, 밀어봐</h1>
+
+      <div class="stage" id="rcvStage" role="button" tabindex="0" aria-label="도미노 밀기">
+        <div class="board" id="rcvBoard"></div>
+      </div>
+
+      <button type="button" class="push-btn" id="pushBtn"><span class="push-ico" aria-hidden="true">👆</span> 첫 도미노 밀기</button>
+      <p class="hint" id="rcvHint">도미노를 직접 눌러도 돼요</p>
+
+      <section class="letter" id="letterCard" hidden aria-live="polite">
+        <p class="letter-from" id="letterFrom"></p>
+        <p class="letter-phrase" id="letterPhrase"></p>
+        <p class="letter-body" id="letterBody"></p>
+        <p class="letter-sign" id="letterSign"></p>
+        <div class="letter-actions">
+          <button type="button" class="btn ghost" id="againBtn">다시 세우기</button>
+          <button type="button" class="btn primary" id="makeBtn">나도 도미노 편지 만들기</button>
+        </div>
+      </section>
+    </section>
+
+    <!-- ══════════ 만드는 사람 화면 ══════════ -->
+    <section class="view" id="makeView">
+      <p class="kicker">도미노 글자 편지</p>
+      <h1 class="make-title">톡 밀면 <em>편지가 열려요</em></h1>
+      <p class="lead">짧은 문구를 도미노 타일 한 장에 한 글자씩 세우고, 속마음은 편지로 담아요. 링크 하나만 보내면 받는 사람이 직접 밀어서 엽니다.</p>
+
+      <div class="stage preview" id="mkStage">
+        <div class="board" id="mkBoard"></div>
+      </div>
+      <div class="preview-bar">
+        <button type="button" class="push-btn small" id="previewBtn"><span class="push-ico" aria-hidden="true">👆</span> 미리 밀어보기</button>
+        <span class="preview-note" id="previewNote">받는 사람에게 보이는 그대로예요</span>
+      </div>
+
+      <form class="form" id="makeForm" autocomplete="off" novalidate>
+        <div class="row2">
+          <label class="field">
+            <span class="lab">받는 사람</span>
+            <input id="toInput" type="text" maxlength="16" placeholder="예: 지우" autocomplete="off" autocapitalize="off" spellcheck="false">
+          </label>
+          <label class="field">
+            <span class="lab">보내는 사람</span>
+            <input id="fromInput" type="text" maxlength="16" placeholder="예: 보원" autocomplete="off" autocapitalize="off" spellcheck="false">
+          </label>
+        </div>
+
+        <label class="field">
+          <span class="lab">도미노 문구 <em>4~12글자</em><b class="count" id="phraseCount">0 / 12</b></span>
+          <input id="phraseInput" type="text" maxlength="12" placeholder="예: 생일 축하해" autocomplete="off" autocapitalize="off" spellcheck="false">
+        </label>
+        <div class="chips" id="phraseChips"></div>
+
+        <label class="field">
+          <span class="lab">속마음 편지 <em>도미노가 다 쓰러진 뒤에 열려요</em><b class="count" id="bodyCount">0 / 200</b></span>
+          <textarea id="bodyInput" rows="4" maxlength="200" placeholder="받는 사람에게 전하고 싶은 마음을 적어주세요."></textarea>
+        </label>
+
+        <fieldset class="field">
+          <legend class="lab">타일 컬러</legend>
+          <div class="themes" id="themeRow" role="radiogroup" aria-label="타일 컬러"></div>
+        </fieldset>
+
+        <p class="note">편지는 서버에 저장하지 않고 링크 안에만 담겨요. 링크를 아는 사람만 열 수 있습니다.</p>
+
+        <div class="cta">
+          <button type="submit" class="btn primary big" id="copyBtn"><span aria-hidden="true">🔗</span> 링크 복사</button>
+          <button type="button" class="btn ghost big" id="shareBtn" hidden><span aria-hidden="true">📤</span> 공유하기</button>
+        </div>
+
+        <div class="linkbox" id="linkBox" hidden>
+          <span class="lab">보낼 링크</span>
+          <input id="linkOut" type="text" readonly aria-label="보낼 링크">
+        </div>
+      </form>
+    </section>
+
+  </main>
+
+  <footer class="foot">
+    <p>도미노 글자 편지 · 링크 하나로 마음을 전해요</p>
+  </footer>
+</div>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script src="./app.js?v=1"></script>
+</body>
+</html>
