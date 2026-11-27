@@ -970,7 +970,7 @@
   Stage.prototype.burst = function (kind) {
     var y0 = this.rowY || 0.4;
     var w = this.rowWidth || 4;
-    var n = kind === 'core' ? 30 : (kind === 'wide' ? 26 : 20);
+    var n = kind === 'core' ? 44 : (kind === 'wide' ? 36 : 26);
     var unit = (this.kR || 0.52) / 0.52;
     for (var i = 0; i < n; i++) {
       var wide = kind === 'wide' ? 1 : (kind === 'soft' ? 0.85 : 0.72);
@@ -985,7 +985,7 @@
         vy: rand(0.42, 1.15),
         vz: rand(0.04, 0.26),
         ttl: rand(3.6, 5.6),
-        size: rand(0.060, 0.135) * unit,
+        size: rand(0.085, 0.185) * unit,
         col: [c.r, c.g, c.b],
         g: 0.12,
         drag: 0.990,
@@ -1050,7 +1050,7 @@
             y: y0 + rand(0.0, 0.9),
             z: rand(-2.2, -0.8),
             vx: rand(-0.06, 0.06), vy: rand(0.18, 0.38), vz: 0.04,
-            ttl: rand(4.2, 6.4), size: rand(0.028, 0.058) * (this.kR || 0.52) / 0.52,
+            ttl: rand(4.2, 6.4), size: rand(0.045, 0.085) * (this.kR || 0.52) / 0.52,
             col: [c.r, c.g, c.b], g: 0.05, drag: 0.995, twitch: 1.8
           });
         }
