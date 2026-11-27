@@ -462,10 +462,8 @@
   function showLetter() {
     var m = rcvField.model || draft;
     receiveView.classList.add('pushed');
-    setTimeout(function () {
-      pushBtn.hidden = true;
-      $('#rcvHint').hidden = true;
-    }, 300);
+    pushBtn.hidden = true;
+    $('#rcvHint').hidden = true;
     $('#letterFrom').textContent = m.from ? (m.to ? m.to + ' 님에게 · ' + m.from + ' 님이 보냄' : m.from + ' 님이 보냄') : '도미노 편지가 도착했어요';
     $('#letterPhrase').textContent = m.phrase || FALLBACK_PHRASE;
     var body = $('#letterBody');
