@@ -273,13 +273,15 @@
       var tileW = Math.round(tileH * 0.62);
       var pitch = Math.round(tileH * 1.36);
       var margin = Math.ceil(tileW * 0.62 + 6);
-      var L = W - margin * 2;
+      /* 마지막 타일이 오른쪽으로 넘어질 자리(무대 밖으로 잘리지 않게) */
+      var marginR = margin + Math.round(tileH * 0.5);
+      var L = W - margin - marginR;
       if (L < 90) continue;
       if (tileH + (rows - 1) * pitch + 12 > H) continue;
       var spacing = per > 1 ? L / (per - 1) : L;
       var cand = {
         tileW: tileW, tileH: tileH, rows: rows, rowPitch: pitch, per: per,
-        margin: margin, spacing: spacing, W: W, H: H, n: n
+        margin: margin, marginR: marginR, spacing: spacing, W: W, H: H, n: n
       };
       if (!best) best = cand;
       if (spacing >= tileH * 0.72 && spacing <= tileH * 0.94) { best = cand; break; }
@@ -288,7 +290,8 @@
       var th = 46, tw = Math.round(th * 0.62);
       best = {
         tileW: tw, tileH: th, rows: 3, rowPitch: Math.round(th * 1.36), per: Math.ceil(n / 3),
-        margin: Math.ceil(tw * 0.62 + 6), spacing: th * 0.8, W: W, H: H, n: n
+        margin: Math.ceil(tw * 0.62 + 6), marginR: Math.ceil(tw * 0.62 + 6 + th * 0.5),
+        spacing: th * 0.8, W: W, H: H, n: n
       };
     }
     return best;
@@ -300,7 +303,7 @@
     var blockH = tileH + (rows - 1) * pitch;
     var startY = Math.max(8, Math.round((g.H - blockH) / 2));
     var xL = g.margin;
-    var xR = g.W - g.margin;
+    var xR = g.W - (g.marginR || g.margin);
     var span = xR - xL;
     var maxCnt = g.per;
     var spacing = maxCnt > 1 ? span / (maxCnt - 1) : span;
