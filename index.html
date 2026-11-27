@@ -13,10 +13,10 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="산출물 허브">
 <title>산출물 허브 | GitHub 산출물 21개 한눈에</title>
-<meta name="description" content="회사 제안·전략 자료부터 웹앱·신사업 시제품, 두뇌 게임과 고객사 적용 중인 연말정산 테스트까지. lookbw2010.github.io에 올린 페이지 21개를 상태 배지와 카테고리로 모아 바로 열어보는 통합 목차.">
+<meta name="description" content="회사 제안·전략 자료와 고객사 적용 중인 연말정산 테스트, 웹앱·신사업 시제품, 두뇌 게임까지. GitHub Pages에 올린 페이지 21개를 카테고리와 진행 단계 두 축으로 나눠 바로 열어보는 통합 목차.">
 <meta property="og:type" content="website">
 <meta property="og:title" content="산출물 허브 — GitHub 산출물 21개 한눈에">
-<meta property="og:description" content="진행 중 2건 · 회사·제안 8 · 웹앱·신사업 7 · 게임·테스트 6. 카드를 누르면 바로 열립니다.">
+<meta property="og:description" content="카테고리 회사·제안 10 · 웹앱·신사업 7 · 게임·테스트 4 / 진행 단계 진행 중 2 · 운영 5 · 제안·데모 2 · 시안·프로토타입 8 · 자료·아카이브 4. 카드를 누르면 바로 열립니다.">
 <meta name="twitter:card" content="summary_large_image">
 <style>
   :root{
@@ -72,6 +72,7 @@
   }
   h1 em{font-style:normal;color:var(--blue)}
   .lead{margin:0 0 18px;font-size:16px;color:var(--body);line-height:1.65}
+  .lead b{color:var(--ink);font-weight:800}
   .stats{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 24px}
   .stat{
     display:inline-flex;align-items:baseline;gap:5px;
@@ -126,7 +127,25 @@
     backdrop-filter:saturate(180%) blur(12px);
     border-bottom:1px solid rgba(227,233,241,.9);
   }
-  .filters{display:flex;gap:8px;overflow-x:auto;padding:2px 0 4px;scrollbar-width:none}
+  /* 필터는 '카테고리'와 '진행 단계' 두 축으로 분리 — 라벨로 어느 축인지 늘 보이게 */
+  .filter-rows{display:flex;flex-direction:column}
+  .filter-row{display:flex;flex-direction:column;gap:4px;padding:4px 0 3px}
+  .filter-row + .filter-row{border-top:1px dashed #DFE7F1;margin-top:2px;padding-top:8px}
+  .filter-label{
+    display:flex;align-items:center;gap:6px;
+    font-size:12px;font-weight:800;letter-spacing:.02em;color:#6F8099;
+    line-height:1.3;
+  }
+  .filter-label i{width:6px;height:6px;border-radius:2px;background:#8FA6C4;flex:0 0 auto}
+  .filter-label.stage i{background:#D9A256}
+  .filter-label .sub{font-size:11.5px;font-weight:700;color:#A9B6C7;letter-spacing:0}
+  .filter-scroll{position:relative}
+  .filter-scroll::after{
+    content:"";position:absolute;top:0;right:0;width:22px;height:100%;
+    pointer-events:none;
+    background:linear-gradient(90deg, rgba(251,250,247,0), rgba(251,250,247,.95));
+  }
+  .filters{display:flex;gap:8px;overflow-x:auto;padding:0 0 2px;scrollbar-width:none}
   .filters::-webkit-scrollbar{display:none}
   .filters button{
     flex:0 0 auto;display:inline-flex;align-items:center;gap:6px;
@@ -139,23 +158,28 @@
     font-size:13px;font-weight:800;padding:1px 7px;border-radius:999px;
     background:var(--slate-soft);color:var(--muted);
   }
-  .filters button[data-filter="active"]{border-color:#F5CE8C;background:#FFFBF2;color:#92400E}
-  .filters button[data-filter="active"] .n{background:#FDE9C2;color:#92400E}
+  .filters button .dotc{width:7px;height:7px;border-radius:50%;flex:0 0 auto;background:#8FA6C4}
+  .filters button[data-value="company"] .dotc{background:#3B82F6}
+  .filters button[data-value="app"] .dotc{background:#8B5CF6}
+  .filters button[data-value="game"] .dotc{background:#10B981}
+  .filters button .pip-s{
+    width:7px;height:7px;border-radius:50%;background:#C2740A;flex:0 0 auto;
+    animation:pulse 1.9s ease-in-out infinite;
+  }
+  @media (prefers-reduced-motion:reduce){.filters button .pip-s{animation:none}}
+  .filters button[data-value="active"]{border-color:#F5CE8C;background:#FFFBF2;color:#92400E}
+  .filters button[data-value="active"] .n{background:#FDE9C2;color:#92400E}
   .filters button[aria-pressed="true"]{
     background:var(--ink);border-color:var(--ink);color:#fff;
     box-shadow:0 4px 12px rgba(22,32,46,.18);
   }
   .filters button[aria-pressed="true"] .n{background:rgba(255,255,255,.18);color:#fff}
-  .filters button[data-filter="active"][aria-pressed="true"]{
+  .filters button[data-value="active"][aria-pressed="true"]{
     background:#B45309;border-color:#B45309;box-shadow:0 4px 14px rgba(180,83,9,.28);
   }
+  .filters button[data-value="active"][aria-pressed="true"] .pip-s{background:#FBD38D}
   .filters button:focus-visible{outline:3px solid #93C5FD;outline-offset:2px}
 
-  .sticky::after{
-    content:"";position:absolute;top:0;right:0;width:26px;height:64px;
-    pointer-events:none;
-    background:linear-gradient(90deg, rgba(251,250,247,0), rgba(251,250,247,.96));
-  }
   .search{position:relative;margin-top:8px}
   .search input{
     width:100%;min-height:46px;padding:11px 14px 11px 40px;
@@ -276,6 +300,13 @@
     font-size:15.5px;font-weight:700;color:var(--muted);
   }
   .empty.show{display:block}
+  .empty p{margin:0 0 14px}
+  .empty button{
+    min-height:44px;padding:10px 16px;border-radius:12px;cursor:pointer;
+    border:1.5px solid #BFD2E8;background:#F8FBFF;color:var(--blue);
+    font-family:inherit;font-size:14.5px;font-weight:800;
+  }
+  .empty button:active{transform:scale(.98)}
 
   .foot-card{
     margin-top:28px;padding:22px 18px;border-radius:18px;
@@ -448,10 +479,10 @@
     <header>
       <div class="brand"><span class="dot"></span>Lookbw · GitHub Hub</div>
       <h1>산출물 <em>한눈에</em></h1>
-      <p class="lead">회사 제안·전략 자료부터 웹앱·신사업 시제품, 두뇌 게임과 고객사 적용 중인 연말정산 테스트까지. 지금까지 올린 GitHub 페이지 21개를 상태 배지와 함께 한 곳에 모았습니다. 카드를 누르면 바로 열리고, 원하는 항목만 체크해 공유하거나 엑셀로 저장할 수 있습니다.</p>
+      <p class="lead">회사 제안·전략 자료와 고객사에 붙인 연말정산 테스트, 웹앱·신사업 시제품, 두뇌 게임까지. GitHub에 올린 페이지 21개를 <b>카테고리</b>(무엇인지)와 <b>진행 단계</b>(어디까지 했는지) 두 줄로 나눠 모았습니다. 카드를 누르면 바로 열리고, 원하는 항목만 체크해 공유하거나 엑셀로 저장할 수 있습니다.</p>
       <div class="stats">
         <span class="stat"><b>21</b> 페이지</span>
-        <button type="button" class="stat live" data-filter="active" aria-label="진행 중인 항목만 보기"><b>2</b>건 진행 중<span class="pip" aria-hidden="true"></span></button>
+        <button type="button" class="stat live" data-dim="stage" data-value="active" aria-label="진행 중인 항목만 보기"><b>2</b>건 진행 중<span class="pip" aria-hidden="true"></span></button>
         <span class="stat"><b>3</b> 카테고리</span>
       </div>
 
@@ -467,12 +498,31 @@
     </header>
 
     <div class="sticky">
-      <div class="filters" role="group" aria-label="산출물 필터">
-        <button type="button" data-filter="all" aria-pressed="true">전체 <span class="n">21</span></button>
-        <button type="button" data-filter="active" aria-pressed="false">● 진행 중 <span class="n">2</span></button>
-        <button type="button" data-filter="company" aria-pressed="false">회사·제안 <span class="n">8</span></button>
-        <button type="button" data-filter="app" aria-pressed="false">웹앱·신사업 <span class="n">7</span></button>
-        <button type="button" data-filter="game" aria-pressed="false">게임·테스트 <span class="n">6</span></button>
+      <div class="filter-rows">
+        <div class="filter-row">
+          <span class="filter-label" id="lblCat"><i aria-hidden="true"></i>카테고리<span class="sub">무엇인지</span></span>
+          <div class="filter-scroll">
+            <div class="filters" role="group" aria-labelledby="lblCat">
+              <button type="button" data-dim="cat" data-value="all" aria-pressed="true">전체 <span class="n">21</span></button>
+              <button type="button" data-dim="cat" data-value="company" aria-pressed="false"><i class="dotc" aria-hidden="true"></i>회사·제안 <span class="n">10</span></button>
+              <button type="button" data-dim="cat" data-value="app" aria-pressed="false"><i class="dotc" aria-hidden="true"></i>웹앱·신사업 <span class="n">7</span></button>
+              <button type="button" data-dim="cat" data-value="game" aria-pressed="false"><i class="dotc" aria-hidden="true"></i>게임·테스트 <span class="n">4</span></button>
+            </div>
+          </div>
+        </div>
+        <div class="filter-row">
+          <span class="filter-label stage" id="lblStage"><i aria-hidden="true"></i>진행 단계<span class="sub">어디까지</span></span>
+          <div class="filter-scroll">
+            <div class="filters" role="group" aria-labelledby="lblStage">
+              <button type="button" data-dim="stage" data-value="all" aria-pressed="true">전체 <span class="n">21</span></button>
+              <button type="button" data-dim="stage" data-value="active" aria-pressed="false"><span class="pip-s" aria-hidden="true"></span>진행 중 <span class="n">2</span></button>
+              <button type="button" data-dim="stage" data-value="ok" aria-pressed="false">운영 <span class="n">5</span></button>
+              <button type="button" data-dim="stage" data-value="demo" aria-pressed="false">제안·데모 <span class="n">2</span></button>
+              <button type="button" data-dim="stage" data-value="proto" aria-pressed="false">시안·프로토타입 <span class="n">8</span></button>
+              <button type="button" data-dim="stage" data-value="archive" aria-pressed="false">자료·아카이브 <span class="n">4</span></button>
+            </div>
+          </div>
+        </div>
       </div>
       <div class="search">
         <span class="ico" aria-hidden="true">🔍</span>
@@ -497,11 +547,11 @@
 
     <main class="grid" id="grid">
 
-      <!-- ═══ 진행 중 (고객·사내 적용) ═══ -->
-      <article class="card" data-cat="game" data-status="active">
+      <!-- ═══ 회사·제안 (진행 중 2건 포함) ═══ -->
+      <article class="card" data-cat="company" data-status="active">
         <div class="badges">
           <span class="badge s-active"><span class="pip" aria-hidden="true"></span>진행 중</span>
-          <span class="badge b-game">게임·테스트</span>
+          <span class="badge b-company">회사·제안</span>
           <span class="badge client">DB생명</span>
         </div>
         <h2>DB생명 전용 연말정산 테스트</h2>
@@ -512,11 +562,10 @@
           <button type="button" class="copy" aria-label="주소 복사">주소 복사</button>
         </div>
       </article>
-
-      <article class="card" data-cat="game" data-status="active">
+      <article class="card" data-cat="company" data-status="active">
         <div class="badges">
           <span class="badge s-active"><span class="pip" aria-hidden="true"></span>진행 중</span>
-          <span class="badge b-game">게임·테스트</span>
+          <span class="badge b-company">회사·제안</span>
           <span class="badge client">품스 개인품</span>
         </div>
         <h2>품스 개인품 전용 연말정산 테스트</h2>
@@ -527,9 +576,7 @@
           <button type="button" class="copy" aria-label="주소 복사">주소 복사</button>
         </div>
       </article>
-
-      <!-- ═══ 회사·제안 ═══ -->
-      <article class="card" data-cat="company">
+      <article class="card" data-cat="company" data-status="proto">
         <div class="badges"><span class="badge b-company">회사·제안</span><span class="badge s-proto">시안·프로토타입</span></div>
         <h2>NCL PEOPLES 홈페이지 리뉴얼</h2>
         <p>1996년부터 이어온 보험·금융 마케팅 회사의 새 홈페이지. PUMSS·쇼핑몰·기프티쇼·리크루팅까지 세일즈 마케팅 전체를 한 화면에 담았습니다.</p>
@@ -538,9 +585,8 @@
           <button type="button" class="copy" aria-label="주소 복사">주소 복사</button>
         </div>
       </article>
-
-      <article class="card" data-cat="company">
-        <div class="badges"><span class="badge b-company">회사·제안</span><span class="badge s-muted">자료</span></div>
+      <article class="card" data-cat="company" data-status="archive">
+        <div class="badges"><span class="badge b-company">회사·제안</span><span class="badge s-muted">자료·아카이브</span></div>
         <h2>NCL 단기 수익화 실행 전략 v2</h2>
         <p>제작 대행에서 영업 배포·전환 플랫폼으로 넘어가는 90일 체질 전환안. 라스트마일 배포, 리드가 남는 캠페인, 개인품 B2B2C 구독까지 정리했습니다.</p>
         <div class="foot-row">
@@ -548,8 +594,7 @@
           <button type="button" class="copy" aria-label="주소 복사">주소 복사</button>
         </div>
       </article>
-
-      <article class="card" data-cat="company">
+      <article class="card" data-cat="company" data-status="proto">
         <div class="badges"><span class="badge b-company">회사·제안</span><span class="badge s-proto">시안·프로토타입</span></div>
         <h2>인슈어데일리 — 보험 전문 일간지</h2>
         <p>생명·손해보험, GA·영업, 정책·규제, 신상품, 인슈어테크와 글로벌 보험시장을 다루는 보험 전문 일간지 시안. 매일 아침 판단에 필요한 뉴스와 데이터.</p>
@@ -558,8 +603,7 @@
           <button type="button" class="copy" aria-label="주소 복사">주소 복사</button>
         </div>
       </article>
-
-      <article class="card" data-cat="company">
+      <article class="card" data-cat="company" data-status="demo">
         <div class="badges"><span class="badge b-company">회사·제안</span><span class="badge s-demo">제안·데모</span></div>
         <h2>DB생명 백년친구 리뉴얼 데모</h2>
         <p>본사 자료를 전 직원·FP 개인 채널에 자동 탑재해 활용률·고객 클릭·상담 DB로 회수하는 라스트마일 배포 엔진. 눌러보는 인터랙티브 데모입니다.</p>
@@ -568,8 +612,7 @@
           <button type="button" class="copy" aria-label="주소 복사">주소 복사</button>
         </div>
       </article>
-
-      <article class="card" data-cat="company">
+      <article class="card" data-cat="company" data-status="demo">
         <div class="badges"><span class="badge b-company">회사·제안</span><span class="badge s-demo">제안·데모</span></div>
         <h2>DB생명 백년프로필 개인품 목업</h2>
         <p>본사 추천 콘텐츠·뉴스·배너는 자동 공급·심의 고정, 프로필·전자명함·유튜브·배너·링크는 설계사가 직접 세팅하는 개인품 시안.</p>
@@ -578,9 +621,8 @@
           <button type="button" class="copy" aria-label="주소 복사">주소 복사</button>
         </div>
       </article>
-
-      <article class="card" data-cat="company">
-        <div class="badges"><span class="badge b-company">회사·제안</span><span class="badge s-muted">자료</span></div>
+      <article class="card" data-cat="company" data-status="archive">
+        <div class="badges"><span class="badge b-company">회사·제안</span><span class="badge s-muted">자료·아카이브</span></div>
         <h2>와플 가게 마케팅 브리프</h2>
         <p>매장 QR 허브와 점주별 개인품 확장 모델, 링크인바이오 대비 차별점, 실전 마케팅 4가지, AI 콘텐츠 운영 레퍼런스. 11/24 미팅 참고 자료.</p>
         <div class="foot-row">
@@ -588,9 +630,8 @@
           <button type="button" class="copy" aria-label="주소 복사">주소 복사</button>
         </div>
       </article>
-
-      <article class="card" data-cat="company">
-        <div class="badges"><span class="badge b-company">회사·제안</span><span class="badge s-muted">자료</span></div>
+      <article class="card" data-cat="company" data-status="archive">
+        <div class="badges"><span class="badge b-company">회사·제안</span><span class="badge s-muted">자료·아카이브</span></div>
         <h2>WORDMARK 20 — 영단어 벡터 로고</h2>
         <p>보험·안심·동행을 뜻하는 영단어 20종을 글자와 심볼이 한 몸이 되게 설계한 SVG 로고 컬렉션. 색상 변경과 에코백·텀블러 인쇄 미리보기, SVG·PNG 내려받기.</p>
         <div class="foot-row">
@@ -598,8 +639,7 @@
           <button type="button" class="copy" aria-label="주소 복사">주소 복사</button>
         </div>
       </article>
-
-      <article class="card" data-cat="company">
+      <article class="card" data-cat="company" data-status="ok">
         <div class="badges"><span class="badge b-company">회사·제안</span><span class="badge s-ok">운영</span></div>
         <h2>내 개인품 바로 열기</h2>
         <p>품스 개인품을 앱처럼 바로 여는 전용 화면. 새 개인품 만들기·로그인·품스 앱 연동이 필요할 때 공식 창으로 연결합니다.</p>
@@ -608,9 +648,7 @@
           <button type="button" class="copy" aria-label="주소 복사">주소 복사</button>
         </div>
       </article>
-
-      <!-- ═══ 웹앱·신사업 ═══ -->
-      <article class="card" data-cat="app">
+      <article class="card" data-cat="app" data-status="proto">
         <div class="badges"><span class="badge b-app">웹앱·신사업</span><span class="badge s-proto">시안·프로토타입</span></div>
         <h2>빅넘버월드 V2 — 크로스오버 아레나</h2>
         <p>마라톤·광속·로또·에베레스트를 한 판에. 오늘의 크로스오버, 덕후 월드 8팩, 3장 줄세우기, 하트 3개 연승전에 숫자 직관 유형 카드와 B2B 제휴관까지.</p>
@@ -619,9 +657,8 @@
           <button type="button" class="copy" aria-label="주소 복사">주소 복사</button>
         </div>
       </article>
-
-      <article class="card" data-cat="app">
-        <div class="badges"><span class="badge b-app">웹앱·신사업</span><span class="badge s-arch">테스트·아카이브</span></div>
+      <article class="card" data-cat="app" data-status="archive">
+        <div class="badges"><span class="badge b-app">웹앱·신사업</span><span class="badge s-arch">자료·아카이브</span></div>
         <h2>빅넘버월드 V1 — 숫자 오타쿠 배틀</h2>
         <p>사칙연산·이차방정식·역사 연도·영화 기록·브랜드 수치를 한 판에 섞어 가장 큰 값을 고르는 첫 버전. V2로 이어지기 전 기록으로 남겨 둡니다.</p>
         <div class="foot-row">
@@ -629,8 +666,7 @@
           <button type="button" class="copy" aria-label="주소 복사">주소 복사</button>
         </div>
       </article>
-
-      <article class="card" data-cat="app">
+      <article class="card" data-cat="app" data-status="proto">
         <div class="badges"><span class="badge b-app">웹앱·신사업</span><span class="badge s-proto">시안·프로토타입</span></div>
         <h2>킨로 Kinlo — 오늘의 사진과 글</h2>
         <p>매일 사진 한 장과 정직한 한 줄을 남기는 5060 클린 SNS. 걷기·요리·가꾸기·쓰기 네 가지 주제로 조용히 기록합니다.</p>
@@ -639,8 +675,7 @@
           <button type="button" class="copy" aria-label="주소 복사">주소 복사</button>
         </div>
       </article>
-
-      <article class="card" data-cat="app">
+      <article class="card" data-cat="app" data-status="proto">
         <div class="badges"><span class="badge b-app">웹앱·신사업</span><span class="badge s-proto">시안·프로토타입</span></div>
         <h2>TypoPop — 살아 움직이는 1초 카드</h2>
         <p>문장 하나를 넣으면 핵심 단어가 살아 움직이는 1초 모션 타이포 카드. 우산·크리스마스·해돋이·축하 팡파레 등 14가지, 말로 입력하고 링크로 보냅니다.</p>
@@ -649,8 +684,7 @@
           <button type="button" class="copy" aria-label="주소 복사">주소 복사</button>
         </div>
       </article>
-
-      <article class="card" data-cat="app">
+      <article class="card" data-cat="app" data-status="proto">
         <div class="badges"><span class="badge b-app">웹앱·신사업</span><span class="badge s-proto">시안·프로토타입</span></div>
         <h2>별빛 편지 — 돌려야 열리는 3D 편지</h2>
         <p>화면을 손가락으로 돌려 각도를 맞추면 흩어진 별빛 점들이 모여 숨겨진 3D 형상과 비밀 메시지가 찰칵 열립니다. 나만의 편지를 만들어 링크로 보내세요.</p>
@@ -659,8 +693,7 @@
           <button type="button" class="copy" aria-label="주소 복사">주소 복사</button>
         </div>
       </article>
-
-      <article class="card" data-cat="app">
+      <article class="card" data-cat="app" data-status="proto">
         <div class="badges"><span class="badge b-app">웹앱·신사업</span><span class="badge s-proto">시안·프로토타입</span></div>
         <h2>겉과 속 — 90도 착시 카드</h2>
         <p>정면에서는 멀쩡한 와인잔이, 90도 돌리는 순간 똑같은 점들이 속마음 문구로 바뀌는 3D 별빛 착시. 두 얼굴을 담은 카드입니다.</p>
@@ -669,8 +702,7 @@
           <button type="button" class="copy" aria-label="주소 복사">주소 복사</button>
         </div>
       </article>
-
-      <article class="card" data-cat="app">
+      <article class="card" data-cat="app" data-status="proto">
         <div class="badges"><span class="badge b-app">웹앱·신사업</span><span class="badge s-proto">시안·프로토타입</span></div>
         <h2>이도현 ♥ 한서윤 모바일 청첩장</h2>
         <p>12월 12일 토요일 낮 12시, 더 채플 앳 청담 3층 커티지홀. 참석 여부·계좌·지도까지 담은 혁신형 모바일 청첩장 샘플입니다.</p>
@@ -679,9 +711,7 @@
           <button type="button" class="copy" aria-label="주소 복사">주소 복사</button>
         </div>
       </article>
-
-      <!-- ═══ 게임·테스트 ═══ -->
-      <article class="card" data-cat="game">
+      <article class="card" data-cat="game" data-status="ok">
         <div class="badges"><span class="badge b-game">게임·테스트</span><span class="badge s-ok">운영</span></div>
         <h2>오늘의 큰 수 찾기</h2>
         <p>화면에 흩어진 숫자 중 가장 큰 수를 찾는 10문제. 하루 1분, 가볍게 머리를 깨우는 두뇌 게임입니다.</p>
@@ -690,8 +720,7 @@
           <button type="button" class="copy" aria-label="주소 복사">주소 복사</button>
         </div>
       </article>
-
-      <article class="card" data-cat="game">
+      <article class="card" data-cat="game" data-status="ok">
         <div class="badges"><span class="badge b-game">게임·테스트</span><span class="badge s-ok">운영</span></div>
         <h2>오늘의 같은 그림 찾기</h2>
         <p>같은 그림 두 장을 차례로 눌러 짝을 맞히는 5단계 기억력 게임. 계산 없이 누구나 할 수 있고 2~3분이면 끝납니다.</p>
@@ -700,8 +729,7 @@
           <button type="button" class="copy" aria-label="주소 복사">주소 복사</button>
         </div>
       </article>
-
-      <article class="card" data-cat="game">
+      <article class="card" data-cat="game" data-status="ok">
         <div class="badges"><span class="badge b-game">게임·테스트</span><span class="badge s-ok">운영</span></div>
         <h2>오늘의 틀린 그림 찾기</h2>
         <p>위아래 두 그림에서 다른 곳을 찾는 5단계 게임. 봄날 거실부터 한강 소풍, 한옥 찻상, 전통시장, 바닷가 등대까지 18군데를 손끝으로 누르며 5분.</p>
@@ -710,8 +738,7 @@
           <button type="button" class="copy" aria-label="주소 복사">주소 복사</button>
         </div>
       </article>
-
-      <article class="card" data-cat="game">
+      <article class="card" data-cat="game" data-status="ok">
         <div class="badges"><span class="badge b-game">게임·테스트</span><span class="badge s-ok">운영</span></div>
         <h2>13월의 월급, 1분 연말정산 테스트</h2>
         <p>기본 버전. 7문항 선택만 하면 끝. 올해 내가 놓치고 있는 환급금과 지금 더 챙길 수 있는 절세 포인트를 알려줍니다.</p>
@@ -723,7 +750,10 @@
 
     </main>
 
-    <div class="empty" id="empty">조건에 맞는 산출물이 없습니다. 다른 말로 찾아보세요.</div>
+    <div class="empty" id="empty">
+      <p>조건에 맞는 산출물이 없습니다.</p>
+      <button type="button" id="resetFilters">필터 초기화하고 21개 모두 보기</button>
+    </div>
 
     <div class="foot-card">
       <p class="label">더 많은 생활·경제 정보와 상담이 필요하신가요?</p>
@@ -731,7 +761,7 @@
       <a class="btn" href="https://www.pumss.co.kr/SP/10.do">품스로 이동 →</a>
     </div>
 
-    <p class="copyline">총 21개 페이지 · 진행 중 2건 · 최종 정리 2026.11.27<br>© NCL PEOPLES · GitHub @lookbw2010</p>
+    <p class="copyline">총 21개 페이지 · 카테고리 회사·제안 10 / 웹앱·신사업 7 / 게임·테스트 4 · 진행 중 2건 · 최종 정리 2026.11.27<br>© NCL PEOPLES · GitHub @lookbw2010</p>
   </div>
 
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
@@ -759,35 +789,50 @@
 
   <script>
   (function () {
-    /* ── 필터 · 검색 ── */
+    /* ── 필터(카테고리 × 진행 단계 교차) · 검색 ── */
     var grid = document.getElementById('grid');
     var cards = Array.prototype.slice.call(grid.querySelectorAll('.card'));
-    var buttons = Array.prototype.slice.call(document.querySelectorAll('.filters button'));
-    var statBtn = document.querySelector('button.stat[data-filter]');
+    var filterBtns = Array.prototype.slice.call(document.querySelectorAll('.filters button[data-dim]'));
+    var statBtn = document.querySelector('button.stat[data-dim]');
     var input = document.getElementById('q');
     var result = document.getElementById('result');
     var empty = document.getElementById('empty');
-    var CAT_NAME = { all: '전체', active: '진행 중', company: '회사·제안', app: '웹앱·신사업', game: '게임·테스트' };
-    var activeFilter = 'all';
+    var CAT_NAME = { all: '전체', company: '회사·제안', app: '웹앱·신사업', game: '게임·테스트' };
+    var STAGE_NAME = { all: '전체', active: '진행 중', ok: '운영', demo: '제안·데모', proto: '시안·프로토타입', archive: '자료·아카이브' };
+    var state = { cat: 'all', stage: 'all' };
 
-    // 실제 카드 수로 배지 숫자 갱신
-    var counts = { all: cards.length, active: 0, company: 0, app: 0, game: 0 };
+    // 실제 카드 수로 칩 숫자를 그린다 — 두 축 각각의 합계는 항상 전체(21)와 같다.
+    var counts = {
+      cat: { all: cards.length, company: 0, app: 0, game: 0 },
+      stage: { all: cards.length, active: 0, ok: 0, demo: 0, proto: 0, archive: 0 }
+    };
     cards.forEach(function (c) {
-      counts[c.getAttribute('data-cat')] += 1;
-      if (c.getAttribute('data-status') === 'active') counts.active += 1;
+      var cat = c.getAttribute('data-cat'), st = c.getAttribute('data-status');
+      if (counts.cat[cat] != null) counts.cat[cat] += 1;
+      if (counts.stage[st] != null) counts.stage[st] += 1;
     });
-    buttons.forEach(function (b) {
+    filterBtns.forEach(function (b) {
       var n = b.querySelector('.n');
-      if (n) n.textContent = counts[b.getAttribute('data-filter')];
+      if (n) n.textContent = counts[b.getAttribute('data-dim')][b.getAttribute('data-value')];
     });
-    if (statBtn) statBtn.querySelector('b').textContent = counts.active;
+    if (statBtn) {
+      var sb = statBtn.querySelector('b');
+      if (sb) sb.textContent = counts.stage.active;
+    }
 
     function norm(s) { return (s || '').toLowerCase().replace(/\s+/g, ''); }
 
     function matches(card) {
-      if (activeFilter === 'all') return true;
-      if (activeFilter === 'active') return card.getAttribute('data-status') === 'active';
-      return card.getAttribute('data-cat') === activeFilter;
+      if (state.cat !== 'all' && card.getAttribute('data-cat') !== state.cat) return false;
+      if (state.stage !== 'all' && card.getAttribute('data-status') !== state.stage) return false;
+      return true;
+    }
+
+    function filterLabel() {
+      var parts = [];
+      if (state.cat !== 'all') parts.push(CAT_NAME[state.cat]);
+      if (state.stage !== 'all') parts.push(STAGE_NAME[state.stage]);
+      return parts.length ? parts.join(' · ') : '전체';
     }
 
     function apply() {
@@ -799,14 +844,16 @@
         if (show) shown += 1;
       });
       empty.classList.toggle('show', shown === 0);
-      result.innerHTML = CAT_NAME[activeFilter] + ' <b>' + shown + '</b>개';
+      result.innerHTML = filterLabel() + ' <b>' + shown + '</b>개';
       refreshSelection();
     }
 
-    function setFilter(value) {
-      activeFilter = value;
-      buttons.forEach(function (x) {
-        x.setAttribute('aria-pressed', String(x.getAttribute('data-filter') === value));
+    function setFilter(dim, value) {
+      state[dim] = value;
+      filterBtns.forEach(function (x) {
+        if (x.getAttribute('data-dim') === dim) {
+          x.setAttribute('aria-pressed', String(x.getAttribute('data-value') === value));
+        }
       });
       apply();
       // 필터를 바꾸면 목록 처음으로
@@ -816,10 +863,25 @@
       }
     }
 
+    function resetFilters() {
+      state.cat = 'all';
+      state.stage = 'all';
+      filterBtns.forEach(function (x) {
+        x.setAttribute('aria-pressed', String(x.getAttribute('data-value') === 'all'));
+      });
+      apply();
+    }
+
     document.addEventListener('click', function (e) {
-      var el = e.target.closest('[data-filter]');
+      var el = e.target.closest('[data-dim]');
       if (!el) return;
-      setFilter(el.getAttribute('data-filter'));
+      setFilter(el.getAttribute('data-dim'), el.getAttribute('data-value'));
+    });
+    var resetBtn = document.getElementById('resetFilters');
+    if (resetBtn) resetBtn.addEventListener('click', function () {
+      input.value = '';
+      resetFilters();
+      input.focus({ preventScroll: true });
     });
     input.addEventListener('input', apply);
     input.addEventListener('search', apply);
@@ -1243,11 +1305,21 @@
       csvName: function () { return 'lookbw-산출물목록-' + todayStamp().compact + '.csv'; }
     };
     window.HubFilter = {
-      set: setFilter,
-      current: function () { return activeFilter; },
+      set: function (dim, value) { setFilter(dim, value); },
+      reset: resetFilters,
+      current: function () { return { cat: state.cat, stage: state.stage }; },
+      label: filterLabel,
       visible: function () { return document.querySelectorAll('.card:not([hidden])').length; },
       total: cards.length,
-      counts: counts
+      counts: counts,
+      combos: function () {
+        var out = {};
+        cards.forEach(function (c) {
+          var k = c.getAttribute('data-cat') + '/' + c.getAttribute('data-status');
+          out[k] = (out[k] || 0) + 1;
+        });
+        return out;
+      }
     };
   })();
   </script>
