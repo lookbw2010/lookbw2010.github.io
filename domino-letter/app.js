@@ -738,7 +738,7 @@
 
     /* 무대 크기 → 카메라·블록 크기 */
     var vh = this.viewHeight(), vw = this.viewWidth();
-    var PITCH = 1.00, BASE_H = 0.94, BLK = 1.12;
+    var PITCH = 1.02, BASE_H = 0.94, BLK = 1.12;
     this.PITCH = PITCH; this.BLK = BLK;
     var rowsAbove = this.rowsPlan(items.length).reverse();
     var towerH = BASE_H + rowsAbove.length * PITCH + BLK * 0.5;
@@ -768,17 +768,18 @@
     for (var r = 0; r < rowsAbove.length; r++) {
       var cnt = rowsAbove[r];
       var y = BASE_H + r * PITCH + BLK * 0.5;
-      drift += lean * rand(0.04, 0.11);
+      drift += lean * rand(0.03, 0.10);
+      var rowShift = (r % 2 ? 1 : -1) * rand(0.08, 0.26);
       for (var i = 0; i < cnt; i++) {
         if (cursor >= items.length) break;
         var item = items[cursor++];
         var b = mk(item, { w: BLK, h: BLK, d: BLK, r: 0.135 });
-        var x = (cnt === 2 ? (i - 0.5) * 1.26 : (cnt === 3 ? (i - 1) * 1.26 : rand(-0.10, 0.10))) + drift * 1.15 + rand(-0.06, 0.06);
+        var x = (cnt === 2 ? (i - 0.5) * 1.26 : (cnt === 3 ? (i - 1) * 1.26 : rand(-0.10, 0.10))) + drift * 1.15 + rowShift + rand(-0.06, 0.06);
         b.mesh.position.set(x * kT, (y + rand(-0.02, 0.02)) * kT, rand(-0.05, 0.05) * kT);
         b.mesh.quaternion.setFromEuler(new THREE.Euler(
-          rand(-0.05, 0.03),
-          rand(-0.12, 0.12),
-          rand(-0.06, 0.06)
+          rand(-0.07, 0.05),
+          rand(-0.20, 0.20),
+          rand(-0.10, 0.10)
         ));
       }
     }
